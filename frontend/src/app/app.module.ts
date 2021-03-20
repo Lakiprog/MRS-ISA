@@ -8,6 +8,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular_material.module';
 import { LoginComponent } from './login/login.component';
+import { HttpClientModule } from '@angular/common/http'
 
 
 @NgModule({
@@ -21,11 +22,12 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
+    HttpClientModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
       { path: 'login', component: LoginComponent }
-    ]),
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]

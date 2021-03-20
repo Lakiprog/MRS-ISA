@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <mat-toolbar color = "primary">
     <mat-toolbar-row>
-        <span>Register</span>
+        <span>Registration</span>
         <span style = "flex: 1 1 auto;"></span>
         <a mat-button routerLink = "/login">Login</a>
       </mat-toolbar-row>
@@ -13,6 +13,7 @@
                 <mat-label>Email</mat-label>
                 <input type = "email" matInput placeholder = "Email" formControlName = "email" required>
                 <mat-error *ngIf = "hasError('email', 'required')">Email is required!</mat-error>
+                <mat-error *ngIf = "hasError('email', 'pattern') && !hasError('email', 'required')">Email format is not valid!</mat-error>
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Username</mat-label>
@@ -26,7 +27,8 @@
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Confirm password</mat-label>
-                <input type = "password" (input)="checkPasswords()" matInput placeholder = "Confirm password" formControlName = "confirmPassword">
+                <input type = "password" (input)="checkPasswords()" matInput placeholder = "Confirm password" formControlName = "confirmPassword" required>
+                <mat-error *ngIf = "hasError('confirmPassword', 'required')">Enter the password again!</mat-error>
                 <mat-error *ngIf = "confirmPassword?.invalid && !hasError('confirmPassword','required')">Passwords don't match</mat-error>
             </mat-form-field>
             <mat-form-field class = "field-width">
@@ -39,11 +41,6 @@
                 <input type = "text" matInput placeholder = "Surname" formControlName = "surname" required>
                 <mat-error *ngIf = "hasError('surname', 'required')">Surname is required!</mat-error>
             </mat-form-field>
-            <mat-label>Gender</mat-label>
-            <mat-radio-group class = "radio-group" formControlName = "gender">
-                <mat-radio-button class = "radio-button" value = "after" [checked] = "true">Male</mat-radio-button>
-                <mat-radio-button class = "radio-button" value = "before">Female</mat-radio-button>
-            </mat-radio-group>
             <mat-form-field class = "field-width">
                 <mat-label>Address</mat-label>
                 <input type = "text" matInput placeholder = "Address" formControlName = "address" required>
@@ -64,12 +61,12 @@
                 <input type = "tel" matInput placeholder = "Phone number" formControlName = "phoneNumber" required>
                 <mat-error *ngIf = "hasError('phoneNumber', 'required')">Phone number is required!</mat-error>
                 <mat-error *ngIf = "hasError('phoneNumber', 'maxlength') || hasError('phoneNumber', 'minlength')">
-                    Phone number has to has 10 digits!
+                    Phone number has to have 10 digits!
                 </mat-error>
             </mat-form-field>
         </form>
     </mat-card-content>
     <mat-card-actions>
-        <button [disabled] = "registrationForm.invalid" mat-raised-button color="primary">Register</button>
+        <button (click) = "register()" [disabled] = "registrationForm.invalid" mat-raised-button color="primary">Register</button>
      </mat-card-actions>
  </mat-card>
