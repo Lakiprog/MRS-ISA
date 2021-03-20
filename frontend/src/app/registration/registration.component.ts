@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { PasswordValidator } from './validators/passwordValidator';
 import { RegistrationService } from './registration.service';
 
@@ -47,10 +47,13 @@ export class RegistrationComponent implements OnInit {
   }
 
   register() {
+    this.registrationForm.removeControl('confirmPassword');
     console.log(this.registrationForm.value);
     this._registrationService.register(this.registrationForm.value).subscribe(
         response => console.log('Success', response),
         error => console.error('Error!', error)
       );
+    this.registrationForm.addControl('confirmPassword', new FormControl());
+    this.registrationForm.reset();
   }
 }
