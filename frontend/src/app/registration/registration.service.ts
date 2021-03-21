@@ -8,12 +8,10 @@ import { throwError } from 'rxjs';
 })
 export class RegistrationService {
 
-  _url = 'http://localhost:8081/register'
-
   constructor(private _http: HttpClient) { }
 
   register(patient: any) {
-    return this._http.post<any>(this._url, patient)
+    return this._http.post<any>("http://localhost:3030/registration/register", patient)
                .pipe(catchError(this.errorHander));
   }
 

@@ -14,6 +14,8 @@ export class RegistrationComponent implements OnInit {
 
   registrationForm! : FormGroup;
   EMAIL_REGEX : string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+  errorMessage : string = "";
+  successMessage : string = "";
 
   ngOnInit(): void {
     this.registrationForm = this.fb.group(
@@ -24,7 +26,7 @@ export class RegistrationComponent implements OnInit {
         confirmPassword: ['', Validators.required],
         name: ['', Validators.required],
         surname: ['', Validators.required],
-        address: ['', Validators.required],
+        adress: ['', Validators.required],
         city: ['', Validators.required],
         country: ['', Validators.required],
         phoneNumber: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
@@ -50,8 +52,8 @@ export class RegistrationComponent implements OnInit {
     this.registrationForm.removeControl('confirmPassword');
     console.log(this.registrationForm.value);
     this._registrationService.register(this.registrationForm.value).subscribe(
-        response => console.log('Success', response),
-        error => console.error('Error!', error)
+        response => console.log('Success', this.successMessage = response),
+        error => console.error('Error!', this.errorMessage = error.error)
       );
     this.registrationForm.addControl('confirmPassword', new FormControl());
     this.registrationForm.reset();
