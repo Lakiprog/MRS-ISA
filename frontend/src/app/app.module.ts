@@ -8,7 +8,8 @@ import { RegistrationComponent } from './registration/registration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular_material.module';
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { UserHomePageComponent } from './user-home-page/user-home-page.component'
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http'
     AppComponent,
     RegistrationComponent,
     LoginComponent,
+    UserHomePageComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,8 @@ import { HttpClientModule } from '@angular/common/http'
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
-      { path: 'login', component: LoginComponent }
+      { path: 'login', component: LoginComponent },
+      { path: 'UserHomePage', component: UserHomePageComponent }
     ])
   ],
   providers: [],
