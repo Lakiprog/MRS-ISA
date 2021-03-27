@@ -1,7 +1,14 @@
 package com.MRSISA2021_T15.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class Dermatologist extends User{
+
+	@Column(name = "first_login")
 	private boolean firstLogin;
+	@Column(name = "rating")
 	private double rating;
 
 	public double getRating() {

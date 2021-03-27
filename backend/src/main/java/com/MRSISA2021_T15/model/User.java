@@ -2,8 +2,14 @@ package com.MRSISA2021_T15.model;
 
 import javax.persistence.*;
 
+@Inheritance
+@Entity
+@Table(name = "user")
 public abstract class User {
+	@Id
+	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Integer id;
+	@Column
 	private String email, name, surname, adress, city, country, phoneNumber, username, password;
 	
 
@@ -90,7 +96,6 @@ public abstract class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 
 	public User(int id, String email, String name, String surname, String adress, String city, String country,
 			String phoneNumber, String username, String password) {
