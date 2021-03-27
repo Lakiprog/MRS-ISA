@@ -1,14 +1,16 @@
 package com.MRSISA2021_T15.model;
 
+import javax.persistence.*;
+
 public abstract class User {
-	private int id;
+	private Integer id;
 	private String email, name, surname, adress, city, country, phoneNumber, username, password;
 	
 
 	public User() {
 		
 	}
-	
+
 	public int getId() {
 		return id;
 	}
