@@ -10,6 +10,8 @@ import { AngularMaterialModule } from './angular_material.module';
 import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserHomePageComponent } from './user-home-page/user-home-page.component'
+import { PharmacistHomePageComponent } from './pharmacist-home-page/pharmacist-home-page.component';
+import { DermatologistHomePageComponent } from './dermatologist-home-page/dermatologist-home-page.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { UserHomePageComponent } from './user-home-page/user-home-page.component
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'UserHomePage', component: UserHomePageComponent }
+      { path: 'UserHomePage', component: UserHomePageComponent },
+      { path: 'PharmacistHomePage', component: PharmacistHomePageComponent },
+      { path: 'DermatologistHomePage', component: DermatologistHomePageComponent }
     ])
   ],
   providers: [],
