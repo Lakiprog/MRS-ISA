@@ -21,7 +21,7 @@ public class RegistrationController {
 	@Autowired
 	private RegistrationService registrationService;
 	
-	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/registerPatient", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerPatient(@RequestBody Patient patient) {
 		Patient registeredPatient = registrationService.register(patient);
 		Gson gson = new GsonBuilder().create();

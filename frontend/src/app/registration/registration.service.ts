@@ -10,8 +10,28 @@ export class RegistrationService {
 
   constructor(private _http: HttpClient) { }
 
-  register(patient: any) {
-    return this._http.post<any>("http://localhost:3030/registration/register", patient)
+  registerPatient(patient: any) {
+    return this._http.post<any>("http://localhost:8080/registration/registerPatient", patient)
+               .pipe(catchError(this.errorHander));
+  }
+
+  registerSystemAdministrator(systemAdministrator: any) {
+    return this._http.post<any>("http://localhost:8080/registration/registerSystemAdministrator", systemAdministrator)
+               .pipe(catchError(this.errorHander));
+  }
+
+  registerPharmacyAdministrator(pharmacyAdministrator: any) {
+    return this._http.post<any>("http://localhost:8080/registration/registerPharmacyAdministrator", pharmacyAdministrator)
+               .pipe(catchError(this.errorHander));
+  }
+
+  registerDermatologist(dermatologist: any) {
+    return this._http.post<any>("http://localhost:8080/registration/registerDermatologist", dermatologist)
+               .pipe(catchError(this.errorHander));
+  }
+
+  registerSupplier(supplier: any) {
+    return this._http.post<any>("http://localhost:8080/registration/registerSupplier", supplier)
                .pipe(catchError(this.errorHander));
   }
 

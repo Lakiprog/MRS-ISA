@@ -64,11 +64,15 @@
                     Phone number has to have 10 digits!
                 </mat-error>
             </mat-form-field>
+            <mat-form-field *ngIf = "systemAdmin">
+                <mat-label>Select user type</mat-label>
+                <mat-select [(value)]="selected" formControlName = "userType" required>
+                  <mat-option *ngFor = "let user of users" [value]="user">{{user}}</mat-option>
+                </mat-select>
+              </mat-form-field>
         </form>
     </mat-card-content>
     <mat-card-actions>
         <button (click) = "register()" [disabled] = "registrationForm.invalid" mat-raised-button color="primary">Register</button>
      </mat-card-actions>
-     <small>{{successMessage}}</small>
-     <mat-error>{{errorMessage}}</mat-error>
  </mat-card>
