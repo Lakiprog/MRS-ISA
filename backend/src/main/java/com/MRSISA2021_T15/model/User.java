@@ -2,8 +2,12 @@ package com.MRSISA2021_T15.model;
 
 import javax.persistence.*;
 
-@Inheritance
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+		name = "USER_TYPE",
+		discriminatorType = DiscriminatorType.STRING
+)
 @Table(name = "user")
 public abstract class User {
 	@Id
@@ -17,11 +21,11 @@ public abstract class User {
 		
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -97,7 +101,7 @@ public abstract class User {
 		this.password = password;
 	}
 
-	public User(int id, String email, String name, String surname, String adress, String city, String country,
+	public User(Integer id, String email, String name, String surname, String adress, String city, String country,
 			String phoneNumber, String username, String password) {
 		super();
 		this.id = id;

@@ -5,8 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface UserRepository<T extends User> extends CrudRepository<T, Long> {
+public interface UserRepository extends CrudRepository<User, Integer> {
+	
+	User findByEmail(String email);
 
 }
-
-

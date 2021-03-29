@@ -1,8 +1,10 @@
 package com.MRSISA2021_T15.model;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
+@DiscriminatorValue(value = "SYSTEM_ADMIN")
 public class SystemAdmin extends User{
 	public SystemAdmin() {
 		super();

@@ -1,9 +1,9 @@
 package com.MRSISA2021_T15.repository;
 
-import com.MRSISA2021_T15.model.Patient;
+import org.springframework.stereotype.Repository;
 
-public interface RegistrationRepository {
+
+@Repository
+public interface RegistrationRepository extends UserRepository {
 	
-	Patient register(Patient patient);
-
 }
