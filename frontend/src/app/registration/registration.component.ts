@@ -18,7 +18,7 @@ export class RegistrationComponent implements OnInit {
   EMAIL_REGEX : string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  systemAdmin : boolean = false;
+  systemAdmin : boolean = true;
   users = ['System administrator', 'Dermatologist', 'Pharmacy administrator', 'Supplier'];
   selected = this.systemAdmin ? 'System administrator' : 'Patient';
   oldPasswordValue : any;

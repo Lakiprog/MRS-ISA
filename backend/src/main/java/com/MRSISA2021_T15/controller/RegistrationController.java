@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.SystemAdmin;
 import com.MRSISA2021_T15.service.RegistrationService;
 
 
@@ -23,12 +24,23 @@ public class RegistrationController {
 	
 	@PostMapping(value = "/registerPatient", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerPatient(@RequestBody Patient patient) {
-		Patient registeredPatient = registrationService.register(patient);
+		Patient registeredPatient = registrationService.registerPatient(patient);
 		Gson gson = new GsonBuilder().create();
 		if (registeredPatient != null) {
 			return new ResponseEntity<String>(gson.toJson("Registration successfull."), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<String>(gson.toJson("The patient already exists!"), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(gson.toJson("The patient with this email already exists!"), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value = "/registerSystemAdministrator", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> registerSystemAdministrator(@RequestBody SystemAdmin systemAdmin) {
+		SystemAdmin registeredSystemAdmin = registrationService.registerSystemAdmin(systemAdmin);
+		Gson gson = new GsonBuilder().create();
+		if (registeredSystemAdmin != null) {
+			return new ResponseEntity<String>(gson.toJson("Registration successfull."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson("A system administrator with this email already exists!"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
