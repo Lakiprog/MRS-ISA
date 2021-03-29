@@ -11,16 +11,17 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
- 
- 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 @NgModule({
 imports: [FormsModule, ReactiveFormsModule, MatToolbarModule, MatCardModule, MatFormFieldModule, 
         MatNativeDateModule, MatDatepickerModule, MatIconModule, MatCheckboxModule, 
-        MatInputModule, MatRadioModule, MatListModule],
+        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule],
 exports: [FormsModule, ReactiveFormsModule, MatButtonModule,MatToolbarModule, MatCardModule, MatFormFieldModule, 
         MatNativeDateModule, MatDatepickerModule, MatIconModule, MatCheckboxModule, 
-        MatInputModule, MatRadioModule, MatListModule],
+        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule],
  
 })
  
