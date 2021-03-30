@@ -9,7 +9,7 @@ public class Pharmacy {
 	private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 	private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
 	private Set<Medicine> medicines = new HashSet<Medicine>();
-	private Set<AppointmentsDermatolog> appointments = new HashSet<AppointmentsDermatolog>();
+	private Set<AppointmentDermatologist> appointments = new HashSet<AppointmentDermatologist>();
 	
 	public Pharmacy() {
 		
@@ -19,7 +19,7 @@ public class Pharmacy {
 	
 	public Pharmacy(String name, String adress, String city, String country, String description, double rating,
 			Set<Pharmacist> pharmacists, Set<Dermatologist> dermatologists, Set<Medicine> medicines,
-			Set<AppointmentsDermatolog> appointments) {
+			Set<AppointmentDermatologist> appointments) {
 		super();
 		this.name = name;
 		this.adress = adress;
@@ -107,11 +107,11 @@ public class Pharmacy {
 		this.medicines = medicines;
 	}
 
-	public Set<AppointmentsDermatolog> getAppointments() {
+	public Set<AppointmentDermatologist> getAppointments() {
 		return appointments;
 	}
 
-	public void setAppointments(Set<AppointmentsDermatolog> appointments) {
+	public void setAppointments(Set<AppointmentDermatologist> appointments) {
 		this.appointments = appointments;
 	}
 }
