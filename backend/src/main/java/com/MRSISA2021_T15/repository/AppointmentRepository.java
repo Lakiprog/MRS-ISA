@@ -11,10 +11,12 @@ import com.MRSISA2021_T15.model.Patient;
 
 @NoRepositoryBean
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer>{
+
 	@Query("select distinct p from Appointment a join a.patient p where  p.username like '?1%' and APPOINTMENT_TYPE = 'APPOINTMENT_PHARMACIST'")
 	public List<Patient> findAllByUsernamePharmacist(String startsWith);
 	
 	@Query("select distinct p from Appointment a join a.patient p where APPOINTMENT_TYPE = 'APPOINTMENT_PHARMACIST'")
+
 	public List<Patient> findAllPharmacist();
 	
 	@Query("select distinct p from Appointment a join a.patient p")
