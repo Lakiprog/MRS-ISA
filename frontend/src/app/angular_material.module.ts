@@ -14,14 +14,15 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table'
 
 @NgModule({
 imports: [FormsModule, ReactiveFormsModule, MatToolbarModule, MatCardModule, MatFormFieldModule, 
         MatNativeDateModule, MatDatepickerModule, MatIconModule, MatCheckboxModule, 
-        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule],
+        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, MatTableModule],
 exports: [FormsModule, ReactiveFormsModule, MatButtonModule,MatToolbarModule, MatCardModule, MatFormFieldModule, 
         MatNativeDateModule, MatDatepickerModule, MatIconModule, MatCheckboxModule, 
-        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule],
+        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, MatTableModule],
  
 })
  

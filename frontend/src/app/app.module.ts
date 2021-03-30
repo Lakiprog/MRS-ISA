@@ -22,6 +22,10 @@ import { DermatologistPatientComponent } from './dermatologist-patients/dermatol
     RegistrationComponent,
     LoginComponent,
     UserHomePageComponent,
+    PharmacistHomePageComponent,
+    DermatologistHomePageComponent,
+    PharmacistPatientComponent,
+    DermatologistPatientComponent
   ],
   imports: [
     BrowserModule,
