@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.Supplier;
 import com.MRSISA2021_T15.model.SystemAdmin;
 import com.MRSISA2021_T15.service.RegistrationService;
 
@@ -48,6 +49,17 @@ public class RegistrationController {
 	@PostMapping(value = "/registerDermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerDermatologist(@RequestBody Dermatologist dermatologist) {
 		String message = registrationService.registerDermatologist(dermatologist);
+		Gson gson = new GsonBuilder().create();
+		if (message == "") {
+			return new ResponseEntity<String>(gson.toJson("Registration successfull."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value = "/registerSupplier", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> registerSupplier(@RequestBody Supplier supplier) {
+		String message = registrationService.registerSupplier(supplier);
 		Gson gson = new GsonBuilder().create();
 		if (message == "") {
 			return new ResponseEntity<String>(gson.toJson("Registration successfull."), HttpStatus.OK);
