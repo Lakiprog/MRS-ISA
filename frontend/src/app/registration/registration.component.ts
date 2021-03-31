@@ -59,6 +59,7 @@ export class RegistrationComponent implements OnInit {
   register() {
     this.oldPasswordValue = this.registrationForm.get('confirmPassword');
     this.oldUserTypeValue = this.registrationForm.get('userType');
+    console.log(this.oldUserTypeValue);
     this.registrationForm.removeControl('confirmPassword');
     this.registrationForm.removeControl('userType');
     if (this.systemAdmin) {
@@ -72,7 +73,7 @@ export class RegistrationComponent implements OnInit {
             this.openSnackBar(error.error, this.RESPONSE_ERROR);
           }
         );
-      } else if (this.oldUserTypeValue === 'Pharmacy administrator') {
+      } else if (this.oldUserTypeValue.value === 'Pharmacy administrator') {
         this._registrationService.registerPharmacyAdministrator(this.registrationForm.value).subscribe(
           response => {
             this.openSnackBar(response, this.RESPONSE_OK);
@@ -82,7 +83,7 @@ export class RegistrationComponent implements OnInit {
             this.openSnackBar(error.error, this.RESPONSE_ERROR);
           }
         );
-      } else if (this.oldUserTypeValue === 'Dermatologist') {
+      } else if (this.oldUserTypeValue.value === 'Dermatologist') {
         this._registrationService.registerDermatologist(this.registrationForm.value).subscribe(
           response => {
             this.openSnackBar(response, this.RESPONSE_OK);
@@ -92,7 +93,7 @@ export class RegistrationComponent implements OnInit {
             this.openSnackBar(error.error, this.RESPONSE_ERROR);
           }
         );
-      } else if (this.oldUserTypeValue === 'Supplier') {
+      } else if (this.oldUserTypeValue.value === 'Supplier') {
         this._registrationService.registerSupplier(this.registrationForm.value).subscribe(
           response => {
             this.openSnackBar(response, this.RESPONSE_OK);
