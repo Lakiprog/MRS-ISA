@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -7,17 +8,27 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @DiscriminatorValue(value = "PHARMACIST")
 public class Pharmacist extends User{
+	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<AppointmentPharmacist> appointments;
+	@JsonIgnore
+	@OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Absence> absence;
 	@Column(name = "first_login")
 	private boolean firstLogin;
 	@Column(name = "rating")
 	private double rating;
+	@OneToOne(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private EmploymentPharmacist employments;
 
 	public double getRating() {
 		return rating;
@@ -25,6 +36,14 @@ public class Pharmacist extends User{
 
 	public void setRating(double rating) {
 		this.rating = rating;
+	}
+
+	public Set<AppointmentPharmacist> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(Set<AppointmentPharmacist> appointments) {
+		this.appointments = appointments;
 	}
 
 	public Pharmacist() {

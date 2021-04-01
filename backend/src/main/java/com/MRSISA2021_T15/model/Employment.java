@@ -1,7 +1,5 @@
 package com.MRSISA2021_T15.model;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -18,41 +16,42 @@ import javax.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
-		name = "APPOINTMENT_TYPE",
+		name = "EMPLOYMENT_TYPE",
 		discriminatorType = DiscriminatorType.STRING
 )
-@Table(name = "appointment")
-public abstract class Appointment {
+@Table(name = "employment")
+public abstract class Employment {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	@Column
-	private LocalDateTime start, end;
-	@Column
-	private Integer price;
-	@ManyToOne
-	@JoinColumn(name = "patient_id")
-	private Patient patient;
-	@ManyToOne
-	@JoinColumn(name = "pharmacy_id")
-	private Pharmacy pharmacy;
+	private int start, end;
 	
-	public LocalDateTime getStart() {
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public int getStart() {
 		return start;
 	}
-	public void setStart(LocalDateTime start) {
+	public void setStart(int start) {
 		this.start = start;
 	}
-	public LocalDateTime getEnd() {
+	public int getEnd() {
 		return end;
 	}
-	public void setEnd(LocalDateTime end) {
+	public void setEnd(int end) {
 		this.end = end;
 	}
-	public Patient getPatient() {
-		return patient;
+	public Pharmacy getPharmacy() {
+		return pharmacy;
 	}
-	public void setPatient(Patient patient) {
-		this.patient = patient;
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
 	}
+	@ManyToOne
+	//@JoinColumn(name = "pharmacy_id")
+	private Pharmacy pharmacy;
 }
