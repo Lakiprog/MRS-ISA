@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.Supplier;
 import com.MRSISA2021_T15.model.SystemAdmin;
 import com.MRSISA2021_T15.service.RegistrationService;
 
@@ -24,23 +26,45 @@ public class RegistrationController {
 	
 	@PostMapping(value = "/registerPatient", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerPatient(@RequestBody Patient patient) {
-		Patient registeredPatient = registrationService.registerPatient(patient);
+		String message = registrationService.registerPatient(patient);
 		Gson gson = new GsonBuilder().create();
-		if (registeredPatient != null) {
+		if (message == "") {
 			return new ResponseEntity<String>(gson.toJson("Registration successfull."), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<String>(gson.toJson("The patient with this email already exists!"), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	@PostMapping(value = "/registerSystemAdministrator", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerSystemAdministrator(@RequestBody SystemAdmin systemAdmin) {
-		SystemAdmin registeredSystemAdmin = registrationService.registerSystemAdmin(systemAdmin);
+		String message = registrationService.registerSystemAdmin(systemAdmin);
 		Gson gson = new GsonBuilder().create();
-		if (registeredSystemAdmin != null) {
+		if (message == "") {
 			return new ResponseEntity<String>(gson.toJson("Registration successfull."), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<String>(gson.toJson("A system administrator with this email already exists!"), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value = "/registerDermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> registerDermatologist(@RequestBody Dermatologist dermatologist) {
+		String message = registrationService.registerDermatologist(dermatologist);
+		Gson gson = new GsonBuilder().create();
+		if (message == "") {
+			return new ResponseEntity<String>(gson.toJson("Registration successfull."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value = "/registerSupplier", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> registerSupplier(@RequestBody Supplier supplier) {
+		String message = registrationService.registerSupplier(supplier);
+		Gson gson = new GsonBuilder().create();
+		if (message == "") {
+			return new ResponseEntity<String>(gson.toJson("Registration successfull."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

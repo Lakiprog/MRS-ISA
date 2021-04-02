@@ -1,25 +1,25 @@
 package com.MRSISA2021_T15.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Action {
-	Date startingDate;
-	Date endingDate;
+	LocalDateTime startingDate;
+	LocalDateTime endingDate;
 	String description;
 
-	public Date getStartingDate() {
+	public LocalDateTime getStartingDate() {
 		return startingDate;
 	}
 
-	public void setStartingDate(Date startingDate) {
+	public void setStartingDate(LocalDateTime startingDate) {
 		this.startingDate = startingDate;
 	}
 
-	public Date getEndingDate() {
+	public LocalDateTime getEndingDate() {
 		return endingDate;
 	}
 
-	public void setEndingDate(Date endingDate) {
+	public void setEndingDate(LocalDateTime endingDate) {
 		this.endingDate = endingDate;
 	}
 
@@ -28,13 +28,6 @@ public class Action {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Action(Date startingDate, Date endingDate, String description) {
-		super();
-		this.startingDate = startingDate;
-		this.endingDate = endingDate;
 		this.description = description;
 	}
 }
