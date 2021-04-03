@@ -14,6 +14,7 @@ import { PharmacistHomePageComponent } from './pharmacist-home-page/pharmacist-h
 import { DermatologistHomePageComponent } from './dermatologist-home-page/dermatologist-home-page.component';
 import { PharmacistPatientComponent } from './pharmacist-patients/pharmacist-patient.component';
 import { DermatologistPatientComponent } from './dermatologist-patients/dermatologist-patient.component';
+import { AddMedicineComponent } from './add-medicine/add-medicine.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { DermatologistPatientComponent } from './dermatologist-patients/dermatol
     PharmacistHomePageComponent,
     DermatologistHomePageComponent,
     PharmacistPatientComponent,
-    DermatologistPatientComponent
+    DermatologistPatientComponent,
+    AddMedicineComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,8 @@ import { DermatologistPatientComponent } from './dermatologist-patients/dermatol
       { path: 'PharmacistHomePage', component: PharmacistHomePageComponent },
       { path: 'DermatologistHomePage', component: DermatologistHomePageComponent },
       { path: 'PharmacistPatientComponent', component: PharmacistPatientComponent},
-      { path: 'DermatologistPatientComponent', component: DermatologistPatientComponent}
+      { path: 'DermatologistPatientComponent', component: DermatologistPatientComponent},
+      { path: 'addMedicine', component: AddMedicineComponent }
     ])
   ],
   providers: [],
