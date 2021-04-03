@@ -23,11 +23,22 @@ public class Medicine {
 	private Integer id;
 	@Column
 	private String name, description;
-	@Column
-	private double cost;
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Allergy> allergies = new HashSet<Allergy>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<MedicinePharmacy> medicinePharmacy;
+
+	
+	
+	public Set<MedicinePharmacy> getMedicine() {
+		return medicinePharmacy;
+	}
+
+	public void setMedicine(Set<MedicinePharmacy> medicine) {
+		this.medicinePharmacy = medicine;
+	}
 
 	public Set<Allergy> getAllergies() {
 		return allergies;
@@ -51,14 +62,6 @@ public class Medicine {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public double getCost() {
-		return cost;
-	}
-
-	public void setCost(double cost) {
-		this.cost = cost;
 	}
 
 	public Integer getId() {
