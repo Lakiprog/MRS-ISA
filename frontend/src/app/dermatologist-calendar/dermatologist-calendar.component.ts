@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import {PharmacistCalendarService} from './pharmacist-calendar.service'
+import {DermatologistCalendarService} from './dermatologist-calendar.service'
 import { CalendarOptions } from '@fullcalendar/angular';
 
 @Component({
-  selector: 'app-pharmacist-calendar',
-  templateUrl: './pharmacist-calendar.component.html',
-  styleUrls: ['./pharmacist-calendar.component.css']
+  selector: 'app-dermatologist-calendar',
+  templateUrl: './dermatologist-calendar.component.html',
+  styleUrls: ['./dermatologist-calendar.component.css']
 })
-export class PharmacistCalendarComponent implements OnInit {
+export class DermatologistCalendarComponent implements OnInit {
 
-  constructor(private service : PharmacistCalendarService) { }
+  constructor(private service : DermatologistCalendarService) { }
 
   events = [];
 
   ngOnInit(): void {
-    this.service.getAppointmentsPharmacist().subscribe((data:any) => {this.events = data; console.log(this.events); this.addEvents();});
+    this.service.getAppointmentsDermatologist().subscribe((data:any) => {this.events = data; console.log(this.events); this.addEvents();});
   }
 
   calendarOptions: CalendarOptions = {
