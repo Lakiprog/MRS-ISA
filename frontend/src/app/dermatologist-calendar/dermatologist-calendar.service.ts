@@ -4,12 +4,12 @@ import { HttpClient} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class PharmacistCalendarService {
+export class DermatologistCalendarService {
 
   constructor(private _http: HttpClient) { }
 
-    public getAppointmentsPharmacist(){
+    public getAppointmentsDermatologist(){
 
-        return this._http.get("http://localhost:8080/calendar/calendarPharmacist/5")
+        return this._http.get("http://localhost:8080/calendar/calendarDermatologist/6")
     }
 }

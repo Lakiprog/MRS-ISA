@@ -51,4 +51,18 @@ public class CalendarController {
 		}
 		return events;
 	}
+	
+	@GetMapping(value = "/calendarDermatologist/{dermatologistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<Event> calendarDermatologist(@PathVariable("dermatologistId") Integer dermatologistId){
+		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
+		ArrayList<Event> events = new ArrayList<Event>();
+		for (Appointment appointment : appointments) {
+				Event event = new Event();
+				event.setTitle("Appointment with" + " " + appointment.getPatient().getSurname() + " " +  appointment.getPatient().getName());
+				event.setStart(appointment.getStart());
+				event.setEnd(appointment.getEnd());
+				events.add(event);
+		}
+		return events;
+	}
 }
