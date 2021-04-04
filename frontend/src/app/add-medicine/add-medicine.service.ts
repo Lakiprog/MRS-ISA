@@ -16,7 +16,7 @@ export class AddMedicineService {
   }
 
   getSubstituteMedicine() {
-    return this._http.get<any>("http://localhost:8080/medicine/getMedicineNames")
+    return this._http.get<any>("http://localhost:8080/medicine/getMedicineList")
   }
 
   errorHander(error: HttpErrorResponse) {

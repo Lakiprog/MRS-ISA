@@ -16,7 +16,7 @@ export class AddMedicineComponent implements OnInit {
   addMedicineForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  serverSubstituteMedicine = []
+  serverSubstituteMedicine : { id: string, name: string }[] = [];
 
   ngOnInit(): void {
     this.addMedicineForm = this.fb.group(
@@ -28,13 +28,18 @@ export class AddMedicineComponent implements OnInit {
         composition: ['', Validators.required],
         manufacturer: ['', Validators.required],
         prescription: [true],
-        substituteMedicine: [],
+        substituteMedicineIds: [],
         addtionalComments: []
       }
     );
     this._addMedicineService.getSubstituteMedicine().subscribe(
       response => {
-        this.serverSubstituteMedicine = response;
+        let list : { id: string, name: string }[] = [];
+        Object.keys(response).forEach((key : string) => {
+          const v = response[key];
+          list.push({id: key, name: v});
+        });
+        this.serverSubstituteMedicine = list;
       }
     );
 }
@@ -52,7 +57,12 @@ export class AddMedicineComponent implements OnInit {
       this.addMedicineForm.get('prescription')?.setValue(true);
       this._addMedicineService.getSubstituteMedicine().subscribe(
         response1 => {
-          this.serverSubstituteMedicine = response1;
+          let list : { id: string, name: string }[] = [];
+          Object.keys(response1).forEach((key : string) => {
+            const v = response1[key];
+            list.push({id: key, name: v});
+          });
+          this.serverSubstituteMedicine = list;
         }
       );
     },

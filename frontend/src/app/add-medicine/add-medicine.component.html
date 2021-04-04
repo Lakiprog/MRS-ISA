@@ -45,8 +45,8 @@
             </mat-radio-group>
             <mat-form-field class = "field-width">
                 <mat-label>Substitute medicine</mat-label>
-                <mat-select formControlName = "substituteMedicine" multiple>
-                    <mat-option *ngFor = "let medicine of serverSubstituteMedicine" [value] = medicine>{{medicine}}</mat-option> 
+                <mat-select formControlName = "substituteMedicineIds" multiple>
+                    <mat-option *ngFor = "let medicine of serverSubstituteMedicine" [value] = medicine.id>{{medicine['name']}}</mat-option> 
                 </mat-select>
             </mat-form-field>
             <mat-form-field class = "field-width">

@@ -1,6 +1,6 @@
 package com.MRSISA2021_T15.controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,9 +35,8 @@ public class MedicineController {
 		}
 	}
 	
-	@GetMapping(value = "/getMedicineNames", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ArrayList<String> getMedicineNames() {
-		return medicineService.getMedicineNames();
+	@GetMapping(value = "/getMedicineList", produces = MediaType.APPLICATION_JSON_VALUE)
+	public HashMap<Integer, String> getMedicineList() {
+		return medicineService.getMedicineList();
 	}
-
 }
