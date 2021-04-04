@@ -34,9 +34,9 @@ insert into medicine (medicine_code, name, medicine_type, form, composition, man
 	values ('S125', 'medicine3', 'headache', 'pill', 'random stuff', 'mrsisa', true, null);
 	
 
-insert into medicine_substitute_medicine (medicine_id, substitute_medicine) values (1, 'medicine2');
-insert into medicine_substitute_medicine (medicine_id, substitute_medicine) values (1, 'medicine3');
-insert into medicine_substitute_medicine (medicine_id, substitute_medicine) values (2, 'medicine1');
+insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 2);
+insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 3);
+insert into substitute_medicine (medicine_id, substitute_medicine_id) values (2, 1);
 
 insert into allergy (medicine_id, patient_id) values (1, 3);
 insert into allergy (medicine_id, patient_id) values (2, 2);

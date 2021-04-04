@@ -1,6 +1,6 @@
 package com.MRSISA2021_T15.service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.MRSISA2021_T15.model.Medicine;
 
@@ -8,6 +8,5 @@ public interface MedicineService {
 	
 	String addMedicine(Medicine medicine);
 	
-	ArrayList<String> getMedicineNames();
-
+	HashMap<Integer, String> getMedicineList();
 }

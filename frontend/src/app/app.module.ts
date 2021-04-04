@@ -21,6 +21,7 @@ import { DermatologistPatientComponent } from './dermatologist-patients/dermatol
 import { PharmacistCalendarComponent } from './pharmacist-calendar/pharmacist-calendar.component';
 import { DermatologistCalendarComponent } from './dermatologist-calendar/dermatologist-calendar.component';
 import { AddMedicineComponent } from './add-medicine/add-medicine.component';
+import { SystemAdminProfilePageComponent } from './system-admin-profile-page/system-admin-profile-page.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -41,7 +42,8 @@ FullCalendarModule.registerPlugins([
     DermatologistPatientComponent,
     PharmacistCalendarComponent,
     DermatologistCalendarComponent,
-    AddMedicineComponent
+    AddMedicineComponent,
+    SystemAdminProfilePageComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,8 @@ FullCalendarModule.registerPlugins([
       { path: 'DermatologistPatientComponent', component: DermatologistPatientComponent},
       { path: 'PharmacistCalendarComponent', component: PharmacistCalendarComponent},
       { path: 'DermatologistCalendarComponent', component: DermatologistCalendarComponent},
-      { path: 'addMedicine', component: AddMedicineComponent }
+      { path: 'addMedicine', component: AddMedicineComponent },
+      { path: 'systemAdminProfilePage', component: SystemAdminProfilePageComponent}
     ])
   ],
   providers: [],

@@ -2,12 +2,10 @@ package com.MRSISA2021_T15.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,14 +26,16 @@ public class Medicine {
 	private String medicineCode, name, medicineType, form, composition, manufacturer, addtionalComments;
 	@Column
 	private boolean prescription;
-	@ElementCollection
-	private List<String> substituteMedicine = new ArrayList<String>();
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<SubstituteMedicine> substituteMedicine = new HashSet<SubstituteMedicine>();
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Allergy> allergies = new HashSet<Allergy>();
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<MedicinePharmacy> medicinePharmacy;
+	
+	private ArrayList<Integer> substituteMedicineIds = new ArrayList<Integer>();
 
 	
 	public Set<MedicinePharmacy> getMedicine() {
@@ -126,11 +126,19 @@ public class Medicine {
 		this.prescription = prescription;
 	}
 
-	public List<String> getSubstituteMedicine() {
+	public Set<SubstituteMedicine> getSubstituteMedicine() {
 		return substituteMedicine;
 	}
 
-	public void setSubstituteMedicine(List<String> substituteMedicine) {
+	public void setSubstituteMedicine(Set<SubstituteMedicine> substituteMedicine) {
 		this.substituteMedicine = substituteMedicine;
+	}
+
+	public ArrayList<Integer> getSubstituteMedicineIds() {
+		return substituteMedicineIds;
+	}
+
+	public void setSubstituteMedicineIds(ArrayList<Integer> substituteMedicineIds) {
+		this.substituteMedicineIds = substituteMedicineIds;
 	}
 }
