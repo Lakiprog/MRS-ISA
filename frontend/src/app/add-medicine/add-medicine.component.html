@@ -19,9 +19,9 @@
                 <mat-error *ngIf = "hasError('name', 'required')">Name is required!</mat-error>
             </mat-form-field>
             <mat-form-field class = "field-width">
-                <mat-label>Type</mat-label>
-                <input type = "text" matInput placeholder = "Type" formControlName = "type" required>
-                <mat-error *ngIf = "hasError('type', 'required')">Type is required!</mat-error>
+                <mat-label>Medicine type</mat-label>
+                <input type = "text" matInput placeholder = "Medicine type" formControlName = "medicineType" required>
+                <mat-error *ngIf = "hasError('medicineType', 'required')">Medicine type is required!</mat-error>
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Form</mat-label>
@@ -46,9 +46,7 @@
             <mat-form-field class = "field-width">
                 <mat-label>Substitute medicine</mat-label>
                 <mat-select formControlName = "substituteMedicine" multiple>
-                    <mat-option value = "medicine1">medicine1</mat-option>
-                    <mat-option value = "medicine2">medicine2</mat-option>
-                    <mat-option value = "medicine3">medicine3</mat-option>
+                    <mat-option *ngFor = "let medicine of serverSubstituteMedicine" [value] = medicine>{{medicine}}</mat-option> 
                 </mat-select>
             </mat-form-field>
             <mat-form-field class = "field-width">

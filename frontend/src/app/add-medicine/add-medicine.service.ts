@@ -15,6 +15,10 @@ export class AddMedicineService {
                .pipe(catchError(this.errorHander));
   }
 
+  getSubstituteMedicine() {
+    return this._http.get<any>("http://localhost:8080/medicine/getMedicineNames")
+  }
+
   errorHander(error: HttpErrorResponse) {
     return throwError(error);
   }

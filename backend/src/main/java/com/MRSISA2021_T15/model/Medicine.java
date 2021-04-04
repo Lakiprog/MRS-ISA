@@ -1,10 +1,13 @@
 package com.MRSISA2021_T15.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,7 +25,11 @@ public class Medicine {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	@Column
-	private String name, description;
+	private String medicineCode, name, medicineType, form, composition, manufacturer, addtionalComments;
+	@Column
+	private boolean prescription;
+	@ElementCollection
+	private List<String> substituteMedicine = new ArrayList<String>();
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Allergy> allergies = new HashSet<Allergy>();
@@ -30,7 +37,6 @@ public class Medicine {
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<MedicinePharmacy> medicinePharmacy;
 
-	
 	
 	public Set<MedicinePharmacy> getMedicine() {
 		return medicinePharmacy;
@@ -56,12 +62,12 @@ public class Medicine {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getMedicineType() {
+		return medicineType;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setMedicineType(String medicineType) {
+		this.medicineType = medicineType;
 	}
 
 	public Integer getId() {
@@ -72,5 +78,59 @@ public class Medicine {
 		this.id = id;
 	}
 
-	
+	public String getMedicineCode() {
+		return medicineCode;
+	}
+
+	public void setMedicineCode(String medicineCode) {
+		this.medicineCode = medicineCode;
+	}
+
+	public String getForm() {
+		return form;
+	}
+
+	public void setForm(String form) {
+		this.form = form;
+	}
+
+	public String getComposition() {
+		return composition;
+	}
+
+	public void setComposition(String composition) {
+		this.composition = composition;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public String getAddtionalComments() {
+		return addtionalComments;
+	}
+
+	public void setAddtionalComments(String addtionalComments) {
+		this.addtionalComments = addtionalComments;
+	}
+
+	public boolean isPrescription() {
+		return prescription;
+	}
+
+	public void setPrescription(boolean prescription) {
+		this.prescription = prescription;
+	}
+
+	public List<String> getSubstituteMedicine() {
+		return substituteMedicine;
+	}
+
+	public void setSubstituteMedicine(List<String> substituteMedicine) {
+		this.substituteMedicine = substituteMedicine;
+	}
 }

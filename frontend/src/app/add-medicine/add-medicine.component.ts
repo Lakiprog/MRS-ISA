@@ -16,19 +16,25 @@ export class AddMedicineComponent implements OnInit {
   addMedicineForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
+  serverSubstituteMedicine = []
 
   ngOnInit(): void {
     this.addMedicineForm = this.fb.group(
       {
         medicineCode: ['', Validators.required],
         name: ['', Validators.required],
-        type: ['', Validators.required],
+        medicineType: ['', Validators.required],
         form: ['', Validators.required],
         composition: ['', Validators.required],
         manufacturer: ['', Validators.required],
-        prescription: [],
+        prescription: [true],
         substituteMedicine: [],
         addtionalComments: []
+      }
+    );
+    this._addMedicineService.getSubstituteMedicine().subscribe(
+      response => {
+        this.serverSubstituteMedicine = response;
       }
     );
 }
@@ -43,6 +49,12 @@ export class AddMedicineComponent implements OnInit {
     response => {
       this.openSnackBar(response, this.RESPONSE_OK);
       this.addMedicineForm.reset();
+      this.addMedicineForm.get('prescription')?.setValue(true);
+      this._addMedicineService.getSubstituteMedicine().subscribe(
+        response1 => {
+          this.serverSubstituteMedicine = response1;
+        }
+      );
     },
     error => {
       this.openSnackBar(error.error, this.RESPONSE_ERROR);
