@@ -1,0 +1,22 @@
+
+.bodyy{
+    background: url('squares.jpg');
+}
+
+.example-card {
+    max-width: 400px;
+  }
+  
+  .example-header-image {
+    background: url('profileIcon.jpg');
+    background-size: cover;
+  }
+
+  mat-card{
+    margin-top: 5%;
+    margin-left: 35%;
+  }
+
+  button{
+    background-color: rgb(29, 87, 134);
+  }
