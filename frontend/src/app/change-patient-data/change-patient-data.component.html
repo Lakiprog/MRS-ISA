@@ -1,0 +1,47 @@
+
+  <div class='bodyy'>
+      <mat-card class="example-card">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{patient['username']}} </mat-card-title>
+            <mat-card-subtitle>{{patient['id']}}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="profileIcon.jpg">
+          <mat-card-content>
+            
+            
+            <form class="changeData" [formGroup] = "checkOutForm">
+              <mat-form-field appearance="legacy">
+                <mat-label for="username">Username</mat-label>
+                <input type="text" class="form-control" formControlName = "username"  matInput placeholder="USERNAME">
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-hint>Hint</mat-hint>
+              </mat-form-field>
+              <br />
+              <mat-form-field appearance="legacy">
+                <mat-label for="password">Password</mat-label>
+                <input type="password" class="form-control" formControlName = "password" matInput placeholder="PASSWORD">
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-hint>Hint</mat-hint>
+              </mat-form-field>
+              <br />
+              <mat-form-field appearance="legacy">
+                <mat-label for="confirmPassword">Confirm Password</mat-label>
+                <input type="password" class="form-control"  formControlName = "confirmPassword"  matInput placeholder="CONFIRM PASSWORD">
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-hint>Hint</mat-hint>
+              </mat-form-field>
+            </form>
+                
+              <br />
+              <br />
+              <div>
+                <button type="submit" class="btn btn-primary btn-block" (click) = "submitForm()"><strong>SAVE</strong></button>
+              </div>
+              
+          </mat-card-content>
+        </mat-card>
+      
+        
+    </div>
+
