@@ -8,6 +8,10 @@ import { AppComponent } from './app.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular_material.module';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
@@ -15,6 +19,7 @@ import { PharmacistHomePageComponent } from './pharmacist-home-page/pharmacist-h
 import { DermatologistHomePageComponent } from './dermatologist-home-page/dermatologist-home-page.component';
 import { PharmacistPatientComponent } from './pharmacist-patients/pharmacist-patient.component';
 import { DermatologistPatientComponent } from './dermatologist-patients/dermatologist-patient.component';
+<<<<<<< HEAD
 import { PatientProfileNavbarComponent } from './patient-profile-navbar/patient-profile-navbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -26,7 +31,20 @@ import { ChangePatientDataComponent } from './change-patient-data/change-patient
 
 
 
+=======
+import { PharmacistCalendarComponent } from './pharmacist-calendar/pharmacist-calendar.component';
+import { DermatologistCalendarComponent } from './dermatologist-calendar/dermatologist-calendar.component';
+import { AddMedicineComponent } from './add-medicine/add-medicine.component';
+import { SystemAdminProfilePageComponent } from './system-admin-profile-page/system-admin-profile-page.component';
+import { SupplierProfilePageComponent } from './supplier-profile-page/supplier-profile-page.component';
+>>>>>>> 082ebafa7b6e2c37dd3422a2c67f5185da9d6b6f
 
+
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  interactionPlugin,
+  timeGridPlugin
+]);
 
 @NgModule({
   declarations: [
@@ -38,11 +56,20 @@ import { ChangePatientDataComponent } from './change-patient-data/change-patient
     DermatologistHomePageComponent,
     PharmacistPatientComponent,
     DermatologistPatientComponent,
+<<<<<<< HEAD
     PatientProfileNavbarComponent,
     ChangePatientDataComponent,
+=======
+    PharmacistCalendarComponent,
+    DermatologistCalendarComponent,
+    AddMedicineComponent,
+    SystemAdminProfilePageComponent,
+    SupplierProfilePageComponent
+>>>>>>> 082ebafa7b6e2c37dd3422a2c67f5185da9d6b6f
   ],
   imports: [
     BrowserModule,
+    FullCalendarModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
@@ -57,6 +84,7 @@ import { ChangePatientDataComponent } from './change-patient-data/change-patient
       { path: 'DermatologistHomePage', component: DermatologistHomePageComponent },
       { path: 'PharmacistPatientComponent', component: PharmacistPatientComponent},
       { path: 'DermatologistPatientComponent', component: DermatologistPatientComponent},
+<<<<<<< HEAD
       { path: 'PatientProfile', component:PatientProfileNavbarComponent},
       { path: 'PatientChangeData', component:ChangePatientDataComponent}
     ]),
@@ -68,6 +96,14 @@ import { ChangePatientDataComponent } from './change-patient-data/change-patient
     MatListModule,
     
     
+=======
+      { path: 'PharmacistCalendarComponent', component: PharmacistCalendarComponent},
+      { path: 'DermatologistCalendarComponent', component: DermatologistCalendarComponent},
+      { path: 'addMedicine', component: AddMedicineComponent },
+      { path: 'systemAdminProfilePage', component: SystemAdminProfilePageComponent},
+      { path: 'supplierProfilePage', component: SupplierProfilePageComponent}
+    ])
+>>>>>>> 082ebafa7b6e2c37dd3422a2c67f5185da9d6b6f
   ],
   providers: [],
   bootstrap: [AppComponent]

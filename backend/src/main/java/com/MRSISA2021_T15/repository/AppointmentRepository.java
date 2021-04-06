@@ -26,4 +26,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	public List<Patient> findPatientsPharmacist(Integer id);
 	
 	public List<Appointment> findAll();
+	
+	@Query("select a from Appointment a where a.pharmacist.id = ?1")
+	public List<Appointment> findAllPharmacistId(Integer id);
+	
+	@Query("select a from Appointment a where a.dermatologist.id = ?1")
+	public List<Appointment> findAllDermatologistId(Integer id);
 }

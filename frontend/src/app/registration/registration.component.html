@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<mat-toolbar color = "primary">
-    <mat-toolbar-row>
-        <span>Registration</span>
-        <span style = "flex: 1 1 auto;"></span>
-        <a mat-button routerLink = "/login">Login</a>
-      </mat-toolbar-row>
- </mat-toolbar>
- <mat-card>
-    <mat-card-content>
+<body class = "registration-background">
+    <mat-toolbar color = "primary">
+        <mat-toolbar-row>
+            <span>Registration</span>
+            <span style = "flex: 1 1 auto;"></span>
+            <a mat-button routerLink = "/login">Login</a>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-card class = "card">
         <form [formGroup] = "registrationForm" class = "registration-form">
             <mat-form-field class = "field-width">
                 <mat-label>Email</mat-label>
@@ -67,12 +67,10 @@
             <mat-form-field *ngIf = "systemAdmin">
                 <mat-label>Select user type</mat-label>
                 <mat-select [(value)]="selected" formControlName = "userType" required>
-                  <mat-option *ngFor = "let user of users" [value]="user">{{user}}</mat-option>
+                    <mat-option *ngFor = "let user of users" [value]="user">{{user}}</mat-option>
                 </mat-select>
-              </mat-form-field>
+            </mat-form-field>
         </form>
-    </mat-card-content>
-    <mat-card-actions>
         <button (click) = "register()" [disabled] = "registrationForm.invalid" mat-raised-button color="primary">Register</button>
-     </mat-card-actions>
- </mat-card>
+    </mat-card>
+</body>

@@ -26,10 +26,23 @@ insert into absence (description, start, end, approved, doctor_id) values ("Ocu 
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-02-15 9:30:00', '2021-02-19 19:30:00', true, 5);
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-02-15 9:30:00', '2021-02-20 19:30:00', true, 6);
 
-insert into medicine (name, description, cost) values ('Bensedin', 'Protiv glavobolje', 500);
-insert into medicine (name, description, cost) values ('Bromazepam', 'Protiv necega', 690);
-insert into medicine (name, description, cost) values ('Viagra', 'Da ne kazem sta radi', 1000);
-insert into medicine (name, description, cost) values ('Dinuv', 'Razbija glavu', 10000);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, addtional_comments) 
+	values ('S123', 'medicine1', 'headache', 'pill', 'random stuff', 'mrsisa', true, 'comment');
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, addtional_comments) 
+	values ('S124', 'medicine2', 'headache', 'pill', 'random stuff', 'mrsisa', false, 'comment');
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, addtional_comments) 
+	values ('S125', 'medicine3', 'headache', 'pill', 'random stuff', 'mrsisa', true, null);
+	
 
-insert into allergy (medicine_id, patient_id) values (4, 3);
-insert into allergy (medicine_id, patient_id) values (3, 2);
+insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 2);
+insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 3);
+insert into substitute_medicine (medicine_id, substitute_medicine_id) values (2, 1);
+
+insert into allergy (medicine_id, patient_id) values (1, 3);
+insert into allergy (medicine_id, patient_id) values (2, 2);
+
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 1000, 1, 1);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (600, 400, 1, 2);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1000, 50, 1, 3);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 500, 2, 1);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (800, 800, 2, 2);
