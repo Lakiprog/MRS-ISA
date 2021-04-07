@@ -58,7 +58,11 @@ public class CalendarController {
 		ArrayList<Event> events = new ArrayList<Event>();
 		for (Appointment appointment : appointments) {
 				Event event = new Event();
-				event.setTitle("Appointment with" + " " + appointment.getPatient().getSurname() + " " +  appointment.getPatient().getName());
+				if(appointment.getPatient() == null) {
+					event.setTitle("Unassigned Appointment in " + appointment.getPharmacy().getName());
+				}else {
+					event.setTitle("Appointment with " + appointment.getPatient().getSurname() + " " +  appointment.getPatient().getName() + " in " + appointment.getPharmacy().getName());
+				}
 				event.setStart(appointment.getStart());
 				event.setEnd(appointment.getEnd());
 				events.add(event);

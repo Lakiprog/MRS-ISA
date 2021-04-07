@@ -35,6 +35,8 @@ import { DermatologistCalendarComponent } from './dermatologist-calendar/dermato
 import { AddMedicineComponent } from './add-medicine/add-medicine.component';
 import { SystemAdminProfilePageComponent } from './system-admin-profile-page/system-admin-profile-page.component';
 import { SupplierProfilePageComponent } from './supplier-profile-page/supplier-profile-page.component';
+import { PharmacistAppointmentCreationComponent } from './pharmacist-appointment-creation/pharmacist-appointment-creation.component';
+
 
 
 FullCalendarModule.registerPlugins([
@@ -59,7 +61,9 @@ FullCalendarModule.registerPlugins([
     DermatologistCalendarComponent,
     AddMedicineComponent,
     SystemAdminProfilePageComponent,
-    SupplierProfilePageComponent
+    SupplierProfilePageComponent,
+    PharmacistAppointmentCreationComponent
+
   ],
   imports: [
     BrowserModule,
@@ -69,6 +73,12 @@ FullCalendarModule.registerPlugins([
     AngularMaterialModule,
     HttpClientModule,
     ReactiveFormsModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
@@ -84,7 +94,11 @@ FullCalendarModule.registerPlugins([
       { path: 'DermatologistCalendarComponent', component: DermatologistCalendarComponent},
       { path: 'addMedicine', component: AddMedicineComponent },
       { path: 'systemAdminProfilePage', component: SystemAdminProfilePageComponent},
-      { path: 'supplierProfilePage', component: SupplierProfilePageComponent}
+
+      { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
+      { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
+      { path: 'PharmacistAppointmentCreationComponent', component: PharmacistAppointmentCreationComponent}
+    
     ]),
     LayoutModule,
     MatToolbarModule,
@@ -93,8 +107,11 @@ FullCalendarModule.registerPlugins([
     MatIconModule,
     MatListModule,
   
-    
   ],
+    
+    
+    
+      
   providers: [],
   bootstrap: [AppComponent]
 })
