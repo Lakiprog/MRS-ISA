@@ -24,6 +24,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			message = "A user with this username already exists!";
 		} else {
 			registrationRepository.save(patient);
+
 		}
 		return message;
 	}
