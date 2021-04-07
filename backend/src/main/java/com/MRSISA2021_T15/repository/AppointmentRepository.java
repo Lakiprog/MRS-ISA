@@ -35,5 +35,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	@Query("select a from Appointment a where a.patient.id = ?1")
 	public List<Appointment> findAllPatientsId(Integer id);
 	
-	
+	@Query("select a from Appointment a where a.id = ?1")
+	public Appointment findWithId(Integer id);
 }

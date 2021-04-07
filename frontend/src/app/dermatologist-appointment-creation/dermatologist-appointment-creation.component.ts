@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import { PharmacistAppointmentCreationService } from './pharmacist-appointment-creation.service';
+import { DermatologistAppointmentCreationService } from './dermatologist-appointment-creation.service';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-pharmacist-appointment-creation',
-  templateUrl: './pharmacist-appointment-creation.component.html',
-  styleUrls: ['./pharmacist-appointment-creation.component.css']
+  selector: 'app-dermatologist-appointment-creation',
+  templateUrl: './dermatologist-appointment-creation.component.html',
+  styleUrls: ['./dermatologist-appointment-creation.component.css']
 })
 
-export class PharmacistAppointmentCreationComponent implements OnInit{
-    constructor(private fb: FormBuilder, private _pharmacistAppointmentCreationService: PharmacistAppointmentCreationService, private _snackBar: MatSnackBar) { }
+export class DermatologistAppointmentCreationComponent implements OnInit{
+    constructor(private fb: FormBuilder, private _dermatologistAppointmentCreationService: DermatologistAppointmentCreationService, private _snackBar: MatSnackBar) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   appointmentForm! : FormGroup;
@@ -44,7 +44,7 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
         }
         start.setHours(start.getHours() + 2);
         end.setHours(end.getHours() + 2);
-        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "pharmacist" : {}, "pharmacy" : {}, "price" : this.appointmentForm.get("price")?.value};
+        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "dermatologist" : {}, "pharmacy" : {}, "price" : this.appointmentForm.get("price")?.value};
     }
 
     public makeAppointment(){
@@ -61,8 +61,8 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
             "username" : "kaki",
             "password" : "kaki"}
 
-            const pharmacist = {
-                "id" : 5,
+            const dermatologist = {
+                "id" : 6,
                 "email" : "farmaceut@gmail.com",
                 "name" : "Micko",
                 "surname" : "Mica",
@@ -79,9 +79,9 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
             const pharmacy = {"id" : 1}
 
             appointment["patient"] = patient;
-            appointment["pharmacist"] = pharmacist;
+            appointment["dermatologist"] = dermatologist;
             appointment["pharmacy"] = pharmacy;
-            this._pharmacistAppointmentCreationService.makeAppointment(appointment).subscribe(
+            this._dermatologistAppointmentCreationService.makeAppointment(appointment).subscribe(
                 response => {
                   this.openSnackBar(response, this.RESPONSE_OK);
                   this.appointmentForm.reset();

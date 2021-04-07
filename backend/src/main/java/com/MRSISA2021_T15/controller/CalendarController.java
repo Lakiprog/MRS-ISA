@@ -43,7 +43,11 @@ public class CalendarController {
 		for (Appointment appointment : appointments) {
 			if(appointment.getPharmacy().getId() == pharmacyId) {
 				Event event = new Event();
-				event.setTitle("Appointment with" + " " + appointment.getPatient().getSurname() + " " +  appointment.getPatient().getName());
+				if(appointment.getPatient() == null) {
+					event.setTitle("Predefined Appointment in " + appointment.getPharmacy().getName());
+				}else {
+					event.setTitle("Appointment with " + appointment.getPatient().getSurname() + " " +  appointment.getPatient().getName() + " in " + appointment.getPharmacy().getName());
+				}
 				event.setStart(appointment.getStart());
 				event.setEnd(appointment.getEnd());
 				events.add(event);
@@ -59,13 +63,46 @@ public class CalendarController {
 		for (Appointment appointment : appointments) {
 				Event event = new Event();
 				if(appointment.getPatient() == null) {
-					event.setTitle("Unassigned Appointment in " + appointment.getPharmacy().getName());
+					event.setTitle("Predefined Appointment in " + appointment.getPharmacy().getName());
 				}else {
 					event.setTitle("Appointment with " + appointment.getPatient().getSurname() + " " +  appointment.getPatient().getName() + " in " + appointment.getPharmacy().getName());
 				}
 				event.setStart(appointment.getStart());
 				event.setEnd(appointment.getEnd());
 				events.add(event);
+		}
+		return events;
+	}
+	
+	@GetMapping(value = "/calendarDermatologistPredefined/{dermatologistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<Event> calendarDermatologistPredefined(@PathVariable("dermatologistId") Integer dermatologistId){
+		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
+		ArrayList<Event> events = new ArrayList<Event>();
+		for (Appointment appointment : appointments) {
+				if(appointment.getPatient() == null) {
+					Event event = new Event();
+					event.setTitle("Predefined Appointment in " + appointment.getPharmacy().getName());
+					event.setStart(appointment.getStart());
+					event.setEnd(appointment.getEnd());
+					events.add(event);
+				}
+		}
+		return events;
+	}
+	
+	@GetMapping(value = "/calendarDermatologistPredefined/id={dId}/pharmacy={pId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<Event> calendarDermatologistPredefined(@PathVariable("dId") Integer dermatologistId, @PathVariable("pId") Integer pharmacyId){
+		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
+		ArrayList<Event> events = new ArrayList<Event>();
+		for (Appointment appointment : appointments) {
+			if(appointment.getPharmacy().getId() == pharmacyId && appointment.getPatient() == null) {
+				Event event = new Event();
+				event.setId(appointment.getId());
+				event.setTitle("Predefined Appointment in " + appointment.getPharmacy().getName());
+				event.setStart(appointment.getStart());
+				event.setEnd(appointment.getEnd());
+				events.add(event);
+			}
 		}
 		return events;
 	}
