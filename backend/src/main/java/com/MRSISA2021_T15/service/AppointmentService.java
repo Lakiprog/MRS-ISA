@@ -45,7 +45,10 @@ public class AppointmentService {
 			}else if((appointment.getStart().isBefore(appointment2.getEnd()) || appointment.getStart().isEqual(appointment2.getEnd()))
 					&& (appointment.getEnd().isAfter(appointment2.getEnd()) || appointment2.getEnd().isEqual(appointment.getEnd()))){
 				return "This pharmacist has already an appointment planned at that time!";
-			}else if(appointment.getStart().getHour() < employment.getStart() || appointment.getEnd().getHour() > employment.getEnd()) {
+			}else if((appointment.getStart().isAfter(appointment2.getStart()) || appointment.getStart().isEqual(appointment2.getStart()))
+					&& (appointment.getEnd().isBefore(appointment2.getEnd()) || appointment2.getEnd().isEqual(appointment.getEnd()))){
+				return "This pharmacist has already an appointment planned at that time!";
+			}else if(appointment.getStart().getHour() < employment.getStart() || appointment.getEnd().getHour() >= employment.getEnd()) {
 				return "This pharmacist doesnt work at that time!";
 			}
 		}
@@ -56,6 +59,9 @@ public class AppointmentService {
 				return "This patient has already an appointment planned at that time!";
 			}else if((appointment.getStart().isBefore(appointment2.getEnd()) || appointment.getStart().isEqual(appointment2.getEnd()))
 					&& (appointment.getEnd().isAfter(appointment2.getEnd()) || appointment2.getEnd().isEqual(appointment.getEnd()))){
+				return "This patient has already an appointment planned at that time!";
+			}else if((appointment.getStart().isAfter(appointment2.getStart()) || appointment.getStart().isEqual(appointment2.getStart()))
+					&& (appointment.getEnd().isBefore(appointment2.getEnd()) || appointment2.getEnd().isEqual(appointment.getEnd()))){
 				return "This patient has already an appointment planned at that time!";
 			}
 		}
@@ -82,7 +88,10 @@ public class AppointmentService {
 			}else if((appointment.getStart().isBefore(appointment2.getEnd()) || appointment.getStart().isEqual(appointment2.getEnd()))
 					&& (appointment.getEnd().isAfter(appointment2.getEnd()) || appointment2.getEnd().isEqual(appointment.getEnd()))){
 				return "This dermatologist has already an appointment planned at that time!";
-			}else if(appointment.getStart().getHour() < employment.getStart() || appointment.getEnd().getHour() > employment.getEnd()) {
+			}else if((appointment.getStart().isAfter(appointment2.getStart()) || appointment.getStart().isEqual(appointment2.getStart()))
+					&& (appointment.getEnd().isBefore(appointment2.getEnd()) || appointment2.getEnd().isEqual(appointment.getEnd()))){
+				return "This dermatologist has already an appointment planned at that time!";
+			}else if(appointment.getStart().getHour() < employment.getStart() || appointment.getEnd().getHour() >= employment.getEnd()) {
 				return "This dermatologist doesnt work at that time!";
 			}
 		}
@@ -93,6 +102,9 @@ public class AppointmentService {
 				return "This patient has already an appointment planned at that time!";
 			}else if((appointment.getStart().isBefore(appointment2.getEnd()) || appointment.getStart().isEqual(appointment2.getEnd()))
 					&& (appointment.getEnd().isAfter(appointment2.getEnd()) || appointment2.getEnd().isEqual(appointment.getEnd()))){
+				return "This patient has already an appointment planned at that time!";
+			}else if((appointment.getStart().isAfter(appointment2.getStart()) || appointment.getStart().isEqual(appointment2.getStart()))
+					&& (appointment.getEnd().isBefore(appointment2.getEnd()) || appointment2.getEnd().isEqual(appointment.getEnd()))){
 				return "This patient has already an appointment planned at that time!";
 			}
 		}
