@@ -26,6 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+//import {MatDialogModule} from '@angular/material/dialog';
 import { ChangePatientDataComponent } from './change-patient-data/change-patient-data.component';
 
 
@@ -36,6 +37,8 @@ import { AddMedicineComponent } from './add-medicine/add-medicine.component';
 import { SystemAdminProfilePageComponent } from './system-admin-profile-page/system-admin-profile-page.component';
 import { SupplierProfilePageComponent } from './supplier-profile-page/supplier-profile-page.component';
 import { PharmacistAppointmentCreationComponent } from './pharmacist-appointment-creation/pharmacist-appointment-creation.component';
+import { DermatologistChoosePredefinedComponent } from './dermatologist-choose-predefined/dermatologist-choose-predefined.component';
+import { DermatologistAppointmentCreationComponent } from './dermatologist-appointment-creation/dermatologist-appointment-creation.component';
 
 
 
@@ -48,6 +51,7 @@ FullCalendarModule.registerPlugins([
 @NgModule({
   declarations: [
     AppComponent,
+    //MatDialogModule,
     RegistrationComponent,
     LoginComponent,
     UserHomePageComponent,
@@ -62,12 +66,14 @@ FullCalendarModule.registerPlugins([
     AddMedicineComponent,
     SystemAdminProfilePageComponent,
     SupplierProfilePageComponent,
-    PharmacistAppointmentCreationComponent
-
+    PharmacistAppointmentCreationComponent,
+    DermatologistChoosePredefinedComponent,
+    DermatologistChoosePredefinedComponent
   ],
   imports: [
     BrowserModule,
     FullCalendarModule,
+    //MatDialogModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
@@ -97,7 +103,10 @@ FullCalendarModule.registerPlugins([
 
       { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
       { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
-      { path: 'PharmacistAppointmentCreationComponent', component: PharmacistAppointmentCreationComponent}
+      { path: 'PharmacistAppointmentCreationComponent', component: PharmacistAppointmentCreationComponent},
+      { path: 'DermatologistAppointmentCreationComponent', component: DermatologistAppointmentCreationComponent},
+      { path: 'DermatologistChoosePredefinedComponent', component:DermatologistChoosePredefinedComponent}
+    ])
     
     ]),
     LayoutModule,
@@ -111,7 +120,7 @@ FullCalendarModule.registerPlugins([
     
     
     
-      
+  //entryComponents:[MatDialogModule],    
   providers: [],
   bootstrap: [AppComponent]
 })

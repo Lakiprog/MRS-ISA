@@ -11,6 +11,7 @@ import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.AppointmentPharmacist;
 import com.MRSISA2021_T15.model.EmploymentDermatologist;
 import com.MRSISA2021_T15.model.EmploymentPharmacist;
+import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.repository.AbsenceRepository;
 import com.MRSISA2021_T15.repository.AppointmentCreationRepository;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
@@ -153,6 +154,18 @@ public class AppointmentService {
 			}
 		}
 		
+		repository.save(appointment);
+		return "";
+	}
+
+	public String makeAppointmentDermatologistPredefined(Integer id, Patient patient) {
+		Appointment appointment = repository.findWithId(id);
+		if(appointment == null) {
+			return "This appointment doesnt exist!";
+		}if(appointment.getPatient() != null) {
+			return "This appointment is already assigned";
+		}
+		appointment.setPatient(patient);
 		repository.save(appointment);
 		return "";
 	}
