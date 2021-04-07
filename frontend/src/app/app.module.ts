@@ -38,6 +38,7 @@ import { SupplierProfilePageComponent } from './supplier-profile-page/supplier-p
 import { PharmacistAppointmentCreationComponent } from './pharmacist-appointment-creation/pharmacist-appointment-creation.component';
 
 
+
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
@@ -62,6 +63,7 @@ FullCalendarModule.registerPlugins([
     SystemAdminProfilePageComponent,
     SupplierProfilePageComponent,
     PharmacistAppointmentCreationComponent
+
   ],
   imports: [
     BrowserModule,
@@ -92,9 +94,19 @@ FullCalendarModule.registerPlugins([
       { path: 'DermatologistCalendarComponent', component: DermatologistCalendarComponent},
       { path: 'addMedicine', component: AddMedicineComponent },
       { path: 'systemAdminProfilePage', component: SystemAdminProfilePageComponent},
+
+      { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
       { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
       { path: 'PharmacistAppointmentCreationComponent', component: PharmacistAppointmentCreationComponent}
-    ])
+    
+    ]),
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+  
   ],
     
     
