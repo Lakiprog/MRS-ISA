@@ -41,6 +41,7 @@ import { DermatologistChoosePredefinedComponent } from './dermatologist-choose-p
 import { DermatologistAppointmentCreationComponent } from './dermatologist-appointment-creation/dermatologist-appointment-creation.component';
 
 
+
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
@@ -99,11 +100,22 @@ FullCalendarModule.registerPlugins([
       { path: 'DermatologistCalendarComponent', component: DermatologistCalendarComponent},
       { path: 'addMedicine', component: AddMedicineComponent },
       { path: 'systemAdminProfilePage', component: SystemAdminProfilePageComponent},
+
+      { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
       { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
       { path: 'PharmacistAppointmentCreationComponent', component: PharmacistAppointmentCreationComponent},
       { path: 'DermatologistAppointmentCreationComponent', component: DermatologistAppointmentCreationComponent},
       { path: 'DermatologistChoosePredefinedComponent', component:DermatologistChoosePredefinedComponent}
     ])
+    
+    ]),
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+  
   ],
     
     

@@ -10,7 +10,7 @@ export class ChangePatientDataService {
 
 
   
-  private readonly changeDataURL = 'http://localhost:8080/patients/changeData/kek';
+  private readonly changeDataURL = 'http://localhost:8080/patients/changeData/7';
   private readonly getChangeDataURL = 'http://localhost:8080/patients/changeDataShow/kek';
   
 
