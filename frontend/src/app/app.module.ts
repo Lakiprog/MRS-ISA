@@ -1,8 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+
+import { RouterModule, Routes } from '@angular/router';
+import { ReactiveFormsModule} from '@angular/forms';
+
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -29,9 +34,16 @@ import { DermatologistCalendarComponent } from './dermatologist-calendar/dermato
 import { AddMedicineComponent } from './add-medicine/add-medicine.component';
 import { SystemAdminProfilePageComponent } from './system-admin-profile-page/system-admin-profile-page.component';
 import { SupplierProfilePageComponent } from './supplier-profile-page/supplier-profile-page.component';
+
+import { SearchPharmacyComponent } from './search-pharmacy/search-pharmacy.component';
+
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+
 import { PharmacistAppointmentCreationComponent } from './pharmacist-appointment-creation/pharmacist-appointment-creation.component';
 import { DermatologistChoosePredefinedComponent } from './dermatologist-choose-predefined/dermatologist-choose-predefined.component';
 import { DermatologistAppointmentCreationComponent } from './dermatologist-appointment-creation/dermatologist-appointment-creation.component';
+
 
 
 
@@ -58,13 +70,18 @@ FullCalendarModule.registerPlugins([
     AddMedicineComponent,
     SystemAdminProfilePageComponent,
     SupplierProfilePageComponent,
+    SearchPharmacyComponent,
+
     PharmacistAppointmentCreationComponent,
     DermatologistAppointmentCreationComponent,
     DermatologistChoosePredefinedComponent,
     DermatologistChoosePredefinedComponent
+
   ],
   imports: [
     BrowserModule,
+    MatTableModule,
+    MatPaginatorModule,
     FullCalendarModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -89,11 +106,20 @@ FullCalendarModule.registerPlugins([
       { path: 'addMedicine', component: AddMedicineComponent },
       { path: 'systemAdminProfilePage', component: SystemAdminProfilePageComponent},
       { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
+      { path: 'searchPharmacy', component:SearchPharmacyComponent},
       { path: 'PharmacistAppointmentCreationComponent', component: PharmacistAppointmentCreationComponent},
       { path: 'DermatologistAppointmentCreationComponent', component: DermatologistAppointmentCreationComponent},
       { path: 'DermatologistChoosePredefinedComponent', component:DermatologistChoosePredefinedComponent}
-    ])
-  ],  
+    ]),
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule
+
+  ],
+
   providers: [],
   bootstrap: [AppComponent]
 })
