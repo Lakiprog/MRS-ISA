@@ -3,6 +3,7 @@ package com.MRSISA2021_T15.model;
 import java.time.LocalDateTime;
 
 public class Event {
+	private Integer id;
 	private String title;
 	private LocalDateTime start, end;
 	
@@ -23,5 +24,11 @@ public class Event {
 	}
 	public void setEnd(LocalDateTime end) {
 		this.end = end;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }
