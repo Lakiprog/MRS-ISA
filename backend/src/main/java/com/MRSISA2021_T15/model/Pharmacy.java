@@ -1,6 +1,5 @@
 package com.MRSISA2021_T15.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,9 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -37,6 +33,9 @@ public class Pharmacy {
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<MedicinePharmacy> medicine;
+	
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<PharmacyAdmin> pharmacyAdmins;
 
 	public Integer getId() {
 		return id;
@@ -60,6 +59,14 @@ public class Pharmacy {
 
 	public void setAppointments(Set<Appointment> appointments) {
 		this.appointments = appointments;
+	}
+	
+	public Set<MedicinePharmacy> getMedicine() {
+		return medicine;
+	}
+
+	public void setMedicine(Set<MedicinePharmacy> medicine) {
+		this.medicine = medicine;
 	}
 
 	public String getDescription() {
@@ -110,5 +117,11 @@ public class Pharmacy {
 		this.rating = rating;
 	}
 
-	
+	public Set<PharmacyAdmin> getPharmacyAdmin() {
+		return pharmacyAdmins;
+	}
+
+	public void setPharmacyAdmin(Set<PharmacyAdmin> pharmacyAdmins) {
+		this.pharmacyAdmins = pharmacyAdmins;
+	}
 }
