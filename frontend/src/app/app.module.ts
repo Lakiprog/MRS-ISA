@@ -33,6 +33,7 @@ import { PharmacistAppointmentCreationComponent } from './pharmacist-appointment
 import { DermatologistChoosePredefinedComponent } from './dermatologist-choose-predefined/dermatologist-choose-predefined.component';
 import { DermatologistAppointmentCreationComponent } from './dermatologist-appointment-creation/dermatologist-appointment-creation.component';
 import { SearchPharmacyComponent } from './search-pharmacy/search-pharmacy.component';
+import { RegisterPharmaciesComponent } from './register-pharmacies/register-pharmacies.component';
 
 
 
@@ -63,7 +64,8 @@ FullCalendarModule.registerPlugins([
     DermatologistAppointmentCreationComponent,
     DermatologistChoosePredefinedComponent,
     DermatologistChoosePredefinedComponent,
-    SearchPharmacyComponent
+    SearchPharmacyComponent,
+    RegisterPharmaciesComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +96,8 @@ FullCalendarModule.registerPlugins([
       { path: 'PharmacistAppointmentCreationComponent', component: PharmacistAppointmentCreationComponent},
       { path: 'DermatologistAppointmentCreationComponent', component: DermatologistAppointmentCreationComponent},
       { path: 'DermatologistChoosePredefinedComponent', component:DermatologistChoosePredefinedComponent},
-      { path: 'searchPharmacy', component:SearchPharmacyComponent}
+      { path: 'searchPharmacy', component:SearchPharmacyComponent},
+      { path: 'registerPharmacies' , component: RegisterPharmaciesComponent}
     ])
   ],  
   providers: [],
