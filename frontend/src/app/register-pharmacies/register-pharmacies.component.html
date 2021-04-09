@@ -35,10 +35,10 @@
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Select pharmacy administrators</mat-label>
-                <mat-select formControlName = "pharmacyAdmins" multiple required>
-                    <mat-option *ngFor = "let pharmacyAdmin of serverPharmacyAdmins" [value] = pharmacyAdmin>{{pharmacyAdmin['username']}}</mat-option> 
+                <mat-select formControlName = "pharmacyAdminsIds" multiple required>
+                    <mat-option *ngFor = "let pharmacyAdmin of serverPharmacyAdmins" [value] = pharmacyAdmin.id>{{pharmacyAdmin['username']}}</mat-option> 
                 </mat-select>
-                <mat-error *ngIf = "hasError('pharmacyAdmins', 'required')">You must select at least one pharmacy administrator!</mat-error>
+                <mat-error *ngIf = "hasError('pharmacyAdminsIds', 'required')">You must select at least one pharmacy administrator!</mat-error>
             </mat-form-field>
         </form>
         <button (click) = "registerPharmacy()" [disabled] = "pharmacyRegistrationForm.invalid" mat-raised-button color="primary">Register</button>

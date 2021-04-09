@@ -15,6 +15,10 @@ export class RegisterPharmaciesService {
                .pipe(catchError(this.errorHander));
   }
 
+  getPharmacyAdminsWithNoPharmacy() {
+    return this._http.get<any>("http://localhost:8080/pharmacy/getPharmacyAdminsWithNoPharmacy");
+  }
+
   errorHander(error: HttpErrorResponse) {
     return throwError(error);
   }

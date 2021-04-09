@@ -1,5 +1,7 @@
 package com.MRSISA2021_T15.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -33,10 +35,12 @@ public class Pharmacy {
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<MedicinePharmacy> medicine;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<PharmacyAdmin> pharmacyAdmins;
-
+	private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();;
+	
+	private ArrayList<Integer> pharmacyAdminsIds = new ArrayList<Integer>();
+	
 	public Integer getId() {
 		return id;
 	}
@@ -123,5 +127,13 @@ public class Pharmacy {
 
 	public void setPharmacyAdmin(Set<PharmacyAdmin> pharmacyAdmins) {
 		this.pharmacyAdmins = pharmacyAdmins;
+	}
+
+	public ArrayList<Integer> getPharmacyAdminsIds() {
+		return pharmacyAdminsIds;
+	}
+
+	public void setPharmacyAdminsIds(ArrayList<Integer> pharmacyAdminsIds) {
+		this.pharmacyAdminsIds = pharmacyAdminsIds;
 	}
 }

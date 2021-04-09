@@ -13,11 +13,7 @@ export class RegisterPharmaciesComponent implements OnInit {
   pharmacyRegistrationForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  serverPharmacyAdmins = [
-    {id: 10, email:'first@gmail.com', username: 'pharmacyAdmin1', password: '123', name: 'Pera', surmname: 'Peric', adress: 'asdf', city: 'asdf', country: 'asdf', phoneNumber: '0601234567'},
-    {id: 11, email:'second@gmail.com', username: 'pharmacyAdmin2', password: '123', name: 'Mika', surmname: 'Mikic', adress: 'asdf', city: 'asdf', country: 'asdf', phoneNumber: '0601234568'},
-    {id: 12, email:'third@gmail.com', username: 'pharmacyAdmin3', password: '123', name: 'Sara', surmname: 'Saric', adress: 'asdf', city: 'asdf', country: 'asdf', phoneNumber: '0601234569'}
-  ]
+  serverPharmacyAdmins : { id: string, username: string }[] = [];
   constructor(private fb: FormBuilder, private _registerPharmaciesService: RegisterPharmaciesService, private _snackBar: MatSnackBar) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
@@ -29,7 +25,17 @@ export class RegisterPharmaciesComponent implements OnInit {
         city: ['', Validators.required],
         country: ['', Validators.required],
         description: [''],
-        pharmacyAdmins: [[], Validators.required]
+        pharmacyAdminsIds: [[], Validators.required]
+      }
+    );
+    this._registerPharmaciesService.getPharmacyAdminsWithNoPharmacy().subscribe(
+      data => {
+        let list : { id: string, username: string }[] = [];
+        Object.keys(data).forEach((key : string) => {
+          const v = data[key];
+          list.push({id: key, username: v});
+        });
+        this.serverPharmacyAdmins = list;
       }
     );
   }
@@ -44,6 +50,16 @@ export class RegisterPharmaciesComponent implements OnInit {
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);
         this.pharmacyRegistrationForm.reset();
+        this._registerPharmaciesService.getPharmacyAdminsWithNoPharmacy().subscribe(
+          data => {
+            let list : { id: string, username: string }[] = [];
+            Object.keys(data).forEach((key : string) => {
+              const v = data[key];
+              list.push({id: key, username: v});
+            });
+            this.serverPharmacyAdmins = list;
+          }
+        )
       },
       error => {
         this.openSnackBar(error.error, this.RESPONSE_ERROR);
