@@ -16,15 +16,18 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
 imports: [MatToolbarModule, MatCardModule, MatFormFieldModule, 
         MatNativeDateModule, MatDatepickerModule, MatIconModule, MatCheckboxModule, 
-        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, MatTableModule, MatSidenavModule, MatDialogModule],
+        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, 
+        MatTableModule, MatSidenavModule, MatDialogModule, MatPaginatorModule],
 exports: [MatButtonModule,MatToolbarModule, MatCardModule, MatFormFieldModule, 
         MatNativeDateModule, MatDatepickerModule, MatIconModule, MatCheckboxModule, 
-        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, MatTableModule, MatSidenavModule, MatDialogModule]
+        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, 
+        MatTableModule, MatSidenavModule, MatDialogModule, MatPaginatorModule]
 })
  
 export class AngularMaterialModule { }
