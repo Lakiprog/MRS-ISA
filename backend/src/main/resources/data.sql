@@ -13,6 +13,9 @@ insert into user (USER_TYPE, email, name, surname, adress, city, country, phone_
 insert into user (USER_TYPE, email, name, surname, adress, city, country, phone_number, username, password, pharmacy_id) values ('PHARMACY_ADMIN', 'second@gmail.com', 'Mika', 'Mikic', 'asdf', 'NS', 'Srbija', '0601234568', 'pharmacyAdmin2', '123', null);
 insert into user (USER_TYPE, email, name, surname, adress, city, country, phone_number, username, password, pharmacy_id) values ('PHARMACY_ADMIN', 'third@gmail.com', 'Sara', 'Saric', 'asdf', 'NS', 'Srbija', '0601234569', 'pharmacyAdmin3', '123', null);
 
+insert into user (USER_TYPE, email, name, surname, adress, city, country, phone_number, username, password) values ('SUPPLIER', 'supp1@gmail.com', 'Marko', 'Jovanovic', 'asdf', 'NS', 'Srbija', '0601234569', 'mare', '123');
+insert into user (USER_TYPE, email, name, surname, adress, city, country, phone_number, username, password) values ('SUPPLIER', 'supp2@gmail.com', 'Jovan', 'Petrovic', 'asdf', 'NS', 'Srbija', '0601234569', 'jova', '123');
+insert into user (USER_TYPE, email, name, surname, adress, city, country, phone_number, username, password) values ('SUPPLIER', 'supp3@gmail.com', 'Stefan', 'Teodorovic', 'asdf', 'NS', 'Srbija', '0601234569', 'stefan', '123');
 
 
 insert into employment (EMPLOYMENT_TYPE, end, start, pharmacy_id, pharmacist_id) values ('EMPLOYMENT_PHARMACIST', 20, 9, 1, 5);
