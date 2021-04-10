@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.model.PharmacyAdmin;
@@ -21,7 +22,9 @@ public class PharmacyServiceImpl implements PharmacyService {
 	private PharmacyAdminRepository pharmacyAdminRepository;
 	
 
+	
 	@SuppressWarnings("unchecked")
+	@Transactional
 	@Override
 	public String registerPharmacy(Pharmacy pharmacy) {
 		String message = "";
