@@ -11,11 +11,11 @@ export class SupplierUpdateService {
   constructor(private _http: HttpClient) { }
 
   getSupplierData() {
-    return this._http.get<any>("http://localhost:8080/supplier/getSupplierData/mare");
+    return this._http.get<any>("http://localhost:8080/suppliers/getSupplierData/mare");
   }
 
   updateSupplierData(supplier: any) {
-    return this._http.put<any>("http://localhost:8080/supplier/updateSupplierData", supplier)
+    return this._http.put<any>("http://localhost:8080/suppliers/updateSupplierData", supplier)
                               .pipe(catchError(this.errorHander));
   }
 

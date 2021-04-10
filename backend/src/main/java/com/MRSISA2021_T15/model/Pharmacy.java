@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,6 +40,7 @@ public class Pharmacy {
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();;
 	
+	@Transient
 	private ArrayList<Integer> pharmacyAdminsIds = new ArrayList<Integer>();
 	
 	public Integer getId() {

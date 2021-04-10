@@ -33,6 +33,20 @@ export class SupplierProfilePageComponent implements OnInit {
         phoneNumber: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]],
       }, {validator: PasswordValidator}
     );
+    this._supplierUpdateService.getSupplierData().subscribe(
+      data => {
+        this.updateForm.get('username')?.setValue(data.username);
+        this.updateForm.get('email')?.setValue(data.email);
+        this.updateForm.get('password')?.setValue(data.password);
+        this.updateForm.get('confirmPassword')?.setValue(data.password);
+        this.updateForm.get('name')?.setValue(data.name);
+        this.updateForm.get('surname')?.setValue(data.surname);
+        this.updateForm.get('adress')?.setValue(data.adress);
+        this.updateForm.get('city')?.setValue(data.city);
+        this.updateForm.get('country')?.setValue(data.country);
+        this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
+      }
+    )
   }
 
   public hasError = (controlName: string, errorName: string) =>{
@@ -50,7 +64,29 @@ export class SupplierProfilePageComponent implements OnInit {
   }
 
   update() {
-
+    console.log(this.updateForm.value);
+    this._supplierUpdateService.updateSupplierData(this.updateForm.value).subscribe(
+      response => {
+        this.openSnackBar(response, this.RESPONSE_OK);
+        this._supplierUpdateService.getSupplierData().subscribe(
+          data => {
+            this.updateForm.get('username')?.setValue(data.username);
+            this.updateForm.get('email')?.setValue(data.email);
+            this.updateForm.get('password')?.setValue(data.password);
+            this.updateForm.get('confirmPassword')?.setValue(data.password);
+            this.updateForm.get('name')?.setValue(data.name);
+            this.updateForm.get('surname')?.setValue(data.surname);
+            this.updateForm.get('adress')?.setValue(data.adress);
+            this.updateForm.get('city')?.setValue(data.city);
+            this.updateForm.get('country')?.setValue(data.country);
+            this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
+          }
+        )
+      },
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+      }
+    )
   }
 
   openSnackBar(msg: string, responseCode: number) {
