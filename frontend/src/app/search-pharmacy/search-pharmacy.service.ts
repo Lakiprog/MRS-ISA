@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class SearchPharmacyService {
-  private readonly getPharmaciesURL = 'http://localhost:8080/pharmacy/getAll';
+  private readonly getPharmaciesURL = 'http://localhost:8080/pharmacySearch/getAll';
 
   constructor(private http: HttpClient) {}
 
