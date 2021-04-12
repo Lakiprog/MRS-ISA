@@ -33,7 +33,7 @@ public class MedicineController {
 	public ResponseEntity<String> addMedicine(@RequestBody Medicine medicine) {
 		String message = medicineService.addMedicine(medicine);
 		Gson gson = new GsonBuilder().create();
-		if (message == "") {
+		if (message.equals("")) {
 			return new ResponseEntity<String>(gson.toJson("The medicine has been added successfully."), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);

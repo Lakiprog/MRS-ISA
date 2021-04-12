@@ -50,9 +50,11 @@ public class PatientSearchController {
 				for (Appointment appointment : service.all()) {
 					if(appointment instanceof AppointmentDermatologist) {
 						AppointmentDermatologist ap = (AppointmentDermatologist) appointment;
-						if(ap.getPatient().getId() == patient.getId() && ap.getDermatologist().getId() == dermatologistId) {
-							patients.add(patient);
-							break;
+						if(ap.getPatient() != null) {
+							if(ap.getPatient().getId() == patient.getId() && ap.getDermatologist().getId() == dermatologistId) {
+								patients.add(patient);
+								break;
+							}
 						}
 					}
 				}
@@ -60,4 +62,8 @@ public class PatientSearchController {
 			
 			return patients;
 	}
+	
+	
+	
+	
 }
