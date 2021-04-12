@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.PharmacyAdmin;
 import com.MRSISA2021_T15.model.Supplier;
 import com.MRSISA2021_T15.model.SystemAdmin;
 import com.MRSISA2021_T15.repository.RegistrationRepository;
@@ -24,6 +25,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			message = "A user with this username already exists!";
 		} else {
 			registrationRepository.save(patient);
+
 		}
 		return message;
 	}
@@ -63,6 +65,19 @@ public class RegistrationServiceImpl implements RegistrationService {
 			message = "A user with this username already exists!";
 		} else {
 			registrationRepository.save(supplier);
+		}
+		return message;
+	}
+
+	@Override
+	public String registerPharmacyAdministrator(PharmacyAdmin pharmacyAdmin) {
+		String message = "";
+		if (registrationRepository.findByEmail(pharmacyAdmin.getEmail()) != null) {
+			message = "A user with this email already exists!";
+		} else if (registrationRepository.findByUsername(pharmacyAdmin.getUsername()) != null) {
+			message = "A user with this username already exists!";
+		} else {
+			registrationRepository.save(pharmacyAdmin);
 		}
 		return message;
 	}

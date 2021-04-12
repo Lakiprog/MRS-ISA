@@ -1,0 +1,43 @@
+
+table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 25%;
+  }
+
+  .card{
+    max-width: 1000px;
+   
+    margin-left: 15%;
+    
+  }
+
+  .example-full-width{
+    background-color: white;
+  }
+
+  .inputic{
+    background-color: white;
+  }
+
+.sectionN{
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url(backForSearch2.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+
+.card{
+  background: url(backForSearch3.jpg);
+}
+

@@ -12,18 +12,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {MatTableModule} from '@angular/material/table'
+import { MatTableModule } from '@angular/material/table';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 
 @NgModule({
-imports: [FormsModule, ReactiveFormsModule, MatToolbarModule, MatCardModule, MatFormFieldModule, 
+imports: [MatToolbarModule, MatCardModule, MatFormFieldModule, 
         MatNativeDateModule, MatDatepickerModule, MatIconModule, MatCheckboxModule, 
-        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, MatTableModule],
-exports: [FormsModule, ReactiveFormsModule, MatButtonModule,MatToolbarModule, MatCardModule, MatFormFieldModule, 
+        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, 
+        MatTableModule, MatSidenavModule, MatDialogModule, MatPaginatorModule],
+exports: [MatButtonModule,MatToolbarModule, MatCardModule, MatFormFieldModule, 
         MatNativeDateModule, MatDatepickerModule, MatIconModule, MatCheckboxModule, 
-        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, MatTableModule],
- 
+        MatInputModule, MatRadioModule, MatListModule, MatSnackBarModule, MatSelectModule, 
+        MatTableModule, MatSidenavModule, MatDialogModule, MatPaginatorModule]
 })
  
 export class AngularMaterialModule { }

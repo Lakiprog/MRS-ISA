@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<body class = "register-pharmacy-background">
+    <mat-toolbar color = "primary">
+        <mat-toolbar-row>
+            <span>Register pharmacies</span>
+            <span style = "flex: 1 1 auto;"></span>
+            <a mat-button routerLink = "/systemAdminProfilePage">Back</a>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-card class = "card">
+        <form [formGroup] = "pharmacyRegistrationForm" class = "register-pharmacy-form">
+            <mat-form-field class = "field-width">
+                <mat-label>Name</mat-label>
+                <input type = "text" matInput placeholder = "Name" formControlName = "name" required>
+                <mat-error *ngIf = "hasError('name', 'required')">Name is required!</mat-error>
+            </mat-form-field>
+            <mat-form-field class = "field-width">
+                <mat-label>Address</mat-label>
+                <input type = "text" matInput placeholder = "Address" formControlName = "adress" required>
+                <mat-error *ngIf = "hasError('adress', 'required')">Address is required!</mat-error>
+            </mat-form-field>
+            <mat-form-field class = "field-width">
+                <mat-label>City</mat-label>
+                <input type = "text" matInput placeholder = "City" formControlName = "city" required>
+                <mat-error *ngIf = "hasError('city', 'required')">City is required!</mat-error>
+            </mat-form-field>
+            <mat-form-field class = "field-width">
+                <mat-label>Country</mat-label>
+                <input type = "text" matInput placeholder = "Country" formControlName = "country" required>
+                <mat-error *ngIf = "hasError('country', 'required')">Country is required!</mat-error>
+            </mat-form-field>
+            <mat-form-field class = "field-width">
+                <mat-label>Description</mat-label>
+                <textarea class = "textarea-size" matInput placeholder = "Description" formControlName = "description"></textarea>
+            </mat-form-field>
+            <mat-form-field class = "field-width">
+                <mat-label>Select pharmacy administrators</mat-label>
+                <mat-select formControlName = "pharmacyAdminsIds" multiple required>
+                    <mat-option *ngFor = "let pharmacyAdmin of serverPharmacyAdmins" [value] = pharmacyAdmin.id>{{pharmacyAdmin['username']}}</mat-option> 
+                </mat-select>
+                <mat-error *ngIf = "hasError('pharmacyAdminsIds', 'required')">You must select at least one pharmacy administrator!</mat-error>
+            </mat-form-field>
+        </form>
+        <button (click) = "registerPharmacy()" [disabled] = "pharmacyRegistrationForm.invalid" mat-raised-button color="primary">Register</button>
+    </mat-card>
+</body>
