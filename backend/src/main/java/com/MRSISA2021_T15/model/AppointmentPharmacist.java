@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 @DiscriminatorValue(value = "APPOINTMENT_PHARMACIST")
 public class AppointmentPharmacist extends Appointment {
 	@ManyToOne
-	@JoinColumn(name = "pharmacist_id")
+	//@JoinColumn(name = "pharmacist_id")
 	Pharmacist pharmacist;
 
 	public Pharmacist getPharmacist() {

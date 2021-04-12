@@ -1,0 +1,82 @@
+
+<section class="sectionN">
+  <br />
+  <br />
+  <br />
+  <mat-card class="card">
+    <div *ngIf="showForm">
+      <form [formGroup] = "firstForm">
+        <div class="inputic">
+          <mat-form-field class="example-full-width">
+            <mat-label>Input name of pharmacy or its place</mat-label>
+            <input type = "text"   matInput placeholder = "Example NS"   formControlName = "nameOrCity" required>
+          </mat-form-field>
+        </div>
+      </form>
+       
+      <button class="buttonic" (click) = "getPharmacyData()" [disabled] = "firstForm.invalid" mat-raised-button color="primary" margin>Search</button>
+     
+    </div>
+  </mat-card>
+  
+  <br />
+  <br />
+  
+  <mat-card class="card">
+    <div *ngIf="showTable">
+      <div class="inputic"> 
+        <mat-form-field class="example-full-width">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="NS" #input>
+        </mat-form-field>
+      </div>
+      
+      
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+      
+      
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> NAME </th>
+            <td mat-cell *matCellDef="let row"> {{row['name']}} </td>
+          </ng-container>
+      
+      
+          <ng-container matColumnDef="adress">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ADRESS </th>
+            <td mat-cell *matCellDef="let row"> {{row['adress']}}% </td>
+          </ng-container>
+      
+        
+          <ng-container matColumnDef="city">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> CITY </th>
+            <td mat-cell *matCellDef="let row"> {{row['city']}} </td>
+          </ng-container>
+      
+      
+          <ng-container matColumnDef="country">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> COUNTRY </th>
+            <td mat-cell *matCellDef="let row"> {{row['country']}}% </td>
+          </ng-container>
+      
+        
+          <ng-container matColumnDef="rate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> RATE </th>
+            <td mat-cell *matCellDef="let row"> {{row['rating']}} </td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+         
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="5">No data matching the filter "{{input.value}}"</td>
+          </tr>
+        </table>
+      
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>  
+    </div>
+  </mat-card>  
+</section>
+

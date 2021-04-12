@@ -1,39 +1,79 @@
 package com.MRSISA2021_T15.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@Table(name = "pharmacy")
 public class Pharmacy {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+	@Column
 	private String name, adress, city, country, description;
+	@Column
 	private double rating;
-	private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
-	private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
-	private Set<Medicine> medicines = new HashSet<Medicine>();
-	private Set<AppointmentDermatologist> appointments = new HashSet<AppointmentDermatologist>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Employment> employments;
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Appointment> appointments;
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<MedicinePharmacy> medicine;
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();;
 	
-	public Pharmacy() {
-		
+	@Transient
+	private ArrayList<Integer> pharmacyAdminsIds = new ArrayList<Integer>();
+	
+	public Integer getId() {
+		return id;
 	}
 
-	
-	
-	public Pharmacy(String name, String adress, String city, String country, String description, double rating,
-			Set<Pharmacist> pharmacists, Set<Dermatologist> dermatologists, Set<Medicine> medicines,
-			Set<AppointmentDermatologist> appointments) {
-		super();
-		this.name = name;
-		this.adress = adress;
-		this.city = city;
-		this.country = country;
-		this.description = description;
-		this.rating = rating;
-		this.pharmacists = pharmacists;
-		this.dermatologists = dermatologists;
-		this.medicines = medicines;
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Set<Employment> getEmployments() {
+		return employments;
+	}
+
+	public void setEmployments(Set<Employment> employments) {
+		this.employments = employments;
+	}
+
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(Set<Appointment> appointments) {
 		this.appointments = appointments;
 	}
+	
+	public Set<MedicinePharmacy> getMedicine() {
+		return medicine;
+	}
 
-
+	public void setMedicine(Set<MedicinePharmacy> medicine) {
+		this.medicine = medicine;
+	}
 
 	public String getDescription() {
 		return description;
@@ -83,35 +123,19 @@ public class Pharmacy {
 		this.rating = rating;
 	}
 
-	public Set<Pharmacist> getPharmacists() {
-		return pharmacists;
+	public Set<PharmacyAdmin> getPharmacyAdmin() {
+		return pharmacyAdmins;
 	}
 
-	public void setPharmacists(Set<Pharmacist> pharmacists) {
-		this.pharmacists = pharmacists;
+	public void setPharmacyAdmin(Set<PharmacyAdmin> pharmacyAdmins) {
+		this.pharmacyAdmins = pharmacyAdmins;
 	}
 
-	public Set<Dermatologist> getDermatologists() {
-		return dermatologists;
+	public ArrayList<Integer> getPharmacyAdminsIds() {
+		return pharmacyAdminsIds;
 	}
 
-	public void setDermatologists(Set<Dermatologist> dermatologists) {
-		this.dermatologists = dermatologists;
-	}
-
-	public Set<Medicine> getMedicines() {
-		return medicines;
-	}
-
-	public void setMedicines(Set<Medicine> medicines) {
-		this.medicines = medicines;
-	}
-
-	public Set<AppointmentDermatologist> getAppointments() {
-		return appointments;
-	}
-
-	public void setAppointments(Set<AppointmentDermatologist> appointments) {
-		this.appointments = appointments;
+	public void setPharmacyAdminsIds(ArrayList<Integer> pharmacyAdminsIds) {
+		this.pharmacyAdminsIds = pharmacyAdminsIds;
 	}
 }

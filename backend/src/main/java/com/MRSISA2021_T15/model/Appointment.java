@@ -13,7 +13,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -34,6 +33,9 @@ public abstract class Appointment {
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
+	@ManyToOne
+	@JoinColumn(name = "pharmacy_id")
+	private Pharmacy pharmacy;
 	
 	public LocalDateTime getStart() {
 		return start;
@@ -53,4 +55,23 @@ public abstract class Appointment {
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Integer getPrice() {
+		return price;
+	}
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
+	}
+	
 }

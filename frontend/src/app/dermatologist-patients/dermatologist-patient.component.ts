@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {DermatologistPatientService} from './dermatologist-patient.service'
 
 @Component({
   selector: 'app-dermatologist-patients',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DermatologistPatientComponent implements OnInit {
 
-  constructor() { }
+  constructor(private service : DermatologistPatientService) { }
+
+  patients = [];
 
   ngOnInit(): void {
+    this.service.getPatientsDermatologist().subscribe((data:any) => {this.patients = data; console.log(this.patients)});
+    
   }
 
 }

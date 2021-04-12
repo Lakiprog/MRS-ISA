@@ -100,19 +100,4 @@ public abstract class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public User(Integer id, String email, String name, String surname, String adress, String city, String country,
-			String phoneNumber, String username, String password) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.name = name;
-		this.surname = surname;
-		this.adress = adress;
-		this.city = city;
-		this.country = country;
-		this.phoneNumber = phoneNumber;
-		this.username = username;
-		this.password = password;
-	}
 }
