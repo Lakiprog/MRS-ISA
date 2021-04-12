@@ -1,5 +1,7 @@
 package com.MRSISA2021_T15.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +23,7 @@ public class MedicinePharmacy {
 	private int amount;
 	@ManyToOne
 	private Pharmacy pharmacy;
+	@JsonIgnore
 	@ManyToOne
 	private Medicine medicine;
 	
