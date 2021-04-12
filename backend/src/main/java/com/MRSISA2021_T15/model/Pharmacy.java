@@ -123,11 +123,11 @@ public class Pharmacy {
 		this.rating = rating;
 	}
 
-	public Set<PharmacyAdmin> getPharmacyAdmin() {
+	public Set<PharmacyAdmin> getPharmacyAdmins() {
 		return pharmacyAdmins;
 	}
 
-	public void setPharmacyAdmin(Set<PharmacyAdmin> pharmacyAdmins) {
+	public void setPharmacyAdmins(Set<PharmacyAdmin> pharmacyAdmins) {
 		this.pharmacyAdmins = pharmacyAdmins;
 	}
 
