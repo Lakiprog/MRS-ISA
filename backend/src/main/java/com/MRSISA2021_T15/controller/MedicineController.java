@@ -44,7 +44,7 @@ public class MedicineController {
 
 		for(SubstituteMedicine sm: substituteMedicineRepository.findAll())
 		{
-			if(sm.getMedicine().getId() == medicineId) {
+			if(sm.getMedicine().getId().equals( medicineId)) {
 				sm.setMedicine(null);
 			}
 		}
