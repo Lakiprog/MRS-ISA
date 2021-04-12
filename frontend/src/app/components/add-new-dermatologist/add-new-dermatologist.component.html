@@ -1,5 +1,5 @@
 <div class="container">
-    <form [formGroup]="pharmacistForm" (ngSubmit)="addNewPharmacist()">
+    <form [formGroup]="dermatologistForm" (ngSubmit)="addNewDermatologist()">
       <div class="form-group">
         <label for="name">Name</label>
         <input type="text" formControlName="name" required />
@@ -26,7 +26,7 @@
       </div>
   
       <button type="submit" class="btn btn-success">
-        Add pharmacist
+        Add dermatologist
       </button>
     </form>
   </div>

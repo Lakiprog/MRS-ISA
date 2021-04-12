@@ -17,6 +17,8 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
+import { HttpClientModule } from '@angular/common/http';
+
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
 import { PharmacistHomePageComponent } from './pharmacist-home-page/pharmacist-home-page.component';
 import { DermatologistHomePageComponent } from './dermatologist-home-page/dermatologist-home-page.component';
@@ -36,11 +38,18 @@ import { SearchPharmacyComponent } from './search-pharmacy/search-pharmacy.compo
 import { RegisterPharmaciesComponent } from './register-pharmacies/register-pharmacies.component';
 
 
+import { PharmacyAdminComponent } from './components/pharmacy-admin/pharmacy-admin.component';
+import { ListOfPharmacistsComponent } from './components/list-of-pharmacists/list-of-pharmacists.component';
+import { AddNewPharmacistComponent } from './components/add-new-pharmacist/add-new-pharmacist.component';
+import { AddNewMedicineComponent } from './components/add-new-medicine/add-new-medicine.component';
+import { ListOfMedicineComponent } from './components/list-of-medicine/list-of-medicine.component';
+import { AddNewDermatologistComponent } from './components/add-new-dermatologist/add-new-dermatologist.component';
+import { ListOfDermatologistsComponent } from './components/list-of-dermatologists/list-of-dermatologists.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
-  timeGridPlugin
+  timeGridPlugin,
 ]);
 
 @NgModule({
@@ -60,6 +69,13 @@ FullCalendarModule.registerPlugins([
     AddMedicineComponent,
     SystemAdminProfilePageComponent,
     SupplierProfilePageComponent,
+    PharmacyAdminComponent,
+    ListOfPharmacistsComponent,
+    AddNewPharmacistComponent,
+    AddNewMedicineComponent,
+    ListOfMedicineComponent,
+    AddNewDermatologistComponent,
+    ListOfDermatologistsComponent,
     PharmacistAppointmentCreationComponent,
     DermatologistAppointmentCreationComponent,
     DermatologistChoosePredefinedComponent,
@@ -83,6 +99,57 @@ FullCalendarModule.registerPlugins([
       { path: 'login', component: LoginComponent },
       { path: 'UserHomePage', component: UserHomePageComponent },
       { path: 'PharmacistHomePage', component: PharmacistHomePageComponent },
+      {
+        path: 'DermatologistHomePage',
+        component: DermatologistHomePageComponent,
+      },
+      {
+        path: 'PharmacistPatientComponent',
+        component: PharmacistPatientComponent,
+      },
+      {
+        path: 'DermatologistPatientComponent',
+        component: DermatologistPatientComponent,
+      },
+      {
+        path: 'PharmacistCalendarComponent',
+        component: PharmacistCalendarComponent,
+      },
+      {
+        path: 'DermatologistCalendarComponent',
+        component: DermatologistCalendarComponent,
+      },
+      { path: 'addMedicine', component: AddMedicineComponent },
+      {
+        path: 'systemAdminProfilePage',
+        component: SystemAdminProfilePageComponent,
+      },
+      { path: 'supplierProfilePage', component: SupplierProfilePageComponent },
+
+      {
+        path: 'DermatologistHomePage',
+        component: DermatologistHomePageComponent,
+      },
+      {
+        path: 'PharmacistPatientComponent',
+        component: PharmacistPatientComponent,
+      },
+      {
+        path: 'DermatologistPatientComponent',
+        component: DermatologistPatientComponent,
+      },
+      { path: 'pharmacyAdmin', component: PharmacyAdminComponent },
+      { path: 'listOfPharmacists', component: ListOfPharmacistsComponent },
+      { path: 'addNewPharmacist', component: AddNewPharmacistComponent },
+      { path: 'listOfMedicine', component: ListOfMedicineComponent },
+      { path: 'addNewMedicine', component: AddNewMedicineComponent },
+      {
+        path: 'listOfDermatologists',
+        component: ListOfDermatologistsComponent,
+      },
+      { path: 'addNewDermatologist', component: AddNewDermatologistComponent },
+    ]),
+  ],
       { path: 'DermatologistHomePage', component: DermatologistHomePageComponent },
       { path: 'PharmacistPatientComponent', component: PharmacistPatientComponent},
       { path: 'DermatologistPatientComponent', component: DermatologistPatientComponent},
@@ -101,6 +168,6 @@ FullCalendarModule.registerPlugins([
     ])
   ],  
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
