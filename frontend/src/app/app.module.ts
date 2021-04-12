@@ -17,7 +17,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule } from '@angular/common/http';
+
 
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
 import { PharmacistHomePageComponent } from './pharmacist-home-page/pharmacist-home-page.component';
@@ -99,74 +99,34 @@ FullCalendarModule.registerPlugins([
       { path: 'login', component: LoginComponent },
       { path: 'UserHomePage', component: UserHomePageComponent },
       { path: 'PharmacistHomePage', component: PharmacistHomePageComponent },
-      {
-        path: 'DermatologistHomePage',
-        component: DermatologistHomePageComponent,
-      },
-      {
-        path: 'PharmacistPatientComponent',
-        component: PharmacistPatientComponent,
-      },
-      {
-        path: 'DermatologistPatientComponent',
-        component: DermatologistPatientComponent,
-      },
-      {
-        path: 'PharmacistCalendarComponent',
-        component: PharmacistCalendarComponent,
-      },
-      {
-        path: 'DermatologistCalendarComponent',
-        component: DermatologistCalendarComponent,
-      },
+      {path: 'DermatologistHomePage', component: DermatologistHomePageComponent},
+      {path: 'PharmacistPatientComponent', component: PharmacistPatientComponent},
+      {path: 'DermatologistPatientComponent', component: DermatologistPatientComponent},
+      {path: 'PharmacistCalendarComponent', component: PharmacistCalendarComponent},
+      {path: 'DermatologistCalendarComponent',component: DermatologistCalendarComponent},
       { path: 'addMedicine', component: AddMedicineComponent },
-      {
-        path: 'systemAdminProfilePage',
-        component: SystemAdminProfilePageComponent,
-      },
+      {path: 'systemAdminProfilePage', component: SystemAdminProfilePageComponent},
       { path: 'supplierProfilePage', component: SupplierProfilePageComponent },
-
-      {
-        path: 'DermatologistHomePage',
-        component: DermatologistHomePageComponent,
-      },
-      {
-        path: 'PharmacistPatientComponent',
-        component: PharmacistPatientComponent,
-      },
-      {
-        path: 'DermatologistPatientComponent',
-        component: DermatologistPatientComponent,
-      },
+      {path: 'DermatologistHomePage', component: DermatologistHomePageComponent},
+      {path: 'PharmacistPatientComponent', component: PharmacistPatientComponent},
+      {path: 'DermatologistPatientComponent', component: DermatologistPatientComponent},
       { path: 'pharmacyAdmin', component: PharmacyAdminComponent },
       { path: 'listOfPharmacists', component: ListOfPharmacistsComponent },
       { path: 'addNewPharmacist', component: AddNewPharmacistComponent },
       { path: 'listOfMedicine', component: ListOfMedicineComponent },
       { path: 'addNewMedicine', component: AddNewMedicineComponent },
-      {
-        path: 'listOfDermatologists',
-        component: ListOfDermatologistsComponent,
-      },
+      { path: 'listOfDermatologists', component: ListOfDermatologistsComponent},
       { path: 'addNewDermatologist', component: AddNewDermatologistComponent },
-    ]),
-  ],
-      { path: 'DermatologistHomePage', component: DermatologistHomePageComponent },
-      { path: 'PharmacistPatientComponent', component: PharmacistPatientComponent},
-      { path: 'DermatologistPatientComponent', component: DermatologistPatientComponent},
       { path: 'PatientProfile', component:PatientProfileNavbarComponent},
       { path: 'PatientChangeData', component:ChangePatientDataComponent},
-      { path: 'PharmacistCalendarComponent', component: PharmacistCalendarComponent},
-      { path: 'DermatologistCalendarComponent', component: DermatologistCalendarComponent},
-      { path: 'addMedicine', component: AddMedicineComponent },
-      { path: 'systemAdminProfilePage', component: SystemAdminProfilePageComponent},
-      { path: 'supplierProfilePage', component: SupplierProfilePageComponent},
       { path: 'PharmacistAppointmentCreationComponent', component: PharmacistAppointmentCreationComponent},
       { path: 'DermatologistAppointmentCreationComponent', component: DermatologistAppointmentCreationComponent},
       { path: 'DermatologistChoosePredefinedComponent', component:DermatologistChoosePredefinedComponent},
       { path: 'searchPharmacy', component:SearchPharmacyComponent},
       { path: 'registerPharmacies' , component: RegisterPharmaciesComponent}
-    ])
-  ],  
+    ]),
+  ],
+       
   providers: [],
   bootstrap: [AppComponent],
 })
