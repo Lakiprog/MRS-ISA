@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Pharmacist } from '../models/pharmacist';
 import { Medicine } from '../models/medicine';
 import { Dermatologist } from '../models/dermatologist';
+import { PharmacyAdmin } from '../models/pharmacy-admin';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,12 @@ export class PharmacyAdminService {
     this.pharmacistsUrl = 'http://localhost:8080/pharmacist/all';
     this.medicineUrl = 'http://localhost:8080/medicine/all';
     this.dermatologistUrl = 'http://localhost:8080/dermatologist/all';
+  }
+
+  public getPharmacyAdmin(pharmacyAdminId: String) {
+    return this.httpClient.get<PharmacyAdmin>(
+      'http://localhost:8080/pharmacyAdmin/' + pharmacyAdminId + '/findById'
+    );
   }
 
   public deletePharmacist(pharmacist: Pharmacist) {
@@ -53,6 +60,25 @@ export class PharmacyAdminService {
     );
   }
 
+  public searchMedicineById(medicineId: String) {
+    return this.httpClient.get<Medicine>(
+      'http://localhost:8080/medicine/' + medicineId + '/findById'
+    );
+  }
+
+  public searchMedicineByString(string: String) {
+    return this.httpClient.get<Medicine>(
+      'http://localhost:8080/medicine/' + string + '/findById'
+    );
+  }
+
+  public updateMedicine(medicine: Medicine, medicineId: String) {
+    return this.httpClient.put<Medicine>(
+      'http://localhost:8080/medicine/' + medicineId + '/update',
+      medicine
+    );
+  }
+
   public deleteDermatologist(dermatologist: Dermatologist) {
     return this.httpClient.delete<Dermatologist>(
       'http://localhost:8080/dermatologist/' + dermatologist.id + '/delete'
@@ -67,6 +93,18 @@ export class PharmacyAdminService {
     return this.httpClient.post<Dermatologist>(
       'http://localhost:8080/dermatologist/add',
       dermatologist
+    );
+  }
+
+  public searchDermatologistById(dermatologistId: String) {
+    return this.httpClient.get<Dermatologist>(
+      'http://localhost:8080/medicine/' + dermatologistId + '/findById'
+    );
+  }
+
+  public searchDermatologistByString(string: String) {
+    return this.httpClient.get<Dermatologist>(
+      'http://localhost:8080/medicine/' + string + '/findById'
     );
   }
 }
