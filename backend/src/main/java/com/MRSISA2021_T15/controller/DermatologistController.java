@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping(path="/dermatologist")
@@ -29,4 +33,28 @@ public class DermatologistController {
     public @ResponseBody Iterable<Dermatologist> getAllDermatologists() {
         return dermatologistRepository.findAll();
     }
+
+    @RequestMapping(path="/{dermatologistId}/findById")
+    public Optional<Dermatologist> getDermatologistById(@PathVariable Integer dermatologistId){
+        return dermatologistRepository.findById(dermatologistId);
+    }
+
+    @RequestMapping(path="/{string}/findByString")
+    public ArrayList<Dermatologist> getDermatologistByString(@PathVariable String string){
+        Iterable<Dermatologist> dermatologistList = dermatologistRepository.findAll();
+        ArrayList<Dermatologist> returnList = new ArrayList<>();
+        for(Dermatologist dermatologist: dermatologistList){
+            if(dermatologist.getName().toLowerCase().contains(string.toLowerCase())||
+                    dermatologist.getSurname().toLowerCase().contains(string.toLowerCase())||
+                    dermatologist.getUsername().toLowerCase().contains(string.toLowerCase())||
+                    dermatologist.getAdress().toLowerCase().contains(string.toLowerCase())||
+                    dermatologist.getCity().toLowerCase().contains(string.toLowerCase())||
+                    dermatologist.getCountry().toLowerCase().contains(string.toLowerCase())||
+                    dermatologist.getEmail().toLowerCase().contains(string.toLowerCase())||
+                    dermatologist.getPhoneNumber().contains(string.toLowerCase()))
+                returnList.add(dermatologist);
+        }
+    return returnList;
+    }
+
 }
