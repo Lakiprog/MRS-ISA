@@ -1,0 +1,13 @@
+<div class="container">
+    <form [formGroup]="medicineForm" (ngSubmit)="updateMedicine()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" formControlName="name" required />
+      </div>
+
+      <button type="submit" class="btn btn-success">
+        Add medication
+      </button>
+    </form>
+  </div>
+  
