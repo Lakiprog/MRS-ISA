@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Medicine } from 'src/app/models/medicine';
 import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
 
@@ -9,8 +11,17 @@ import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
 })
 export class ListOfMedicineComponent implements OnInit {
   medicineList!: Medicine[];
-
-  constructor(private pharmacyAdminService: PharmacyAdminService) {}
+  searchForm: FormGroup;
+  medicineId!: String;
+  constructor(
+    private pharmacyAdminService: PharmacyAdminService,
+    private router: Router,
+    private formBuilder: FormBuilder
+  ) {
+    this.searchForm = this.formBuilder.group({
+      searchValue: [],
+    });
+  }
 
   ngOnInit(): void {
     this.pharmacyAdminService
@@ -22,5 +33,17 @@ export class ListOfMedicineComponent implements OnInit {
     this.pharmacyAdminService.deleteMedicine(medicine).subscribe((res) => {
       this.ngOnInit();
     });
+  }
+  updateMedicine(medicine: Medicine): void {
+    localStorage.setItem('medicineId', medicine.id);
+    this.router.navigate(['updateMedicine']);
+  }
+  searchMedicineById(): void {
+    this.medicineId = this.searchForm.value;
+    this.pharmacyAdminService
+      .searchMedicineById(this.medicineId)
+      .subscribe((res) => {
+        console.log(res);
+      });
   }
 }
