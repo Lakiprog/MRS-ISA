@@ -2,8 +2,14 @@ package com.MRSISA2021_T15.controller;
 
 
 import com.MRSISA2021_T15.model.Dermatologist;
+import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.repository.DermatologistRepository;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,5 +62,29 @@ public class DermatologistController {
         }
     return returnList;
     }
+    
+    @PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> putDermatologist(@RequestBody Dermatologist d){
+    	Gson gson = new GsonBuilder().create();
+		if (dermatologistRepository.findByEmail(d.getEmail()) != null && 
+				!dermatologistRepository.findByEmail(d.getEmail()).getUsername().equals(d.getUsername())) {
+			return new ResponseEntity<String>(gson.toJson("A user with this email already exists!"), HttpStatus.INTERNAL_SERVER_ERROR);
+		} else if (dermatologistRepository.findByUsername(d.getUsername()) == null) {
+			return new ResponseEntity<String>(gson.toJson("User: " + d.getUsername() + " does not exist!"), HttpStatus.INTERNAL_SERVER_ERROR);
+		} else {
+			Dermatologist updatedDermatologist = (Dermatologist) dermatologistRepository.findByUsername(d.getUsername());
+			updatedDermatologist.setEmail(d.getEmail());
+			updatedDermatologist.setPassword(d.getPassword());
+			updatedDermatologist.setName(d.getName());
+			updatedDermatologist.setSurname(d.getSurname());
+			updatedDermatologist.setAdress(d.getAdress());
+			updatedDermatologist.setCity(d.getCity());
+			updatedDermatologist.setCountry(d.getCountry());
+			updatedDermatologist.setPhoneNumber(d.getPhoneNumber());
+			updatedDermatologist.setRating(d.getRating());
+			dermatologistRepository.save(updatedDermatologist);
+			return new ResponseEntity<String>(gson.toJson("Update Succesfull!"), HttpStatus.OK);
+		}
+	}
 
 }
