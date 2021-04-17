@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -47,6 +48,10 @@ import { UpdateMedicineComponent } from './components/update-medicine/update-med
 import { SearchMedicineByIdComponent } from './components/search-medicine-by-id/search-medicine-by-id.component';
 import { PharmacistProfilePageComponent } from './pharmacist-profile-page/pharmacist-profile-page.component';
 import { DermatologistProfilePageComponent } from './dermatologist-profile-page/dermatologist-profile-page.component';
+import { AuthService } from './login/auth.service';
+import { ApiService } from './login/api.service';
+import { UserService } from './login/user.service';
+import { TokenInterceptor } from './login/TokenInterceptor';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -175,7 +180,17 @@ FullCalendarModule.registerPlugins([
     ]),
   ],
 
-  providers: [],
+  providers: 
+  [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    AuthService,
+    ApiService,
+    UserService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
