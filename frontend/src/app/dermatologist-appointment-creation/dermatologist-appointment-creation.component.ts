@@ -21,7 +21,6 @@ export class DermatologistAppointmentCreationComponent implements OnInit{
         this.appointmentForm = this.fb.group({
             meetingTime: ['', Validators.required],
             endingTime: ['', Validators.required],
-            price: ['', Validators.required],
         });
     }
 
@@ -44,7 +43,7 @@ export class DermatologistAppointmentCreationComponent implements OnInit{
         }
         start.setHours(start.getHours() + 2);
         end.setHours(end.getHours() + 2);
-        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "dermatologist" : {}, "pharmacy" : {}, "price" : this.appointmentForm.get("price")?.value};
+        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "dermatologist" : {}, "pharmacy" : {}, "price" : 0};
     }
 
     public makeAppointment(){
@@ -76,7 +75,7 @@ export class DermatologistAppointmentCreationComponent implements OnInit{
                 "rating" : 1
             }
 
-            const pharmacy = {"id" : 1}
+            const pharmacy = {"id" : 1, "appointment_price" : 1000.0}
 
             appointment["patient"] = patient;
             appointment["dermatologist"] = dermatologist;

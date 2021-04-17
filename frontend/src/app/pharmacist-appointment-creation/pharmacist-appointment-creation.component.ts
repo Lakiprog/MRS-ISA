@@ -21,7 +21,6 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
         this.appointmentForm = this.fb.group({
             meetingTime: ['', Validators.required],
             endingTime: ['', Validators.required],
-            price: ['', Validators.required],
         });
     }
 
@@ -44,7 +43,7 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
         }
         start.setHours(start.getHours() + 2);
         end.setHours(end.getHours() + 2);
-        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "pharmacist" : {}, "pharmacy" : {}, "price" : this.appointmentForm.get("price")?.value};
+        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "pharmacist" : {}, "pharmacy" : {}, "price" : 0};
     }
 
     public makeAppointment(){
@@ -76,7 +75,7 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
                 "rating" : 1
             }
 
-            const pharmacy = {"id" : 1}
+            const pharmacy = {"id" : 1, "appointment_price" : 1000.0}
 
             appointment["patient"] = patient;
             appointment["pharmacist"] = pharmacist;

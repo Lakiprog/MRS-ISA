@@ -1,5 +1,5 @@
-insert into pharmacy (name, adress, city, country, description, rating) values ('Dinuteka', 'Promenada1', 'NS', 'RS', 'Apoteka koja razbija glavu', 5);
-insert into pharmacy (name, adress, city, country, description, rating) values ('Drusoteka', 'Promenada3', 'BG', 'DE', 'Apoteka koja leci glavu', 2);
+insert into pharmacy (name, adress, city, country, description, rating, appointment_price) values ('Dinuteka', 'Promenada1', 'NS', 'RS', 'Apoteka koja razbija glavu', 5, 1000.0);
+insert into pharmacy (name, adress, city, country, description, rating, appointment_price) values ('Drusoteka', 'Promenada3', 'BG', 'DE', 'Apoteka koja leci glavu', 2, 800.0);
 
 insert into user (USER_TYPE, email, name, surname, adress, city, country, phone_number, username, password, first_login, rating) values ('PATIENT', 'kaki@gmail.com', 'Marko', 'Marković', 'Negde69', 'NS', 'Srbija', '060602311', 'kaki', 'kaki', null, null);
 insert into user (USER_TYPE, email, name, surname, adress, city, country, phone_number, username, password, first_login, rating) values ('PATIENT', 'haker@gmail.com', 'Petar', 'Markuza', 'Negde420', 'NS', 'Srbija', '060602313', 'kek', 'keki', null, null);

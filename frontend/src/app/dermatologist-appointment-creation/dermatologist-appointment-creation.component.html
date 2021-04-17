@@ -18,11 +18,6 @@
                 <input type="time" id="endingTime" name="endingTime" matInput placeholder="endingTime" formControlName = "endingTime" required>
                 <mat-error *ngIf = "hasError('endingTime', 'required')">The ending time is required!</mat-error>
             </mat-form-field>
-            <mat-form-field class = "field-width">
-                <mat-label>Price</mat-label>
-                <input type = "number" matInput placeholder = "price" id="price" name="price" min="1" formControlName="price" required>
-                <mat-error *ngIf = "hasError('price', 'required')">The price is required!</mat-error>
-            </mat-form-field>
         </form>
         <button (click) = "makeAppointment()" [disabled] = "appointmentForm.invalid" mat-raised-button color="primary">Create Appointment</button>
     </mat-card>
