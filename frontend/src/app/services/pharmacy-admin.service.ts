@@ -61,14 +61,14 @@ export class PharmacyAdminService {
   }
 
   public searchMedicineById(medicineId: String) {
-    return this.httpClient.get<Medicine>(
+    return this.httpClient.get<Medicine[]>(
       'http://localhost:8080/medicine/' + medicineId + '/findById'
     );
   }
 
   public searchMedicineByString(string: String) {
-    return this.httpClient.get<Medicine>(
-      'http://localhost:8080/medicine/' + string + '/findById'
+    return this.httpClient.get<Medicine[]>(
+      'http://localhost:8080/medicine/' + string + '/findByString'
     );
   }
 

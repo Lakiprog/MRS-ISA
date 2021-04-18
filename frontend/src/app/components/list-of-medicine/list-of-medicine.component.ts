@@ -12,6 +12,8 @@ import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
 })
 export class ListOfMedicineComponent implements OnInit {
   medicineList!: Medicine[];
+  medicineListBackup!: Medicine[];
+  medicineSearchResult!: Medicine[];
   searchForm: FormGroup;
   medicineId!: DummyModel;
   constructor(
@@ -27,7 +29,9 @@ export class ListOfMedicineComponent implements OnInit {
   ngOnInit(): void {
     this.pharmacyAdminService
       .getAllMedicine()
-      .subscribe((res) => (this.medicineList = res));
+      .subscribe(
+        (res) => ((this.medicineList = res), (this.medicineListBackup = res))
+      );
   }
 
   deleteMedicine(medicine: Medicine): void {
@@ -43,8 +47,18 @@ export class ListOfMedicineComponent implements OnInit {
     this.medicineId = this.searchForm.value;
     this.pharmacyAdminService
       .searchMedicineById(this.medicineId.searchValue)
-      .subscribe((res) => {
-        console.log(res);
-      });
+      .subscribe((res) => (this.medicineList = res));
+  }
+
+  searchMedicineByString(): void {
+    this.medicineId = this.searchForm.value;
+    this.pharmacyAdminService
+      .searchMedicineByString(this.medicineId.searchValue)
+      .subscribe((res) => (this.medicineList = res));
+  }
+
+  clearSearch(): void {
+    this.medicineList = this.medicineListBackup;
+    this.searchForm.reset();
   }
 }
