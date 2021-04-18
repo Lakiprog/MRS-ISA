@@ -37,8 +37,7 @@ export class UpdateMedicineComponent implements OnInit {
     this.pharmacyAdminService
       .updateMedicine(medicine, this.medicineId)
       .subscribe((res) => {
-        this.medicine = res;
+        this.router.navigate(['/listOfMedicine']);
       });
-    this.router.navigate(['/pharmacyAdmin']);
   }
 }

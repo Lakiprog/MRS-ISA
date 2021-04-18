@@ -32,7 +32,22 @@
           Search by Id
         </button>
       </form>
+      <td>
+      <form [formGroup]="searchForm" (ngSubmit)="searchMedicineByString()">
+        <div class="form-group">
+          <label for="searchValue">String</label>
+          <input type="text" formControlName="searchValue" required />
+        </div>
+      <button type="submit" class="btn btn-success">
+        Search by string
+      </button>
+      </form>
       </td>
+      </tr>
+      <tr>
+        <button class="btn btn-danger" (click)="clearSearch()">
+          Clear search
+        </button>
       </tr>
       <td><a [routerLink]="['/pharmacyAdmin']">Nazad</a></td>
     </tbody>

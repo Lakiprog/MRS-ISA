@@ -90,8 +90,10 @@ public class MedicineController {
 	}
 
 	@RequestMapping(path="/{medicineId}/findById")
-	public Optional<Medicine> getMedicineById(@PathVariable Integer medicineId){
-		return medicineRepository.findById(medicineId);
+	public ArrayList<Optional<Medicine>> getMedicineById(@PathVariable Integer medicineId){
+		ArrayList<Optional<Medicine>> returnList = new ArrayList<>();
+		returnList.add(medicineRepository.findById(medicineId));
+		return returnList;
 	}
 
 	@RequestMapping(path="/{string}/findByString")
@@ -99,13 +101,16 @@ public class MedicineController {
 		Iterable<Medicine> medicineList = medicineRepository.findAll();
 		ArrayList<Medicine> returnList = new ArrayList<>();
 		for(Medicine medicine: medicineList){
-			if(medicine.getName().toLowerCase().contains(string.toLowerCase())||
-					medicine.getMedicineCode().toLowerCase().contains(string.toLowerCase())||
-					medicine.getManufacturer().toLowerCase().contains(string.toLowerCase())||
-					medicine.getMedicineType().toLowerCase().contains(string.toLowerCase())||
-					//medicine.getAddtionalComments().toLowerCase().contains(string.toLowerCase())||
-					medicine.getComposition().toLowerCase().contains(string.toLowerCase())||
-					medicine.getForm().contains(string.toLowerCase()))
+			System.out.println("SEARCH RESULTS");
+			System.out.println(medicine.getName().toLowerCase());
+			System.out.println(string.toLowerCase());
+			if((medicine.getName() != null && medicine.getName().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getMedicineCode() != null && medicine.getMedicineCode().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getManufacturer() != null && medicine.getManufacturer().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getMedicineType() != null && medicine.getMedicineType().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getAddtionalComments() != null && medicine.getAddtionalComments().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getComposition() != null && medicine.getComposition().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getForm() != null && medicine.getForm().contains(string.toLowerCase())))
 				returnList.add(medicine);
 		}
 		return returnList;
