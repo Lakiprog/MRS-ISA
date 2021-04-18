@@ -29,13 +29,17 @@ public class Medicine {
 	private String medicineCode, name, medicineType, form, composition, manufacturer, addtionalComments;
 	@Column
 	private boolean prescription;
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+	@Transient
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<SubstituteMedicine> substituteMedicine = new HashSet<SubstituteMedicine>();
+	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Allergy> allergies = new HashSet<Allergy>();
+	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<MedicinePharmacy> medicinePharmacy;
 	
 	@Transient

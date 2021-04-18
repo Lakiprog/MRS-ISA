@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DummyModel } from 'src/app/models/dummy-model';
 import { Medicine } from 'src/app/models/medicine';
 import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
 
@@ -12,7 +13,7 @@ import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
 export class ListOfMedicineComponent implements OnInit {
   medicineList!: Medicine[];
   searchForm: FormGroup;
-  medicineId!: String;
+  medicineId!: DummyModel;
   constructor(
     private pharmacyAdminService: PharmacyAdminService,
     private router: Router,
@@ -41,7 +42,7 @@ export class ListOfMedicineComponent implements OnInit {
   searchMedicineById(): void {
     this.medicineId = this.searchForm.value;
     this.pharmacyAdminService
-      .searchMedicineById(this.medicineId)
+      .searchMedicineById(this.medicineId.searchValue)
       .subscribe((res) => {
         console.log(res);
       });

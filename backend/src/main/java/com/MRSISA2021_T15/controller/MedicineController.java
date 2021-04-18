@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-import com.MRSISA2021_T15.model.Dermatologist;
-import com.MRSISA2021_T15.model.SubstituteMedicine;
-import com.MRSISA2021_T15.repository.MedicineRepository;
-import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
+import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.repository.*;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.service.MedicineService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,7 +28,12 @@ public class MedicineController {
 	private MedicineRepository medicineRepository;
 	@Autowired
 	private SubstituteMedicineRepository substituteMedicineRepository;
-
+	@Autowired
+	private AllergyRepository allergyRepository;
+	@Autowired
+	private MedicinePharmacyRepository medicinePharmacyRepository;
+	@Autowired
+	private PharmacyRepository pharmacyRepository;
 
 
 	@PostMapping(value = "/addMedicine", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,13 +48,34 @@ public class MedicineController {
 	}
 	@DeleteMapping(path = "/{medicineId}/delete")
 	public void deleteMedicine(@PathVariable Integer medicineId) {
-
+/*
 		for(SubstituteMedicine sm: substituteMedicineRepository.findAll())
 		{
 			if(sm.getMedicine().getId().equals( medicineId)) {
+				//substituteMedicineRepository.delete(sm);
+				/*System.out.println("SUBSTITUTE MEDICINE: "+sm);
+				System.out.println(sm.getMedicine().getId());
+				System.out.println(medicineId);
 				sm.setMedicine(null);
+				substituteMedicineRepository.save(sm);
+				substituteMedicineRepository.delete(sm);
 			}
 		}
+		for(Allergy al: allergyRepository.findAll())
+		{
+			if(al.getMedicine().getId().equals(medicineId)){
+				allergyRepository.delete(al);
+			}
+		}
+		for(MedicinePharmacy mp: medicinePharmacyRepository.findAll()){
+			if(mp.getMedicine().getId().equals(medicineId)){
+
+				mp.setPharmacy(null);
+
+				medicinePharmacyRepository.save(mp);
+				medicinePharmacyRepository.delete(mp);
+			}
+		}*/
 		medicineRepository.deleteById(medicineId);
 	}
 
