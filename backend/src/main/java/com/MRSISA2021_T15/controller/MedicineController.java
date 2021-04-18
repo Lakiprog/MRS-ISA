@@ -32,8 +32,6 @@ public class MedicineController {
 	private AllergyRepository allergyRepository;
 	@Autowired
 	private MedicinePharmacyRepository medicinePharmacyRepository;
-	@Autowired
-	private PharmacyRepository pharmacyRepository;
 
 
 	@PostMapping(value = "/addMedicine", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,34 +46,33 @@ public class MedicineController {
 	}
 	@DeleteMapping(path = "/{medicineId}/delete")
 	public void deleteMedicine(@PathVariable Integer medicineId) {
-/*
+
 		for(SubstituteMedicine sm: substituteMedicineRepository.findAll())
 		{
 			if(sm.getMedicine().getId().equals( medicineId)) {
-				//substituteMedicineRepository.delete(sm);
-				/*System.out.println("SUBSTITUTE MEDICINE: "+sm);
-				System.out.println(sm.getMedicine().getId());
-				System.out.println(medicineId);
 				sm.setMedicine(null);
 				substituteMedicineRepository.save(sm);
-				substituteMedicineRepository.delete(sm);
+
 			}
+			if(sm.getSubstituteMedicine().getId().equals(medicineId)){
+				sm.setSubstituteMedicine(null);
+				substituteMedicineRepository.save(sm);
+		}
 		}
 		for(Allergy al: allergyRepository.findAll())
 		{
 			if(al.getMedicine().getId().equals(medicineId)){
-				allergyRepository.delete(al);
+				al.setMedicine(null);
+				allergyRepository.save(al);
 			}
 		}
 		for(MedicinePharmacy mp: medicinePharmacyRepository.findAll()){
 			if(mp.getMedicine().getId().equals(medicineId)){
-
-				mp.setPharmacy(null);
+				mp.setMedicine(null);
 
 				medicinePharmacyRepository.save(mp);
-				medicinePharmacyRepository.delete(mp);
 			}
-		}*/
+		}
 		medicineRepository.deleteById(medicineId);
 	}
 
