@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
 import { PasswordValidator } from '../registration/validators/passwordValidator';
 import { SupplierUpdateService } from './supplier-update.service';
 
@@ -15,7 +16,13 @@ export class SupplierProfilePageComponent implements OnInit {
   EMAIL_REGEX : string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  constructor(private fb: FormBuilder, private _supplierUpdateService: SupplierUpdateService, private _snackBar: MatSnackBar) { }
+  constructor
+  (
+    private fb: FormBuilder, 
+    private _supplierUpdateService: SupplierUpdateService, 
+    private _snackBar: MatSnackBar,
+    private authService: AuthService
+  ) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   ngOnInit(): void {
@@ -95,6 +102,10 @@ export class SupplierProfilePageComponent implements OnInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

@@ -49,8 +49,6 @@ import { SearchMedicineByIdComponent } from './components/search-medicine-by-id/
 import { PharmacistProfilePageComponent } from './pharmacist-profile-page/pharmacist-profile-page.component';
 import { DermatologistProfilePageComponent } from './dermatologist-profile-page/dermatologist-profile-page.component';
 import { AuthService } from './login/auth.service';
-import { ApiService } from './login/api.service';
-import { UserService } from './login/user.service';
 import { TokenInterceptor } from './login/TokenInterceptor';
 
 FullCalendarModule.registerPlugins([
@@ -187,9 +185,7 @@ FullCalendarModule.registerPlugins([
       useClass: TokenInterceptor,
       multi: true
     },
-    AuthService,
-    ApiService,
-    UserService
+    AuthService
   ],
   bootstrap: [AppComponent],
 })

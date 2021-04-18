@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { UserService } from './user.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +18,6 @@ export class LoginComponent implements OnInit {
   (
     private fb: FormBuilder, 
     private router: Router,
-    private userService: UserService,
     private authService: AuthService,
     private _snackBar: MatSnackBar
   ) { }
@@ -41,7 +39,19 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value)
       .subscribe(
         data => {
-          this.userService.getCurrentUserInfo().subscribe();
+          if (this.authService.getTokenData()?.role === "ROLE_SYSTEM_ADMIN") {
+            this.router.navigate(['/systemAdminProfilePage']);
+          } else if (this.authService.getTokenData()?.role === "ROLE_SUPPLIER") {
+            this.router.navigate(['/supplierProfilePage']);
+          } else if (this.authService.getTokenData()?.role === "ROLE_PATIENT") {
+            this.router.navigate(['/UserHomePage']);
+          } else if (this.authService.getTokenData()?.role === "ROLE_PHARMACY_ADMIN") {
+            this.router.navigate(['/pharmacyAdmin']);
+          } else if (this.authService.getTokenData()?.role === "ROLE_DERMATOLOGIST") {
+            this.router.navigate(['/DermatologistHomePage']);
+          } else if (this.authService.getTokenData()?.role === "ROLE_PHARMACIST") {
+            this.router.navigate(['/PharmacistHomePage']);
+          }
         },
         error => {
           this.openSnackBar()
@@ -55,5 +65,4 @@ export class LoginComponent implements OnInit {
         panelClass: "back-red"
       });
     }
-
 }

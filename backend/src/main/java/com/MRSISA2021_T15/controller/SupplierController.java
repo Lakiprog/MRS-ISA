@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,6 +25,7 @@ public class SupplierController {
 	private SupplierService supplierService;
 	
 	@PutMapping(value = "/updateSupplierData", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public ResponseEntity<String> updateSupplierData(@RequestBody Supplier supplier) {
 		String message = supplierService.updateSupplierData(supplier);
 		Gson gson = new GsonBuilder().create();
@@ -35,6 +37,7 @@ public class SupplierController {
 	}
 	
 	@GetMapping(value = "/getSupplierData/{supplierUsername}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public Supplier getSupplierData(@PathVariable("supplierUsername") String supplierUsername) {
 		return supplierService.getSupplierData(supplierUsername);
 	}

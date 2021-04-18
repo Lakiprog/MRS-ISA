@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.SubstituteMedicine;
 import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.MRSISA2021_T15.model.Medicine;
@@ -35,6 +35,7 @@ public class MedicineController {
 
 
 	@PostMapping(value = "/addMedicine", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<String> addMedicine(@RequestBody Medicine medicine) {
 		String message = medicineService.addMedicine(medicine);
 		Gson gson = new GsonBuilder().create();
@@ -57,6 +58,7 @@ public class MedicineController {
 	}
 
 	@GetMapping(value = "/getMedicineList", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public HashMap<Integer, String> getMedicineList() {
 		return medicineService.getMedicineList();
 	}
