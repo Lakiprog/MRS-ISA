@@ -1,12 +1,6 @@
 package com.MRSISA2021_T15.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "substitute_medicine")
@@ -15,11 +9,10 @@ public class SubstituteMedicine {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "medicine_id")
 	private Medicine medicine;
-	
 	@ManyToOne
 	@JoinColumn(name = "substitute_medicine_id")
 	private Medicine substituteMedicine;

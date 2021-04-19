@@ -7,6 +7,8 @@ import java.util.Optional;
 import com.MRSISA2021_T15.model.SubstituteMedicine;
 import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
+import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.repository.*;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.service.MedicineService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,7 +32,10 @@ public class MedicineController {
 	private MedicineRepository medicineRepository;
 	@Autowired
 	private SubstituteMedicineRepository substituteMedicineRepository;
-
+	@Autowired
+	private AllergyRepository allergyRepository;
+	@Autowired
+	private MedicinePharmacyRepository medicinePharmacyRepository;
 
 
 	@PostMapping(value = "/addMedicine", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,6 +57,26 @@ public class MedicineController {
 		{
 			if(sm.getMedicine().getId().equals( medicineId)) {
 				sm.setMedicine(null);
+				substituteMedicineRepository.save(sm);
+
+			}
+			if(sm.getSubstituteMedicine().getId().equals(medicineId)){
+				sm.setSubstituteMedicine(null);
+				substituteMedicineRepository.save(sm);
+		}
+		}
+		for(Allergy al: allergyRepository.findAll())
+		{
+			if(al.getMedicine().getId().equals(medicineId)){
+				al.setMedicine(null);
+				allergyRepository.save(al);
+			}
+		}
+		for(MedicinePharmacy mp: medicinePharmacyRepository.findAll()){
+			if(mp.getMedicine().getId().equals(medicineId)){
+				mp.setMedicine(null);
+
+				medicinePharmacyRepository.save(mp);
 			}
 		}
 		medicineRepository.deleteById(medicineId);
@@ -71,9 +95,11 @@ public class MedicineController {
 	}
 
 	@RequestMapping(path="/{medicineId}/findById")
-	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
-	public Optional<Medicine> getMedicineById(@PathVariable Integer medicineId){
-		return medicineRepository.findById(medicineId);
+  @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ArrayList<Optional<Medicine>> getMedicineById(@PathVariable Integer medicineId){
+		ArrayList<Optional<Medicine>> returnList = new ArrayList<>();
+		returnList.add(medicineRepository.findById(medicineId));
+		return returnList;
 	}
 
 	@RequestMapping(path="/{string}/findByString")
@@ -82,13 +108,16 @@ public class MedicineController {
 		Iterable<Medicine> medicineList = medicineRepository.findAll();
 		ArrayList<Medicine> returnList = new ArrayList<>();
 		for(Medicine medicine: medicineList){
-			if(medicine.getName().toLowerCase().contains(string.toLowerCase())||
-					medicine.getMedicineCode().toLowerCase().contains(string.toLowerCase())||
-					medicine.getManufacturer().toLowerCase().contains(string.toLowerCase())||
-					medicine.getMedicineType().toLowerCase().contains(string.toLowerCase())||
-					//medicine.getAddtionalComments().toLowerCase().contains(string.toLowerCase())||
-					medicine.getComposition().toLowerCase().contains(string.toLowerCase())||
-					medicine.getForm().contains(string.toLowerCase()))
+			System.out.println("SEARCH RESULTS");
+			System.out.println(medicine.getName().toLowerCase());
+			System.out.println(string.toLowerCase());
+			if((medicine.getName() != null && medicine.getName().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getMedicineCode() != null && medicine.getMedicineCode().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getManufacturer() != null && medicine.getManufacturer().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getMedicineType() != null && medicine.getMedicineType().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getAddtionalComments() != null && medicine.getAddtionalComments().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getComposition() != null && medicine.getComposition().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getForm() != null && medicine.getForm().contains(string.toLowerCase())))
 				returnList.add(medicine);
 		}
 		return returnList;
