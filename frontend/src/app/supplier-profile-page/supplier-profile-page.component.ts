@@ -13,7 +13,6 @@ import { SupplierUpdateService } from './supplier-update.service';
 export class SupplierProfilePageComponent implements OnInit {
 
   updateForm! : FormGroup;
-  EMAIL_REGEX : string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
   constructor
@@ -29,7 +28,7 @@ export class SupplierProfilePageComponent implements OnInit {
     this.updateForm = this.fb.group(
       {
         username: [''],
-        email: ['', [Validators.required, Validators.pattern(this.EMAIL_REGEX)]],
+        email: [''],
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required],
         name: ['', Validators.required],
@@ -42,16 +41,7 @@ export class SupplierProfilePageComponent implements OnInit {
     );
     this._supplierUpdateService.getSupplierData().subscribe(
       data => {
-        this.updateForm.get('username')?.setValue(data.username);
-        this.updateForm.get('email')?.setValue(data.email);
-        this.updateForm.get('password')?.setValue(data.password);
-        this.updateForm.get('confirmPassword')?.setValue(data.password);
-        this.updateForm.get('name')?.setValue(data.name);
-        this.updateForm.get('surname')?.setValue(data.surname);
-        this.updateForm.get('adress')?.setValue(data.adress);
-        this.updateForm.get('city')?.setValue(data.city);
-        this.updateForm.get('country')?.setValue(data.country);
-        this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
+        this.fillDataForm(data);
       }
     )
   }
@@ -74,24 +64,16 @@ export class SupplierProfilePageComponent implements OnInit {
     console.log(this.updateForm.value);
     this._supplierUpdateService.updateSupplierData(this.updateForm.value).subscribe(
       response => {
-        this.openSnackBar(response, this.RESPONSE_OK);
+        this.authService.setToken(response)
+        this.authService.setTokenData(response)
         this._supplierUpdateService.getSupplierData().subscribe(
           data => {
-            this.updateForm.get('username')?.setValue(data.username);
-            this.updateForm.get('email')?.setValue(data.email);
-            this.updateForm.get('password')?.setValue(data.password);
-            this.updateForm.get('confirmPassword')?.setValue(data.password);
-            this.updateForm.get('name')?.setValue(data.name);
-            this.updateForm.get('surname')?.setValue(data.surname);
-            this.updateForm.get('adress')?.setValue(data.adress);
-            this.updateForm.get('city')?.setValue(data.city);
-            this.updateForm.get('country')?.setValue(data.country);
-            this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
+            this.fillDataForm(data);
           }
         )
       },
       error => {
-        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+        this.openSnackBar(error.error.error, this.RESPONSE_ERROR);
       }
     )
   }
@@ -102,6 +84,19 @@ export class SupplierProfilePageComponent implements OnInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  fillDataForm(data: any) {
+    this.updateForm.get('username')?.setValue(data.username);
+    this.updateForm.get('email')?.setValue(data.email);
+    this.updateForm.get('password')?.setValue(data.password);
+    this.updateForm.get('confirmPassword')?.setValue(data.password);
+    this.updateForm.get('name')?.setValue(data.name);
+    this.updateForm.get('surname')?.setValue(data.surname);
+    this.updateForm.get('adress')?.setValue(data.adress);
+    this.updateForm.get('city')?.setValue(data.city);
+    this.updateForm.get('country')?.setValue(data.country);
+    this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
   }
 
   logout() {

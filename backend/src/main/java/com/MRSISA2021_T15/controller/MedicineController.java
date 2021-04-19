@@ -46,6 +46,7 @@ public class MedicineController {
 		}
 	}
 	@DeleteMapping(path = "/{medicineId}/delete")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public void deleteMedicine(@PathVariable Integer medicineId) {
 
 		for(SubstituteMedicine sm: substituteMedicineRepository.findAll())
@@ -64,16 +65,19 @@ public class MedicineController {
 	}
 
 	@RequestMapping(path="/all")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public @ResponseBody Iterable<Medicine> getAllMedicine() {
 		return medicineRepository.findAll();
 	}
 
 	@RequestMapping(path="/{medicineId}/findById")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public Optional<Medicine> getMedicineById(@PathVariable Integer medicineId){
 		return medicineRepository.findById(medicineId);
 	}
 
 	@RequestMapping(path="/{string}/findByString")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public ArrayList<Medicine> getMedicineByString(@PathVariable String string){
 		Iterable<Medicine> medicineList = medicineRepository.findAll();
 		ArrayList<Medicine> returnList = new ArrayList<>();
@@ -89,9 +93,10 @@ public class MedicineController {
 		}
 		return returnList;
 	}
+	
 	@PutMapping(path="/{medicineId}/update")
-	public
-	ResponseEntity edit(@PathVariable Integer medicineId, @RequestBody Medicine m) throws NotFoundException {
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ResponseEntity edit(@PathVariable Integer medicineId, @RequestBody Medicine m) throws NotFoundException {
 		Medicine med = medicineRepository.findById(medicineId).orElseThrow(() -> new NotFoundException("Ne postoji id"));
 		med.setName(m.getName());
 		med.setAddtionalComments(m.getAddtionalComments());

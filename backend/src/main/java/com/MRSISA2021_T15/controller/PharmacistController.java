@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,27 +29,32 @@ public class PharmacistController {
     private PharmacistRepository pharmacistRepository;
 
     @RequestMapping(path="/add", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public @ResponseBody ResponseEntity addNewPharmacist (@RequestBody Pharmacist p) {
         pharmacistRepository.save(p);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(path = "/{pharmacistId}/delete")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public void deletePharmacist(@PathVariable Integer pharmacistId) {
         pharmacistRepository.deleteById(pharmacistId);
     }
 
     @RequestMapping(path="/all")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public @ResponseBody Iterable<Pharmacist> getAllPharmacists() {
         return pharmacistRepository.findAll();
     }
     
     @GetMapping(value = "/get/{pharmacistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public Optional<Pharmacist> getPharmacist(@PathVariable("pharmacistId") Integer pharmacistId){
 		return pharmacistRepository.findById(pharmacistId);
 	}
     
     @PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public ResponseEntity<String> putPharmacist(@RequestBody Pharmacist p){
 		Gson gson = new GsonBuilder().create();
 		if (pharmacistRepository.findByEmail(p.getEmail()) != null && 

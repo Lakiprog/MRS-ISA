@@ -16,9 +16,7 @@
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Email</mat-label>
-                <input type = "email" matInput placeholder = "Email" formControlName = "email" required>
-                <mat-error *ngIf = "hasError('email', 'required')">Email is required!</mat-error>
-                <mat-error *ngIf = "hasError('email', 'pattern') && !hasError('email', 'required')">Email format is not valid!</mat-error>
+                <input type = "email" matInput placeholder = "Email" formControlName = "email" readonly>
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Password</mat-label>
