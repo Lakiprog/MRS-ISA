@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ public class PatientSearchController {
 	private PatientSearchService service;
 	
 	@GetMapping(value = "/searchPatientsPharmacist/{pharmacistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public Collection<Patient> searchPatientsPharmacist(@PathVariable("pharmacistId") Integer pharmacistId){
 			ArrayList<Patient> patients = new ArrayList<Patient>();
 			for (Patient patient : service.findAll()) {
@@ -44,6 +46,7 @@ public class PatientSearchController {
 	}
 	
 	@GetMapping(value = "/searchPatientsDermatologist/{dermatologistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public Collection<Patient> searchPatientsDermatolog(@PathVariable("dermatologistId") Integer dermatologistId){
 			ArrayList<Patient> patients = new ArrayList<Patient>();
 			for (Patient patient : service.findAll()) {

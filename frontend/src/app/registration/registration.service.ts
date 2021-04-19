@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { AuthService } from '../login/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegistrationService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient, private authService: AuthService) { }
 
   registerPatient(patient: any) {
     return this._http.post<any>("http://localhost:8080/registration/registerPatient", patient)

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,27 +26,32 @@ public class DermatologistController {
     private DermatologistRepository dermatologistRepository;
 
     @RequestMapping(path="/add", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public @ResponseBody ResponseEntity addNewDermatologist (@RequestBody Dermatologist d) {
         dermatologistRepository.save(d);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(path = "/{dermatologistId}/delete")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public void deleteDermatologist(@PathVariable Integer dermatologistId) {
         dermatologistRepository.deleteById(dermatologistId);
     }
 
     @RequestMapping(path="/all")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public @ResponseBody Iterable<Dermatologist> getAllDermatologists() {
         return dermatologistRepository.findAll();
     }
 
     @RequestMapping(path="/{dermatologistId}/findById")
+    @PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
     public Optional<Dermatologist> getDermatologistById(@PathVariable Integer dermatologistId){
         return dermatologistRepository.findById(dermatologistId);
     }
 
     @RequestMapping(path="/{string}/findByString")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ArrayList<Dermatologist> getDermatologistByString(@PathVariable String string){
         Iterable<Dermatologist> dermatologistList = dermatologistRepository.findAll();
         ArrayList<Dermatologist> returnList = new ArrayList<>();
@@ -64,6 +70,7 @@ public class DermatologistController {
     }
     
     @PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<String> putDermatologist(@RequestBody Dermatologist d){
     	Gson gson = new GsonBuilder().create();
 		if (dermatologistRepository.findByEmail(d.getEmail()) != null && 

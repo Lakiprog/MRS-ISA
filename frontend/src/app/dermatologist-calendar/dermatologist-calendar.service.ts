@@ -8,8 +8,7 @@ export class DermatologistCalendarService {
 
   constructor(private _http: HttpClient) { }
 
-    public getAppointmentsDermatologist(){
-
-        return this._http.get("http://localhost:8080/calendar/calendarDermatologist/6")
-    }
+  getAppointmentsDermatologist(){
+      return this._http.get("http://localhost:8080/calendar/calendarDermatologist/6")
+  }
 }

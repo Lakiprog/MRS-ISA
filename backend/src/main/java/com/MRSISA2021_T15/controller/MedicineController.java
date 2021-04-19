@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
+import com.MRSISA2021_T15.model.SubstituteMedicine;
+import com.MRSISA2021_T15.repository.MedicineRepository;
+import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
 import com.MRSISA2021_T15.model.*;
 import com.MRSISA2021_T15.repository.*;
 import javassist.NotFoundException;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.MRSISA2021_T15.service.MedicineService;
@@ -35,6 +39,7 @@ public class MedicineController {
 
 
 	@PostMapping(value = "/addMedicine", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<String> addMedicine(@RequestBody Medicine medicine) {
 		String message = medicineService.addMedicine(medicine);
 		Gson gson = new GsonBuilder().create();
@@ -45,6 +50,7 @@ public class MedicineController {
 		}
 	}
 	@DeleteMapping(path = "/{medicineId}/delete")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public void deleteMedicine(@PathVariable Integer medicineId) {
 
 		for(SubstituteMedicine sm: substituteMedicineRepository.findAll())
@@ -77,16 +83,19 @@ public class MedicineController {
 	}
 
 	@GetMapping(value = "/getMedicineList", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public HashMap<Integer, String> getMedicineList() {
 		return medicineService.getMedicineList();
 	}
 
 	@RequestMapping(path="/all")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public @ResponseBody Iterable<Medicine> getAllMedicine() {
 		return medicineRepository.findAll();
 	}
 
 	@RequestMapping(path="/{medicineId}/findById")
+  @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public ArrayList<Optional<Medicine>> getMedicineById(@PathVariable Integer medicineId){
 		ArrayList<Optional<Medicine>> returnList = new ArrayList<>();
 		returnList.add(medicineRepository.findById(medicineId));
@@ -94,6 +103,7 @@ public class MedicineController {
 	}
 
 	@RequestMapping(path="/{string}/findByString")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public ArrayList<Medicine> getMedicineByString(@PathVariable String string){
 		Iterable<Medicine> medicineList = medicineRepository.findAll();
 		ArrayList<Medicine> returnList = new ArrayList<>();
@@ -112,9 +122,10 @@ public class MedicineController {
 		}
 		return returnList;
 	}
+	
 	@PutMapping(path="/{medicineId}/update")
-	public
-	ResponseEntity edit(@PathVariable Integer medicineId, @RequestBody Medicine m) throws NotFoundException {
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ResponseEntity edit(@PathVariable Integer medicineId, @RequestBody Medicine m) throws NotFoundException {
 		Medicine med = medicineRepository.findById(medicineId).orElseThrow(() -> new NotFoundException("Ne postoji id"));
 		med.setName(m.getName());
 		med.setAddtionalComments(m.getAddtionalComments());

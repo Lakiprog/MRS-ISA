@@ -4,6 +4,7 @@
         <mat-toolbar-row>
             <a mat-button>Write offers for incoming purchase orders</a>
             <a mat-button>View all offers</a>
+            <a mat-button (click) = "logout()">Logout</a>
         </mat-toolbar-row>
     </mat-toolbar>
     <mat-card class = "card">
@@ -15,9 +16,7 @@
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Email</mat-label>
-                <input type = "email" matInput placeholder = "Email" formControlName = "email" required>
-                <mat-error *ngIf = "hasError('email', 'required')">Email is required!</mat-error>
-                <mat-error *ngIf = "hasError('email', 'pattern') && !hasError('email', 'required')">Email format is not valid!</mat-error>
+                <input type = "email" matInput placeholder = "Email" formControlName = "email" readonly>
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Password</mat-label>
