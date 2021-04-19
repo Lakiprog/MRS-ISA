@@ -50,6 +50,12 @@ import { PharmacistProfilePageComponent } from './pharmacist-profile-page/pharma
 import { DermatologistProfilePageComponent } from './dermatologist-profile-page/dermatologist-profile-page.component';
 import { AuthService } from './login/auth.service';
 import { TokenInterceptor } from './login/TokenInterceptor';
+import { SystemAdminRoutes } from './user-routes/SystemAdminRoutes';
+import { PharmacistRoutes } from './user-routes/PharmacistRoutes';
+import { DermatologistRoutes } from './user-routes/DermatologistRoutes';
+import { SupplierRoutes } from './user-routes/SupplierRoutes';
+import { PharmacyAdminRoutes } from './user-routes/PharmacyAdminRoutes';
+import { PatientRoutes } from './user-routes/PatientRoutes';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -105,76 +111,141 @@ FullCalendarModule.registerPlugins([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'UserHomePage', component: UserHomePageComponent },
-      { path: 'PharmacistHomePage', component: PharmacistHomePageComponent },
+      { 
+        path: 'UserHomePage',
+        canActivate: [PatientRoutes],
+        component: UserHomePageComponent 
+      },
+      { 
+        path: 'PharmacistHomePage',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistHomePageComponent 
+      },
       {
         path: 'DermatologistHomePage',
+        canActivate: [DermatologistRoutes],
         component: DermatologistHomePageComponent,
       },
       {
         path: 'PharmacistPatientComponent',
+        canActivate: [PharmacistRoutes],
         component: PharmacistPatientComponent,
       },
       {
         path: 'DermatologistPatientComponent',
+        canActivate: [DermatologistRoutes],
         component: DermatologistPatientComponent,
       },
       {
         path: 'PharmacistCalendarComponent',
+        canActivate: [PharmacistRoutes],
         component: PharmacistCalendarComponent,
       },
       {
         path: 'DermatologistCalendarComponent',
+        canActivate: [DermatologistRoutes],
         component: DermatologistCalendarComponent,
       },
-      { path: 'addMedicine', component: AddMedicineComponent },
+      { 
+        path: 'addMedicine', 
+        canActivate: [SystemAdminRoutes],
+        component: AddMedicineComponent 
+      },
       {
         path: 'systemAdminProfilePage',
+        canActivate: [SystemAdminRoutes],
         component: SystemAdminProfilePageComponent,
       },
-      { path: 'supplierProfilePage', component: SupplierProfilePageComponent },
-      {
-        path: 'DermatologistHomePage',
-        component: DermatologistHomePageComponent,
+      { 
+        path: 'supplierProfilePage',
+        canActivate: [SupplierRoutes],
+        component: SupplierProfilePageComponent 
       },
-      {
-        path: 'PharmacistPatientComponent',
-        component: PharmacistPatientComponent,
+      { 
+        path: 'pharmacyAdmin',
+        canActivate: [PharmacyAdminRoutes],
+        component: PharmacyAdminComponent 
       },
-      {
-        path: 'DermatologistPatientComponent',
-        component: DermatologistPatientComponent,
+      { 
+        path: 'listOfPharmacists',
+        canActivate: [PharmacyAdminRoutes],
+        component: ListOfPharmacistsComponent 
       },
-      { path: 'pharmacyAdmin', component: PharmacyAdminComponent },
-      { path: 'listOfPharmacists', component: ListOfPharmacistsComponent },
-      { path: 'addNewPharmacist', component: AddNewPharmacistComponent },
-      { path: 'listOfMedicine', component: ListOfMedicineComponent },
-      { path: 'addNewMedicine', component: AddNewMedicineComponent },
+      { 
+        path: 'addNewPharmacist',
+        canActivate: [PharmacyAdminRoutes],
+        component: AddNewPharmacistComponent 
+      },
+      { 
+        path: 'listOfMedicine',
+        canActivate: [PharmacyAdminRoutes],
+        component: ListOfMedicineComponent 
+      },
+      { 
+        path: 'addNewMedicine',
+        canActivate: [PharmacyAdminRoutes],
+        component: AddNewMedicineComponent 
+      },
       {
         path: 'listOfDermatologists',
+        canActivate: [PharmacyAdminRoutes],
         component: ListOfDermatologistsComponent,
       },
-      { path: 'addNewDermatologist', component: AddNewDermatologistComponent },
-      { path: 'PatientProfile', component: PatientProfileNavbarComponent },
-      { path: 'PatientChangeData', component: ChangePatientDataComponent },
+      { 
+        path: 'addNewDermatologist',
+        canActivate: [PharmacyAdminRoutes],
+        component: AddNewDermatologistComponent 
+      },
+      { 
+        path: 'PatientProfile',
+        canActivate: [PatientRoutes],
+        component: PatientProfileNavbarComponent 
+      },
+      { 
+        path: 'PatientChangeData',
+        canActivate: [PatientRoutes],
+        component: ChangePatientDataComponent 
+      },
       {
         path: 'PharmacistAppointmentCreationComponent',
+        canActivate: [PharmacistRoutes],
         component: PharmacistAppointmentCreationComponent,
       },
       {
         path: 'DermatologistAppointmentCreationComponent',
+        canActivate: [DermatologistRoutes],
         component: DermatologistAppointmentCreationComponent,
       },
       {
         path: 'DermatologistChoosePredefinedComponent',
+        canActivate: [DermatologistRoutes],
         component: DermatologistChoosePredefinedComponent,
       },
-      { path: 'searchPharmacy', component: SearchPharmacyComponent },
-      { path: 'registerPharmacies', component: RegisterPharmaciesComponent },
-      { path: 'updateMedicine', component: UpdateMedicineComponent },
-      { path: 'searchMedicineById', component: SearchMedicineByIdComponent },
-      { path: 'PharmacistProfilePageComponent', component: PharmacistProfilePageComponent },
-      { path: 'DermatologistProfilePageComponent', component: DermatologistProfilePageComponent },
+      { 
+      path: 'searchPharmacy', component: SearchPharmacyComponent },
+      { 
+        path: 'registerPharmacies', 
+        canActivate: [SystemAdminRoutes],
+        component: RegisterPharmaciesComponent 
+      },
+      { 
+        path: 'updateMedicine',
+        canActivate: [PharmacyAdminRoutes],
+        component: UpdateMedicineComponent 
+      },
+      { 
+        path: 'searchMedicineById', 
+        canActivate: [PharmacyAdminRoutes],
+        component: SearchMedicineByIdComponent },
+      { 
+        path: 'PharmacistProfilePageComponent',
+        canActivate: [PharmacistRoutes], 
+        component: PharmacistProfilePageComponent 
+      },
+      { 
+        path: 'DermatologistProfilePageComponent',
+        canActivate: [DermatologistRoutes],
+        component: DermatologistProfilePageComponent },
     ]),
   ],
 
