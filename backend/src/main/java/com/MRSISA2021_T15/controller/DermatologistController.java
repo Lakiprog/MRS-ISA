@@ -38,16 +38,18 @@ public class DermatologistController {
     }
 
     @RequestMapping(path="/all")
-    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public @ResponseBody Iterable<Dermatologist> getAllDermatologists() {
         return dermatologistRepository.findAll();
     }
 
-    @RequestMapping(path="/{dermatologistId}/findById")
-    public ArrayList<Optional<Dermatologist>> getDermatologistArrayById(@PathVariable Integer dermatologistId){
+    @RequestMapping(path="/{dermatologistId}/findArrayById")
+    public ArrayList<Optional<Dermatologist>> getDermatologistArrayById(@PathVariable Integer dermatologistId) {
         ArrayList<Optional<Dermatologist>> returnList = new ArrayList<>();
         returnList.add(dermatologistRepository.findById(dermatologistId));
         return returnList;
+
+    }
     @PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
     public Optional<Dermatologist> getDermatologistById(@PathVariable Integer dermatologistId){
         return dermatologistRepository.findById(dermatologistId);
@@ -71,7 +73,7 @@ public class DermatologistController {
         }
     return returnList;
     }
-    
+
     @PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<String> putDermatologist(@RequestBody Dermatologist d){
@@ -96,5 +98,4 @@ public class DermatologistController {
 			return new ResponseEntity<String>(gson.toJson("Update Succesfull!"), HttpStatus.OK);
 		}
 	}
-
 }

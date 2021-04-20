@@ -51,7 +51,7 @@ export class ListOfMedicineComponent implements OnInit {
   searchMedicineById(): void {
     this.medicineId = this.searchForm.value;
     this.pharmacyAdminService
-      .searchMedicineById(this.medicineId.searchValue)
+      .searchMedicineArrayById(this.medicineId.searchValue)
       .subscribe((res) => (this.medicineList = res));
   }
 

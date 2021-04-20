@@ -94,9 +94,9 @@ public class MedicineController {
 		return medicineRepository.findAll();
 	}
 
-	@RequestMapping(path="/{medicineId}/findById")
-  @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
-	public ArrayList<Optional<Medicine>> getMedicineById(@PathVariable Integer medicineId){
+	@RequestMapping(path="/{medicineId}/findArrayById")
+  	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ArrayList<Optional<Medicine>> getMedicineArrayById(@PathVariable Integer medicineId){
 		ArrayList<Optional<Medicine>> returnList = new ArrayList<>();
 		returnList.add(medicineRepository.findById(medicineId));
 		return returnList;

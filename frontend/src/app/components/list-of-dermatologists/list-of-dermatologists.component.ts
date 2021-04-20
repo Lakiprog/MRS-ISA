@@ -48,7 +48,7 @@ export class ListOfDermatologistsComponent implements OnInit {
   searchDermatologistById(): void {
     this.dermatologistId = this.searchForm.value;
     this.pharmacyAdminService
-      .searchDermatologistById(this.dermatologistId.searchValue)
+      .searchDermatologistArrayById(this.dermatologistId.searchValue)
       .subscribe((res) => (this.dermatologistList = res));
   }
 
