@@ -28,10 +28,10 @@ public class MedicineController {
 	private MedicineRepository medicineRepository;
 	@Autowired
 	private SubstituteMedicineRepository substituteMedicineRepository;
-	@Autowired
-	private AllergyRepository allergyRepository;
-	@Autowired
-	private MedicinePharmacyRepository medicinePharmacyRepository;
+	//@Autowired
+	//private AllergyRepository allergyRepository;
+	//@Autowired
+	//private MedicinePharmacyRepository medicinePharmacyRepository;
 	@Autowired
 	private PharmacyRepository pharmacyRepository;
 

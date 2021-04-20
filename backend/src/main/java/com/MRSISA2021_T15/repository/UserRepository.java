@@ -1,6 +1,8 @@
 package com.MRSISA2021_T15.repository;
 
+import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.model.User;
 
 import java.util.List;
@@ -23,6 +25,10 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 	@Query("select distinct p from User p where USER_TYPE = 'PATIENT'")
 	List<Patient>findAllPatients();
 	
-
+	@Query("select distinct d from User d where USER_TYPE = 'DERMATOLOGIST'")
+	List<Dermatologist>findAllDermatologist();
+	
+	@Query("select distinct p from User p where USER_TYPE = 'PHARMACIST'")
+	List<Pharmacist>findAllPharmacist();
 
 }

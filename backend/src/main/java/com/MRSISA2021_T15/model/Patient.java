@@ -20,6 +20,18 @@ public class Patient extends User{
 	@JsonIgnore
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Allergy> allergies = new HashSet<Allergy>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy= "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Complaint>complaints = new HashSet<Complaint>();
+
+	public Set<Complaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(Set<Complaint> complaints) {
+		this.complaints = complaints;
+	}
 
 	public Set<Appointment> getAppointments() {
 		return appointments;

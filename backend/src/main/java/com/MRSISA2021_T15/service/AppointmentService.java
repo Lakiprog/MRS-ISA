@@ -38,6 +38,10 @@ public class AppointmentService {
 		return repository.findAllPatientsId(id);
 	}
 	
+	public List<Appointment>findAllAppointments(){
+		return repository.findAll();
+	}
+	
 	public String makeAppointmentPharmacist(AppointmentPharmacist appointment) {
 		List<Appointment> appointmentsPatient = findAllPatients(appointment.getPatient().getId());
 		List<Appointment> appointmentsPharmacist = findAllPharmacist(appointment.getPharmacist().getId());
