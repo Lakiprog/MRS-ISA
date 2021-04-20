@@ -29,7 +29,7 @@ public abstract class Appointment {
 	@Column
 	private LocalDateTime start, end;
 	@Column
-	private Integer price;
+	private double price;
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
@@ -61,10 +61,11 @@ public abstract class Appointment {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getPrice() {
+	
+	public double getPrice() {
 		return price;
 	}
-	public void setPrice(Integer price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	public Pharmacy getPharmacy() {

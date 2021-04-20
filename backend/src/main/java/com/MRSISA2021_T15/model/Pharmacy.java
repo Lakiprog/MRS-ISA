@@ -27,6 +27,8 @@ public class Pharmacy {
 	private String name, adress, city, country, description;
 	@Column
 	private double rating;
+	@Column
+	double appointmentPrice;
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Employment> employments;

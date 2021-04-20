@@ -2,13 +2,14 @@
     <section>
         <div class="wave"></div>
         <ul>
-            <li> <a href="DermatologistProfile.html"> MY PROFILE</a> </li>
-            <li> <a href="http://localhost:4200/DermatologistPatientComponent"> SEARCH PATIENTS</a></li>
-            <li> <a href="http://localhost:4200/DermatologistCalendarComponent"> WORK CALENDAR</a></li>
+            <li> <a routerLink="/DermatologistProfilePageComponent"> MY PROFILE</a> </li>
+            <li> <a routerLink="/DermatologistPatientComponent"> SEARCH PATIENTS</a></li>
+            <li> <a routerLink="/DermatologistCalendarComponent"> WORK CALENDAR</a></li>
             <li> <a href="Absence.html"> ABSENCE FORM </a></li>
             <li> <a href="Appointments.html"> APPOINTMENTS </a></li>
-            <li> <a href="http://localhost:4200/DermatologistAppointmentCreationComponent">MAKE APPOINTMENT</a></li>
-            <li> <a href="http://localhost:4200/DermatologistChoosePredefinedComponent">CHOOSE PREDEFINED</a></li>
+            <li> <a routerLink="/DermatologistAppointmentCreationComponent">MAKE APPOINTMENT</a></li>
+            <li> <a routerLink="/DermatologistChoosePredefinedComponent">CHOOSE PREDEFINED</a></li>
+            <li (click) = "logout()"><a>LOGOUT</a></li>
         </ul>
     </section>
 </body>
