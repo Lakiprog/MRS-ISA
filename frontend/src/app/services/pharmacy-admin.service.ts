@@ -43,9 +43,9 @@ export class PharmacyAdminService {
     );
   }
 
-  public searchPharmacistById(pharmacistId: String) {
+  public searchPharmacistArrayById(pharmacistId: String) {
     return this.httpClient.get<Pharmacist[]>(
-      'http://localhost:8080/pharmacist/' + pharmacistId + '/findById'
+      'http://localhost:8080/pharmacist/' + pharmacistId + '/findArrayById'
     );
   }
 
@@ -71,9 +71,9 @@ export class PharmacyAdminService {
     );
   }
 
-  public searchMedicineById(medicineId: String) {
+  public searchMedicineArrayById(medicineId: String) {
     return this.httpClient.get<Medicine[]>(
-      'http://localhost:8080/medicine/' + medicineId + '/findById'
+      'http://localhost:8080/medicine/' + medicineId + '/findArrayById'
     );
   }
 
@@ -107,9 +107,11 @@ export class PharmacyAdminService {
     );
   }
 
-  public searchDermatologistById(dermatologistId: String) {
+  public searchDermatologistArrayById(dermatologistId: String) {
     return this.httpClient.get<Dermatologist[]>(
-      'http://localhost:8080/dermatologist/' + dermatologistId + '/findById'
+      'http://localhost:8080/dermatologist/' +
+        dermatologistId +
+        '/findArrayById'
     );
   }
 

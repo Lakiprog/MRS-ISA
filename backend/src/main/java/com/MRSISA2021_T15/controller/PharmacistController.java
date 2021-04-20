@@ -49,7 +49,7 @@ public class PharmacistController {
     public @ResponseBody Iterable<Pharmacist> getAllPharmacists() {
         return pharmacistRepository.findAll();
     }
-    @RequestMapping(path="/{pharmacistId}/findById")
+    @RequestMapping(path="/{pharmacistId}/findArrayById")
     public ArrayList<Optional<Pharmacist>> getPharmacistArrayById(@PathVariable Integer pharmacistId){
         ArrayList<Optional<Pharmacist>> returnList = new ArrayList<>();
         returnList.add(pharmacistRepository.findById(pharmacistId));

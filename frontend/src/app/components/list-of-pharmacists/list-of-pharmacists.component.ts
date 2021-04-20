@@ -45,7 +45,7 @@ export class ListOfPharmacistsComponent implements OnInit {
   searchPharmacistById(): void {
     this.pharmacistId = this.searchForm.value;
     this.pharmacyAdminService
-      .searchPharmacistById(this.pharmacistId.searchValue)
+      .searchPharmacistArrayById(this.pharmacistId.searchValue)
       .subscribe((res) => (this.pharmacistList = res));
   }
 
