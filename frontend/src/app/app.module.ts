@@ -55,6 +55,9 @@ import { DermatologistRoutes } from './user-routes/DermatologistRoutes';
 import { SupplierRoutes } from './user-routes/SupplierRoutes';
 import { PharmacyAdminRoutes } from './user-routes/PharmacyAdminRoutes';
 import { PatientRoutes } from './user-routes/PatientRoutes';
+import { UserComplaintComponent } from './user-complaint/user-complaint.component';
+import { PatientsComplaintsDataComponent } from './patients-complaints-data/patients-complaints-data.component';
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -95,6 +98,8 @@ FullCalendarModule.registerPlugins([
     UpdateMedicineComponent,
     PharmacistProfilePageComponent,
     DermatologistProfilePageComponent,
+    UserComplaintComponent,
+    PatientsComplaintsDataComponent
   ],
   imports: [
     BrowserModule,
@@ -245,6 +250,9 @@ FullCalendarModule.registerPlugins([
         canActivate: [DermatologistRoutes],
         component: DermatologistProfilePageComponent,
       },
+
+      { path: 'userComplaint', component: UserComplaintComponent},
+      { path: 'patientsComplaintsData', component: PatientsComplaintsDataComponent}
     ]),
   ],
 
