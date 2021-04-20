@@ -21,6 +21,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping(path="/pharmacist")
@@ -46,7 +49,30 @@ public class PharmacistController {
     public @ResponseBody Iterable<Pharmacist> getAllPharmacists() {
         return pharmacistRepository.findAll();
     }
-    
+    @RequestMapping(path="/{pharmacistId}/findById")
+    public ArrayList<Optional<Pharmacist>> getPharmacistArrayById(@PathVariable Integer pharmacistId){
+        ArrayList<Optional<Pharmacist>> returnList = new ArrayList<>();
+        returnList.add(pharmacistRepository.findById(pharmacistId));
+        return returnList;
+    }
+
+    @RequestMapping(path="/{string}/findByString")
+    public ArrayList<Pharmacist> getPharmacistByString(@PathVariable String string){
+        Iterable<Pharmacist> pharmacistList = pharmacistRepository.findAll();
+        ArrayList<Pharmacist> returnList = new ArrayList<>();
+        for(Pharmacist pharmacist: pharmacistList){
+            if((pharmacist.getName() != null && pharmacist.getName().toLowerCase().contains(string.toLowerCase()))||
+                    (pharmacist.getSurname() != null && pharmacist.getSurname().toLowerCase().contains(string.toLowerCase()))||
+                    (pharmacist.getUsername() != null && pharmacist.getUsername().toLowerCase().contains(string.toLowerCase()))||
+                    (pharmacist.getAdress() != null && pharmacist.getAdress().toLowerCase().contains(string.toLowerCase()))||
+                    (pharmacist.getCity() != null && pharmacist.getCity().toLowerCase().contains(string.toLowerCase()))||
+                    (pharmacist.getCountry() != null && pharmacist.getCountry().toLowerCase().contains(string.toLowerCase())||
+                            (pharmacist.getEmail() != null && pharmacist.getEmail().toLowerCase().contains(string.toLowerCase()))||
+                            (pharmacist.getPhoneNumber() != null && pharmacist.getPhoneNumber().contains(string.toLowerCase()))))
+                returnList.add(pharmacist);
+        }
+        return returnList;
+    }
     @GetMapping(value = "/get/{pharmacistId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public Optional<Pharmacist> getPharmacist(@PathVariable("pharmacistId") Integer pharmacistId){

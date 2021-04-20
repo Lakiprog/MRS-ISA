@@ -15,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Optional;
 
 @RestController
@@ -45,6 +44,10 @@ public class DermatologistController {
     }
 
     @RequestMapping(path="/{dermatologistId}/findById")
+    public ArrayList<Optional<Dermatologist>> getDermatologistArrayById(@PathVariable Integer dermatologistId){
+        ArrayList<Optional<Dermatologist>> returnList = new ArrayList<>();
+        returnList.add(dermatologistRepository.findById(dermatologistId));
+        return returnList;
     @PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
     public Optional<Dermatologist> getDermatologistById(@PathVariable Integer dermatologistId){
         return dermatologistRepository.findById(dermatologistId);
@@ -56,14 +59,14 @@ public class DermatologistController {
         Iterable<Dermatologist> dermatologistList = dermatologistRepository.findAll();
         ArrayList<Dermatologist> returnList = new ArrayList<>();
         for(Dermatologist dermatologist: dermatologistList){
-            if(dermatologist.getName().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getSurname().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getUsername().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getAdress().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getCity().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getCountry().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getEmail().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getPhoneNumber().contains(string.toLowerCase()))
+            if((dermatologist.getName() != null && dermatologist.getName().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getSurname() != null && dermatologist.getSurname().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getUsername() != null && dermatologist.getUsername().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getAdress() != null && dermatologist.getAdress().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getCity() != null && dermatologist.getCity().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getCountry() != null && dermatologist.getCountry().toLowerCase().contains(string.toLowerCase())||
+                    (dermatologist.getEmail() != null && dermatologist.getEmail().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getPhoneNumber() != null && dermatologist.getPhoneNumber().contains(string.toLowerCase()))))
                 returnList.add(dermatologist);
         }
     return returnList;
