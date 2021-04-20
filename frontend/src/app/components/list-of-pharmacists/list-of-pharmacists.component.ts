@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { DummyModel } from 'src/app/models/dummy-model';
 import { Pharmacist } from 'src/app/models/pharmacist';
 import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
 
@@ -8,20 +10,54 @@ import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
   styleUrls: ['./list-of-pharmacists.component.css'],
 })
 export class ListOfPharmacistsComponent implements OnInit {
-  pharmacists!: Pharmacist[];
-
-  constructor(private pharmacyAdminService: PharmacyAdminService) {}
+  pharmacistList!: Pharmacist[];
+  pharmacistListBackup!: Pharmacist[];
+  pharmacistSearchResult!: Pharmacist[];
+  searchForm: FormGroup;
+  pharmacistId!: DummyModel;
+  constructor(
+    private pharmacyAdminService: PharmacyAdminService,
+    private formBuilder: FormBuilder
+  ) {
+    this.searchForm = this.formBuilder.group({
+      searchValue: [],
+    });
+  }
 
   ngOnInit(): void {
     this.pharmacyAdminService
       .getAllPharmacists()
-      .subscribe((res) => (this.pharmacists = res));
+      .subscribe(
+        (res) => (
+          (this.pharmacistList = res), (this.pharmacistListBackup = res)
+        )
+      );
   }
 
   deletePharmacist(pharmacist: Pharmacist): void {
     this.pharmacyAdminService.deletePharmacist(pharmacist).subscribe((res) => {
-      this;
-      this.ngOnInit();
+      this.pharmacyAdminService
+        .getAllPharmacists()
+        .subscribe((res) => (this.pharmacistList = res));
     });
+  }
+
+  searchPharmacistById(): void {
+    this.pharmacistId = this.searchForm.value;
+    this.pharmacyAdminService
+      .searchPharmacistArrayById(this.pharmacistId.searchValue)
+      .subscribe((res) => (this.pharmacistList = res));
+  }
+
+  searchPharmacistByString(): void {
+    this.pharmacistId = this.searchForm.value;
+    this.pharmacyAdminService
+      .searchPharmacistByString(this.pharmacistId.searchValue)
+      .subscribe((res) => (this.pharmacistList = res));
+  }
+
+  clearSearch(): void {
+    this.pharmacistList = this.pharmacistListBackup;
+    this.searchForm.reset();
   }
 }

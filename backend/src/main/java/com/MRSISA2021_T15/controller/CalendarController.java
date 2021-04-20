@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,10 @@ import com.MRSISA2021_T15.service.CalendarService;
 public class CalendarController {
 
 	@Autowired
-	private  CalendarService service;
+	private CalendarService service;
 	
 	@GetMapping(value = "/calendarPharmacist/{pharmacistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
 	public Collection<Event> calendarPharmacist(@PathVariable("pharmacistId") Integer pharmacistId){
 		List<Appointment> appointments = service.findAllPharmacist(pharmacistId);
 		ArrayList<Event> events = new ArrayList<Event>();
@@ -37,6 +39,7 @@ public class CalendarController {
 	}
 	
 	@GetMapping(value = "/calendarDermatologist/id={dermatologistId}pharmacy={pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public Collection<Event> calendarDermatologist(@PathVariable("dermatologistId") Integer dermatologistId, @PathVariable("pharmacyId") Integer pharmacyId){
 		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
 		ArrayList<Event> events = new ArrayList<Event>();
@@ -57,6 +60,7 @@ public class CalendarController {
 	}
 	
 	@GetMapping(value = "/calendarDermatologist/{dermatologistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public Collection<Event> calendarDermatologist(@PathVariable("dermatologistId") Integer dermatologistId){
 		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
 		ArrayList<Event> events = new ArrayList<Event>();
@@ -75,6 +79,7 @@ public class CalendarController {
 	}
 	
 	@GetMapping(value = "/calendarDermatologistPredefined/{dermatologistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public Collection<Event> calendarDermatologistPredefined(@PathVariable("dermatologistId") Integer dermatologistId){
 		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
 		ArrayList<Event> events = new ArrayList<Event>();
@@ -91,6 +96,7 @@ public class CalendarController {
 	}
 	
 	@GetMapping(value = "/calendarDermatologistPredefined/id={dId}/pharmacy={pId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public Collection<Event> calendarDermatologistPredefined(@PathVariable("dId") Integer dermatologistId, @PathVariable("pId") Integer pharmacyId){
 		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
 		ArrayList<Event> events = new ArrayList<Event>();

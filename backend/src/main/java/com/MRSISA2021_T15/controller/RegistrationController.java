@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +38,7 @@ public class RegistrationController {
 	}
 	
 	@PostMapping(value = "/registerSystemAdministrator", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<String> registerSystemAdministrator(@RequestBody SystemAdmin systemAdmin) {
 		String message = registrationService.registerSystemAdmin(systemAdmin);
 		Gson gson = new GsonBuilder().create();
@@ -48,6 +50,7 @@ public class RegistrationController {
 	}
 	
 	@PostMapping(value = "/registerDermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<String> registerDermatologist(@RequestBody Dermatologist dermatologist) {
 		String message = registrationService.registerDermatologist(dermatologist);
 		Gson gson = new GsonBuilder().create();
@@ -59,6 +62,7 @@ public class RegistrationController {
 	}
 	
 	@PostMapping(value = "/registerSupplier", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<String> registerSupplier(@RequestBody Supplier supplier) {
 		String message = registrationService.registerSupplier(supplier);
 		Gson gson = new GsonBuilder().create();
@@ -70,6 +74,7 @@ public class RegistrationController {
 	}
 	
 	@PostMapping(value = "/registerPharmacyAdministrator", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<String> registerPharmacyAdministrator(@RequestBody PharmacyAdmin pharmacyAdmin) {
 		String message = registrationService.registerPharmacyAdministrator(pharmacyAdmin);
 		Gson gson = new GsonBuilder().create();

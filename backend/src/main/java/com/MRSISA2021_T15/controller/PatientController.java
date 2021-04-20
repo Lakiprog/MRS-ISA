@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,6 +31,7 @@ public class PatientController {
 	
 	
 	@GetMapping(value = "/searchPatient/{patientUsername}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public Patient searchPatients(@PathVariable("patientUsername") String patientUsername){
 		ArrayList<Patient> patients = new ArrayList<Patient>();
 		for(Patient p : service.findAllPatients()) {
@@ -42,6 +44,7 @@ public class PatientController {
 	
 	
 	@GetMapping(value = "/changeDataShow/{patientUsername}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public Patient changeDataShow(@PathVariable("patientUsername") String patientUsername){
 		for(Patient p : service.findAllPatients()) {
 			if(p.getUsername().compareTo(patientUsername)==0) {
@@ -54,6 +57,7 @@ public class PatientController {
 	
 	
 	@PutMapping(value = "/changeData/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<String> changeData(@PathVariable("patientUsername") String patientUsername, @RequestBody Patient patient){
 		Patient patientToSend = null;
 		String message = null;

@@ -43,6 +43,17 @@ export class PharmacyAdminService {
     );
   }
 
+  public searchPharmacistArrayById(pharmacistId: String) {
+    return this.httpClient.get<Pharmacist[]>(
+      'http://localhost:8080/pharmacist/' + pharmacistId + '/findArrayById'
+    );
+  }
+
+  public searchPharmacistByString(string: String) {
+    return this.httpClient.get<Pharmacist[]>(
+      'http://localhost:8080/pharmacist/' + string + '/findByString'
+    );
+  }
   public deleteMedicine(medicine: Medicine) {
     return this.httpClient.delete<Medicine>(
       'http://localhost:8080/medicine/' + medicine.id + '/delete'
@@ -60,15 +71,15 @@ export class PharmacyAdminService {
     );
   }
 
-  public searchMedicineById(medicineId: String) {
-    return this.httpClient.get<Medicine>(
-      'http://localhost:8080/medicine/' + medicineId + '/findById'
+  public searchMedicineArrayById(medicineId: String) {
+    return this.httpClient.get<Medicine[]>(
+      'http://localhost:8080/medicine/' + medicineId + '/findArrayById'
     );
   }
 
   public searchMedicineByString(string: String) {
-    return this.httpClient.get<Medicine>(
-      'http://localhost:8080/medicine/' + string + '/findById'
+    return this.httpClient.get<Medicine[]>(
+      'http://localhost:8080/medicine/' + string + '/findByString'
     );
   }
 
@@ -96,15 +107,17 @@ export class PharmacyAdminService {
     );
   }
 
-  public searchDermatologistById(dermatologistId: String) {
-    return this.httpClient.get<Dermatologist>(
-      'http://localhost:8080/medicine/' + dermatologistId + '/findById'
+  public searchDermatologistArrayById(dermatologistId: String) {
+    return this.httpClient.get<Dermatologist[]>(
+      'http://localhost:8080/dermatologist/' +
+        dermatologistId +
+        '/findArrayById'
     );
   }
 
   public searchDermatologistByString(string: String) {
-    return this.httpClient.get<Dermatologist>(
-      'http://localhost:8080/medicine/' + string + '/findById'
+    return this.httpClient.get<Dermatologist[]>(
+      'http://localhost:8080/dermatologist/' + string + '/findByString'
     );
   }
 }

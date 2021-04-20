@@ -14,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @DiscriminatorValue(value = "PATIENT")
 public class Patient extends User{
+	
+	private static final long serialVersionUID = 1L;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Appointment> appointments;

@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Optional;
 
 @RestController
@@ -25,45 +25,57 @@ public class DermatologistController {
     private DermatologistRepository dermatologistRepository;
 
     @RequestMapping(path="/add", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public @ResponseBody ResponseEntity addNewDermatologist (@RequestBody Dermatologist d) {
         dermatologistRepository.save(d);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(path = "/{dermatologistId}/delete")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public void deleteDermatologist(@PathVariable Integer dermatologistId) {
         dermatologistRepository.deleteById(dermatologistId);
     }
 
     @RequestMapping(path="/all")
+    //@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public @ResponseBody Iterable<Dermatologist> getAllDermatologists() {
         return dermatologistRepository.findAll();
     }
 
-    @RequestMapping(path="/{dermatologistId}/findById")
+    @RequestMapping(path="/{dermatologistId}/findArrayById")
+    public ArrayList<Optional<Dermatologist>> getDermatologistArrayById(@PathVariable Integer dermatologistId) {
+        ArrayList<Optional<Dermatologist>> returnList = new ArrayList<>();
+        returnList.add(dermatologistRepository.findById(dermatologistId));
+        return returnList;
+
+    }
+    @PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
     public Optional<Dermatologist> getDermatologistById(@PathVariable Integer dermatologistId){
         return dermatologistRepository.findById(dermatologistId);
     }
 
     @RequestMapping(path="/{string}/findByString")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ArrayList<Dermatologist> getDermatologistByString(@PathVariable String string){
         Iterable<Dermatologist> dermatologistList = dermatologistRepository.findAll();
         ArrayList<Dermatologist> returnList = new ArrayList<>();
         for(Dermatologist dermatologist: dermatologistList){
-            if(dermatologist.getName().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getSurname().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getUsername().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getAdress().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getCity().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getCountry().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getEmail().toLowerCase().contains(string.toLowerCase())||
-                    dermatologist.getPhoneNumber().contains(string.toLowerCase()))
+            if((dermatologist.getName() != null && dermatologist.getName().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getSurname() != null && dermatologist.getSurname().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getUsername() != null && dermatologist.getUsername().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getAdress() != null && dermatologist.getAdress().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getCity() != null && dermatologist.getCity().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getCountry() != null && dermatologist.getCountry().toLowerCase().contains(string.toLowerCase())||
+                    (dermatologist.getEmail() != null && dermatologist.getEmail().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getPhoneNumber() != null && dermatologist.getPhoneNumber().contains(string.toLowerCase()))))
                 returnList.add(dermatologist);
         }
     return returnList;
     }
-    
+
     @PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<String> putDermatologist(@RequestBody Dermatologist d){
     	Gson gson = new GsonBuilder().create();
 		if (dermatologistRepository.findByEmail(d.getEmail()) != null && 
@@ -86,5 +98,4 @@ public class DermatologistController {
 			return new ResponseEntity<String>(gson.toJson("Update Succesfull!"), HttpStatus.OK);
 		}
 	}
-
 }

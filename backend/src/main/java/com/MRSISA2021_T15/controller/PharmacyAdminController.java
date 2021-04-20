@@ -7,6 +7,7 @@ import com.MRSISA2021_T15.repository.PharmacyAdminRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,10 +21,13 @@ public class PharmacyAdminController {
     private PharmacyAdminRepository pharmacyAdminRepository;
 
     @RequestMapping(path="/{pharmacyAdminId}/findById")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public Optional<PharmacyAdmin> getPharmacyAdminById(@PathVariable Integer pharmacyAdminId){
         return pharmacyAdminRepository.findById(pharmacyAdminId);
     }
+    
     @PutMapping(path="/{pharmacyAdminId}/update")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ResponseEntity edit(@PathVariable Integer pharmacyAdminId, @RequestBody PharmacyAdmin pa) throws NotFoundException {
         PharmacyAdmin pharmacyAdmin = pharmacyAdminRepository.findById(pharmacyAdminId).orElseThrow(() -> new NotFoundException("Ne postoji id"));
         pharmacyAdmin.setName(pa.getName());

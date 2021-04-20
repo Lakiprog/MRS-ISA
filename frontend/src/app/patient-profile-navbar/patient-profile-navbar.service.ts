@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../login/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +11,15 @@ import { HttpClient } from '@angular/common/http';
 
 export class PatientProfileNavbarService {
   
-  private readonly patientURL = 'http://localhost:8080/patients//searchPatient/kek';
+  username : string = "";
+  
+  constructor(private http: HttpClient, private authService: AuthService) {
+    if (this.authService.getTokenData()?.username !== "") {
+      this.username = this.authService.getTokenData()?.username!;
+    }
+  }
 
-  constructor(private http: HttpClient) {}
-
-   public getPatient(){
-     return this.http.get(this.patientURL);
+   getPatient(){
+     return this.http.get("http://localhost:8080/patients/searchPatient/" + this.username);
    }
 }
