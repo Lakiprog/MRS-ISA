@@ -10,7 +10,7 @@ import { AuthService } from "../login/auth.service";
     constructor(private authService: AuthService) { }
   
     canActivate() {
-      if (this.authService.getToken() != null && this.authService.getTokenData()?.role === 'ROLE_SUPPLIER') {
+      if (this.authService.getTokenData()?.role === 'ROLE_SUPPLIER') {
         return true;
       }
       return false;
