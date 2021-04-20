@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let pharmacist of pharmacists ">
+      <tr *ngFor="let pharmacist of pharmacistList">
         <td>{{ pharmacist.name }}</td>
         <td>{{ pharmacist.surname }}</td>
         <td>{{ pharmacist.id }}</td>
@@ -17,7 +17,34 @@
           </button>
         </td>
       </tr>
-  
+      <tr>
+      <td>
+        <form [formGroup]="searchForm" (ngSubmit)="searchPharmacistById()">
+          <div class="form-group">
+            <label for="searchValue">Name</label>
+            <input type="text" formControlName="searchValue" required />
+          </div>
+        <button type="submit" class="btn btn-success">
+          Search by Id
+        </button>
+      </form>
+      <td>
+      <form [formGroup]="searchForm" (ngSubmit)="searchPharmacistByString()">
+        <div class="form-group">
+          <label for="searchValue">String</label>
+          <input type="text" formControlName="searchValue" required />
+        </div>
+      <button type="submit" class="btn btn-success">
+        Search by string
+      </button>
+      </form>
+      </td>
+      </tr>
+      <tr>
+        <button class="btn btn-danger" (click)="clearSearch()">
+          Clear search
+        </button>
+      </tr>
       <td><a [routerLink]="['/pharmacyAdmin']">Nazad</a></td>
     </tbody>
   </table>

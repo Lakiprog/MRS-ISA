@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let dermatologist of dermatologists ">
+      <tr *ngFor="let dermatologist of dermatologistList ">
         <td>{{ dermatologist.name }}</td>
         <td>{{ dermatologist.surname }}</td>
         <td>{{ dermatologist.id }}</td>
@@ -15,9 +15,37 @@
           <button class="btn btn-danger" (click)="deleteDermatologist(dermatologist)">
             Delete dermatologist
           </button>
+
         </td>
       </tr>
-  
+      <tr>
+      <td>
+        <form [formGroup]="searchForm" (ngSubmit)="searchDermatologistById()">
+          <div class="form-group">
+            <label for="searchValue">Name</label>
+            <input type="text" formControlName="searchValue" required />
+          </div>
+        <button type="submit" class="btn btn-success">
+          Search by Id
+        </button>
+      </form>
+      <td>
+      <form [formGroup]="searchForm" (ngSubmit)="searchDermatologistByString()">
+        <div class="form-group">
+          <label for="searchValue">String</label>
+          <input type="text" formControlName="searchValue" required />
+        </div>
+      <button type="submit" class="btn btn-success">
+        Search by string
+      </button>
+      </form>
+      </td>
+      </tr>
+      <tr>
+        <button class="btn btn-danger" (click)="clearSearch()">
+          Clear search
+        </button>
+      </tr>
       <td><a [routerLink]="['/pharmacyAdmin']">Nazad</a></td>
     </tbody>
   </table>

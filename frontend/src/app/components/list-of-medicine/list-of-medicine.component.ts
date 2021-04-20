@@ -35,9 +35,14 @@ export class ListOfMedicineComponent implements OnInit {
   }
 
   deleteMedicine(medicine: Medicine): void {
-    this.pharmacyAdminService.deleteMedicine(medicine).subscribe((res) => {
-      this.ngOnInit();
-    });
+    console.log(medicine.id);
+    this.pharmacyAdminService
+      .deleteMedicine(medicine)
+      .subscribe((res) =>
+        this.pharmacyAdminService
+          .getAllMedicine()
+          .subscribe((res) => (this.medicineList = res))
+      );
   }
   updateMedicine(medicine: Medicine): void {
     localStorage.setItem('medicineId', medicine.id);

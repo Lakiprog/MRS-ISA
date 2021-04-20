@@ -49,25 +49,25 @@ public class MedicineController {
 
 		for(SubstituteMedicine sm: substituteMedicineRepository.findAll())
 		{
-			if(sm.getMedicine().getId().equals( medicineId)) {
+			if(sm.getMedicine() != null && sm.getMedicine().getId().equals( medicineId)) {
 				sm.setMedicine(null);
 				substituteMedicineRepository.save(sm);
 
 			}
-			if(sm.getSubstituteMedicine().getId().equals(medicineId)){
+			if(sm.getSubstituteMedicine() != null && sm.getSubstituteMedicine().getId().equals(medicineId)){
 				sm.setSubstituteMedicine(null);
 				substituteMedicineRepository.save(sm);
 		}
 		}
 		for(Allergy al: allergyRepository.findAll())
 		{
-			if(al.getMedicine().getId().equals(medicineId)){
+			if(al.getMedicine() != null && al.getMedicine().getId().equals(medicineId)){
 				al.setMedicine(null);
 				allergyRepository.save(al);
 			}
 		}
 		for(MedicinePharmacy mp: medicinePharmacyRepository.findAll()){
-			if(mp.getMedicine().getId().equals(medicineId)){
+			if(mp.getMedicine() != null && mp.getMedicine().getId().equals(medicineId)){
 				mp.setMedicine(null);
 
 				medicinePharmacyRepository.save(mp);
@@ -98,9 +98,6 @@ public class MedicineController {
 		Iterable<Medicine> medicineList = medicineRepository.findAll();
 		ArrayList<Medicine> returnList = new ArrayList<>();
 		for(Medicine medicine: medicineList){
-			System.out.println("SEARCH RESULTS");
-			System.out.println(medicine.getName().toLowerCase());
-			System.out.println(string.toLowerCase());
 			if((medicine.getName() != null && medicine.getName().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getMedicineCode() != null && medicine.getMedicineCode().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getManufacturer() != null && medicine.getManufacturer().toLowerCase().contains(string.toLowerCase()))||

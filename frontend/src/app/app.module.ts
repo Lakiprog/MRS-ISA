@@ -44,7 +44,6 @@ import { ListOfMedicineComponent } from './components/list-of-medicine/list-of-m
 import { AddNewDermatologistComponent } from './components/add-new-dermatologist/add-new-dermatologist.component';
 import { ListOfDermatologistsComponent } from './components/list-of-dermatologists/list-of-dermatologists.component';
 import { UpdateMedicineComponent } from './components/update-medicine/update-medicine.component';
-import { SearchMedicineByIdComponent } from './components/search-medicine-by-id/search-medicine-by-id.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -165,7 +164,6 @@ FullCalendarModule.registerPlugins([
       { path: 'searchPharmacy', component: SearchPharmacyComponent },
       { path: 'registerPharmacies', component: RegisterPharmaciesComponent },
       { path: 'updateMedicine', component: UpdateMedicineComponent },
-      { path: 'searchMedicineById', component: SearchMedicineByIdComponent },
     ]),
   ],
 
