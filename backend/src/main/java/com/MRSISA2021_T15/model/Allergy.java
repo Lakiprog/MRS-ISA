@@ -12,8 +12,7 @@ import javax.persistence.Table;
 @Table(name = "allergy")
 public class Allergy {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)	private Integer id;
 	@ManyToOne
 	@JoinColumn(name = "medicine_id")
 	private Medicine medicine;
@@ -25,6 +24,7 @@ public class Allergy {
 	public Patient getPatient() {
 		return patient;
 	}
+	
 
 	public void setPatient(Patient patient) {
 		this.patient = patient;

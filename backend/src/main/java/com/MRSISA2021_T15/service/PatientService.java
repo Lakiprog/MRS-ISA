@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.MRSISA2021_T15.repository.UserRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.model.User;
 
 @Service
@@ -23,6 +25,13 @@ public class PatientService {
 		return repository.findAllPatients();
 	}
 	
+	public List<Dermatologist> findAllDermatologist(){
+		return repository.findAllDermatologist();
+	}
+	
+	public List<Pharmacist>findAllPharmacist(){
+		return repository.findAllPharmacist();
+	}
 	
 	public String updateData(Patient patient) {
 		String message = "";

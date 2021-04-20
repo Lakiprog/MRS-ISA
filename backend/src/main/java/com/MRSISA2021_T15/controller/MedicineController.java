@@ -32,10 +32,12 @@ public class MedicineController {
 	private MedicineRepository medicineRepository;
 	@Autowired
 	private SubstituteMedicineRepository substituteMedicineRepository;
+
 	@Autowired
 	private AllergyRepository allergyRepository;
 	@Autowired
 	private MedicinePharmacyRepository medicinePharmacyRepository;
+
 
 
 	@PostMapping(value = "/addMedicine", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

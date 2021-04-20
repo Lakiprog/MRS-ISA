@@ -19,6 +19,11 @@ public class Dermatologist extends User{
 	@JsonIgnore
 	@OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<AppointmentDermatologist> appointments;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<ComplaintDermatologist> complaints;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<EmploymentDermatologist> employments;
