@@ -35,7 +35,7 @@ public class RegistrationController {
 		String message = registrationService.registerPatient(patient);
 		Gson gson = new GsonBuilder().create();
 		if (message.equals("")) {
-			return new ResponseEntity<String>(gson.toJson("Registration successfull.\nTo log on you need to verify your email address."), HttpStatus.OK);
+			return new ResponseEntity<String>(gson.toJson("Registration successfull. To log on you need to verify your email address."), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

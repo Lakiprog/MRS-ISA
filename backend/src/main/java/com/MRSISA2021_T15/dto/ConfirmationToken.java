@@ -22,7 +22,7 @@ public class ConfirmationToken {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="token_id")
-    private long tokenid;
+    private Integer tokenId;
 
     @Column(name="confirmation_token")
     private String confirmationToken;
@@ -42,12 +42,12 @@ public class ConfirmationToken {
         confirmationToken = UUID.randomUUID().toString();
     }
 
-	public long getTokenid() {
-		return tokenid;
+	public Integer getTokenid() {
+		return tokenId;
 	}
 
-	public void setTokenid(long tokenid) {
-		this.tokenid = tokenid;
+	public void setTokenid(Integer tokenid) {
+		this.tokenId = tokenid;
 	}
 
 	public String getConfirmationToken() {

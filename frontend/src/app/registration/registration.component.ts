@@ -149,7 +149,7 @@ export class RegistrationComponent implements OnInit {
 
   openSnackBar(msg: string, responseCode: number) {
     this._snackBar.open(msg, "x", {
-      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      duration: 20000,
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
