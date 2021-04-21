@@ -43,10 +43,6 @@ export class AuthService {
     return this.access_token;
   }
 
-  setToken(token: any) {
-    this.access_token = token.accessToken;
-  }
-
   getTokenData() {
     if ( this.token_data != null) {
       return this.token_data;
@@ -57,9 +53,5 @@ export class AuthService {
         role: ""
       };
     }
-  }
-
-  setTokenData(tokenData : any) {
-    this.token_data = tokenData;
   }
 }

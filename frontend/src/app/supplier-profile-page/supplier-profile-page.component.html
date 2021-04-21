@@ -19,17 +19,6 @@
                 <input type = "email" matInput placeholder = "Email" formControlName = "email" readonly>
             </mat-form-field>
             <mat-form-field class = "field">
-                <mat-label>Password</mat-label>
-                <input type = "password" (input)="checkPasswords()" matInput placeholder = "Password" formControlName = "password" required>
-                <mat-error *ngIf = "hasError('password', 'required')">Password is required!</mat-error>
-            </mat-form-field>
-            <mat-form-field class = "field">
-                <mat-label>Confirm password</mat-label>
-                <input type = "password" (input)="checkPasswords()" matInput placeholder = "Confirm password" formControlName = "confirmPassword" required>
-                <mat-error *ngIf = "hasError('confirmPassword', 'required')">Enter the password again!</mat-error>
-                <mat-error *ngIf = "confirmPassword?.invalid && !hasError('confirmPassword','required')">Passwords don't match</mat-error>
-            </mat-form-field>
-            <mat-form-field class = "field">
                 <mat-label>Name</mat-label>
                 <input type = "text" matInput placeholder = "Name" formControlName = "name" required>
                 <mat-error *ngIf = "hasError('name', 'required')">Name is required!</mat-error>
@@ -61,6 +50,11 @@
                 <mat-error *ngIf = "hasError('phoneNumber', 'maxlength') || hasError('phoneNumber', 'minlength')">
                     Phone number has to have 10 digits!
                 </mat-error>
+            </mat-form-field>
+            <mat-card-subtitle class = "card-title">Change password</mat-card-subtitle>
+            <mat-form-field class = "field">
+                <mat-label>New password</mat-label>
+                <input type = "password"  matInput placeholder = "Type in new password" formControlName = "password">
             </mat-form-field>
         </form>
         <button (click) = "update()" [disabled] = "updateForm.invalid" mat-raised-button color="primary">Update</button>

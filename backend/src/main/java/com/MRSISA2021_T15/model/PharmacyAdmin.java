@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.model;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,6 +13,9 @@ public class PharmacyAdmin extends User {
 	@ManyToOne
 	@JoinColumn(name = "pharmacy_id")
 	private Pharmacy pharmacy;
+	
+	@Column(name = "first_login")
+	private boolean firstLogin;
 
 	public PharmacyAdmin() {
 		super();
@@ -23,6 +27,14 @@ public class PharmacyAdmin extends User {
 
 	public void setPharmacy(Pharmacy pharmacy) {
 		this.pharmacy = pharmacy;
+	}
+	
+	public boolean isFirstLogin() {
+		return firstLogin;
+	}
+
+	public void setFirstLogin(boolean firstLogin) {
+		this.firstLogin = firstLogin;
 	}
 
 }

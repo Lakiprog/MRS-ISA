@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,18 +48,21 @@ public class ComplaintController {
 	
 	
 	@GetMapping(value = "/getAllDermatologists", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	List<Dermatologist> getAllDermatologists(){
 		return service.findAllDermatologist();
 	}
 	
 	
 	@GetMapping(value = "/getAllPharmacist", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	List<Pharmacist> getAllPharmacist(){
 		return service.findAllPharmacist();
 	}
 	
 	
 	@GetMapping(value = "/getAllPharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	List<Pharmacy> getAllPharmacy(){
 		return service.findAllPharmacy();
 	}
@@ -104,6 +108,7 @@ public class ComplaintController {
 	}
 	*/
 	@GetMapping(value = "/getComplaints/{patientUsername}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	List<Complaint>getpharmacyComplaint(@PathVariable("patientUsername") String patientUsername){
 		
 		List<Complaint> list = new ArrayList<Complaint>();
@@ -122,6 +127,7 @@ public class ComplaintController {
 	
 	
 	@PutMapping(value = "/checkDermatologist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<String>checkDermatologist(@PathVariable("patientUsername") String patientUsername, @RequestBody Dermatologist dermatologist){
 		String message = "";
 		boolean found = false;
@@ -152,6 +158,7 @@ public class ComplaintController {
 	
 	
 	@PutMapping(value = "/checkPharmacist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<String>checkPharmacist(@PathVariable("patientUsername") String patientUsername, @RequestBody Pharmacist pharmacist){
 		String message = "";
 		boolean found = false;
@@ -183,6 +190,7 @@ public class ComplaintController {
 	
 	
 	@PutMapping(value = "/checkPharmacy/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<String>checkPharmacy(@PathVariable("patientUsername") String patientUsername, @RequestBody Pharmacy pharmacy){
 		String message = "";
 		boolean found = false;
@@ -212,6 +220,7 @@ public class ComplaintController {
 	
 	
 	@PostMapping(value = "/addComplaintToDermatologist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<String> addComplaintToDermatologist(@PathVariable("patientUsername") String patientUsername, @RequestBody ComplaintDermatologist complaint){
 		System.out.print(complaint.getText());
 		
@@ -252,6 +261,7 @@ public class ComplaintController {
 	
 	//@PostMapping(value = "/addComplaintToPharmacist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PostMapping(value = "/addComplaintToPharmacist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<String> addComplaintToPharmacist(@PathVariable("patientUsername") String patientUsername, @RequestBody ComplaintPharmacist complaint){
 		
 		String message = "";
@@ -292,6 +302,7 @@ public class ComplaintController {
 	
 	
 	@PostMapping(value = "/addComplaintToPharmacy/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<String> addComplaintToPharmacy(@PathVariable("patientUsername") String patientUsername, @RequestBody ComplaintPharmacy complaint){
 		String message = "";
 		

@@ -2,24 +2,18 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthService } from '../login/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupplierUpdateService {
 
-  username : string = "";
-
-  constructor(private _http: HttpClient, private authService: AuthService) 
+  constructor(private _http: HttpClient) 
   { 
-    if (this.authService.getTokenData()?.username !== "") {
-      this.username = this.authService.getTokenData()?.username!;
-    }
   }
 
   getSupplierData() {
-    return this._http.get<any>("http://localhost:8080/suppliers/getSupplierData/" + this.username);
+    return this._http.get<any>("http://localhost:8080/suppliers/getSupplierData");
   }
 
   updateSupplierData(supplier: any) {

@@ -251,8 +251,16 @@ FullCalendarModule.registerPlugins([
         component: DermatologistProfilePageComponent,
       },
 
-      { path: 'userComplaint', component: UserComplaintComponent},
-      { path: 'patientsComplaintsData', component: PatientsComplaintsDataComponent}
+      { 
+        path: 'userComplaint',
+        canActivate: [PatientRoutes], 
+        component: UserComplaintComponent
+      },
+      { 
+        path: 'patientsComplaintsData',
+        canActivate: [PatientRoutes], 
+        component: PatientsComplaintsDataComponent
+      }
     ]),
   ],
 

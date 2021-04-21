@@ -29,15 +29,14 @@ export class SupplierProfilePageComponent implements OnInit {
       {
         username: [''],
         email: [''],
-        password: ['', Validators.required],
-        confirmPassword: ['', Validators.required],
+        password: [''],
         name: ['', Validators.required],
         surname: ['', Validators.required],
         adress: ['', Validators.required],
         city: ['', Validators.required],
         country: ['', Validators.required],
         phoneNumber: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]],
-      }, {validator: PasswordValidator}
+      }
     );
     this._supplierUpdateService.getSupplierData().subscribe(
       data => {
@@ -50,27 +49,19 @@ export class SupplierProfilePageComponent implements OnInit {
     return this.updateForm.controls[controlName].hasError(errorName);
   }
 
-  checkPasswords() {
-    if (this.updateForm.hasError('passwordMismatch')) {
-      this.updateForm.get('confirmPassword')?.setErrors([{'passwordMismatch': true}]);
-    }
-  }
-
-  get confirmPassword() {
-    return this.updateForm.get('confirmPassword');
-  }
-
   update() {
     console.log(this.updateForm.value);
     this._supplierUpdateService.updateSupplierData(this.updateForm.value).subscribe(
       response => {
-        this.authService.setToken(response)
-        this.authService.setTokenData(response)
-        this._supplierUpdateService.getSupplierData().subscribe(
-          data => {
-            this.fillDataForm(data);
-          }
-        )
+        if (response === true) {
+          this.openSnackBar("Password changed. You have to logout.", this.RESPONSE_OK);
+        } else {
+          this._supplierUpdateService.getSupplierData().subscribe(
+            data => {
+              this.fillDataForm(data);
+            }
+          )
+        }
       },
       error => {
         this.openSnackBar(error.error.error, this.RESPONSE_ERROR);
@@ -80,7 +71,7 @@ export class SupplierProfilePageComponent implements OnInit {
 
   openSnackBar(msg: string, responseCode: number) {
     this._snackBar.open(msg, "x", {
-      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      duration: 20000,
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
@@ -89,8 +80,6 @@ export class SupplierProfilePageComponent implements OnInit {
   fillDataForm(data: any) {
     this.updateForm.get('username')?.setValue(data.username);
     this.updateForm.get('email')?.setValue(data.email);
-    this.updateForm.get('password')?.setValue(data.password);
-    this.updateForm.get('confirmPassword')?.setValue(data.password);
     this.updateForm.get('name')?.setValue(data.name);
     this.updateForm.get('surname')?.setValue(data.surname);
     this.updateForm.get('adress')?.setValue(data.adress);
