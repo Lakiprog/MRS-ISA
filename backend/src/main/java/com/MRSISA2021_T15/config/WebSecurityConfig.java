@@ -56,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 			.authorizeRequests().antMatchers("/auth/login").permitAll()
 				.antMatchers("/registration/registerPatient").permitAll()
+				.antMatchers("/registration/confirmAccount").permitAll()
 				.antMatchers("/registration/registerSystemAdministrator").hasAuthority("ROLE_SYSTEM_ADMIN")
 				.antMatchers("/registration/registerPharmacyAdministrator").hasAuthority("ROLE_SYSTEM_ADMIN")
 				.antMatchers("/registration/registerSupplier").hasAuthority("ROLE_SYSTEM_ADMIN")
