@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular_material.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LayoutModule } from '@angular/cdk/layout';
+import {MatSortModule} from '@angular/material/sort';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -110,6 +111,7 @@ FullCalendarModule.registerPlugins([
     AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSortModule,
     LayoutModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
