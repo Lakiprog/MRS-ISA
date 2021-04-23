@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.Supplier;
 import com.MRSISA2021_T15.repository.UserRepository;
 
@@ -18,21 +19,38 @@ public class SupplierServiceImpl implements SupplierService {
 	private PasswordEncoder passwordEncoder;
 	
 	@Override
-	public Boolean updateSupplierData(Supplier supplier) {
-		Boolean passwordChanged = false;
-		Supplier updatedSupplier = (Supplier) userRepository.findByUsername(supplier.getUsername());
-		updatedSupplier.setName(supplier.getName());
-		updatedSupplier.setSurname(supplier.getSurname());
-		updatedSupplier.setAdress(supplier.getAdress());
-		updatedSupplier.setCity(supplier.getCity());
-		updatedSupplier.setCountry(supplier.getCountry());
-		updatedSupplier.setPhoneNumber(supplier.getPhoneNumber());
-		if (supplier.getPassword() != null) {
-			updatedSupplier.setPassword(passwordEncoder.encode(supplier.getPassword()));
-			passwordChanged = true;
+	public String updateSupplierData(Supplier supplier) {
+		String message = "";
+		Supplier currentUser = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (currentUser != null) {
+			currentUser.setName(supplier.getName());
+			currentUser.setSurname(supplier.getSurname());
+			currentUser.setAdress(supplier.getAdress());
+			currentUser.setCity(supplier.getCity());
+			currentUser.setCountry(supplier.getCountry());
+			currentUser.setPhoneNumber(supplier.getPhoneNumber());
+			userRepository.save(currentUser);
+		} else {
+			message = "Update unsuccessfull!";
 		}
-		userRepository.save(updatedSupplier);
-		return passwordChanged;
+		return message;
+	}
+	
+	@Override
+	public String updatePassword(ChangePassword passwords) {
+		String message = "";
+		Supplier currentUser = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (currentUser != null) {
+			if (!passwordEncoder.matches(passwords.getOldPassword(), currentUser.getPassword())) {
+				message = "Wrong old password!";
+			} else {
+				currentUser.setPassword(passwordEncoder.encode(passwords.getPassword()));
+				userRepository.save(currentUser);
+			}
+		} else {
+			message = "Password update unsuccessfull!";
+		}
+		return message;
 	}
 
 	@Override

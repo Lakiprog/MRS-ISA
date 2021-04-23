@@ -37,7 +37,6 @@ public class PharmacyController {
 		}
 	}
 	
-	
 	@GetMapping(value = "/getPharmacyAdminsWithNoPharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public HashMap<Integer, String> getPharmacyAdminsWithNoPharmacy() {

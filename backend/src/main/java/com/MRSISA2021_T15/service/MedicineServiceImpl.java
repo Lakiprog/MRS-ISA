@@ -1,6 +1,7 @@
 package com.MRSISA2021_T15.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,14 +29,14 @@ public class MedicineServiceImpl implements MedicineService {
 			message = "A medicine with this code already exists!";
 		} else {
 			medicineRepository.save(medicine);
-			var substituteMedicineIds = medicine.getSubstituteMedicineIds();
+			List<Integer> substituteMedicineIds = medicine.getSubstituteMedicineIds();
 			if (substituteMedicineIds != null) {
 				for (Integer id : substituteMedicineIds) {
 					SubstituteMedicine substituteMedicine = new SubstituteMedicine();
 					substituteMedicine.setMedicine(medicine);
-					var sm = medicineRepository.findById(id);
-					if (sm.get() != null) {
-						substituteMedicine.setSubstituteMedicine(sm.get());
+					Medicine sm = medicineRepository.findById(id).get();
+					if (sm != null) {
+						substituteMedicine.setSubstituteMedicine(sm);
 						substituteMedicineRepository.save(substituteMedicine);
 					}
 				}

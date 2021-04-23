@@ -49,7 +49,6 @@ export class AddMedicineComponent implements OnInit {
 }
 
   addMedicine() {
-    console.log(this.addMedicineForm.value);
     this._addMedicineService.addMedicine(this.addMedicineForm.value).subscribe( 
     response => {
       this.openSnackBar(response, this.RESPONSE_OK);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { AuthService } from '../login/auth.service';
 import { PasswordValidator } from '../registration/validators/passwordValidator';
 import { SupplierUpdateService } from './supplier-update.service';
@@ -13,6 +14,7 @@ import { SupplierUpdateService } from './supplier-update.service';
 export class SupplierProfilePageComponent implements OnInit {
 
   updateForm! : FormGroup;
+  updatePasswordForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
   constructor
@@ -20,7 +22,8 @@ export class SupplierProfilePageComponent implements OnInit {
     private fb: FormBuilder, 
     private _supplierUpdateService: SupplierUpdateService, 
     private _snackBar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
@@ -29,7 +32,6 @@ export class SupplierProfilePageComponent implements OnInit {
       {
         username: [''],
         email: [''],
-        password: [''],
         name: ['', Validators.required],
         surname: ['', Validators.required],
         adress: ['', Validators.required],
@@ -38,6 +40,13 @@ export class SupplierProfilePageComponent implements OnInit {
         phoneNumber: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]],
       }
     );
+    this.updatePasswordForm = this.fb.group(
+      {
+        oldPassword: ['', Validators.required],
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required]
+      }, {validator: PasswordValidator}
+    );
     this._supplierUpdateService.getSupplierData().subscribe(
       data => {
         this.fillDataForm(data);
@@ -45,33 +54,49 @@ export class SupplierProfilePageComponent implements OnInit {
     )
   }
 
-  public hasError = (controlName: string, errorName: string) =>{
-    return this.updateForm.controls[controlName].hasError(errorName);
+  public hasError = (controlName: string, errorName: string, form: FormGroup) =>{
+    return form.controls[controlName].hasError(errorName);
+  }
+
+  checkPasswords() {
+    if (this.updatePasswordForm.hasError('passwordMismatch')) {
+      this.updatePasswordForm.get('confirmPassword')?.setErrors([{'passwordMismatch': true}]);
+    }
+  }
+
+  get confirmPassword() {
+    return this.updatePasswordForm.get('confirmPassword');
   }
 
   update() {
-    console.log(this.updateForm.value);
     this._supplierUpdateService.updateSupplierData(this.updateForm.value).subscribe(
       response => {
-        if (response === true) {
-          this.openSnackBar("Password changed. You have to logout.", this.RESPONSE_OK);
-        } else {
-          this._supplierUpdateService.getSupplierData().subscribe(
-            data => {
-              this.fillDataForm(data);
-            }
-          )
-        }
+        this.openSnackBar(response, this.RESPONSE_OK);
+        this._supplierUpdateService.getSupplierData().subscribe(
+          data => {
+            this.fillDataForm(data);
+          });
       },
       error => {
-        this.openSnackBar(error.error.error, this.RESPONSE_ERROR);
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+      }
+    )
+  }
+
+  updatePassword() {
+    this._supplierUpdateService.updatePassword(this.updatePasswordForm.value).subscribe(
+      response => {
+        this.authService.logout();
+      },
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     )
   }
 
   openSnackBar(msg: string, responseCode: number) {
     this._snackBar.open(msg, "x", {
-      duration: 20000,
+      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
@@ -86,6 +111,10 @@ export class SupplierProfilePageComponent implements OnInit {
     this.updateForm.get('city')?.setValue(data.city);
     this.updateForm.get('country')?.setValue(data.country);
     this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
+  }
+
+  supplierWriteOffers() {
+    this.router.navigate(["/supplierWriteOffers"]);
   }
 
   logout() {
