@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { DateValidator } from './DateValidator';
 import { SupplierWriteOffersService } from './supplier-write-offers.service';
 
 @Component({
@@ -38,7 +39,7 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
         orderName: ['', Validators.required],
         deliveryTime: ['', Validators.required],
         price: [0, Validators.required]
-      }
+      }, {validator: DateValidator}
     );
     this.supplierWriteOffersService.getOrders().subscribe(
       data => {
@@ -54,6 +55,16 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
 
   public hasError = (controlName: string, errorName: string) =>{
     return this.offerForm.controls[controlName].hasError(errorName);
+  }
+
+  get deliveryTime() {
+    return this.offerForm.get('deliveryTime');
+  }
+
+  checkDate() {
+    if (this.offerForm.hasError('dateInvalid')) {
+      this.offerForm.get('deliveryTime')?.setErrors([{'dateInvalid': true}]);
+    }
   }
 
   getMedicineSupply() {

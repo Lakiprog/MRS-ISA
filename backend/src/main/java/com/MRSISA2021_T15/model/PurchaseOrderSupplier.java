@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "purchase_order_supplier")
 public class PurchaseOrderSupplier {
@@ -23,12 +25,20 @@ public class PurchaseOrderSupplier {
 	private Double price;
 	
 	@Column
+	private String orderName;
+	
+	@Column
 	private LocalDateTime deliveryTime;
 	
+	@Column
+	private OfferStatus offerStatus;
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "purchase_order_id")
 	private PurchaseOrder purchaseOrder;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "supplier_id")
 	private Supplier supplier;
@@ -39,6 +49,14 @@ public class PurchaseOrderSupplier {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public String getOrderName() {
+		return orderName;
+	}
+
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
 	}
 	
 	public Double getPrice() {
@@ -55,6 +73,14 @@ public class PurchaseOrderSupplier {
 
 	public void setDeliveryTime(LocalDateTime deliveryTime) {
 		this.deliveryTime = deliveryTime;
+	}
+	
+	public OfferStatus getOfferStatus() {
+		return offerStatus;
+	}
+
+	public void setOfferStatus(OfferStatus offerStatus) {
+		this.offerStatus = offerStatus;
 	}
 
 	public PurchaseOrder getPurchaseOrder() {

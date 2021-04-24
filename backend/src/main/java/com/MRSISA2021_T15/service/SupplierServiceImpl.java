@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.MedicineSupply;
-import com.MRSISA2021_T15.model.Offer;
+import com.MRSISA2021_T15.model.OfferStatus;
 import com.MRSISA2021_T15.model.PurchaseOrder;
 import com.MRSISA2021_T15.model.PurchaseOrderMedicine;
 import com.MRSISA2021_T15.model.PurchaseOrderSupplier;
@@ -103,9 +103,12 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	@Override
-	public String writeOffer(Offer offer) {
+	public String writeOffer(PurchaseOrderSupplier offer) {
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		PurchaseOrder order = purchaseOrderRepository.findByOrderName(offer.getOrderName());
+		offer.setPurchaseOrder(order);
+		offer.setOfferStatus(OfferStatus.PENDING);
+		offer.setSupplier(supplier);
 		String message = "";
 		PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(order.getId(), supplier.getId());
 		if (pos == null) {
@@ -124,12 +127,7 @@ public class SupplierServiceImpl implements SupplierService {
 				}
 			}
 			if (hasMedicine) {
-				pos = new PurchaseOrderSupplier();
-				pos.setPurchaseOrder(order);
-				pos.setSupplier(supplier);
-				pos.setPrice(offer.getPrice());
-				pos.setDeliveryTime(offer.getDeliveryTime());
-				purchaseOrderSupplierRepository.save(pos);
+				purchaseOrderSupplierRepository.save(offer);
 				
 			}
 		} else {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.MedicineSupply;
-import com.MRSISA2021_T15.model.Offer;
+import com.MRSISA2021_T15.model.PurchaseOrderSupplier;
 import com.MRSISA2021_T15.model.Supplier;
 
 public interface SupplierService {
@@ -19,6 +19,6 @@ public interface SupplierService {
 	
 	List<String> getOrders();
 	
-	String writeOffer(Offer offer);
+	String writeOffer(PurchaseOrderSupplier offer);
 
 }

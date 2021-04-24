@@ -43,8 +43,9 @@
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Delivery time</mat-label>
-                <input type = "datetime-local" matInput placeholder = "Delivery time" formControlName = "deliveryTime" required>
+                <input type = "datetime-local" (input) = "checkDate()" matInput placeholder = "Delivery time" formControlName = "deliveryTime" required>
                 <mat-error *ngIf = "hasError('deliveryTime', 'required')">Delivery time is required!</mat-error>
+                <mat-error *ngIf = "deliveryTime?.invalid && !hasError('deliveryTime','required')">Delivery date must be after today's date!</mat-error>
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Price</mat-label>

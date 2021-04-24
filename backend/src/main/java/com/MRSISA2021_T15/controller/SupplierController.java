@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.MedicineSupply;
-import com.MRSISA2021_T15.model.Offer;
+import com.MRSISA2021_T15.model.PurchaseOrderSupplier;
 import com.MRSISA2021_T15.model.Supplier;
 import com.MRSISA2021_T15.service.SupplierService;
 import com.google.gson.Gson;
@@ -66,7 +66,7 @@ public class SupplierController {
 	
 	@PutMapping(value = "/writeOffer", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
-	public ResponseEntity<String> writeOffer(@RequestBody Offer offer) {
+	public ResponseEntity<String> writeOffer(@RequestBody PurchaseOrderSupplier offer) {
 		String message = supplierService.writeOffer(offer);
 		Gson gson = new GsonBuilder().create();
 		if (message.equals("")) {
