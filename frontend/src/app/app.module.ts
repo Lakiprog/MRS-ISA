@@ -169,7 +169,7 @@ FullCalendarModule.registerPlugins([
       },
       {
         path: 'supplierWriteOffers',
-        //canActivate: [SupplierRoutes],
+        canActivate: [SupplierRoutes],
         component: SupplierWriteOffersComponent,
       },
       {

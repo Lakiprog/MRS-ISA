@@ -1,6 +1,10 @@
 package com.MRSISA2021_T15.service;
 
+import java.util.List;
+
 import com.MRSISA2021_T15.dto.ChangePassword;
+import com.MRSISA2021_T15.model.MedicineSupply;
+import com.MRSISA2021_T15.model.Offer;
 import com.MRSISA2021_T15.model.Supplier;
 
 public interface SupplierService {
@@ -10,5 +14,11 @@ public interface SupplierService {
 	String updatePassword(ChangePassword passwords);
 	
 	Supplier getSupplierData();
+	
+	List<MedicineSupply> getMedicineSupply();
+	
+	List<String> getOrders();
+	
+	String writeOffer(Offer offer);
 
 }

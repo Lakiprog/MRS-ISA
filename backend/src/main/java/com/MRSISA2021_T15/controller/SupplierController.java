@@ -1,5 +1,7 @@
 package com.MRSISA2021_T15.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
+import com.MRSISA2021_T15.model.MedicineSupply;
+import com.MRSISA2021_T15.model.Offer;
 import com.MRSISA2021_T15.model.Supplier;
 import com.MRSISA2021_T15.service.SupplierService;
 import com.google.gson.Gson;
@@ -53,5 +57,28 @@ public class SupplierController {
 	public Supplier getSupplierData() {
 		return supplierService.getSupplierData();
 	}
-
+	
+	@GetMapping(value = "/getMedicineSupply", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
+	public List<MedicineSupply> getMedicineSupply() {
+		return supplierService.getMedicineSupply();
+	}
+	
+	@PutMapping(value = "/writeOffer", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
+	public ResponseEntity<String> writeOffer(@RequestBody Offer offer) {
+		String message = supplierService.writeOffer(offer);
+		Gson gson = new GsonBuilder().create();
+		if (message.equals("")) {
+			return new ResponseEntity<String>(gson.toJson("Offer sent successfully."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping(value = "/getOrders", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
+	public List<String> getOrders() {
+		return supplierService.getOrders();
+	}
 }

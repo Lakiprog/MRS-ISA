@@ -22,25 +22,35 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "medicine")
 @JsonIgnoreProperties(value= {"substituteMedicine"})
 public class Medicine {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
 	@Column
 	private String medicineCode, name, medicineType, form, composition, manufacturer, addtionalComments;
+	
 	@Column
 	private boolean prescription;
 
 	@Transient
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<SubstituteMedicine> substituteMedicine = new HashSet<SubstituteMedicine>();
+	
 	@Transient
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Allergy> allergies = new HashSet<Allergy>();
+	
 	@Transient
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<MedicinePharmacy> medicinePharmacy;
+	
+	@Transient
+	@JsonIgnore
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<MedicineSupply> medicineSupply;
 	
 	@Transient
 	private ArrayList<Integer> substituteMedicineIds = new ArrayList<Integer>();
@@ -148,5 +158,13 @@ public class Medicine {
 
 	public void setSubstituteMedicineIds(ArrayList<Integer> substituteMedicineIds) {
 		this.substituteMedicineIds = substituteMedicineIds;
+	}
+
+	public Set<MedicineSupply> getMedicineSupply() {
+		return medicineSupply;
+	}
+
+	public void setMedicineSupply(Set<MedicineSupply> medicineSupply) {
+		this.medicineSupply = medicineSupply;
 	}
 }

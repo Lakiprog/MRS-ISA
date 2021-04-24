@@ -1,5 +1,4 @@
 .offer-form{
-    min-width: 150px;
     max-width: 500px;
     width: 100%;
 }
@@ -16,7 +15,7 @@
 }
 
 .table-card {
-    width: 60%;
+    width: 700px;
     margin-top: 10px;
     margin-left: 10px;
     background-color: #DEEDE6
@@ -30,18 +29,14 @@ table {
     width: 100%;
 }
 
-.coloumnNumber {
-    width: 10%; 
-}
-
 .coloumnMedicineCode {
-    width: 15%; 
+    width: 5%; 
 }
 
 .coloumnName {
     width: 25%; 
 }
 
-.coloumnAmount {
-    width: 10%; 
+.coloumnQuantity {
+    width: 5%; 
 }

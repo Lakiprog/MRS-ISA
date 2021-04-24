@@ -13,6 +13,7 @@ public class SubstituteMedicine {
 	@ManyToOne
 	@JoinColumn(name = "medicine_id")
 	private Medicine medicine;
+	
 	@ManyToOne
 	@JoinColumn(name = "substitute_medicine_id")
 	private Medicine substituteMedicine;

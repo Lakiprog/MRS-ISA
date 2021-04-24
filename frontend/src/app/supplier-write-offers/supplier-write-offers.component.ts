@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { SupplierWriteOffersService } from './supplier-write-offers.service';
 
 @Component({
   selector: 'app-supplier-write-offers',
@@ -10,43 +12,40 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
 
-  constructor(private fb: FormBuilder) { }
+  constructor
+  (
+    private fb: FormBuilder, 
+    private supplierWriteOffersService: SupplierWriteOffersService,
+    private _snackBar: MatSnackBar
+  ) { }
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['number', 'medicineCode', 'name', 'amount'];
-  data = 
-  [
-      {number: 1, medicineCode: 'S123', name: 'medicine1', amount: 20},
-      {number: 2, medicineCode: 'S124', name: 'medicine2', amount: 5},
-      {number: 3, medicineCode: 'S125', name: 'medicine3', amount: 10},
-      {number: 4, medicineCode: 'S126', name: 'medicine4', amount: 7},
-      {number: 5, medicineCode: 'S127', name: 'medicine5', amount: 0},
-      {number: 6, medicineCode: 'S128', name: 'medicine6', amount: 5},
-      {number: 7, medicineCode: 'S129', name: 'medicine7', amount: 40},
-      {number: 8, medicineCode: 'S130', name: 'medicine8', amount: 12},
-      {number: 9, medicineCode: 'S131', name: 'medicine9', amount: 7},
-      {number: 10, medicineCode: 'S132', name: 'medicine10', amount: 50},
-      {number: 11, medicineCode: 'S133', name: 'medicine11', amount: 24},
-      {number: 12, medicineCode: 'S134', name: 'medicine12', amount: 17},
-      {number: 13, medicineCode: 'S135', name: 'medicine13', amount: 8},
-      {number: 14, medicineCode: 'S136', name: 'medicine14', amount: 1},
-  ];
-  orders = ['order1', 'order2', 'order3'];
+  verticalPosition: MatSnackBarVerticalPosition = "top";
+  displayedColumns: string[] = ['medicineCode', 'name', 'quantity'];
+  data = [];
+  orders = [];
   dataSource = new MatTableDataSource<any>(this.data);
   offerForm!: FormGroup;
   purchaseOrdersForm!: FormGroup;
-  selected = this.orders[0];
+  RESPONSE_OK : number = 0;
+  RESPONSE_ERROR : number = -1;
 
   ngOnInit(): void {
     this.offerForm = this.fb.group(
       {
-        purchaseOrders: [this.selected],
+        orderName: ['', Validators.required],
         deliveryTime: ['', Validators.required],
         price: [0, Validators.required]
       }
     );
+    this.supplierWriteOffersService.getOrders().subscribe(
+      data => {
+        this.orders = data
+      }
+    )
+    this.getMedicineSupply();
   }
 
   ngAfterViewInit(): void {
@@ -57,8 +56,32 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
     return this.offerForm.controls[controlName].hasError(errorName);
   }
 
-  sendOffer() {
+  getMedicineSupply() {
+    this.supplierWriteOffersService.getMedicineSupply().subscribe(
+      response => {
+        this.data = response;
+        this.dataSource = new MatTableDataSource<any>(this.data);
+      }
+    )
+  }
 
+  writeOffer() {
+    this.supplierWriteOffersService.writeOffer(this.offerForm.value).subscribe(
+      response => {
+        this.openSnackBar(response, this.RESPONSE_OK);
+      }, 
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+      }
+    );
+  }
+
+  openSnackBar(msg: string, responseCode: number) {
+    this._snackBar.open(msg, "x", {
+      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      verticalPosition: this.verticalPosition,
+      panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
+    });
   }
 
 }

@@ -78,3 +78,26 @@ insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (6
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1000, 50, 1, 3);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 500, 2, 1);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (800, 800, 2, 2);
+
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 1, 200);
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 2, 100); 
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 3, 500);
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (11, 1, 50);
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (11, 2, 0); 
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (11, 3, 15);
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (12, 1, 150);
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (12, 2, 600); 
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (12, 3, 100);
+
+insert into purchase_order (order_name, due_date_offer) values ('order1', '2021-05-05');
+insert into purchase_order (order_name, due_date_offer) values ('order2', '2021-05-01');
+insert into purchase_order (order_name, due_date_offer) values ('order3','2021-05-10');
+
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (1, 1, 'order1', 20);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (1, 2, 'order1', 30);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (1, 3, 'order1', 15);
+
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (2, 1, 'order2', 5);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (2, 3, 'order2', 10);
+
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (3, 2, 'order3', 20);
