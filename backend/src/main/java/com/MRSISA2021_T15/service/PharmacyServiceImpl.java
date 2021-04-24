@@ -21,24 +21,23 @@ public class PharmacyServiceImpl implements PharmacyService {
 	@Autowired
 	private PharmacyAdminRepository pharmacyAdminRepository;
 	
-
-	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	@Override
 	public String registerPharmacy(Pharmacy pharmacy) {
 		String message = "";
-		var pharmacyAdministratorsIds = (List<Integer>)pharmacy.getPharmacyAdminsIds().clone();
-		pharmacy.setPharmacyAdminsIds(null);
+		List<Integer> pharmacyAdministratorsIds = (List<Integer>) pharmacy.getPharmacyAdminsIds().clone();
 		pharmacyRepository.save(pharmacy);
 		if (pharmacyAdministratorsIds != null) {
 			for (Integer id : pharmacyAdministratorsIds) {
-				var pharmacyAdmin = pharmacyAdminRepository.findById(id);
-				if (pharmacyAdmin.get() != null) {
-					pharmacyAdmin.get().setPharmacy(pharmacy);
-					pharmacyAdminRepository.save(pharmacyAdmin.get());
+				PharmacyAdmin pharmacyAdmin = pharmacyAdminRepository.findById(id).get();
+				if (pharmacyAdmin != null) {
+					pharmacyAdmin.setPharmacy(pharmacy);
+					pharmacyAdminRepository.save(pharmacyAdmin);
 				}
 			}
+		} else {
+			message = "The pharmacy has not been registered!";
 		}
 		return message;
 	}

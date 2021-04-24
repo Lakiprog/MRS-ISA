@@ -58,16 +58,20 @@ public class RegistrationServiceImpl implements RegistrationService {
 			Role role = roleRepository.findById(Constants.ROLE_PATIENT).get();
 			roles.add(role);
 			patient.setRoles(roles);
-			registrationRepository.save(patient);
 			ConfirmationToken confirmationToken = new ConfirmationToken(patient);
-            confirmationTokenRepository.save(confirmationToken);
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(patient.getEmail());
-            mailMessage.setSubject("Complete Registration!");
-            mailMessage.setFrom(env.getProperty("spring.mail.username"));
-            mailMessage.setText("To confirm your account, please click here : "
-            +"http://localhost:8080/registration/confirmAccount?token="+confirmationToken.getConfirmationToken());
-            javaMailSender.send(mailMessage);
+			try {
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+	            mailMessage.setTo(patient.getEmail());
+	            mailMessage.setSubject("Verify account");
+	            mailMessage.setFrom(env.getProperty("spring.mail.username"));
+	            mailMessage.setText("To verify your account, please click here: "
+	            		+ "http://localhost:8080/registration/confirmAccount?token=" + confirmationToken.getConfirmationToken());
+	            javaMailSender.send(mailMessage);
+	            registrationRepository.save(patient);
+	            confirmationTokenRepository.save(confirmationToken);
+			} catch (Exception e) {
+				message = "Server error: registration unsuccessfull!";
+			}
 		}
 		return message;
 	}
