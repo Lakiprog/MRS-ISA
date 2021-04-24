@@ -76,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/suppliers/getMedicineSupply").hasAuthority("ROLE_SUPPLIER")
 				.antMatchers("/suppliers/writeOffer").hasAuthority("ROLE_SUPPLIER")
 				.antMatchers("/suppliers/getOrders").hasAuthority("ROLE_SUPPLIER")
+				.antMatchers("/suppliers/getOrderByName/{orderName}").hasAuthority("ROLE_SUPPLIER")
 				.antMatchers("/appointment_creation/pharmacist").hasAuthority("ROLE_PHARMACIST")
 				.antMatchers("/appointment_creation/dermatologist").hasAuthority("ROLE_DERMATOLOGIST")
 				.antMatchers("/appointment_creation/dermatologistPredefined/{appointmentId}").hasAuthority("ROLE_DERMATOLOGIST")

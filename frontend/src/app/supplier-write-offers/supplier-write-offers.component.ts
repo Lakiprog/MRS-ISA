@@ -21,13 +21,20 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   ) { }
 
   @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
+  paginatorMedicineSupply!: MatPaginator;
+
+  @ViewChild(MatPaginator)
+  paginatorOrders!: MatPaginator;
 
   verticalPosition: MatSnackBarVerticalPosition = "top";
-  displayedColumns: string[] = ['medicineCode', 'name', 'quantity'];
-  data = [];
+  displayedColumnsMedicineSupply: string[] = ['medicineCode', 'name', 'quantity'];
+  displayedColumnsOrders: string[] = ['orderName', 'medicineCode', 'name', 'quantity'];
+  medicineSupplyData = [];
+  orderData = [];
   orders = [];
-  dataSource = new MatTableDataSource<any>(this.data);
+  medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+  orderDataSource = new MatTableDataSource<any>(this.orderData);
+  dataSource1 = new MatTableDataSource<any>()
   offerForm!: FormGroup;
   purchaseOrdersForm!: FormGroup;
   RESPONSE_OK : number = 0;
@@ -50,7 +57,8 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+    this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+    this.orderDataSource.paginator = this.paginatorOrders
   }
 
   public hasError = (controlName: string, errorName: string) =>{
@@ -70,10 +78,20 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   getMedicineSupply() {
     this.supplierWriteOffersService.getMedicineSupply().subscribe(
       response => {
-        this.data = response;
-        this.dataSource = new MatTableDataSource<any>(this.data);
+        this.medicineSupplyData = response;
+        this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
       }
     )
+  }
+
+  getPurchaseOrders() {
+    this.supplierWriteOffersService.getOrderByName(this.offerForm.get('orderName')?.value).
+      subscribe(
+        data => {
+          this.orderData = data;
+          this.orderDataSource = new MatTableDataSource<any>(this.orderData);
+        }
+      )
   }
 
   writeOffer() {

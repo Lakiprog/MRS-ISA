@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.MedicineSupply;
+import com.MRSISA2021_T15.model.PurchaseOrderMedicine;
 import com.MRSISA2021_T15.model.PurchaseOrderSupplier;
 import com.MRSISA2021_T15.model.Supplier;
 
@@ -18,6 +19,8 @@ public interface SupplierService {
 	List<MedicineSupply> getMedicineSupply();
 	
 	List<String> getOrders();
+	
+	List<PurchaseOrderMedicine> getOrderByName(String orderName);
 	
 	String writeOffer(PurchaseOrderSupplier offer);
 

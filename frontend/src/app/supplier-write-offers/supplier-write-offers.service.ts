@@ -18,6 +18,10 @@ export class SupplierWriteOffersService {
     return this.http.get<any>("http://localhost:8080/suppliers/getOrders");
   }
 
+  getOrderByName(orderName: any) {
+    return this.http.get<any>("http://localhost:8080/suppliers/getOrderByName/" + orderName);
+  }
+
   writeOffer(offer: any) {
     return this.http.put<any>("http://localhost:8080/suppliers/writeOffer", offer)
                               .pipe(catchError(this.errorHander));

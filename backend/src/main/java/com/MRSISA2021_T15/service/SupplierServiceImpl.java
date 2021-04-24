@@ -101,6 +101,8 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 		return orderNames;
 	}
+	
+	
 
 	@Override
 	public String writeOffer(PurchaseOrderSupplier offer) {
@@ -134,5 +136,10 @@ public class SupplierServiceImpl implements SupplierService {
 			message = "Supplier has already given an offer for this order!";
 		}
 		return message;
+	}
+
+	@Override
+	public List<PurchaseOrderMedicine> getOrderByName(String orderName) {
+		return purchaseOrderMedicineRepository.findAllByOrderName(orderName);
 	}
 }

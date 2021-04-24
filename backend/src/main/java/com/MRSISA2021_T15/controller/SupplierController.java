@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.MedicineSupply;
+import com.MRSISA2021_T15.model.PurchaseOrderMedicine;
 import com.MRSISA2021_T15.model.PurchaseOrderSupplier;
 import com.MRSISA2021_T15.model.Supplier;
 import com.MRSISA2021_T15.service.SupplierService;
@@ -80,5 +82,11 @@ public class SupplierController {
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public List<String> getOrders() {
 		return supplierService.getOrders();
+	}
+	
+	@GetMapping(value = "/getOrderByName/{orderName}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
+	public List<PurchaseOrderMedicine> getOrderByName(@PathVariable String orderName) {
+		return supplierService.getOrderByName(orderName);
 	}
 }
