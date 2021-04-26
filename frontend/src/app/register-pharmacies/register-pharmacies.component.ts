@@ -45,7 +45,6 @@ export class RegisterPharmaciesComponent implements OnInit {
   }
 
   registerPharmacy() {
-    console.log(this.pharmacyRegistrationForm.value);
     this._registerPharmaciesService.registerPharmacy(this.pharmacyRegistrationForm.value).subscribe(
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);

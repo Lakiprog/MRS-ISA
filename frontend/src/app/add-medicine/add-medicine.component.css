@@ -16,7 +16,7 @@
 }
 
 .add-medicine-background {
-    background: url(medicine.jpg);
+    background: url(../pictures/it.jpg);
     background-size: cover;
     background-attachment: fixed;
 }

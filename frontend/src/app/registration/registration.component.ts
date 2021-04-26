@@ -32,6 +32,7 @@ export class RegistrationComponent implements OnInit {
   selected =  this.authService.getTokenData()?.role === 'ROLE_SYSTEM_ADMIN' ? 'System administrator' : 'Patient';
   oldPasswordValue : any;
   oldUserTypeValue : any;
+  picture : any =  this.authService.getTokenData()?.role === 'ROLE_SYSTEM_ADMIN' ? 'registration-users-background' : 'registration-patient-background';
 
   ngOnInit(): void {
     this.registrationForm = this.fb.group(

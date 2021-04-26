@@ -1,6 +1,6 @@
 
 .supplier-profile-page-background {
-    background: url(supplier-profile-page.jpg);
+    background: url(../pictures/supplier-profile-page.jpg);
     background-size: cover;
     background-attachment: fixed;
   }
@@ -15,10 +15,9 @@
     width: 100%;
   }
   
-  ::ng-deep .card {
+  .card {
     width: 800px;
     margin-top: 10px;
     margin-left: 10px;
     background-color: #DEEDE6;
-    border-radius: 30px !important;
   }

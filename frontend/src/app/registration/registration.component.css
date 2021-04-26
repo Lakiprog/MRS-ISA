@@ -15,8 +15,14 @@
   background-color: #DEEDE6
 }
 
-.registration-background {
-  background: url(xp.jpg);
+.registration-patient-background {
+  background: url(../pictures/xp.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.registration-users-background {
+  background: url(../pictures/it.jpg);
   background-size: cover;
   background-attachment: fixed;
 }
