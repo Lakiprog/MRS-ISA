@@ -49,20 +49,6 @@ public class AuthenticationController {
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) {
-
-		List<SystemAdmin> systemAdmins = (List<SystemAdmin>) systemAdminRepository.findAll();
-		if (systemAdmins.isEmpty() && authenticationRequest.getUsername().equals("ADMIN") && authenticationRequest.getPassword().equals("ADMIN")) {
-			SystemAdmin systemAdmin = new SystemAdmin();
-			systemAdmin.setUsername("ADMIN");
-			systemAdmin.setPassword(passwordEncoder.encode("ADMIN"));
-			List<Role> roles = new ArrayList<Role>();
-			Role role = roleRepository.findById(Constants.ROLE_SYSTEM_ADMIN).get();
-			roles.add(role);
-			systemAdmin.setRoles(roles);
-			systemAdmin.setEnabled(true);
-			systemAdminRepository.save(systemAdmin);
-		}
-		
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
@@ -73,5 +59,21 @@ public class AuthenticationController {
 		int expiresIn = tokenUtils.getExpiredIn();
 
 		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getId(), user.getUsername(), user.getRoles().get(0).getName()));
+	}
+	
+	@PostMapping(value = "/createFirstSystemAdmin")
+	public void createFirstSystemAdmin() {
+		List<SystemAdmin> systemAdmins = (List<SystemAdmin>) systemAdminRepository.findAll();
+		if (systemAdmins.isEmpty()) {
+			SystemAdmin systemAdmin = new SystemAdmin();
+			systemAdmin.setUsername("ADMIN");
+			systemAdmin.setPassword(passwordEncoder.encode("ADMIN"));
+			List<Role> roles = new ArrayList<Role>();
+			Role role = roleRepository.findById(Constants.ROLE_SYSTEM_ADMIN).get();
+			roles.add(role);
+			systemAdmin.setRoles(roles);
+			systemAdmin.setEnabled(true);
+			systemAdminRepository.save(systemAdmin);
+		}
 	}
 }

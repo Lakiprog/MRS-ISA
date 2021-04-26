@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
         password: ['', Validators.required],
       }
     );
+    this.authService.createFirstSystemAdmin().subscribe();
   }
 
   public hasError = (controlName: string, errorName: string) =>{

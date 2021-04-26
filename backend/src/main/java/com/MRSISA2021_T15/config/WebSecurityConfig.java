@@ -55,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 			.authorizeRequests().antMatchers("/auth/login").permitAll()
+				.antMatchers("/auth/createFirstSystemAdmin").permitAll()
 				.antMatchers("/registration/registerPatient").permitAll()
 				.antMatchers("/registration/confirmAccount").permitAll()
 				.antMatchers("/registration/registerSystemAdministrator").hasAuthority("ROLE_SYSTEM_ADMIN")

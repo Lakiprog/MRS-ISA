@@ -35,6 +35,10 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  createFirstSystemAdmin() {
+    return this.http.post<any>("http://localhost:8080/auth/createFirstSystemAdmin", null)
+  }
+
   tokenIsPresent() {
     return this.access_token != null;
   }
