@@ -14,7 +14,7 @@ export class PharmacistPatientComponent implements OnInit {
   patients = [];
 
   ngOnInit(): void {
-    this.service.getPatientsPharmacist().subscribe((data:any) => {this.patients = data; console.log(this.patients)});
+    this.service.getPatientsPharmacist().subscribe((data:any) => {this.patients = data;});
     
   }
 

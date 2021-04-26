@@ -12,7 +12,7 @@ export class DermatologistChoosePredefinedService {
 
     public getAppointmentsPredefinedDermatologist(){
 
-        return this._http.get("http://localhost:8080/calendar/calendarDermatologistPredefined/id=6/pharmacy=1")
+        return this._http.get("http://localhost:8080/calendar/calendarDermatologistPredefined/pharmacy=1")
     }
 
     public putAppointmentPredefinedDermatologist(id:any, patient:any){

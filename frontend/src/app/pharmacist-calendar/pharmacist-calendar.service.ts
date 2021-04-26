@@ -9,6 +9,6 @@ export class PharmacistCalendarService {
   constructor(private _http: HttpClient) { }
 
   getAppointmentsPharmacist(){
-      return this._http.get("http://localhost:8080/calendar/calendarPharmacist/5")
+      return this._http.get("http://localhost:8080/calendar/calendarPharmacist")
   }
 }

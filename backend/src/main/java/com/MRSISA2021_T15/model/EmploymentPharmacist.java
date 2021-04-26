@@ -11,4 +11,14 @@ public class EmploymentPharmacist extends Employment{
 	@OneToOne
 	//@JoinColumn(name = "pharmacist_id")
 	private Pharmacist pharmacist;
+
+	public Pharmacist getPharmacist() {
+		return pharmacist;
+	}
+
+	public void setPharmacist(Pharmacist pharmacist) {
+		this.pharmacist = pharmacist;
+	}
+	
+	
 }

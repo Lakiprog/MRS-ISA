@@ -11,7 +11,7 @@ export class PharmacistUpdateService {
   constructor(private _http: HttpClient) { }
 
   getPharmacistData() {
-    return this._http.get<any>("http://localhost:8080/pharmacist/get/5");
+    return this._http.get<any>("http://localhost:8080/pharmacist/get");
   }
 
   updatePharmacistData(pharmacist: any) {

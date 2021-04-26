@@ -3,6 +3,7 @@ package com.MRSISA2021_T15.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.model.Absence;
@@ -12,6 +13,7 @@ import com.MRSISA2021_T15.model.AppointmentPharmacist;
 import com.MRSISA2021_T15.model.EmploymentDermatologist;
 import com.MRSISA2021_T15.model.EmploymentPharmacist;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.repository.AbsenceRepository;
 import com.MRSISA2021_T15.repository.AppointmentCreationRepository;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
@@ -46,7 +48,8 @@ public class AppointmentService {
 		List<Appointment> appointmentsPatient = findAllPatients(appointment.getPatient().getId());
 		List<Appointment> appointmentsPharmacist = findAllPharmacist(appointment.getPharmacist().getId());
 		List<Absence> absences = repo3.findAllApproved();
-		EmploymentPharmacist employment = repo2.findByPharmacistId(appointment.getPharmacist().getId());
+		Pharmacist p = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		EmploymentPharmacist employment = repo2.findByPharmacistId(p.getId());
 		
 		if(appointment.getStart().getHour() < employment.getStart() || appointment.getEnd().getHour() >= employment.getEnd()) {
 			return "This pharmacist doesnt work at that time!";

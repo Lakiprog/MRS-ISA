@@ -11,7 +11,7 @@ export class DermatologistUpdateService {
   constructor(private _http: HttpClient) { }
 
   getPharmacistData() {
-    return this._http.get<any>("http://localhost:8080/dermatologist/6/findById");
+    return this._http.get<any>("http://localhost:8080/dermatologist/get");
   }
 
   updatePharmacistData(pharmacist: any) {
