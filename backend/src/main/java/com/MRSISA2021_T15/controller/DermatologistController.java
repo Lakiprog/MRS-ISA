@@ -1,6 +1,7 @@
 package com.MRSISA2021_T15.controller;
 
 
+import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.repository.DermatologistRepository;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ import java.util.Optional;
 public class DermatologistController {
     @Autowired
     private DermatologistRepository dermatologistRepository;
+    
+    @Autowired
+	private PasswordEncoder encod;
 
     @RequestMapping(path="/add", method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
@@ -79,24 +84,33 @@ public class DermatologistController {
     @PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public ResponseEntity<String> putDermatologist(@RequestBody Dermatologist d){
     	Gson gson = new GsonBuilder().create();
-		if (dermatologistRepository.findByEmail(d.getEmail()) != null && 
-				!dermatologistRepository.findByEmail(d.getEmail()).getUsername().equals(d.getUsername())) {
-			return new ResponseEntity<String>(gson.toJson("A user with this email already exists!"), HttpStatus.INTERNAL_SERVER_ERROR);
-		} else if (dermatologistRepository.findByUsername(d.getUsername()) == null) {
-			return new ResponseEntity<String>(gson.toJson("User: " + d.getUsername() + " does not exist!"), HttpStatus.INTERNAL_SERVER_ERROR);
+		Dermatologist pharm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		pharm.setName(d.getName());
+		pharm.setSurname(d.getSurname());
+		pharm.setAdress(d.getAdress());
+		pharm.setCity(d.getCity());
+		pharm.setCountry(d.getCountry());
+		pharm.setPhoneNumber(d.getPhoneNumber());
+		dermatologistRepository.save(pharm);
+		return new ResponseEntity<String>(gson.toJson("Update Succesfull!"), HttpStatus.OK);
+	}
+    
+    @PutMapping(value = "/updatePassword", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public ResponseEntity<String> updatePassword(@RequestBody ChangePassword passwords) {
+		Dermatologist p = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Gson gson = new GsonBuilder().create();
+		if (p != null) {
+			if (!encod.matches(passwords.getOldPassword(), p.getPassword())) {
+				return new ResponseEntity<String>(gson.toJson("Wrong old password!"), HttpStatus.INTERNAL_SERVER_ERROR);
+			} else {
+				p.setPassword(encod.encode(passwords.getPassword()));
+				dermatologistRepository.save(p);
+				return new ResponseEntity<String>(gson.toJson(""), HttpStatus.OK);
+			}
 		} else {
-			Dermatologist updatedDermatologist = (Dermatologist) dermatologistRepository.findByUsername(d.getUsername());
-			updatedDermatologist.setEmail(d.getEmail());
-			updatedDermatologist.setPassword(d.getPassword());
-			updatedDermatologist.setName(d.getName());
-			updatedDermatologist.setSurname(d.getSurname());
-			updatedDermatologist.setAdress(d.getAdress());
-			updatedDermatologist.setCity(d.getCity());
-			updatedDermatologist.setCountry(d.getCountry());
-			updatedDermatologist.setPhoneNumber(d.getPhoneNumber());
-			updatedDermatologist.setRating(d.getRating());
-			dermatologistRepository.save(updatedDermatologist);
-			return new ResponseEntity<String>(gson.toJson("Update Succesfull!"), HttpStatus.OK);
+			return new ResponseEntity<String>(gson.toJson("Password update unsuccessfull!"),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     

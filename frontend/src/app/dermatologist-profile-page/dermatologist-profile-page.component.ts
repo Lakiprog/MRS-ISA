@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
 import { PasswordValidator } from '../registration/validators/passwordValidator';
 import { DermatologistUpdateService } from './dermatologist-update.service';
 
@@ -12,19 +13,17 @@ import { DermatologistUpdateService } from './dermatologist-update.service';
 export class DermatologistProfilePageComponent implements OnInit {
 
   updateForm! : FormGroup;
-  EMAIL_REGEX : string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+  updatePasswordForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  constructor(private fb: FormBuilder, private _pharmacistUpdateService: DermatologistUpdateService, private _snackBar: MatSnackBar) { }
+  constructor(private fb: FormBuilder, private _pharmacistUpdateService: DermatologistUpdateService, private _snackBar: MatSnackBar, private authService: AuthService) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   ngOnInit(): void {
     this.updateForm = this.fb.group(
       {
         username: [''],
-        email: ['', [Validators.required, Validators.pattern(this.EMAIL_REGEX)]],
-        password: ['', Validators.required],
-        confirmPassword: ['', Validators.required],
+        email: [''],
         name: ['', Validators.required],
         surname: ['', Validators.required],
         adress: ['', Validators.required],
@@ -34,35 +33,44 @@ export class DermatologistProfilePageComponent implements OnInit {
         rating: [''],
       }, {validator: PasswordValidator}
     );
+    this.updatePasswordForm = this.fb.group(
+      {
+        oldPassword: ['', Validators.required],
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required]
+      }, {validator: PasswordValidator}
+    );
     this._pharmacistUpdateService.getPharmacistData().subscribe(
       data => {
-        this.updateForm.get('username')?.setValue(data.username);
-        this.updateForm.get('email')?.setValue(data.email);
-        this.updateForm.get('password')?.setValue(data.password);
-        this.updateForm.get('confirmPassword')?.setValue(data.password);
-        this.updateForm.get('name')?.setValue(data.name);
-        this.updateForm.get('surname')?.setValue(data.surname);
-        this.updateForm.get('adress')?.setValue(data.adress);
-        this.updateForm.get('city')?.setValue(data.city);
-        this.updateForm.get('country')?.setValue(data.country);
-        this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
-        this.updateForm.get('rating')?.setValue(data.rating);
+        this.fillDataForm(data);
       }
     )
   }
 
-  public hasError = (controlName: string, errorName: string) =>{
-    return this.updateForm.controls[controlName].hasError(errorName);
+  public hasError = (controlName: string, errorName: string, form: FormGroup) =>{
+    return form.controls[controlName].hasError(errorName);
   }
 
   checkPasswords() {
-    if (this.updateForm.hasError('passwordMismatch')) {
-      this.updateForm.get('confirmPassword')?.setErrors([{'passwordMismatch': true}]);
+    if (this.updatePasswordForm.hasError('passwordMismatch')) {
+      this.updatePasswordForm.get('confirmPassword')?.setErrors([{'passwordMismatch': true}]);
     }
   }
 
   get confirmPassword() {
-    return this.updateForm.get('confirmPassword');
+    return this.updatePasswordForm.get('confirmPassword');
+  }
+
+  fillDataForm(data: any) {
+    this.updateForm.get('username')?.setValue(data.username);
+    this.updateForm.get('email')?.setValue(data.email);
+    this.updateForm.get('name')?.setValue(data.name);
+    this.updateForm.get('surname')?.setValue(data.surname);
+    this.updateForm.get('adress')?.setValue(data.adress);
+    this.updateForm.get('city')?.setValue(data.city);
+    this.updateForm.get('country')?.setValue(data.country);
+    this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
+    this.updateForm.get('rating')?.setValue(data.rating);
   }
 
   update() {
@@ -72,19 +80,19 @@ export class DermatologistProfilePageComponent implements OnInit {
         this.openSnackBar(response, this.RESPONSE_OK);
         this._pharmacistUpdateService.getPharmacistData().subscribe(
           data => {
-            this.updateForm.get('username')?.setValue(data.username);
-            this.updateForm.get('email')?.setValue(data.email);
-            this.updateForm.get('password')?.setValue(data.password);
-            this.updateForm.get('confirmPassword')?.setValue(data.password);
-            this.updateForm.get('name')?.setValue(data.name);
-            this.updateForm.get('surname')?.setValue(data.surname);
-            this.updateForm.get('adress')?.setValue(data.adress);
-            this.updateForm.get('city')?.setValue(data.city);
-            this.updateForm.get('country')?.setValue(data.country);
-            this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
-            this.updateForm.get('rating')?.setValue(data.rating);
-          }
-        )
+            this.fillDataForm(data);
+          })
+      },
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+      }
+    )
+  }
+
+  updatePassword() {
+    this._pharmacistUpdateService.updatePassword(this.updatePasswordForm.value).subscribe(
+      response => {
+        this.authService.logout();
       },
       error => {
         this.openSnackBar(error.error, this.RESPONSE_ERROR);
@@ -99,5 +107,4 @@ export class DermatologistProfilePageComponent implements OnInit {
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
   }
-
 }
