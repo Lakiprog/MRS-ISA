@@ -36,7 +36,7 @@ public class PatientService {
 	public String updateData(Patient patient) {
 		String message = "";
 		if(repository.findById(patient.getId()) != null) {
-			repository.deleteById(patient.getId());
+			//repository.deleteById(patient.getId());
 			repository.save(patient);
 			
 			return message;
