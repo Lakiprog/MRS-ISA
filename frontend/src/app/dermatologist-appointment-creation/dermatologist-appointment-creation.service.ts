@@ -14,6 +14,10 @@ export class DermatologistAppointmentCreationService{
                    .pipe(catchError(this.errorHander));
       }
 
+      getPharmacistData() {
+        return this._http.get<any>("http://localhost:8080/dermatologist/get");
+      }
+
     errorHander(error: HttpErrorResponse) {
         return throwError(error);
     }

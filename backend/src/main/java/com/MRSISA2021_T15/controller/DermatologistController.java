@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -97,5 +98,13 @@ public class DermatologistController {
 			dermatologistRepository.save(updatedDermatologist);
 			return new ResponseEntity<String>(gson.toJson("Update Succesfull!"), HttpStatus.OK);
 		}
+	}
+    
+    
+    @GetMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public Optional<Dermatologist> getDermatologist(){
+    	Dermatologist d = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return dermatologistRepository.findById(d.getId());
 	}
 }

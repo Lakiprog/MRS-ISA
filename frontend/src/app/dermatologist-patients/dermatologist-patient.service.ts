@@ -10,6 +10,6 @@ export class DermatologistPatientService {
 
     public getPatientsDermatologist(){
 
-        return this._http.get("http://localhost:8080/patient-search/searchPatientsDermatologist/6")
+        return this._http.get("http://localhost:8080/patient-search/searchPatientsDermatologist")
     }
 }

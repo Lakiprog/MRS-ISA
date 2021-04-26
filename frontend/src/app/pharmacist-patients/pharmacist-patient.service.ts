@@ -10,6 +10,6 @@ export class PharmacistPatientService {
 
     public getPatientsPharmacist(){
 
-        return this._http.get("http://localhost:8080/patient-search/searchPatientsPharmacist/5")
+        return this._http.get("http://localhost:8080/patient-search/searchPatientsPharmacist")
     }
 }

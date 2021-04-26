@@ -16,12 +16,16 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
   appointmentForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
+  pharmacist = {};
+  pharmacy = {};
 
     ngOnInit(): void {
         this.appointmentForm = this.fb.group({
             meetingTime: ['', Validators.required],
             endingTime: ['', Validators.required],
         });
+        this._pharmacistAppointmentCreationService.getPharmacistData().subscribe((data:any) => {this.pharmacist = data;})
+        this._pharmacistAppointmentCreationService.getPharmacyData().subscribe((data:any) => {this.pharmacy = data;})
     }
 
     public hasError = (controlName: string, errorName: string) =>{
@@ -43,7 +47,8 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
         }
         start.setHours(start.getHours() + 2);
         end.setHours(end.getHours() + 2);
-        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "pharmacist" : {}, "pharmacy" : {}, "price" : 0};
+        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "pharmacist" : this.pharmacist, 
+        "pharmacy" : this.pharmacy, "price" : 0};
     }
 
     public makeAppointment(){
@@ -60,26 +65,8 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
             "username" : "kaki",
             "password" : "kaki"}
 
-            const pharmacist = {
-                "id" : 5,
-                "email" : "farmaceut@gmail.com",
-                "name" : "Micko",
-                "surname" : "Mica",
-                "adress" : "Telep69",
-                "city" : "NS",
-                "country" : "Srbija",
-                "phone_number" : "0620602311",
-                "username" : "farmaceut",
-                "password" : "farmaceut",
-                "first_login" : false,
-                "rating" : 1
-            }
-
-            const pharmacy = {"id" : 1, "appointment_price" : 1000.0}
-
             appointment["patient"] = patient;
-            appointment["pharmacist"] = pharmacist;
-            appointment["pharmacy"] = pharmacy;
+            console.log(appointment);
             this._pharmacistAppointmentCreationService.makeAppointment(appointment).subscribe(
                 response => {
                   this.openSnackBar(response, this.RESPONSE_OK);

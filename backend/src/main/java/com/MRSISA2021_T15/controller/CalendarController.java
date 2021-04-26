@@ -7,13 +7,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MRSISA2021_T15.model.Appointment;
+import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Event;
+import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.service.CalendarService;
 
 @RestController
@@ -23,10 +26,11 @@ public class CalendarController {
 	@Autowired
 	private CalendarService service;
 	
-	@GetMapping(value = "/calendarPharmacist/{pharmacistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/calendarPharmacist", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
-	public Collection<Event> calendarPharmacist(@PathVariable("pharmacistId") Integer pharmacistId){
-		List<Appointment> appointments = service.findAllPharmacist(pharmacistId);
+	public Collection<Event> calendarPharmacist(){
+		Pharmacist p = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Appointment> appointments = service.findAllPharmacist(p.getId());
 		ArrayList<Event> events = new ArrayList<Event>();
 		for (Appointment appointment : appointments) {
 			Event event = new Event();
@@ -59,10 +63,11 @@ public class CalendarController {
 		return events;
 	}
 	
-	@GetMapping(value = "/calendarDermatologist/{dermatologistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/calendarDermatologist", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
-	public Collection<Event> calendarDermatologist(@PathVariable("dermatologistId") Integer dermatologistId){
-		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
+	public Collection<Event> calendarDermatologist(){
+		Dermatologist d = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Appointment> appointments = service.findAllDermatologist(d.getId());
 		ArrayList<Event> events = new ArrayList<Event>();
 		for (Appointment appointment : appointments) {
 				Event event = new Event();
@@ -78,10 +83,11 @@ public class CalendarController {
 		return events;
 	}
 	
-	@GetMapping(value = "/calendarDermatologistPredefined/{dermatologistId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/calendarDermatologistPredefined", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
-	public Collection<Event> calendarDermatologistPredefined(@PathVariable("dermatologistId") Integer dermatologistId){
-		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
+	public Collection<Event> calendarDermatologistPredefined(){
+		Dermatologist d = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Appointment> appointments = service.findAllDermatologist(d.getId());
 		ArrayList<Event> events = new ArrayList<Event>();
 		for (Appointment appointment : appointments) {
 				if(appointment.getPatient() == null) {
@@ -95,10 +101,11 @@ public class CalendarController {
 		return events;
 	}
 	
-	@GetMapping(value = "/calendarDermatologistPredefined/id={dId}/pharmacy={pId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/calendarDermatologistPredefined/pharmacy={pId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
-	public Collection<Event> calendarDermatologistPredefined(@PathVariable("dId") Integer dermatologistId, @PathVariable("pId") Integer pharmacyId){
-		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
+	public Collection<Event> calendarDermatologistPredefined(@PathVariable("pId") Integer pharmacyId){
+		Dermatologist d = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Appointment> appointments = service.findAllDermatologist(d.getId());
 		ArrayList<Event> events = new ArrayList<Event>();
 		for (Appointment appointment : appointments) {
 			if(appointment.getPharmacy().getId() == pharmacyId && appointment.getPatient() == null) {
