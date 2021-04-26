@@ -1,6 +1,6 @@
 package com.MRSISA2021_T15.controller;
 
-
+import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.Event;
 import com.MRSISA2021_T15.model.Pharmacist;
@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,82 +28,103 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping(path="/pharmacist")
+@RequestMapping(path = "/pharmacist")
 public class PharmacistController {
-    @Autowired
-    private PharmacistRepository pharmacistRepository;
+	@Autowired
+	private PharmacistRepository pharmacistRepository;
 
-    @RequestMapping(path="/add", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
-    public @ResponseBody ResponseEntity addNewPharmacist (@RequestBody Pharmacist p) {
-        pharmacistRepository.save(p);
-        return ResponseEntity.ok().build();
-    }
+	@Autowired
+	private PasswordEncoder encoder;
 
-    @DeleteMapping(path = "/{pharmacistId}/delete")
-    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
-    public void deletePharmacist(@PathVariable Integer pharmacistId) {
-        pharmacistRepository.deleteById(pharmacistId);
-    }
+	@RequestMapping(path = "/add", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public @ResponseBody ResponseEntity addNewPharmacist(@RequestBody Pharmacist p) {
+		pharmacistRepository.save(p);
+		return ResponseEntity.ok().build();
+	}
 
-    @RequestMapping(path="/all")
-    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
-    public @ResponseBody Iterable<Pharmacist> getAllPharmacists() {
-        return pharmacistRepository.findAll();
-    }
-    @RequestMapping(path="/{pharmacistId}/findArrayById")
-    public ArrayList<Optional<Pharmacist>> getPharmacistArrayById(@PathVariable Integer pharmacistId){
-        ArrayList<Optional<Pharmacist>> returnList = new ArrayList<>();
-        returnList.add(pharmacistRepository.findById(pharmacistId));
-        return returnList;
-    }
+	@DeleteMapping(path = "/{pharmacistId}/delete")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public void deletePharmacist(@PathVariable Integer pharmacistId) {
+		pharmacistRepository.deleteById(pharmacistId);
+	}
 
-    @RequestMapping(path="/{string}/findByString")
-    public ArrayList<Pharmacist> getPharmacistByString(@PathVariable String string){
-        Iterable<Pharmacist> pharmacistList = pharmacistRepository.findAll();
-        ArrayList<Pharmacist> returnList = new ArrayList<>();
-        for(Pharmacist pharmacist: pharmacistList){
-            if((pharmacist.getName() != null && pharmacist.getName().toLowerCase().contains(string.toLowerCase()))||
-                    (pharmacist.getSurname() != null && pharmacist.getSurname().toLowerCase().contains(string.toLowerCase()))||
-                    (pharmacist.getUsername() != null && pharmacist.getUsername().toLowerCase().contains(string.toLowerCase()))||
-                    (pharmacist.getAdress() != null && pharmacist.getAdress().toLowerCase().contains(string.toLowerCase()))||
-                    (pharmacist.getCity() != null && pharmacist.getCity().toLowerCase().contains(string.toLowerCase()))||
-                    (pharmacist.getCountry() != null && pharmacist.getCountry().toLowerCase().contains(string.toLowerCase())||
-                            (pharmacist.getEmail() != null && pharmacist.getEmail().toLowerCase().contains(string.toLowerCase()))||
-                            (pharmacist.getPhoneNumber() != null && pharmacist.getPhoneNumber().contains(string.toLowerCase()))))
-                returnList.add(pharmacist);
-        }
-        return returnList;
-    }
-    @GetMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ROLE_PHARMACIST')")
-	public Optional<Pharmacist> getPharmacist(){
-    	Pharmacist p = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	@RequestMapping(path = "/all")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public @ResponseBody Iterable<Pharmacist> getAllPharmacists() {
+		return pharmacistRepository.findAll();
+	}
+
+	@RequestMapping(path = "/{pharmacistId}/findArrayById")
+	public ArrayList<Optional<Pharmacist>> getPharmacistArrayById(@PathVariable Integer pharmacistId) {
+		ArrayList<Optional<Pharmacist>> returnList = new ArrayList<>();
+		returnList.add(pharmacistRepository.findById(pharmacistId));
+		return returnList;
+	}
+
+	@RequestMapping(path = "/{string}/findByString")
+	public ArrayList<Pharmacist> getPharmacistByString(@PathVariable String string) {
+		Iterable<Pharmacist> pharmacistList = pharmacistRepository.findAll();
+		ArrayList<Pharmacist> returnList = new ArrayList<>();
+		for (Pharmacist pharmacist : pharmacistList) {
+			if ((pharmacist.getName() != null && pharmacist.getName().toLowerCase().contains(string.toLowerCase()))
+					|| (pharmacist.getSurname() != null
+							&& pharmacist.getSurname().toLowerCase().contains(string.toLowerCase()))
+					|| (pharmacist.getUsername() != null
+							&& pharmacist.getUsername().toLowerCase().contains(string.toLowerCase()))
+					|| (pharmacist.getAdress() != null
+							&& pharmacist.getAdress().toLowerCase().contains(string.toLowerCase()))
+					|| (pharmacist.getCity() != null
+							&& pharmacist.getCity().toLowerCase().contains(string.toLowerCase()))
+					|| (pharmacist.getCountry() != null
+							&& pharmacist.getCountry().toLowerCase().contains(string.toLowerCase())
+							|| (pharmacist.getEmail() != null
+									&& pharmacist.getEmail().toLowerCase().contains(string.toLowerCase()))
+							|| (pharmacist.getPhoneNumber() != null
+									&& pharmacist.getPhoneNumber().contains(string.toLowerCase()))))
+				returnList.add(pharmacist);
+		}
+		return returnList;
+	}
+
+	@GetMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public Optional<Pharmacist> getPharmacist() {
+		Pharmacist p = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return pharmacistRepository.findById(p.getId());
 	}
-    
-    @PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ROLE_PHARMACIST')")
-	public ResponseEntity<String> putPharmacist(@RequestBody Pharmacist p){
+
+	@PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public ResponseEntity<String> putPharmacist(@RequestBody Pharmacist p) {
 		Gson gson = new GsonBuilder().create();
-		if (pharmacistRepository.findByEmail(p.getEmail()) != null && 
-				!pharmacistRepository.findByEmail(p.getEmail()).getUsername().equals(p.getUsername())) {
-			return new ResponseEntity<String>(gson.toJson("A user with this email already exists!"), HttpStatus.INTERNAL_SERVER_ERROR);
-		} else if (pharmacistRepository.findByUsername(p.getUsername()) == null) {
-			return new ResponseEntity<String>(gson.toJson("User: " + p.getUsername() + " does not exist!"), HttpStatus.INTERNAL_SERVER_ERROR);
+		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		pharm.setName(p.getName());
+		pharm.setSurname(p.getSurname());
+		pharm.setAdress(p.getAdress());
+		pharm.setCity(p.getCity());
+		pharm.setCountry(p.getCountry());
+		pharm.setPhoneNumber(p.getPhoneNumber());
+		pharmacistRepository.save(pharm);
+		return new ResponseEntity<String>(gson.toJson("Update Succesfull!"), HttpStatus.OK);
+	}
+
+	@PutMapping(value = "/updatePassword", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public ResponseEntity<String> updatePassword(@RequestBody ChangePassword passwords) {
+		Pharmacist p = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Gson gson = new GsonBuilder().create();
+		if (p != null) {
+			if (!encoder.matches(passwords.getOldPassword(), p.getPassword())) {
+				return new ResponseEntity<String>(gson.toJson("Wrong old password!"), HttpStatus.INTERNAL_SERVER_ERROR);
+			} else {
+				p.setPassword(encoder.encode(passwords.getPassword()));
+				pharmacistRepository.save(p);
+				return new ResponseEntity<String>(gson.toJson(""), HttpStatus.OK);
+			}
 		} else {
-			Pharmacist updatedPharmacist = (Pharmacist) pharmacistRepository.findByUsername(p.getUsername());
-			updatedPharmacist.setEmail(p.getEmail());
-			updatedPharmacist.setPassword(p.getPassword());
-			updatedPharmacist.setName(p.getName());
-			updatedPharmacist.setSurname(p.getSurname());
-			updatedPharmacist.setAdress(p.getAdress());
-			updatedPharmacist.setCity(p.getCity());
-			updatedPharmacist.setCountry(p.getCountry());
-			updatedPharmacist.setPhoneNumber(p.getPhoneNumber());
-			updatedPharmacist.setRating(p.getRating());
-			pharmacistRepository.save(updatedPharmacist);
-			return new ResponseEntity<String>(gson.toJson("Update Succesfull!"), HttpStatus.OK);
+			return new ResponseEntity<String>(gson.toJson("Password update unsuccessfull!"),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

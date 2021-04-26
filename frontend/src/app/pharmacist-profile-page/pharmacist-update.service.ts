@@ -19,6 +19,11 @@ export class PharmacistUpdateService {
                               .pipe(catchError(this.errorHander));
   }
 
+  updatePassword(passwords: any) {
+    return this._http.put<any>("http://localhost:8080/pharmacist/updatePassword", passwords)
+                              .pipe(catchError(this.errorHander));
+  }
+
   errorHander(error: HttpErrorResponse) {
     return throwError(error);
   }
