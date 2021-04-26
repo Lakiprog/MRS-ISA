@@ -12,10 +12,12 @@ import com.MRSISA2021_T15.model.Complaint;
 import com.MRSISA2021_T15.model.ComplaintDermatologist;
 import com.MRSISA2021_T15.model.ComplaintPharmacist;
 import com.MRSISA2021_T15.model.ComplaintPharmacy;
-
+import com.MRSISA2021_T15.model.Patient;
 
 
 @Repository
 public interface ComplaintRepository extends CrudRepository<Complaint, Integer>{
+	
+	
 	
 }

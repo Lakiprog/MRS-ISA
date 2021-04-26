@@ -1,6 +1,11 @@
 
 .bodyy{
-    background: url('squares.jpg');
+  background: url('back2.jpg');
+}
+
+mat-toolbar{
+  background: rgb(25, 76, 117);
+  color: white;
 }
 
 .example-card {
@@ -19,4 +24,8 @@
 
   button{
     background-color: rgb(29, 87, 134);
+  }
+
+  .example-spacer {
+    flex: 1 1 auto;
   }

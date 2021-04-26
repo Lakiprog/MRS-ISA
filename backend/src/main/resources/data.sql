@@ -101,3 +101,7 @@ insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (2, 3, 'order2', 10);
 
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (3, 2, 'order3', 20);
+
+
+insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Dermatolog nije strucan, pogresne lekove mi je dodelio', 1, 6, null, null);
+insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Zivi bili, menjajte ga', 1, 6, null, null);
