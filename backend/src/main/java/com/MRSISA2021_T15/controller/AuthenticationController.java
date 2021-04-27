@@ -16,6 +16,8 @@ import com.MRSISA2021_T15.utils.Constants;
 import com.MRSISA2021_T15.utils.TokenUtils;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
@@ -49,16 +52,22 @@ public class AuthenticationController {
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) {
-		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+		try {
+			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		User user = (User) authentication.getPrincipal();
-		String jwt = tokenUtils.generateToken(user.getUsername());
-		int expiresIn = tokenUtils.getExpiredIn();
+			User user = (User) authentication.getPrincipal();
+			String jwt = tokenUtils.generateToken(user.getUsername());
+			int expiresIn = tokenUtils.getExpiredIn();
 
-		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getId(), user.getUsername(), user.getRoles().get(0).getName()));
+			return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getId(), user.getUsername(), user.getRoles().get(0).getName()));
+		} catch (DisabledException de) {
+			return new ResponseEntity<UserTokenState>(HttpStatus.FORBIDDEN);
+		} catch (BadCredentialsException bdc) {
+			return new ResponseEntity<UserTokenState>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@PostMapping(value = "/createFirstSystemAdmin")

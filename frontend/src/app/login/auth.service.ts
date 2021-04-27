@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class AuthService {
       .pipe(map((res) => {
         this.access_token = res.accessToken;
         this.token_data = res;
-      }));
+      }, catchError(this.errorHander)));
   }
 
   logout() {
@@ -57,5 +58,9 @@ export class AuthService {
         role: ""
       };
     }
+  }
+
+  errorHander(error: HttpErrorResponse) {
+    return throwError(error);
   }
 }

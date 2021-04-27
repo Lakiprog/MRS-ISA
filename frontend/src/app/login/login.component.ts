@@ -55,12 +55,16 @@ export class LoginComponent implements OnInit {
           }
         },
         error => {
-          this.openSnackBar()
+          if (error.status === 404) {
+            this.openSnackBar("Invalid username/password!");
+          } else if (error.status === 403) {
+            this.openSnackBar("Email has not been verifed!");
+          }
         });
     }
 
-    openSnackBar() {
-      this._snackBar.open("Invalid username/password", "x", {
+    openSnackBar(msg: string) {
+      this._snackBar.open(msg, "x", {
         duration: 20000,
         verticalPosition: this.verticalPosition,
         panelClass: "back-red"
