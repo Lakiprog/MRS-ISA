@@ -10,7 +10,7 @@ public class DermatologistView {
 
     private Integer id;
     private Double rating;
-    private String adress, city, country, email, name, password, surname, username, phoneNumber;
+    private String address, city, country, email, name, password, surname, username, phoneNumber;
     private Set<AppointmentDermatologist> appointments;
     private Set<EmploymentDermatologist> employments;
     private Set<Absence> absence;
@@ -19,11 +19,11 @@ public class DermatologistView {
 
     }
 
-    public DermatologistView(Integer id, String phoneNumber, Double rating, String adress, String city, String country, String email, String name, String password, String surname, String username, Set<AppointmentDermatologist> appointments, Set<EmploymentDermatologist> employments, Set<Absence> absence) {
+    public DermatologistView(Integer id, String phoneNumber, Double rating, String address, String city, String country, String email, String name, String password, String surname, String username, Set<AppointmentDermatologist> appointments, Set<EmploymentDermatologist> employments, Set<Absence> absence) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.rating = rating;
-        this.adress = adress;
+        this.address = address;
         this.city = city;
         this.country = country;
         this.email = email;
@@ -60,12 +60,12 @@ public class DermatologistView {
         this.rating = rating;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getCity() {

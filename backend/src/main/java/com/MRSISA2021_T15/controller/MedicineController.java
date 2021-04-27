@@ -136,4 +136,13 @@ public class MedicineController {
 		medicineRepository.save(med);
 		return ResponseEntity.ok().build();
 	}
+
+	@PutMapping(path="/{medicineId}/updateAdditionalComments")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ResponseEntity editAdditionalComments(@PathVariable Integer medicineId, @RequestBody Medicine m) throws NotFoundException {
+		Medicine med = medicineRepository.findById(medicineId).orElseThrow(() -> new NotFoundException("Ne postoji id"));
+		med.setAdditionalComments(m.getAdditionalComments());
+		medicineRepository.save(med);
+		return ResponseEntity.ok().build();
+	}
 }

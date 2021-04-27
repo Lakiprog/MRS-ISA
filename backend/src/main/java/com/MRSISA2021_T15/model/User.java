@@ -27,7 +27,7 @@ public abstract class User implements UserDetails {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	@Column
-	private String email, name, surname, adress, city, country, phoneNumber, username, password;
+	private String email, name, surname, address, city, country, phoneNumber, username, password;
 	
 	@Column
     private boolean enabled;
@@ -77,12 +77,12 @@ public abstract class User implements UserDetails {
 		this.surname = surname;
 	}
 
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAddress(String adress) {
+		this.address = adress;
 	}
 
 	public String getCity() {

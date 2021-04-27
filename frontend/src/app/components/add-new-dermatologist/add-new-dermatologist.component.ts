@@ -20,7 +20,11 @@ export class AddNewDermatologistComponent implements OnInit {
     this.dermatologistForm = this.formBuilder.group({
       name: [],
       surname: [],
+      address: [],
+      city: [],
+      country: [],
       email: [],
+      phoneNumber: [],
       username: [],
       password: [],
     });
@@ -31,7 +35,11 @@ export class AddNewDermatologistComponent implements OnInit {
       id: [],
       name: [],
       surname: [],
+      address: [],
+      city: [],
+      country: [],
       email: [],
+      phoneNumber: [],
       username: [],
       password: [],
     });

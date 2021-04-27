@@ -3,6 +3,13 @@
       <tr>
         <th>Name</th>
         <th>Surname</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>Country</th>
+        <th>Email</th>
+        <th>Phone number</th>
+        <th>Username</th>
+        <th>Rating</th>
         <th>Id</th>
       </tr>
     </thead>
@@ -10,6 +17,13 @@
       <tr *ngFor="let dermatologist of dermatologistList ">
         <td>{{ dermatologist.name }}</td>
         <td>{{ dermatologist.surname }}</td>
+        <td>{{ dermatologist.address }}</td>
+        <td>{{ dermatologist.city }}</td>
+        <td>{{ dermatologist.country }}</td>
+        <td>{{ dermatologist.email }}</td>
+        <td>{{ dermatologist.phoneNumber }}</td>
+        <td>{{ dermatologist.username }}</td>
+        <td>{{ dermatologist.rating }}</td>
         <td>{{ dermatologist.id }}</td>
         <td>
           <button class="btn btn-danger" (click)="deleteDermatologist(dermatologist)">

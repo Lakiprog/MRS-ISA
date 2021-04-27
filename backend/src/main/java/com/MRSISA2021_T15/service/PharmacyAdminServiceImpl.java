@@ -2,7 +2,6 @@ package com.MRSISA2021_T15.service;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.PharmacyAdmin;
-import com.MRSISA2021_T15.model.Supplier;
 import com.MRSISA2021_T15.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,7 +45,7 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
         if (currentUser != null) {
             currentUser.setName(pharmacyAdmin.getName());
             currentUser.setSurname(pharmacyAdmin.getSurname());
-            currentUser.setAdress(pharmacyAdmin.getAdress());
+            currentUser.setAddress(pharmacyAdmin.getAddress());
             currentUser.setCity(pharmacyAdmin.getCity());
             currentUser.setCountry(pharmacyAdmin.getCountry());
             currentUser.setPhoneNumber(pharmacyAdmin.getPhoneNumber());

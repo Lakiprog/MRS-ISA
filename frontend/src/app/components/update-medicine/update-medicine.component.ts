@@ -19,14 +19,14 @@ export class UpdateMedicineComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.medicineForm = this.formBuilder.group({
-      name: [],
+      additionalComments: [],
     });
   }
 
   ngOnInit(): void {
     this.medicineForm = this.formBuilder.group({
       id: [],
-      name: [],
+      additionalComments: [],
     });
   }
 

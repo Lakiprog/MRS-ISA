@@ -1,17 +1,12 @@
 package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
-import com.MRSISA2021_T15.model.Appointment;
-import com.MRSISA2021_T15.model.Event;
 import com.MRSISA2021_T15.model.Pharmacist;
-import com.MRSISA2021_T15.model.Supplier;
 import com.MRSISA2021_T15.repository.PharmacistRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping(path = "/pharmacist")
@@ -36,9 +28,14 @@ public class PharmacistController {
 	@Autowired
 	private PasswordEncoder encoder;
 
+	@Autowired
+	private PasswordEncoder encod;
+
 	@RequestMapping(path = "/add", method = RequestMethod.POST)
 	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public @ResponseBody ResponseEntity addNewPharmacist(@RequestBody Pharmacist p) {
+		p.setPassword(encod.encode(p.getPassword()));
+		p.setEnabled(true);
 		pharmacistRepository.save(p);
 		return ResponseEntity.ok().build();
 	}
@@ -72,8 +69,8 @@ public class PharmacistController {
 							&& pharmacist.getSurname().toLowerCase().contains(string.toLowerCase()))
 					|| (pharmacist.getUsername() != null
 							&& pharmacist.getUsername().toLowerCase().contains(string.toLowerCase()))
-					|| (pharmacist.getAdress() != null
-							&& pharmacist.getAdress().toLowerCase().contains(string.toLowerCase()))
+					|| (pharmacist.getAddress() != null
+							&& pharmacist.getAddress().toLowerCase().contains(string.toLowerCase()))
 					|| (pharmacist.getCity() != null
 							&& pharmacist.getCity().toLowerCase().contains(string.toLowerCase()))
 					|| (pharmacist.getCountry() != null
@@ -101,7 +98,7 @@ public class PharmacistController {
 		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		pharm.setName(p.getName());
 		pharm.setSurname(p.getSurname());
-		pharm.setAdress(p.getAdress());
+		pharm.setAddress(p.getAddress());
 		pharm.setCity(p.getCity());
 		pharm.setCountry(p.getCountry());
 		pharm.setPhoneNumber(p.getPhoneNumber());
