@@ -48,7 +48,7 @@ public class PatientService {
 		if (currentUser != null) {
 			currentUser.setName(p.getName());
 			currentUser.setSurname(p.getSurname());
-			currentUser.setAdress(p.getAdress());
+			currentUser.setAddress(p.getAddress());
 			currentUser.setCity(p.getCity());
 			currentUser.setCountry(p.getCountry());
 			currentUser.setPhoneNumber(p.getPhoneNumber());

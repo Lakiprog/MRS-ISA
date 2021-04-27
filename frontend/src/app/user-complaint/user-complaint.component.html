@@ -158,7 +158,7 @@
           <mat-form-field appearance="fill">
             <mat-label>Pharmacy</mat-label>
             <mat-select [formControl]="pharmacyForm">
-              <mat-option *ngFor="let p of this.pharmacyList" value="{{p['id']}}"><span class="namee">ID: {{p['id']}} Name: {{p['name']}}  </span> <span class="adress"> Adress: {{p['adress']}}</span></mat-option>
+              <mat-option *ngFor="let p of this.pharmacyList" value="{{p['id']}}"><span class="namee">ID: {{p['id']}} Name: {{p['name']}}  </span> <span class="address"> address: {{p['address']}}</span></mat-option>
             </mat-select>
           </mat-form-field>
 

@@ -27,7 +27,7 @@ export class PharmacistPatientComponent implements OnInit {
         case 'username': return this.compare(a['username'], b['username'], isAsc);
         case 'surname': return this.compare(a['surname'], b['surname'], isAsc);
         case 'email': return this.compare(a['email'], b['email'], isAsc);
-        case 'adress': return this.compare(a['adress'], b['adress'], isAsc);
+        case 'address': return this.compare(a['address'], b['address'], isAsc);
         case 'city': return this.compare(a['city'], b['city'], isAsc);
         case 'country': return this.compare(a['country'], b['country'], isAsc);
         case 'phoneNumber': return this.compare(a['phoneNumber'], b['phoneNumber'], isAsc);

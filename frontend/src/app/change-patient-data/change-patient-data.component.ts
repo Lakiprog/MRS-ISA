@@ -39,7 +39,7 @@ export class ChangePatientDataComponent implements OnInit {
       email:[''],
       name:[''],
       surname:[''], 
-      adress: [''],
+      address: [''],
       city: [''],
       country: [''],
       phoneNumber: ['', [Validators.maxLength(10), Validators.minLength(10)]],
@@ -98,7 +98,7 @@ export class ChangePatientDataComponent implements OnInit {
     this.checkOutForm.get('email')?.setValue(data.email);
     this.checkOutForm.get('name')?.setValue(data.name);
     this.checkOutForm.get('surname')?.setValue(data.surname);
-    this.checkOutForm.get('adress')?.setValue(data.adress);
+    this.checkOutForm.get('address')?.setValue(data.address);
     this.checkOutForm.get('city')?.setValue(data.city);
     this.checkOutForm.get('country')?.setValue(data.country);
     this.checkOutForm.get('phoneNumber')?.setValue(data.phoneNumber);

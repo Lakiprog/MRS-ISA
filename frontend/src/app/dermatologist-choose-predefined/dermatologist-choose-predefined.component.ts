@@ -45,7 +45,7 @@ export class DermatologistChoosePredefinedComponent implements OnInit {
     "email" : "kaki@gmail.com",
     "name" : "Marko",
     "surname" : "Markuza",
-    "adress" : "Negde69",
+    "address" : "Negde69",
     "city" : "NS",
     "country" : "Srbija",
     "phone_number" : "060602311",

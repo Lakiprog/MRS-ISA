@@ -10,7 +10,7 @@ export class Dermatologist{
   email : any;
   name : any;
   surname : any;
-  adress : any;
+  address : any;
   city: any;
   country : any;
   phone_number : any;
@@ -19,13 +19,13 @@ export class Dermatologist{
   first_login : any;
   rating : any;
 
-  constructor(id:any, email:any, name:any,surname:any, adress:any, city:any, country:any, phone_number:any, username:any, password:any,
+  constructor(id:any, email:any, name:any,surname:any, address:any, city:any, country:any, phone_number:any, username:any, password:any,
     first_login:any, rating:any){
       this.id = id;
       this.name = name;
       this.surname = surname;
       this.email = email;
-      this.adress = adress;
+      this.address = address;
       this.city = city;
       this.country = country;
       this.phone_number = phone_number;
@@ -43,7 +43,7 @@ export class Pharmacist{
   email : any;
   name : any;
   surname : any;
-  adress : any;
+  address : any;
   city: any;
   country : any;
   phone_number : any;
@@ -52,13 +52,13 @@ export class Pharmacist{
   first_login : any;
   rating : any;
 
-  constructor(id:any, email:any, name:any,surname:any, adress:any, city:any, country:any, phone_number:any, username:any, password:any,
+  constructor(id:any, email:any, name:any,surname:any, address:any, city:any, country:any, phone_number:any, username:any, password:any,
     first_login:any, rating:any){
       this.id = id;
       this.name = name;
       this.surname = surname;
       this.email = email;
-      this.adress = adress;
+      this.address = address;
       this.city = city;
       this.country = country;
       this.phone_number = phone_number;
@@ -74,16 +74,16 @@ export class Pharmacist{
 export class Pharmacy{
   id : any;
   name : any;
-  adress : any;
+  address : any;
   city: any;
   country : any;
   description: any;
   rating : any;
 
-  constructor(id:any, name:any, adress:any, city:any, country:any, rating:any){
+  constructor(id:any, name:any, address:any, city:any, country:any, rating:any){
       this.id = id;
       this.name = name;
-      this.adress = adress;
+      this.address = address;
       this.city = city;
       this.country = country;
       this.rating = rating;

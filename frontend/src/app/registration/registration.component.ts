@@ -43,7 +43,7 @@ export class RegistrationComponent implements OnInit {
         confirmPassword: ['', Validators.required],
         name: ['', Validators.required],
         surname: ['', Validators.required],
-        adress: ['', Validators.required],
+        address: ['', Validators.required],
         city: ['', Validators.required],
         country: ['', Validators.required],
         phoneNumber: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]],

@@ -37,7 +37,7 @@ export class PharmacyAdminComponent implements OnInit {
       email: [''],
       name: ['', Validators.required],
       surname: ['', Validators.required],
-      adress: ['', Validators.required],
+      address: ['', Validators.required],
       city: ['', Validators.required],
       country: ['', Validators.required],
       phoneNumber: [
@@ -117,7 +117,7 @@ export class PharmacyAdminComponent implements OnInit {
     this.updateForm.get('email')?.setValue(data.email);
     this.updateForm.get('name')?.setValue(data.name);
     this.updateForm.get('surname')?.setValue(data.surname);
-    this.updateForm.get('adress')?.setValue(data.adress);
+    this.updateForm.get('address')?.setValue(data.address);
     this.updateForm.get('city')?.setValue(data.city);
     this.updateForm.get('country')?.setValue(data.country);
     this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);

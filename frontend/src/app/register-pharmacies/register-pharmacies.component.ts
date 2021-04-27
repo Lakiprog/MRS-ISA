@@ -21,7 +21,7 @@ export class RegisterPharmaciesComponent implements OnInit {
     this.pharmacyRegistrationForm = this.fb.group(
       {
         name: ['', Validators.required],
-        adress: ['', Validators.required],
+        address: ['', Validators.required],
         city: ['', Validators.required],
         country: ['', Validators.required],
         description: [''],

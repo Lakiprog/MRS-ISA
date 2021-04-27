@@ -15,7 +15,7 @@ import { SearchPharmacyService } from './search-pharmacy.service';
   styleUrls: ['./search-pharmacy.component.css']
 })
 export class SearchPharmacyComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] = ['name', 'adress', 'city', 'country', 'rate'];
+  displayedColumns: string[] = ['name', 'address', 'city', 'country', 'rate'];
   dataSource!: MatTableDataSource<any>;
 
   pharmacies: any = [];
