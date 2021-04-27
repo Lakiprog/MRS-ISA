@@ -11,13 +11,13 @@ export class UserComplaintService {
   private readonly getPharmacistURL = 'http://localhost:8080/complaint/getAllPharmacist';
   private readonly getPharmacyURL = 'http://localhost:8080/complaint/getAllPharmacy';
 
-  private readonly putUsernameDURL = 'http://localhost:8080/complaint/checkDermatologist/kaki';
-  private readonly putUsernamePURL = 'http://localhost:8080/complaint/checkPharmacist/kaki';
-  private readonly putUsernamePYURL = 'http://localhost:8080/complaint/checkPharmacy/kaki';
+  private readonly putUsernameDURL = 'http://localhost:8080/complaint/checkDermatologist';
+  private readonly putUsernamePURL = 'http://localhost:8080/complaint/checkPharmacist';
+  private readonly putUsernamePYURL = 'http://localhost:8080/complaint/checkPharmacy';
 
-  private readonly postTextD = "http://localhost:8080/complaint/addComplaintToDermatologist/kaki";
-  private readonly postTextP = "http://localhost:8080/complaint/addComplaintToPharmacist/kaki";
-  private readonly postTextPY = "http://localhost:8080/complaint/addComplaintToPharmacy/kaki";
+  private readonly postTextD = "http://localhost:8080/complaint/addComplaintToDermatologist";
+  private readonly postTextP = "http://localhost:8080/complaint/addComplaintToPharmacist";
+  private readonly postTextPY = "http://localhost:8080/complaint/addComplaintToPharmacy";
 
   constructor(private http: HttpClient) { }
 

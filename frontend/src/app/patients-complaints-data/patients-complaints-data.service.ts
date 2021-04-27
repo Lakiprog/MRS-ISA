@@ -7,7 +7,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 })
 export class PatientsComplaintsDataService {
 
-  private readonly ULR = 'http://localhost:8080/complaint/getComplaints/kaki';  
+  private readonly ULR = 'http://localhost:8080/complaint/getComplaints';  
   
   
   constructor(private http: HttpClient) { }

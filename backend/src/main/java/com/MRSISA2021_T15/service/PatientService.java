@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +38,15 @@ public class PatientService {
 	public List<Dermatologist> findAllDermatologist(){
 		return repository.findAllDermatologist();
 	}
+	
+	public Dermatologist findDermatologistWithId(Integer id) {
+		return repository.findDermatologistWithId(id);
+	}
+	
+	public Pharmacist findPharmacistWithId(Integer id) {
+		return repository.findPharmacistWithId(id);
+	}
+	
 	
 	public List<Pharmacist>findAllPharmacist(){
 		return repository.findAllPharmacist();

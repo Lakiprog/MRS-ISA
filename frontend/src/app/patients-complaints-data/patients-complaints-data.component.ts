@@ -16,8 +16,8 @@ export class PatientsComplaintsDataComponent implements OnInit {
   displayedColumns: string[] = ["No", "Text"];
   dataSource!: MatTableDataSource<any>;
   
- 
-
+  empty:boolean = false;
+  notEmpty:boolean = true;
   list : any = []
   
   
@@ -28,8 +28,17 @@ export class PatientsComplaintsDataComponent implements OnInit {
     this.dataSource = new MatTableDataSource( this.list );
     this.service.getCom().subscribe((data:any)=>{
       this.list = data;
-      this.dataSource.data = this.list;
-      console.log(this.dataSource.data)})
+      if(this.list[0].id === 0){
+        this.empty = true;
+        this.notEmpty = false;
+      }else{
+        this.dataSource.data = this.list;
+        this.empty = false;
+        this.notEmpty = true;
+        console.log(this.dataSource.data)}
+      }
+    )
+      
   }
 
   ngOnInit(): void {

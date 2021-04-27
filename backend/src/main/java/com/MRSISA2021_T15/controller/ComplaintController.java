@@ -1,3 +1,4 @@
+
 package com.MRSISA2021_T15.controller;
 
 
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -107,17 +109,24 @@ public class ComplaintController {
 		return list;
 	}
 	*/
-	@GetMapping(value = "/getComplaints/{patientUsername}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/getComplaints", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	List<Complaint>getpharmacyComplaint(@PathVariable("patientUsername") String patientUsername){
+	List<Complaint>getpharmacyComplaint(){
 		
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<Complaint> list = new ArrayList<Complaint>();
 		List<Complaint> complaints = service.findAll();
 		
 		for(Complaint c : complaints) {
-			if(c.getPatient().getUsername().equals(patientUsername)) {
+			if(c.getPatient().getUsername().equals(p.getUsername())) {
 				list.add(c);
 			}
+		}
+		
+		Complaint c = new Complaint();
+		c.setId(0);
+		if(list.isEmpty()) {
+			list.add(c);
 		}
 		
 		return list;
@@ -126,24 +135,17 @@ public class ComplaintController {
 	
 	
 	
-	@PutMapping(value = "/checkDermatologist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/checkDermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public ResponseEntity<String>checkDermatologist(@PathVariable("patientUsername") String patientUsername, @RequestBody Dermatologist dermatologist){
+	public ResponseEntity<String>checkDermatologist(@RequestBody Dermatologist dermatologist){
 		String message = "";
 		boolean found = false;
 		
-		List<Appointment>appos = service2.findAllDermatologist(dermatologist.getId()); 
-		if(!appos.isEmpty()) {
-			for(Appointment a : appos) {
-				if(a.getPatient() == null) {
-					continue;
-				}else {
-					if(a.getPatient().getUsername().equals(patientUsername)) {
-						found = true;
-						break;
-					}
-				}
-			}
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Patient>patients = service2.findAllDAwithPatientId(p.getId(), dermatologist.getId());
+		
+		if(!patients.isEmpty()) {
+			found = true;
 		}
 		
 		Gson gson = new GsonBuilder().create();
@@ -157,24 +159,18 @@ public class ComplaintController {
 	}
 	
 	
-	@PutMapping(value = "/checkPharmacist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/checkPharmacist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public ResponseEntity<String>checkPharmacist(@PathVariable("patientUsername") String patientUsername, @RequestBody Pharmacist pharmacist){
+	public ResponseEntity<String>checkPharmacist(@RequestBody Pharmacist pharmacist){
 		String message = "";
 		boolean found = false;
 		
-		List<Appointment>appos = service2.findAllPharmacist(pharmacist.getId()); 
-		if(!appos.isEmpty()) {
-			for(Appointment a : appos) {
-				if(a.getPatient() == null) {
-					continue;
-				}else {
-					if(a.getPatient().getUsername().equals(patientUsername)) {
-						found = true;
-						break;
-					}
-				}
-			}
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Patient>patients = service2.findAllPAwithPatientId(p.getId(), pharmacist.getId());
+		
+		
+		if(!patients.isEmpty()) {
+			found = true;
 		}
 		
 		Gson gson = new GsonBuilder().create();
@@ -189,20 +185,18 @@ public class ComplaintController {
 	
 	
 	
-	@PutMapping(value = "/checkPharmacy/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/checkPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public ResponseEntity<String>checkPharmacy(@PathVariable("patientUsername") String patientUsername, @RequestBody Pharmacy pharmacy){
+	public ResponseEntity<String>checkPharmacy(@RequestBody Pharmacy pharmacy){
 		String message = "";
 		boolean found = false;
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		List<Appointment>appos = service2.findAllAppointments();
+		List<Appointment>appos = service2.findAllPatientsId(p.getId());
 		if(!appos.isEmpty()) {
 			for(Appointment a : appos) {
-				if(a.getPatient().getUsername().equals(patientUsername) && a.getPharmacy().getId()==pharmacy.getId()) {
-					System.out.print(a.getPatient().getId());
-					System.out.print(pharmacy.getId());
+				if(a.getPharmacy().getId() == pharmacy.getId()) {
 					found = true;
-					break;
 				}
 			}
 		}
@@ -211,7 +205,7 @@ public class ComplaintController {
 		if(found) {
 			return new ResponseEntity<String>(gson.toJson("You can input complaint"), HttpStatus.OK);
 		}else {
-			message = "Patient didn't have an appointment in this pharmacyt.";
+			message = "Patient didn't have an appointment in this pharmacy.";
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
@@ -219,33 +213,26 @@ public class ComplaintController {
 	
 	
 	
-	@PostMapping(value = "/addComplaintToDermatologist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/addComplaintToDermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public ResponseEntity<String> addComplaintToDermatologist(@PathVariable("patientUsername") String patientUsername, @RequestBody ComplaintDermatologist complaint){
+	public ResponseEntity<String> addComplaintToDermatologist(@RequestBody ComplaintDermatologist complaint){
 		System.out.print(complaint.getText());
 		
 		String message = "";
-		
-		List<Patient>patients = service3.findAllPatients();
-		for(Patient p : patients) {
-			if(p.getUsername().equals(patientUsername)) {
-				complaint.setPatient(p);
-			}
-		}
-		
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		complaint.setPatient(p);
 		
 		boolean found = false;
-		List<Dermatologist> dermatologists = service3.findAllDermatologist();
-		for(Dermatologist d : dermatologists) {
-			if(d.getId() == complaint.getDermatologist().getId()) {
-				complaint.setDermatologist(d);
-				service.addDerComplaint(complaint);
-				found = true;
-			}
+		
+		Dermatologist derma = service3.findDermatologistWithId(complaint.getDermatologist().getId());
+		if (derma!=null) {
+			found = true;
+			complaint.setDermatologist(derma);
+			service.addDerComplaint(complaint);
 		}
 		
 		if(found == false) {
-			message = "Something went wrong";
+			message = "Your complaint could not be saved.";
 		}
 		
 		Gson gson = new GsonBuilder().create();
@@ -260,18 +247,14 @@ public class ComplaintController {
 	
 	
 	//@PostMapping(value = "/addComplaintToPharmacist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@PostMapping(value = "/addComplaintToPharmacist/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/addComplaintToPharmacist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public ResponseEntity<String> addComplaintToPharmacist(@PathVariable("patientUsername") String patientUsername, @RequestBody ComplaintPharmacist complaint){
+	public ResponseEntity<String> addComplaintToPharmacist(@RequestBody ComplaintPharmacist complaint){
+		
 		
 		String message = "";
-		
-		List<Patient>patients = service3.findAllPatients();
-		for(Patient p : patients) {
-			if(p.getUsername().equals(patientUsername)) {
-				complaint.setPatient(p);
-			}
-		}
+		Patient pa = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		complaint.setPatient(pa);
 		
 		boolean found = false;
 		List<Pharmacist> pharmacists = service3.findAllPharmacist();
@@ -301,17 +284,13 @@ public class ComplaintController {
 	
 	
 	
-	@PostMapping(value = "/addComplaintToPharmacy/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/addComplaintToPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public ResponseEntity<String> addComplaintToPharmacy(@PathVariable("patientUsername") String patientUsername, @RequestBody ComplaintPharmacy complaint){
-		String message = "";
+	public ResponseEntity<String> addComplaintToPharmacy(@RequestBody ComplaintPharmacy complaint){
 		
-		List<Patient>patients = service3.findAllPatients();
-		for(Patient p : patients) {
-			if(p.getUsername().equals(patientUsername)) {
-				complaint.setPatient(p);
-			}
-		}
+		String message = "";
+		Patient pa = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		complaint.setPatient(pa);
 		
 		boolean found = false;
 		List<Pharmacy> pharmacies = service.findAllPharmacy();
