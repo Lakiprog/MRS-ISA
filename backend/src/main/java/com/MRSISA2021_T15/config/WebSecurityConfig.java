@@ -1,3 +1,4 @@
+
 package com.MRSISA2021_T15.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,13 +111,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/complaint/getAllDermatologists").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/complaint/getAllPharmacist").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/complaint/getAllPharmacy").hasAuthority("ROLE_PATIENT")
-				.antMatchers("/complaint/getComplaints/{patientUsername}").hasAuthority("ROLE_PATIENT")
-				.antMatchers("/complaint/checkDermatologist/{patientUsername}").hasAuthority("ROLE_PATIENT")
-				.antMatchers("/complaint/checkPharmacist/{patientUsername}").hasAuthority("ROLE_PATIENT")
-				.antMatchers("/complaint/checkPharmacy/{patientUsername}").hasAuthority("ROLE_PATIENT")
-				.antMatchers("/complaint/addComplaintToDermatologist/{patientUsername}").hasAuthority("ROLE_PATIENT")
-				.antMatchers("/complaint/addComplaintToPharmacist/{patientUsername}").hasAuthority("ROLE_PATIENT")
-				.antMatchers("/complaint/addComplaintToPharmacy/{patientUsername}").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/complaint/getComplaints").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/complaint/checkDermatologist").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/complaint/checkPharmacist").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/complaint/checkPharmacy").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/complaint/addComplaintToDermatologist").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/complaint/addComplaintToPharmacist").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/complaint/addComplaintToPharmacy").hasAuthority("ROLE_PATIENT")
 			.anyRequest().authenticated().and()
 			.cors().and()
 			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);

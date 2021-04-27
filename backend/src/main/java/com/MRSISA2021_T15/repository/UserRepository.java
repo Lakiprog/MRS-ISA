@@ -30,5 +30,10 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 	
 	@Query("select distinct p from User p where USER_TYPE = 'PHARMACIST'")
 	List<Pharmacist>findAllPharmacist();
+	
+	@Query("select d from User d where d.id = ?1")
+	public Dermatologist findDermatologistWithId(Integer id);
 
+	@Query("select p from User p where p.id = ?1")
+	public Pharmacist findPharmacistWithId(Integer id);
 }

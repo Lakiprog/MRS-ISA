@@ -177,4 +177,17 @@ public class AppointmentService {
 		return "";
 	}
 	
+	
+	public List<Appointment> findAllPatientsId(Integer id){
+		return repository.findAllPatientsId(id);
+	}
+	
+	public List<Patient> findAllPAwithPatientId(Integer id, Integer id2){
+		return repository.findAllPAwithPatientId(id, id2);
+	}
+	
+	public List<Patient> findAllDAwithPatientId(Integer id, Integer id2){
+		return repository.findAllDAwithPatientId(id, id2);
+	}
+	
 }

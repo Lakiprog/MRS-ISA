@@ -18,6 +18,19 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	@Query("select distinct p from Appointment a join a.patient p where APPOINTMENT_TYPE = 'APPOINTMENT_PHARMACIST'")
 	public List<Patient> findAllPharmacist();
 	
+	
+	
+	
+	@Query("select distinct p from Appointment a join a.patient p join a.pharmacist pa where p.id = ?1 and pa.id=?2 and APPOINTMENT_TYPE = 'APPOINTMENT_PHARMACIST'")
+	public List<Patient> findAllPAwithPatientId(Integer id, Integer id2);
+	
+	@Query("select distinct p from Appointment a join a.patient p join a.pharmacist pa where p.id = ?1 and pa.id=?2 and APPOINTMENT_TYPE = 'APPOINTMENT_DERMATOLOGIST'")
+	public List<Patient> findAllDAwithPatientId(Integer id, Integer id2);
+	
+	
+	
+	
+	
 	@Query("select distinct p from Appointment a join a.patient p")
 	public List<Patient> findPatients();
 	
