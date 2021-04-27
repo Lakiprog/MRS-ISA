@@ -10,22 +10,25 @@ import { AuthService } from '../login/auth.service';
 export class ChangePatientDataService {
 
 
+  readonly URL : string = "http://localhost:8080/patients/searchPatient";
+
   username : string = "";
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    if (this.authService.getTokenData()?.username !== "") {
-      this.username = this.authService.getTokenData()?.username!;
-    }
+  constructor(private http: HttpClient) {
+    
   }
 
   dataShow(){
-    return this.http.get("http://localhost:8080/patients/changeDataShow/" + this.username);
+    return this.http.get(this.URL);
   }
 
   changeData(data:any){
-      return this.http.put<any>("http://localhost:8080/patients/changeData/" + this.username, data).pipe(catchError(this.errorHandler));
+      return this.http.put<any>("http://localhost:8080/patients/changeData", data).pipe(catchError(this.errorHandler));
   }
 
+  updatePassword(data:any){
+    return this.http.put<any>("http://localhost:8080/patients/updatePassword", data).pipe(catchError(this.errorHandler));
+  }
 
   errorHandler(error:HttpErrorResponse){
     return throwError(error);

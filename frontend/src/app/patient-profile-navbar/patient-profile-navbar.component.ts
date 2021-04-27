@@ -17,7 +17,7 @@ export class PatientProfileNavbarComponent {
       shareReplay()
     );
 
-  patient:any;
+    patient:any;
 
   constructor(private breakpointObserver: BreakpointObserver, private service:PatientProfileNavbarService) {
     this.service.getPatient().subscribe((data:any) => {this.patient = data; console.log(this.patient)})

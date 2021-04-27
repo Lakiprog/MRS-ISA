@@ -4,6 +4,10 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { PasswordValidator } from './passwordValidator';
 import { ChangePatientDataService } from './change-patient-data.service';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-change-patient-data',
@@ -11,57 +15,62 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
   styleUrls: ['./change-patient-data.component.css']
 })
 export class ChangePatientDataComponent implements OnInit {
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
 
   public checkOutForm: FormGroup;
+  public updatePasswordForm: FormGroup;
 
-    private Username : any;
-    private Password :  any;
-    private ConfirmPassword: any;
-
-    RESPONSE_OK : number = 0;
-    RESPONSE_ERROR : number = -1;
-
-    verticalPosition: MatSnackBarVerticalPosition = "top";
-    
   
-    patient:any;
+  RESPONSE_OK : number = 0;
+  RESPONSE_ERROR : number = -1;
+
+  verticalPosition: MatSnackBarVerticalPosition = "top";
   
-    constructor(private formBuilder: FormBuilder, private service:ChangePatientDataService, private snackBar: MatSnackBar){ 
-      this.service.dataShow().subscribe((data:any) => {this.patient = data; console.log(this.patient)});
+
+  
+  constructor(private formBuilder: FormBuilder, private service:ChangePatientDataService, private snackBar: MatSnackBar, private breakpointObserver: BreakpointObserver, private authService: AuthService){ 
 
     this.checkOutForm = this.formBuilder.group({
-      username: [''],
+      username:[''],
+      email:[''],
+      name:[''],
+      surname:[''], 
+      adress: [''],
+      city: [''],
+      country: [''],
+      phoneNumber: ['', [Validators.maxLength(10), Validators.minLength(10)]],
+    });
+
+    this.updatePasswordForm = this.formBuilder.group({
+      oldPassword:[''],
       password:[''],
       confirmPassword:['']
-    },
-    //{validator: PasswordValidator}
-    );
+    }, {validator: PasswordValidator});
+
+    this.service.dataShow().subscribe((data:any) => {this.fillDataForm(data);});
+
+
+  }
+
+
+  public hasError = (controlName: string, errorName: string, form: FormGroup) =>{
+    return form.controls[controlName].hasError(errorName);
   }
 
 
   public submitForm(){
-    
-    this.Username = this.checkOutForm.get("username");
-    this.Password = this.checkOutForm.get("password");
-    this.ConfirmPassword = this.checkOutForm.get("confirmPassword");
-    
-    this.checkOutForm.removeControl('confirmPassword');
-    
-
-    if(this.Password.value === '' || this.Password.value === null || this.Password.value === " "){
-      this.checkOutForm.controls["password"].hasError("You didn't input password");
-    }else if(this.Password.value !== this.ConfirmPassword.value){
-      this.checkOutForm.controls["password"].hasError("Passwords don't match");
-    }
-    if(this.Username.value === '' || this.Username.value === null || this.Username.value === " "){
-      this.checkOutForm.controls["username"].hasError("You didn't input username");
-    }
-
     this.service.changeData(this.checkOutForm.value).subscribe(
       response => {
         console.log(response);
         this.openSnackBar(response, this.RESPONSE_OK);
-        this.checkOutForm.reset();
+        this.service.dataShow().subscribe(
+          data => {
+            this.fillDataForm(data);
+          });
       },
       error => {
         console.log(error);
@@ -80,5 +89,45 @@ export class ChangePatientDataComponent implements OnInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+
+
+  fillDataForm(data: any) {
+    this.checkOutForm.get('username')?.setValue(data.username);
+    this.checkOutForm.get('email')?.setValue(data.email);
+    this.checkOutForm.get('name')?.setValue(data.name);
+    this.checkOutForm.get('surname')?.setValue(data.surname);
+    this.checkOutForm.get('adress')?.setValue(data.adress);
+    this.checkOutForm.get('city')?.setValue(data.city);
+    this.checkOutForm.get('country')?.setValue(data.country);
+    this.checkOutForm.get('phoneNumber')?.setValue(data.phoneNumber);
+  }
+
+
+  checkPasswords() {
+    if (this.updatePasswordForm.hasError('passwordMismatch')) {
+      this.updatePasswordForm.get('confirmPassword')?.setErrors([{'passwordMismatch': true}]);
+    }
+  }
+
+  get confirmPassword() {
+    return this.updatePasswordForm.get('confirmPassword');
+  }
+
+
+  updatePassword() {
+    this.service.updatePassword(this.updatePasswordForm.value).subscribe(
+      response => {
+        this.authService.logout();
+      },
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+      }
+    )
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

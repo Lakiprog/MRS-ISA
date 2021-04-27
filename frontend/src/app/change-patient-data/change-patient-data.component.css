@@ -1,31 +1,63 @@
 
-.bodyy{
-  background: url('back2.jpg');
+
+.sidenav {
+  width: 200px;
 }
 
-mat-toolbar{
-  background: rgb(25, 76, 117);
-  color: white;
+.sidenav .mat-toolbar {
+  background: inherit;
 }
+
+.mat-toolbar.mat-primary {
+  background: rgb(25, 76, 117);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+
+.mat-sidenav{
+  background: rgb(25, 76, 117); 
+}
+
+.header{
+  margin-left: 85%;
+}
+
+.list_item{
+  color: whitesmoke;
+}
+
+a{
+  color: whitesmoke;
+}
+
 
 .example-card {
-    max-width: 400px;
-  }
-  
-  .example-header-image {
-    background: url('profileIcon.jpg');
-    background-size: cover;
-  }
+  max-width: 400px;
+  margin-top: 5%;
+  margin-left: 20%;
+  background-color: lightsteelblue;
+}
 
-  mat-card{
-    margin-top: 5%;
-    margin-left: 35%;
-  }
+.example-card1 {
+  max-width: 400px;
+  margin-top: -50%;
+  margin-left: 65%;
+  background-color:  lightsteelblue;
+}
 
-  button{
-    background-color: rgb(29, 87, 134);
-  }
+.example-header-image {
+  background-image: url('profileIcon.jpg');
+  background-size: cover;
+}
 
-  .example-spacer {
-    flex: 1 1 auto;
-  }
+.data{
+  color: whitesmoke;
+}
+
+button{
+  background-color: rgb(29, 87, 134);
+}
+
+

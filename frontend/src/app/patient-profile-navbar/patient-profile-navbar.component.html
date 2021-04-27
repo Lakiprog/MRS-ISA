@@ -27,7 +27,7 @@
       <br />
       <a mat-list-item href="#"><strong class='list_item'>SUBSCRIBED PHARMACIES</strong></a>
       <br />
-      <a routerLink="/patientsComplaintsData"><strong class='list_item'>YOUR COMPLAINTS</strong></a>
+      <a mat-list-item routerLink="/patientsComplaintsData"><strong class='list_item'>YOUR COMPLAINTS</strong></a>
       <br />
     </mat-nav-list>
   </mat-sidenav>
@@ -56,25 +56,32 @@
       <mat-card class="example-card">
         <mat-card-header>
           <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>{{patient['username']}}</mat-card-title>
-          <mat-card-subtitle>{{patient['id']}}</mat-card-subtitle>
+          <mat-card-title>{{patient.username}}</mat-card-title>
+          <mat-card-subtitle>{{patient.id}}</mat-card-subtitle>
         </mat-card-header>
         <img mat-card-image src="profileIcon.jpg">
         <mat-card-content>
           <p>
-            NAME: {{patient['name']}}
+            NAME: {{patient.name}}
+            <br />
             <br />
             SURNAME: {{patient['surname']}}
             <br />
+            <br />
             ADRESS:  {{patient['adress']}}
+            <br />
             <br />
             CITY: {{patient['city']}}
             <br />
+            <br />
             COUNTRY: {{patient['country']}}
+            <br />
             <br />
             PHONE: {{patient['phoneNumber']}}
             <br />
+            <br />
             E-MAIL: {{patient['email']}}
+            <br />
             <br />
           </p>
         </mat-card-content>

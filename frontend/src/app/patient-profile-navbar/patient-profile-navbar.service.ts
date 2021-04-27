@@ -11,15 +11,13 @@ import { AuthService } from '../login/auth.service';
 
 export class PatientProfileNavbarService {
   
-  username : string = "";
+  readonly URL : string = "http://localhost:8080/patients/searchPatient";
   
-  constructor(private http: HttpClient, private authService: AuthService) {
-    if (this.authService.getTokenData()?.username !== "") {
-      this.username = this.authService.getTokenData()?.username!;
-    }
+  constructor(private http: HttpClient) {
+    
   }
 
    getPatient(){
-     return this.http.get("http://localhost:8080/patients/searchPatient/" + this.username);
+     return this.http.get(this.URL);
    }
 }
