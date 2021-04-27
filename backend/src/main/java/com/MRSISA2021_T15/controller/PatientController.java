@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.service.PatientService;
 import com.google.gson.Gson;
@@ -30,74 +32,38 @@ public class PatientController {
 	private PatientService service;
 	
 	
-	@GetMapping(value = "/searchPatient/{patientUsername}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/searchPatient", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public Patient searchPatients(@PathVariable("patientUsername") String patientUsername){
-		ArrayList<Patient> patients = new ArrayList<Patient>();
-		for(Patient p : service.findAllPatients()) {
-			if(p.getUsername().compareTo(patientUsername)==0) {
-				return p;
-			}
-		}
-		return null; //ovo se ne bi smjelo desiti
+	public Patient searchPatients(){
+		return (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 	
 	
-	@GetMapping(value = "/changeDataShow/{patientUsername}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/changeData", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public Patient changeDataShow(@PathVariable("patientUsername") String patientUsername){
-		for(Patient p : service.findAllPatients()) {
-			if(p.getUsername().compareTo(patientUsername)==0) {
-				return p;
-			}
-		}
-		return null; //ovo se ne bi smjelo desiti
-	}
-	
-	
-	
-	@PutMapping(value = "/changeData/{patientUsername}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public ResponseEntity<String> changeData(@PathVariable("patientUsername") String patientUsername, @RequestBody Patient patient){
-		Patient patientToSend = null;
-		String message = null;
-		
-		boolean flag;
-		if(patientUsername != patient.getUsername()) {
-			flag = true;
-		}else {
-			flag = false; // znaci da se promijenio username, ostalo je da provjerimo da li novi username postoji
-		}
-		
-		
-		for(Patient p : service.findAllPatients()) {
-			if(p.getUsername().compareTo(patient.getUsername()) == 0 && flag == false) { //znaci novi username je vec postojan a nije stari
-				message = "The new username is not available";
-			}
-			if(p.getUsername().compareTo(patientUsername)==0) {
-				p.setUsername(patient.getUsername());
-				p.setPassword(patient.getPassword());
-				patientToSend = p;
-				
-			}
-		}
-		
-		
-		if(patientToSend == null ) {
-			message = "The new username is not available";
-		}else{
-			message = service.updateData(patientToSend);
-		}
-		
+	public ResponseEntity<String> changeData(@RequestBody Patient patient){
+		String message = service.updatePatientData(patient);
 		Gson gson = new GsonBuilder().create();
-		if (message == "") {
+		if (message.equals("")) {
 			return new ResponseEntity<String>(gson.toJson("Update successfull."), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
 	
+	
+	
+	@PutMapping(value = "/updatePassword", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<String> updatePassword(@RequestBody ChangePassword passwords) {
+		String message = service.updatePassword(passwords);
+		Gson gson = new GsonBuilder().create();
+		if (message.equals("")) {
+			return new ResponseEntity<String>(gson.toJson(""), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 }
 

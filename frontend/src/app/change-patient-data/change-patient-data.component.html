@@ -1,61 +1,150 @@
-<body class='bodyy'>
-  <mat-toolbar>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
+<body class="bodic">
+  <mat-sidenav-container  class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false">
+      <mat-toolbar></mat-toolbar>
+      <hr>
+      <span class='header'>
+        <mat-nav-list>
+          <a mat-list-item routerLink="/UserHomePage"><strong class='list_item'>HOMEPAGE</strong></a>
+          <br />
+          <a mat-list-item routerLink="/PatientProfile"><strong class='list_item'>MY PROFILE</strong></a>
+        </mat-nav-list>
+      </span>
+    </mat-sidenav>
+  </mat-sidenav-container>
+
+  <mat-toolbar color="primary">
+    <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.toggle()"
+      *ngIf="isHandset$ | async">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
-    <span>My App</span>
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>favorite</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>share</mat-icon>
-    </button>
+    <span>Change data</span>
+    <span class='header'><nav>
+      <span class='data'><a  routerLink=""> <strong>LOGOUT</strong> </a></span>
+    </nav></span>
   </mat-toolbar>
 
-  <div class='bodyy'>
-      <mat-card class="example-card">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>{{patient['username']}} </mat-card-title>
-            <mat-card-subtitle>{{patient['id']}}</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image src="profileIcon.jpg">
-          <mat-card-content>
-            
-            
-            <form class="changeData" [formGroup] = "checkOutForm">
-              <mat-form-field appearance="legacy">
-                <mat-label for="username">Username</mat-label>
-                <input type="text" class="form-control" formControlName = "username"  matInput placeholder="USERNAME">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Hint</mat-hint>
-              </mat-form-field>
-              <br />
-              <mat-form-field appearance="legacy">
-                <mat-label for="password">Password</mat-label>
-                <input type="password" class="form-control" formControlName = "password" matInput placeholder="PASSWORD">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Hint</mat-hint>
-              </mat-form-field>
-              <br />
-              <mat-form-field appearance="legacy">
-                <mat-label for="confirmPassword">Confirm Password</mat-label>
-                <input type="password" class="form-control"  formControlName = "confirmPassword"  matInput placeholder="CONFIRM PASSWORD">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Hint</mat-hint>
-              </mat-form-field>
-            </form>
-                
-              <br />
-              <br />
-              <div>
-                <button type="submit" class="btn btn-primary btn-block" (click) = "submitForm()"><strong>SAVE</strong></button>
-              </div>
-              
-          </mat-card-content>
-        </mat-card>
-      
-        
-    </div>
+  
+  
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>PATIENT </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image src="profileIcon.jpg">
+    <mat-card-content>
+      <form class="changeData" [formGroup] = "checkOutForm">
+        <mat-form-field appearance="legacy">
+          <mat-label for="name">Name</mat-label>
+          <input type="text" class="form-control" formControlName = "name" matInput placeholder="NAME">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field appearance="legacy">
+          <mat-label for="surname">Surname</mat-label>
+          <input type="text" class="form-control" formControlName = "surname" matInput placeholder="SURNAME">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field appearance="legacy">
+          <mat-label for="adress">Adress</mat-label>
+          <input type="text" class="form-control" formControlName = "adress" matInput placeholder="ADRESS">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+        <br />        
+
+        <mat-form-field appearance="legacy">
+          <mat-label for="city">City</mat-label>
+          <input type="texy" class="form-control" formControlName = "city" matInput placeholder="CITY">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field appearance="legacy">
+          <mat-label for="country">Country</mat-label>
+          <input type="text" class="form-control" formControlName = "country" matInput placeholder="COUNTRY">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+        <br />
+
+        <mat-form-field appearance="legacy">
+          <mat-label for="phoneNumber">Phone number</mat-label>
+          <input type="tel" class="form-control" formControlName = "phoneNumber" matInput placeholder="PHONE NUMBER">
+          <mat-error *ngIf = "hasError('phoneNumber', 'maxlength', checkOutForm) || hasError('phoneNumber', 'minlength', checkOutForm)">
+            Phone number has to have 10 digits!
+          </mat-error>
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+      </form>
+
+      <br />
+      <br />
+
+      <div>
+        <button type="submit" (click) = "submitForm()"  [disabled] = "checkOutForm.invalid"><strong>SAVE</strong></button>
+      </div>    
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card1">
+    <mat-card-content>
+      <mat-card-header>
+        <mat-card-title class = "card-title">Change password</mat-card-title>
+      </mat-card-header>
+
+      <form class="changeData" [formGroup] = "updatePasswordForm">
+        <mat-form-field appearance="legacy">
+          <mat-label>Old password</mat-label>
+          <input type = "password"  matInput placeholder = "Type in old password" formControlName = "oldPassword" required>
+          <mat-error *ngIf = "hasError('oldPassword', 'required', updatePasswordForm)">Type in old password!</mat-error>
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>New password</mat-label>
+          <input type = "password" (input)="checkPasswords()" matInput placeholder = "Type in new password" formControlName = "password" required>
+          <mat-error *ngIf = "hasError('password', 'required', updatePasswordForm)">Type in new password!</mat-error>
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Confirm new password</mat-label>
+          <input type = "password"  (input)="checkPasswords()" matInput placeholder = "Confirm new password" formControlName = "confirmPassword" required>
+          <mat-error *ngIf = "hasError('confirmPassword', 'required', updatePasswordForm)">Type in new password again!</mat-error>
+          <mat-error *ngIf = "confirmPassword?.invalid && !hasError('confirmPassword','required', updatePasswordForm)">Passwords do not match!</mat-error>
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+      </form>
+    
+      <br />
+      <br />
+
+      <div>
+        <button type="submit" class="btn btn-primary btn-block" (click) = "updatePassword()" [disabled] = "updatePasswordForm.invalid"><strong>CHANGE PASSWORD</strong></button>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+
+
 </body>
