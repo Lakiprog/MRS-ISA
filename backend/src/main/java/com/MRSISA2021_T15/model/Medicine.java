@@ -28,7 +28,7 @@ public class Medicine {
 	private Integer id;
 	
 	@Column
-	private String medicineCode, name, medicineType, form, composition, manufacturer, addtionalComments;
+	private String medicineCode, name, medicineType, form, composition, manufacturer, additionalComments;
 	
 	@Column
 	private boolean prescription;
@@ -128,12 +128,12 @@ public class Medicine {
 		this.manufacturer = manufacturer;
 	}
 
-	public String getAddtionalComments() {
-		return addtionalComments;
+	public String getAdditionalComments() {
+		return additionalComments;
 	}
 
-	public void setAddtionalComments(String addtionalComments) {
-		this.addtionalComments = addtionalComments;
+	public void setAdditionalComments(String addtionalComments) {
+		this.additionalComments = addtionalComments;
 	}
 
 	public boolean isPrescription() {

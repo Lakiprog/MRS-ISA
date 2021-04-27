@@ -35,7 +35,6 @@ export class ListOfMedicineComponent implements OnInit {
   }
 
   deleteMedicine(medicine: Medicine): void {
-    console.log(medicine.id);
     this.pharmacyAdminService
       .deleteMedicine(medicine)
       .subscribe((res) =>

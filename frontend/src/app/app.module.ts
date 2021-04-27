@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular_material.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LayoutModule } from '@angular/cdk/layout';
-import {MatSortModule} from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -60,7 +60,6 @@ import { UserComplaintComponent } from './user-complaint/user-complaint.componen
 import { PatientsComplaintsDataComponent } from './patients-complaints-data/patients-complaints-data.component';
 import { SupplierWriteOffersComponent } from './supplier-write-offers/supplier-write-offers.component';
 
-
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
@@ -102,7 +101,7 @@ FullCalendarModule.registerPlugins([
     DermatologistProfilePageComponent,
     UserComplaintComponent,
     PatientsComplaintsDataComponent,
-    SupplierWriteOffersComponent
+    SupplierWriteOffersComponent,
   ],
   imports: [
     BrowserModule,
@@ -260,16 +259,16 @@ FullCalendarModule.registerPlugins([
         component: DermatologistProfilePageComponent,
       },
 
-      { 
+      {
         path: 'userComplaint',
-        canActivate: [PatientRoutes], 
-        component: UserComplaintComponent
+        canActivate: [PatientRoutes],
+        component: UserComplaintComponent,
       },
-      { 
+      {
         path: 'patientsComplaintsData',
-        canActivate: [PatientRoutes], 
-        component: PatientsComplaintsDataComponent
-      }
+        canActivate: [PatientRoutes],
+        component: PatientsComplaintsDataComponent,
+      },
     ]),
   ],
 

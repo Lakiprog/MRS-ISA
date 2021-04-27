@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Pharmacist } from '../models/pharmacist';
 import { Medicine } from '../models/medicine';
 import { Dermatologist } from '../models/dermatologist';
 import { PharmacyAdmin } from '../models/pharmacy-admin';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -119,5 +120,28 @@ export class PharmacyAdminService {
     return this.httpClient.get<Dermatologist[]>(
       'http://localhost:8080/dermatologist/' + string + '/findByString'
     );
+  }
+
+  public updatePassword(passwords: any) {
+    return this.httpClient
+      .put<any>('http://localhost:8080/pharmacyAdmin/updatePassword', passwords)
+      .pipe(catchError(this.errorHander));
+  }
+
+  public getPharmacyAdminData() {
+    return this.httpClient.get<any>(
+      'http://localhost:8080/pharmacyAdmin/getPharmacyAdminData'
+    );
+  }
+  public updatePharmacyAdminData(supplier: any) {
+    return this.httpClient
+      .put<any>(
+        'http://localhost:8080/pharmacyAdmin/updatePharmacyAdminData',
+        supplier
+      )
+      .pipe(catchError(this.errorHander));
+  }
+  errorHander(error: HttpErrorResponse) {
+    return throwError(error);
   }
 }

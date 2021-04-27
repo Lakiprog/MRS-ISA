@@ -2,12 +2,26 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Composition</th>
+        <th>Form</th>
+        <th>Manufactirer</th>
+        <th>Medicine code</th>
+        <th>Medicine type</th>
+        <th>Additional comments</th>
+        <th>Prescription</th>
         <th>Id</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let medicine of medicineList ">
         <td>{{ medicine.name }}</td>
+        <td>{{ medicine.composition }}</td>
+        <td>{{ medicine.form }}</td>
+        <td>{{ medicine.manufacturer }}</td>
+        <td>{{ medicine.medicineCode }}</td>
+        <td>{{ medicine.medicineType }}</td>
+        <td>{{ medicine.additionalComments }}</td>
+        <td>{{ medicine.prescription }}</td>
         <td>{{ medicine.id }}</td>
         <td>
           <button class="btn btn-danger" (click)="deleteMedicine(medicine)">
@@ -25,7 +39,7 @@
       <td>
         <form [formGroup]="searchForm" (ngSubmit)="searchMedicineById()">
           <div class="form-group">
-            <label for="searchValue">Name</label>
+            <label for="searchValue">Id</label>
             <input type="text" formControlName="searchValue" required />
           </div>
         <button type="submit" class="btn btn-success">
