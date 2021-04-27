@@ -114,7 +114,7 @@ public class MedicineController {
 					(medicine.getMedicineCode() != null && medicine.getMedicineCode().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getManufacturer() != null && medicine.getManufacturer().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getMedicineType() != null && medicine.getMedicineType().toLowerCase().contains(string.toLowerCase()))||
-					(medicine.getAddtionalComments() != null && medicine.getAddtionalComments().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getAdditionalComments() != null && medicine.getAdditionalComments().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getComposition() != null && medicine.getComposition().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getForm() != null && medicine.getForm().contains(string.toLowerCase())))
 				returnList.add(medicine);
@@ -127,7 +127,7 @@ public class MedicineController {
 	public ResponseEntity edit(@PathVariable Integer medicineId, @RequestBody Medicine m) throws NotFoundException {
 		Medicine med = medicineRepository.findById(medicineId).orElseThrow(() -> new NotFoundException("Ne postoji id"));
 		med.setName(m.getName());
-		med.setAddtionalComments(m.getAddtionalComments());
+		med.setAdditionalComments(m.getAdditionalComments());
 		med.setComposition((m.getComposition()));
 		med.setForm(m.getForm());
 		med.setManufacturer(m.getManufacturer());

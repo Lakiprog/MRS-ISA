@@ -58,11 +58,11 @@ insert into absence (description, start, end, approved, doctor_id) values ("Ocu 
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-15 9:30:00', '2021-06-19 19:30:00', true, 5);
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-15 9:30:00', '2021-06-20 19:30:00', true, 6);
 
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, addtional_comments) 
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
 	values ('S123', 'medicine1', 'headache', 'pill', 'random stuff', 'mrsisa', true, 'comment');
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, addtional_comments) 
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
 	values ('S124', 'medicine2', 'headache', 'pill', 'random stuff', 'mrsisa', false, 'comment');
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, addtional_comments) 
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
 	values ('S125', 'medicine3', 'headache', 'pill', 'random stuff', 'mrsisa', true, null);
 	
 
