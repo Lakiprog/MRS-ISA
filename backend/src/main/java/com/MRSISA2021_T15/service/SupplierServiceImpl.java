@@ -51,7 +51,7 @@ public class SupplierServiceImpl implements SupplierService {
 		if (currentUser != null) {
 			currentUser.setName(supplier.getName());
 			currentUser.setSurname(supplier.getSurname());
-			currentUser.setAdress(supplier.getAdress());
+			currentUser.setAddress(supplier.getAddress());
 			currentUser.setCity(supplier.getCity());
 			currentUser.setCountry(supplier.getCountry());
 			currentUser.setPhoneNumber(supplier.getPhoneNumber());

@@ -3,7 +3,6 @@ package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.Dermatologist;
-import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.repository.DermatologistRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,14 +28,17 @@ public class DermatologistController {
     
     @Autowired
 	private PasswordEncoder encod;
-
+/*
     @RequestMapping(path="/add", method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public @ResponseBody ResponseEntity addNewDermatologist (@RequestBody Dermatologist d) {
+
+        d.setPassword(encod.encode(d.getPassword()));
+        d.setEnabled(true);
         dermatologistRepository.save(d);
         return ResponseEntity.ok().build();
     }
-
+*/
     @DeleteMapping(path = "/{dermatologistId}/delete")
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public void deleteDermatologist(@PathVariable Integer dermatologistId) {
@@ -70,7 +72,7 @@ public class DermatologistController {
             if((dermatologist.getName() != null && dermatologist.getName().toLowerCase().contains(string.toLowerCase()))||
                     (dermatologist.getSurname() != null && dermatologist.getSurname().toLowerCase().contains(string.toLowerCase()))||
                     (dermatologist.getUsername() != null && dermatologist.getUsername().toLowerCase().contains(string.toLowerCase()))||
-                    (dermatologist.getAdress() != null && dermatologist.getAdress().toLowerCase().contains(string.toLowerCase()))||
+                    (dermatologist.getAddress() != null && dermatologist.getAddress().toLowerCase().contains(string.toLowerCase()))||
                     (dermatologist.getCity() != null && dermatologist.getCity().toLowerCase().contains(string.toLowerCase()))||
                     (dermatologist.getCountry() != null && dermatologist.getCountry().toLowerCase().contains(string.toLowerCase())||
                     (dermatologist.getEmail() != null && dermatologist.getEmail().toLowerCase().contains(string.toLowerCase()))||
@@ -87,7 +89,7 @@ public class DermatologistController {
 		Dermatologist pharm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		pharm.setName(d.getName());
 		pharm.setSurname(d.getSurname());
-		pharm.setAdress(d.getAdress());
+		pharm.setAddress(d.getAddress());
 		pharm.setCity(d.getCity());
 		pharm.setCountry(d.getCountry());
 		pharm.setPhoneNumber(d.getPhoneNumber());

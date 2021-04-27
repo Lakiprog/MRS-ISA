@@ -20,7 +20,11 @@ export class AddNewPharmacistComponent implements OnInit {
     this.pharmacistForm = this.formBuilder.group({
       name: [],
       surname: [],
+      address: [],
+      city: [],
+      country: [],
       email: [],
+      phoneNumber: [],
       username: [],
       password: [],
     });
@@ -31,7 +35,11 @@ export class AddNewPharmacistComponent implements OnInit {
       id: [],
       name: [],
       surname: [],
+      address: [],
+      city: [],
+      country: [],
       email: [],
+      phoneNumber: [],
       username: [],
       password: [],
     });

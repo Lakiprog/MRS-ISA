@@ -24,7 +24,7 @@ public class Pharmacy {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	@Column
-	private String name, adress, city, country, description;
+	private String name, address, city, country, description;
 	@Column
 	private double rating;
 	@Column
@@ -98,12 +98,12 @@ public class Pharmacy {
 		this.name = name;
 	}
 
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAddress(String adress) {
+		this.address = adress;
 	}
 
 	public String getCity() {

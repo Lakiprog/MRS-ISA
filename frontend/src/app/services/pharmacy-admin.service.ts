@@ -86,7 +86,9 @@ export class PharmacyAdminService {
 
   public updateMedicine(medicine: Medicine, medicineId: String) {
     return this.httpClient.put<Medicine>(
-      'http://localhost:8080/medicine/' + medicineId + '/update',
+      'http://localhost:8080/medicine/' +
+        medicineId +
+        '/updateAdditionalComments',
       medicine
     );
   }
