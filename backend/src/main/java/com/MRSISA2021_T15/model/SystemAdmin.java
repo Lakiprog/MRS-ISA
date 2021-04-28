@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 @DiscriminatorValue(value = "SYSTEM_ADMIN")
 public class SystemAdmin extends User{
 	
+	private static final long serialVersionUID = 1L;
+	
 	@Column(name = "first_login")
 	private boolean firstLogin;
 	

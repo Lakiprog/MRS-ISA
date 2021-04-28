@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { DateValidator } from './DateValidator';
+import { PriceValidator } from './PriceValidator';
 import { SupplierWriteOffersService } from './supplier-write-offers.service';
 
 @Component({
@@ -44,9 +45,9 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
     this.offerForm = this.fb.group(
       {
         orderName: ['', Validators.required],
-        deliveryTime: ['', Validators.required],
+        deliveryDate: ['', Validators.required],
         price: [0, Validators.required]
-      }, {validator: DateValidator}
+      }, {validator: [DateValidator, PriceValidator]}
     );
     this.supplierWriteOffersService.getOrders().subscribe(
       data => {
@@ -65,13 +66,23 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
     return this.offerForm.controls[controlName].hasError(errorName);
   }
 
-  get deliveryTime() {
-    return this.offerForm.get('deliveryTime');
+  get deliveryDate() {
+    return this.offerForm.get('deliveryDate');
+  }
+
+  get price() {
+    return this.offerForm.get('price');
   }
 
   checkDate() {
     if (this.offerForm.hasError('dateInvalid')) {
-      this.offerForm.get('deliveryTime')?.setErrors([{'dateInvalid': true}]);
+      this.offerForm.get('deliveryDate')?.setErrors([{'dateInvalid': true}]);
+    }
+  }
+
+  checkPrice() {
+    if (this.offerForm.hasError('priceInvalid')) {
+      this.offerForm.get('price')?.setErrors([{'priceInvalid': true}]);
     }
   }
 

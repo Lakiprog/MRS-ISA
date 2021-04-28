@@ -2,8 +2,7 @@ package com.MRSISA2021_T15.service;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,46 +91,25 @@ public class SupplierServiceImpl implements SupplierService {
 	
 	@Override
 	public List<String> getOrders() {
-		List<String> orderNames = new ArrayList<String>();
-		Iterable<PurchaseOrder> orders = purchaseOrderRepository.findAll();
-		for (PurchaseOrder po : orders) {
-			if (po.getDueDateOffer().isAfter(LocalDateTime.now())) {
-				orderNames.add(po.getOrderName());
-			}
-		}
-		return orderNames;
+		return purchaseOrderRepository.findOrdersByDueDateAfterCurrentDate(LocalDate.now());
 	}
 	
-	
-
 	@Override
 	public String writeOffer(PurchaseOrderSupplier offer) {
+		String message = "";
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		PurchaseOrder order = purchaseOrderRepository.findByOrderName(offer.getOrderName());
-		offer.setPurchaseOrder(order);
-		offer.setOfferStatus(OfferStatus.PENDING);
-		offer.setSupplier(supplier);
-		String message = "";
 		PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(order.getId(), supplier.getId());
 		if (pos == null) {
-			boolean hasMedicine = true;
-			List<PurchaseOrderMedicine> orders = purchaseOrderMedicineRepository.findAllByOrderName(offer.getOrderName());
-			List<MedicineSupply> medicineSupply = getMedicineSupply();
-			for (PurchaseOrderMedicine pom : orders) {
-				for (MedicineSupply ms : medicineSupply) {
-					if (pom.getMedicine().getMedicineCode().equals(ms.getMedicine().getMedicineCode())) {
-						if (ms.getQuantity() < pom.getQuantity()) {
-							hasMedicine = false;
-							message = "You do not have enough of medicine " + ms.getMedicine().getMedicineCode() + " in stock!";
-							break;
-						}
-					}
-				}
-			}
-			if (hasMedicine) {
+			List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStock(order.getId(), supplier.getId());
+			if (ms.isEmpty()) {
+				offer.setPurchaseOrder(order);
+				offer.setOfferStatus(OfferStatus.PENDING);
+				offer.setSupplier(supplier);
 				purchaseOrderSupplierRepository.save(offer);
-				
-			}
+			} else {
+				message = "You do not have enough of medicine in stock!";
+			}	
 		} else {
 			message = "Supplier has already given an offer for this order!";
 		}
@@ -142,4 +120,11 @@ public class SupplierServiceImpl implements SupplierService {
 	public List<PurchaseOrderMedicine> getOrderByName(String orderName) {
 		return purchaseOrderMedicineRepository.findAllByOrderName(orderName);
 	}
+
+	@Override
+	public List<PurchaseOrderSupplier> getOffers() {
+		return purchaseOrderSupplierRepository.findBySupplier((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+	}
+	
+	
 }

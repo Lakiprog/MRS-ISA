@@ -23,5 +23,7 @@ public interface SupplierService {
 	List<PurchaseOrderMedicine> getOrderByName(String orderName);
 	
 	String writeOffer(PurchaseOrderSupplier offer);
+	
+	List<PurchaseOrderSupplier> getOffers();
 
 }

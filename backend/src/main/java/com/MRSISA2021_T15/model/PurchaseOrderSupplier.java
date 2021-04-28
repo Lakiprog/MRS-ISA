@@ -1,6 +1,6 @@
 package com.MRSISA2021_T15.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +28,7 @@ public class PurchaseOrderSupplier {
 	private String orderName;
 	
 	@Column
-	private LocalDateTime deliveryTime;
+	private LocalDate deliveryDate;
 	
 	@Column
 	private OfferStatus offerStatus;
@@ -67,12 +67,12 @@ public class PurchaseOrderSupplier {
 		this.price = price;
 	}
 
-	public LocalDateTime getDeliveryTime() {
-		return deliveryTime;
+	public LocalDate getDeliveryDate() {
+		return deliveryDate;
 	}
 
-	public void setDeliveryTime(LocalDateTime deliveryTime) {
-		this.deliveryTime = deliveryTime;
+	public void setDeliveryDate(LocalDate deliveryDate) {
+		this.deliveryDate = deliveryDate;
 	}
 	
 	public OfferStatus getOfferStatus() {

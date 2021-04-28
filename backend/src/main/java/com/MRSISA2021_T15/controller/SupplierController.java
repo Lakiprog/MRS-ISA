@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +67,7 @@ public class SupplierController {
 		return supplierService.getMedicineSupply();
 	}
 	
-	@PutMapping(value = "/writeOffer", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/writeOffer", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public ResponseEntity<String> writeOffer(@RequestBody PurchaseOrderSupplier offer) {
 		String message = supplierService.writeOffer(offer);
@@ -88,5 +89,11 @@ public class SupplierController {
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public List<PurchaseOrderMedicine> getOrderByName(@PathVariable String orderName) {
 		return supplierService.getOrderByName(orderName);
+	}
+	
+	@GetMapping(value = "/getOffers", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
+	public List<PurchaseOrderSupplier> getOffers() {
+		return supplierService.getOffers();
 	}
 }

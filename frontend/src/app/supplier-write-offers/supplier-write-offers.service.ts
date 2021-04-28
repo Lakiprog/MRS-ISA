@@ -23,7 +23,7 @@ export class SupplierWriteOffersService {
   }
 
   writeOffer(offer: any) {
-    return this.http.put<any>("http://localhost:8080/suppliers/writeOffer", offer)
+    return this.http.post<any>("http://localhost:8080/suppliers/writeOffer", offer)
                               .pipe(catchError(this.errorHander));
   }
 

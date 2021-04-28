@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 @DiscriminatorValue(value = "PHARMACY_ADMIN")
 public class PharmacyAdmin extends User {
 	
+	private static final long serialVersionUID = 1L;
+
 	@ManyToOne
 	@JoinColumn(name = "pharmacy_id")
 	private Pharmacy pharmacy;

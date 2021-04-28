@@ -59,6 +59,7 @@ import { PatientRoutes } from './user-routes/PatientRoutes';
 import { UserComplaintComponent } from './user-complaint/user-complaint.component';
 import { PatientsComplaintsDataComponent } from './patients-complaints-data/patients-complaints-data.component';
 import { SupplierWriteOffersComponent } from './supplier-write-offers/supplier-write-offers.component';
+import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -102,6 +103,7 @@ FullCalendarModule.registerPlugins([
     UserComplaintComponent,
     PatientsComplaintsDataComponent,
     SupplierWriteOffersComponent,
+    SupplierViewOffersComponent,
   ],
   imports: [
     BrowserModule,
@@ -172,6 +174,11 @@ FullCalendarModule.registerPlugins([
         path: 'supplierWriteOffers',
         canActivate: [SupplierRoutes],
         component: SupplierWriteOffersComponent,
+      },
+      {
+        path: 'supplierViewOffers',
+        canActivate: [SupplierRoutes],
+        component: SupplierViewOffersComponent,
       },
       {
         path: 'pharmacyAdmin',

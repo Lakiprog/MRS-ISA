@@ -70,14 +70,15 @@
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Delivery time</mat-label>
-                <input type = "datetime-local" (input) = "checkDate()" matInput placeholder = "Delivery time" formControlName = "deliveryTime" required>
-                <mat-error *ngIf = "hasError('deliveryTime', 'required')">Delivery time is required!</mat-error>
-                <mat-error *ngIf = "deliveryTime?.invalid && !hasError('deliveryTime','required')">Delivery date must be after today's date!</mat-error>
+                <input type = "date" (input) = "checkDate()" matInput placeholder = "Delivery data" formControlName = "deliveryDate" required>
+                <mat-error *ngIf = "hasError('deliveryDate', 'required')">Delivery date is required!</mat-error>
+                <mat-error *ngIf = "deliveryDate?.invalid && !hasError('deliveryDate','required')">Delivery date must be after today's date!</mat-error>
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Price</mat-label>
-                <input type = "number" matInput placeholder = "Price" formControlName = "price" required>
+                <input type = "number" (input) = "checkPrice()" matInput placeholder = "Price" formControlName = "price" min = "0" required>
                 <mat-error *ngIf = "hasError('price', 'required')">Price is required!</mat-error>
+                <mat-error *ngIf = "price?.invalid && !hasError('price','required')">Price must be a postive number!</mat-error>
             </mat-form-field>
         </form>
         <button (click) = "writeOffer()" [disabled] = "offerForm.invalid" mat-raised-button color="primary">Send</button>
