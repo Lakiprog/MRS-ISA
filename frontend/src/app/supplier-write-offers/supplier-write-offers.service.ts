@@ -18,8 +18,8 @@ export class SupplierWriteOffersService {
     return this.http.get<any>("http://localhost:8080/suppliers/getOrders");
   }
 
-  getOrderByName(orderName: any) {
-    return this.http.get<any>("http://localhost:8080/suppliers/getOrderByName/" + orderName);
+  getPurchaseOrdersMedicine(purchaseOrderId: any) {
+    return this.http.get<any>("http://localhost:8080/suppliers/getPurchaseOrdersMedicine/" + purchaseOrderId);
   }
 
   writeOffer(offer: any) {

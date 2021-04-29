@@ -93,17 +93,18 @@ insert into purchase_order (order_name, due_date_offer) values ('order1', '2021-
 insert into purchase_order (order_name, due_date_offer) values ('order2', '2021-05-01');
 insert into purchase_order (order_name, due_date_offer) values ('order3','2021-05-10');
 
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (1, 1, 'order1', 20);
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (1, 2, 'order1', 30);
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (1, 3, 'order1', 15);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 1, 20);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 2, 30);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 3, 15);
 
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (2, 1, 'order2', 5);
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (2, 3, 'order2', 10);
+insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 1, 5);
+insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 3, 10);
 
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (3, 2, 'order3', 20);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (3, 2, 20);
 
-insert into purchase_order_supplier (purchase_order_id, supplier_id, order_name, delivery_date, price, offer_status) values (1, 10, 'order1', '2021-06-10', 1000, 0);
-insert into purchase_order_supplier (purchase_order_id, supplier_id, order_name, delivery_date, price, offer_status) values (2, 10, 'order2', '2021-07-10', 900, 1);
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (1, 10, '2021-06-10', 1000, 0);
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (2, 10, '2021-07-10', 900, 1);
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (3, 10, '2021-05-26', 700, 2);
 
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Dermatolog nije strucan, pogresne lekove mi je dodelio', 1, 6, null, null);
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Zivi bili, menjajte ga', 1, 6, null, null);

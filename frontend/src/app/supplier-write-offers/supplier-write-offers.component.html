@@ -35,9 +35,13 @@
         <mat-card-title>Purchase orders</mat-card-title>
         <div class = "data-table">
             <table mat-table [dataSource]="orderDataSource">
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef class = "coloumnId">ID</th>
+                    <td mat-cell *matCellDef="let element" class = "coloumnId"> {{element.purchaseOrder.id}} </td>
+                </ng-container>
                 <ng-container matColumnDef="orderName">
                     <th mat-header-cell *matHeaderCellDef class = "coloumnOrderName">Order name</th>
-                    <td mat-cell *matCellDef="let element" class = "coloumnOrderName"> {{element.orderName}} </td>
+                    <td mat-cell *matCellDef="let element" class = "coloumnOrderName"> {{element.purchaseOrder.orderName}} </td>
                 </ng-container>
                 <ng-container matColumnDef="medicineCode">
                     <th mat-header-cell *matHeaderCellDef class = "coloumnMedicineCode">Medicine code</th>
@@ -51,6 +55,12 @@
                     <th mat-header-cell *matHeaderCellDef class = "coloumnQuantity">Quantity</th>
                     <td mat-cell *matCellDef="let element" class = "coloumnQuantity"> {{element.quantity}} </td>
                 </ng-container>
+                <ng-container matColumnDef="dueDateOffer">
+                    <th mat-header-cell *matHeaderCellDef class = "coloumnDueDateOffer">Due date for offer</th>
+                    <td mat-cell *matCellDef="let element" class = "coloumnDueDateOffer"> 
+                        {{element.purchaseOrder.dueDateOffer[0] + "-" + element.purchaseOrder.dueDateOffer[1] + "-" + element.purchaseOrder.dueDateOffer[2]}}
+                    </td>
+                </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsOrders"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsOrders;"></tr>
             </table>
@@ -63,14 +73,14 @@
         <form [formGroup] = "offerForm" class = "offer-form">
             <mat-form-field class = "field-width">
                 <mat-label>Select a purchase order</mat-label>
-                <mat-select formControlName = "orderName" required>
-                    <mat-option (click) = "getPurchaseOrders()" *ngFor = "let order of orders" [value]="order">{{order}}</mat-option>
+                <mat-select formControlName = "purchaseOrder" required>
+                    <mat-option (click) = "getPurchaseOrdersMedicine()" *ngFor = "let order of orders" [value]="order">{{order['orderName']}}</mat-option>
                 </mat-select>
-                <mat-error *ngIf = "hasError('orderName', 'required')">Select a purchase order!</mat-error>
+                <mat-error *ngIf = "hasError('purchaseOrder', 'required')">Select a purchase order!</mat-error>
             </mat-form-field>
             <mat-form-field class = "field-width">
-                <mat-label>Delivery time</mat-label>
-                <input type = "date" (input) = "checkDate()" matInput placeholder = "Delivery data" formControlName = "deliveryDate" required>
+                <mat-label>Delivery date</mat-label>
+                <input type = "date" (input) = "checkDate()" matInput placeholder = "Delivery date" formControlName = "deliveryDate" required>
                 <mat-error *ngIf = "hasError('deliveryDate', 'required')">Delivery date is required!</mat-error>
                 <mat-error *ngIf = "deliveryDate?.invalid && !hasError('deliveryDate','required')">Delivery date must be after today's date!</mat-error>
             </mat-form-field>

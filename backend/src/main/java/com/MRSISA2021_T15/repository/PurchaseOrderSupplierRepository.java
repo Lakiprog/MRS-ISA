@@ -16,4 +16,7 @@ public interface PurchaseOrderSupplierRepository extends CrudRepository<Purchase
 	PurchaseOrderSupplier findBySupplierIdAndPurchaseOrderId(Integer purchaseOrderId, Integer supplierId);
 	
 	List<PurchaseOrderSupplier> findBySupplier(Supplier supplier);
+	
+	@Query("select pos from PurchaseOrderSupplier pos where pos.offerStatus = 2 AND pos.supplier.id = ?1")
+	List<PurchaseOrderSupplier> getPendingOffers(Integer supplierId);
 }

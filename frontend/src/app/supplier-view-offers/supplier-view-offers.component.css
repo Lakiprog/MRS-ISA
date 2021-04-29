@@ -5,10 +5,15 @@
 }
 
 .card {
-    width: 1000px;
+    width: 500px;
     margin-top: 20px;
     margin-left: 10px;
     background-color: #DEEDE6
+}
+
+.offer-form{
+    max-width: 500px;
+    width: 100%;
 }
 
 .field-width {
@@ -28,6 +33,10 @@ table {
 
 .data-table {
     width: 100%;
+}
+
+.coloumnId {
+    width: 5%;  
 }
 
 .coloumnOrderName {

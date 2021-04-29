@@ -12,8 +12,6 @@ import com.MRSISA2021_T15.model.PurchaseOrder;
 @Repository
 public interface PurchaseOrderRepository extends CrudRepository<PurchaseOrder, Integer> {
 
-	PurchaseOrder findByOrderName(String orderName);
-	
-	@Query("select order.orderName from PurchaseOrder order where order.dueDateOffer > ?1")
-	List<String> findOrdersByDueDateAfterCurrentDate(LocalDate currentDate);
+	@Query("select order from PurchaseOrder order where order.dueDateOffer > ?1")
+	List<PurchaseOrder> findOrdersByDueDateAfterCurrentDate(LocalDate currentDate);
 }

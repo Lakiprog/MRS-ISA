@@ -29,7 +29,7 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
 
   verticalPosition: MatSnackBarVerticalPosition = "top";
   displayedColumnsMedicineSupply: string[] = ['medicineCode', 'name', 'quantity'];
-  displayedColumnsOrders: string[] = ['orderName', 'medicineCode', 'name', 'quantity'];
+  displayedColumnsOrders: string[] = ['id', 'orderName', 'medicineCode', 'name', 'quantity', 'dueDateOffer'];
   medicineSupplyData = [];
   orderData = [];
   orders = [];
@@ -44,7 +44,7 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   ngOnInit(): void {
     this.offerForm = this.fb.group(
       {
-        orderName: ['', Validators.required],
+        purchaseOrder: ['', Validators.required],
         deliveryDate: ['', Validators.required],
         price: [0, Validators.required]
       }, {validator: [DateValidator, PriceValidator]}
@@ -95,8 +95,8 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
     )
   }
 
-  getPurchaseOrders() {
-    this.supplierWriteOffersService.getOrderByName(this.offerForm.get('orderName')?.value).
+  getPurchaseOrdersMedicine() {
+    this.supplierWriteOffersService.getPurchaseOrdersMedicine(this.offerForm.get('purchaseOrder')?.value['id']).
       subscribe(
         data => {
           this.orderData = data;

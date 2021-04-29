@@ -90,7 +90,7 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 	
 	@Override
-	public List<String> getOrders() {
+	public List<PurchaseOrder> getOrders() {
 		return purchaseOrderRepository.findOrdersByDueDateAfterCurrentDate(LocalDate.now());
 	}
 	
@@ -98,12 +98,10 @@ public class SupplierServiceImpl implements SupplierService {
 	public String writeOffer(PurchaseOrderSupplier offer) {
 		String message = "";
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		PurchaseOrder order = purchaseOrderRepository.findByOrderName(offer.getOrderName());
-		PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(order.getId(), supplier.getId());
+		PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(offer.getPurchaseOrder().getId(), supplier.getId());
 		if (pos == null) {
-			List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStock(order.getId(), supplier.getId());
+			List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStock(offer.getPurchaseOrder().getId(), supplier.getId());
 			if (ms.isEmpty()) {
-				offer.setPurchaseOrder(order);
 				offer.setOfferStatus(OfferStatus.PENDING);
 				offer.setSupplier(supplier);
 				purchaseOrderSupplierRepository.save(offer);
@@ -117,14 +115,36 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	@Override
-	public List<PurchaseOrderMedicine> getOrderByName(String orderName) {
-		return purchaseOrderMedicineRepository.findAllByOrderName(orderName);
+	public List<PurchaseOrderMedicine> getPurchaseOrdersMedicine(PurchaseOrder purchaseOrder) {
+		return purchaseOrderMedicineRepository.findAllByPurchaseOrder(purchaseOrder);
 	}
 
 	@Override
-	public List<PurchaseOrderSupplier> getOffers() {
+	public List<PurchaseOrderSupplier> getOffersBySupplier() {
 		return purchaseOrderSupplierRepository.findBySupplier((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 	}
-	
-	
+
+	@Override
+	public List<PurchaseOrderSupplier> getPendingOffersBySupplier() {
+		return purchaseOrderSupplierRepository.getPendingOffers(((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+	}
+
+	@Override
+	public String updateOffer(PurchaseOrderSupplier offer) {
+		String message = "";
+		PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findById(offer.getId()).get();
+		if (offerToUpdate != null) {
+			if (offer.getPrice() != null) {
+				offerToUpdate.setPrice(offer.getPrice());
+				purchaseOrderSupplierRepository.save(offerToUpdate);
+			}
+			if (offer.getDeliveryDate() != null) {
+				offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
+				purchaseOrderSupplierRepository.save(offerToUpdate);
+			}
+		} else {
+			message = "Update unsuccessfull!";
+		}
+		return message;
+	}
 }
