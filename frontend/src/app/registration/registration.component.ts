@@ -3,6 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { PasswordValidator } from './validators/passwordValidator';
 import { RegistrationService } from './registration.service';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -11,18 +13,26 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 })
 export class RegistrationComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private _registrationService: RegistrationService, private _snackBar: MatSnackBar) { }
+  constructor
+  (
+    private fb: FormBuilder, 
+    private _registrationService: RegistrationService, 
+    private _snackBar: MatSnackBar, 
+    private authService: AuthService,
+    private router: Router
+  ) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   registrationForm! : FormGroup;
   EMAIL_REGEX : string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  systemAdmin : boolean = true;
+  systemAdmin : any = this.authService.getTokenData()?.role === 'ROLE_SYSTEM_ADMIN' ? true : false;
   users = ['System administrator', 'Dermatologist', 'Pharmacy administrator', 'Supplier'];
-  selected = this.systemAdmin ? 'System administrator' : 'Patient';
+  selected =  this.authService.getTokenData()?.role === 'ROLE_SYSTEM_ADMIN' ? 'System administrator' : 'Patient';
   oldPasswordValue : any;
   oldUserTypeValue : any;
+  picture : any =  this.authService.getTokenData()?.role === 'ROLE_SYSTEM_ADMIN' ? 'registration-users-background' : 'registration-patient-background';
 
   ngOnInit(): void {
     this.registrationForm = this.fb.group(
@@ -33,7 +43,7 @@ export class RegistrationComponent implements OnInit {
         confirmPassword: ['', Validators.required],
         name: ['', Validators.required],
         surname: ['', Validators.required],
-        adress: ['', Validators.required],
+        address: ['', Validators.required],
         city: ['', Validators.required],
         country: ['', Validators.required],
         phoneNumber: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]],
@@ -69,37 +79,53 @@ export class RegistrationComponent implements OnInit {
             this.registrationForm.reset();
           },
           error => {
-            this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            if (error.error.status !== undefined && error.error.status === 401) {
+              this.openSnackBar("You are not authorised to register system administrators!", this.RESPONSE_ERROR);
+            } else {
+              this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            }
           }
         );
-      } else if (this.oldUserTypeValue === 'Pharmacy administrator') {
+      } else if (this.oldUserTypeValue.value === 'Pharmacy administrator') {
         this._registrationService.registerPharmacyAdministrator(this.registrationForm.value).subscribe(
           response => {
             this.openSnackBar(response, this.RESPONSE_OK);
             this.registrationForm.reset();
           },
           error => {
-            this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            if (error.error.status !== undefined && error.error.status === 401) {
+              this.openSnackBar("You are not authorised to register pharmacy administrators!", this.RESPONSE_ERROR);
+            } else {
+              this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            }
           }
         );
-      } else if (this.oldUserTypeValue === 'Dermatologist') {
+      } else if (this.oldUserTypeValue.value === 'Dermatologist') {
         this._registrationService.registerDermatologist(this.registrationForm.value).subscribe(
           response => {
             this.openSnackBar(response, this.RESPONSE_OK);
             this.registrationForm.reset();
           },
           error => {
-            this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            if (error.error.status !== undefined && error.error.status === 401) {
+              this.openSnackBar("You are not authorised to register dermatologists!", this.RESPONSE_ERROR);
+            } else {
+              this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            }
           }
         );
-      } else if (this.oldUserTypeValue === 'Supplier') {
+      } else if (this.oldUserTypeValue.value === 'Supplier') {
         this._registrationService.registerSupplier(this.registrationForm.value).subscribe(
           response => {
             this.openSnackBar(response, this.RESPONSE_OK);
             this.registrationForm.reset();
           },
           error => {
-            this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            if (error.error.status !== undefined && error.error.status === 401) {
+              this.openSnackBar("You are not authorised to register suppliers!", this.RESPONSE_ERROR);
+            } else {
+              this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            }
           }
         );
       }
@@ -118,9 +144,13 @@ export class RegistrationComponent implements OnInit {
     this.registrationForm.addControl('confirmPassword', new FormControl(this.oldPasswordValue?.value));
   }
 
+  systemAdminProfilePage() {
+    this.router.navigate(['/systemAdminProfilePage']);
+  }
+
   openSnackBar(msg: string, responseCode: number) {
     this._snackBar.open(msg, "x", {
-      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      duration: 20000,
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });

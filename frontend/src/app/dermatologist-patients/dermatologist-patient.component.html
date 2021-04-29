@@ -1,23 +1,31 @@
 <body>
     <section><div class="wave"></div>
-        <h1 class="title">SEARCH PATIENTS</h1>
+        <h1 class="title">VIEW PATIENTS</h1>
         
-        <div class="form-search">
-            <label id="search-label" for="search-patients">Search Patients:</label>
-            <input type="search" name="search-patients" id="search-patients">
-            <label for="sort-by" id="sort-by">Sort by:</label>
-            <select name="sort-options" id="sort-options">
-                <option value="name">name</option>
-                <option value="surname">surname</option>
-                <option value="date">date of examination</option>
-            </select>
-        </div>
-        
-        <table name="patients" id="patients">
-            <tr><td>No patients with this name!</td></tr>
+        <table matSort (matSortChange)="sortData($event)" name="patientsPharmacist" id="patientsPharmacist">
+            <tr>
+                <th  mat-sort-header="id">ID</th>
+                <th mat-sort-header="username">Username</th>
+                <th  mat-sort-header="name">Name</th>
+                <th  mat-sort-header="surname">Surname</th>
+                <th mat-sort-header="email">Email</th>
+                <th mat-sort-header="address">address</th>
+                <th mat-sort-header="city">City</th>
+                <th mat-sort-header="country">Country</th>
+                <th mat-sort-header="phoneNumber">PhoneNumber</th>
+            </tr>
+            <tr *ngFor="let patient of patients">
+                <td>{{patient['id']}}</td>
+                <td>{{patient['username']}}</td>
+                <td>{{patient['name']}}</td>
+                <td>{{patient['surname']}}</td>
+                <td>{{patient['email']}}</td>
+                <td>{{patient['city']}}</td>
+                <td>{{patient['country']}}</td>
+                <td>{{patient['address']}}</td>
+                <td>{{patient['phoneNumber']}}</td>
+             </tr>
         </table>
-
-        <div class="return"><a href="http://localhost:4200/DermatologistHomePage">Back to homepage</a></div>
     </section>
     
 

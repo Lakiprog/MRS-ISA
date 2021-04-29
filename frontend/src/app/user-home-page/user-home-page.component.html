@@ -2,13 +2,14 @@
     <section>
         <div class="wave"></div>
         <ul>
-            <li> <a href="UserProfile.html"> MY PROFILE</a> </li>
-            <li> <a href="Search.html"> SEARCH PHARMACIES</a></li>
+            <li> <a routerLink="/PatientProfile"> MY PROFILE</a> </li>
+            <li> <a routerLink="/searchPharmacy"> SEARCH PHARMACIES</a></li>
             <li> <a href="Search.html"> SEARCH PHARMACISTS</a></li>
             <li> <a href="Search.html"> SEARCH DERMATOLOGISTS</a></li>
             <li> <a href="Search.html"> SEARCH MEDICINES</a></li>
             <li> <a href="UserReview.html">GIVE REVIEW</a></li>
-            <li> <a href="Complaint.html">MAKE A COMPLAINT</a></li>
+            <li> <a routerLink="/userComplaint">MAKE A COMPLAINT</a></li>
+            <li (click) = "logout()"><a>LOGOUT</a></li>
         </ul>
     </section>
 </body>

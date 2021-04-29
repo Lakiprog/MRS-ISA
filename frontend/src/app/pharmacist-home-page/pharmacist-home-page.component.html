@@ -2,13 +2,14 @@
     <section>
         <div class="wave"></div>
         <ul>
-            <li> <a href="PharmacistProfile.html"> MY PROFILE</a> </li>
-            <li> <a href="http://localhost:4200/PharmacistPatientComponent"> SEARCH PATIENTS</a></li>
-            <li> <a href="Calendar.html"> WORK CALENDAR</a></li>
+            <li> <a routerLink="/PharmacistProfilePageComponent"> MY PROFILE</a> </li>
+            <li> <a routerLink="/PharmacistPatientComponent"> VIEW PATIENTS</a></li>
+            <li> <a routerLink="/PharmacistCalendarComponent"> WORK CALENDAR</a></li>
             <li> <a href="Absence.html"> ABSENCE FORM </a></li>
             <li> <a href="Appointments.html"> APPOINTMENTS </a></li>
-            <li> <a href="AppointmentCreation.html">MAKE APPOINTMENT</a></li>
+            <li> <a routerLink ="/PharmacistAppointmentCreationComponent">MAKE APPOINTMENT</a></li>
             <li> <a href="Medication.html">GIVE OUT MEDICATION</a></li>
+            <li (click) = "logout()"><a>LOGOUT</a></li>
         </ul>
     </section>
 </body>

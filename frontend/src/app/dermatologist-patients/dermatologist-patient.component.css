@@ -4,7 +4,21 @@ body {
     display: flex;
     justify-content: center;
     height: 100vh;
+    background-color: rgb(162, 166, 168);
 }
+
+.mat-sort-header-container {
+    align-items: center;
+  }
+
+td{
+    text-align: left;
+}
+
+tr{
+    text-align: right;
+}
+
 
 div{
     display: block;

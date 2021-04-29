@@ -1,0 +1,91 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+
+      
+    <mat-toolbar> <strong class='list_item'>Options </strong></mat-toolbar>
+    <hr>
+    <mat-nav-list>
+      <a mat-list-item href="#"><strong class='list_item'>ALL DERMATOLOGICAL EXAMINATIONS</strong></a>
+      <br />
+      <br />
+      <a mat-list-item href="#"><strong class='list_item'> PHARMACISTS VISITS</strong></a>
+      <br />
+      <br />
+      <a mat-list-item href="#"><strong class='list_item'>SCHEDULED DERMATOLOGICAL EXAMINATIONS</strong></a>
+      <br />
+      <br />
+      <a mat-list-item href="#"><strong class='list_item'>SCHEDULED PHARMACISTS VISITS</strong></a>
+      <br />
+      <a mat-list-item href="#"><strong class='list_item'>E-RECIPES</strong></a>
+      <br />
+      <a mat-list-item href="#"><strong class='list_item'>MEDICINES</strong></a>
+      <br />
+      <a mat-list-item href="#"><strong class='list_item'>RECOMMENDED MEDICINES</strong></a>
+      <br />
+      <a mat-list-item href="#"><strong class='list_item'>SUBSCRIBED PHARMACIES</strong></a>
+      <br />
+      <a mat-list-item routerLink="/patientsComplaintsData"><strong class='list_item'>YOUR COMPLAINTS</strong></a>
+      <br />
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>My Profile</span>
+
+      <span class='header'><nav>
+        <span class='data'><a  routerLink="/UserHomePage" routerLinkActive="true" >HOMEPAGE</a></span>
+        <span class='data'><a  routerLink="/PatientChangeData"> CHANGE USERNAME/PASSWORD </a></span> <!--ovdje formu ubaciti --> 
+        <span class='data'><a  href=""> PENALTIES</a></span>
+        <span class='data'><a  href=""> LOGOUT </a></span>
+      </nav></span>
+
+    </mat-toolbar>
+    
+
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{patient.username}}</mat-card-title>
+          <mat-card-subtitle>{{patient.id}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="profileIcon.jpg">
+        <mat-card-content>
+          <p>
+            NAME: {{patient.name}}
+            <br />
+            <br />
+            SURNAME: {{patient['surname']}}
+            <br />
+            <br />
+            address:  {{patient['address']}}
+            <br />
+            <br />
+            CITY: {{patient['city']}}
+            <br />
+            <br />
+            COUNTRY: {{patient['country']}}
+            <br />
+            <br />
+            PHONE: {{patient['phoneNumber']}}
+            <br />
+            <br />
+            E-MAIL: {{patient['email']}}
+            <br />
+            <br />
+          </p>
+        </mat-card-content>
+      </mat-card>
+      
+  </mat-sidenav-content>
+</mat-sidenav-container>

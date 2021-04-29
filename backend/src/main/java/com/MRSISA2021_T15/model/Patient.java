@@ -9,12 +9,40 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @DiscriminatorValue(value = "PATIENT")
 public class Patient extends User{
+	
+	private static final long serialVersionUID = 1L;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Appointment> appointments;
-	/*Set<Allergy> allergies = new HashSet<Allergy>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Allergy> allergies = new HashSet<Allergy>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy= "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Complaint>complaints = new HashSet<Complaint>();
+
+	public Set<Complaint> getComplaints() {
+		return complaints;
+	}
+
+	public void setComplaints(Set<Complaint> complaints) {
+		this.complaints = complaints;
+	}
+
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
+	}
 
 	public Set<Allergy> getAllergies() {
 		return allergies;
@@ -22,7 +50,7 @@ public class Patient extends User{
 
 	public void setAllergies(Set<Allergy> allergies) {
 		this.allergies = allergies;
-	}*/
+	}
 
 	/*public Patient(Set<Allergy> allergies) {
 		super();
