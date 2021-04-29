@@ -2,8 +2,7 @@ package com.MRSISA2021_T15.service;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,47 +90,24 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 	
 	@Override
-	public List<String> getOrders() {
-		List<String> orderNames = new ArrayList<String>();
-		Iterable<PurchaseOrder> orders = purchaseOrderRepository.findAll();
-		for (PurchaseOrder po : orders) {
-			if (po.getDueDateOffer().isAfter(LocalDateTime.now())) {
-				orderNames.add(po.getOrderName());
-			}
-		}
-		return orderNames;
+	public List<PurchaseOrder> getOrders() {
+		return purchaseOrderRepository.findOrdersByDueDateAfterCurrentDate(LocalDate.now());
 	}
 	
-	
-
 	@Override
 	public String writeOffer(PurchaseOrderSupplier offer) {
-		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		PurchaseOrder order = purchaseOrderRepository.findByOrderName(offer.getOrderName());
-		offer.setPurchaseOrder(order);
-		offer.setOfferStatus(OfferStatus.PENDING);
-		offer.setSupplier(supplier);
 		String message = "";
-		PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(order.getId(), supplier.getId());
+		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(offer.getPurchaseOrder().getId(), supplier.getId());
 		if (pos == null) {
-			boolean hasMedicine = true;
-			List<PurchaseOrderMedicine> orders = purchaseOrderMedicineRepository.findAllByOrderName(offer.getOrderName());
-			List<MedicineSupply> medicineSupply = getMedicineSupply();
-			for (PurchaseOrderMedicine pom : orders) {
-				for (MedicineSupply ms : medicineSupply) {
-					if (pom.getMedicine().getMedicineCode().equals(ms.getMedicine().getMedicineCode())) {
-						if (ms.getQuantity() < pom.getQuantity()) {
-							hasMedicine = false;
-							message = "You do not have enough of medicine " + ms.getMedicine().getMedicineCode() + " in stock!";
-							break;
-						}
-					}
-				}
-			}
-			if (hasMedicine) {
+			List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStock(offer.getPurchaseOrder().getId(), supplier.getId());
+			if (ms.isEmpty()) {
+				offer.setOfferStatus(OfferStatus.PENDING);
+				offer.setSupplier(supplier);
 				purchaseOrderSupplierRepository.save(offer);
-				
-			}
+			} else {
+				message = "You do not have enough of medicine in stock!";
+			}	
 		} else {
 			message = "Supplier has already given an offer for this order!";
 		}
@@ -139,7 +115,36 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	@Override
-	public List<PurchaseOrderMedicine> getOrderByName(String orderName) {
-		return purchaseOrderMedicineRepository.findAllByOrderName(orderName);
+	public List<PurchaseOrderMedicine> getPurchaseOrdersMedicine(PurchaseOrder purchaseOrder) {
+		return purchaseOrderMedicineRepository.findAllByPurchaseOrder(purchaseOrder);
+	}
+
+	@Override
+	public List<PurchaseOrderSupplier> getOffersBySupplier() {
+		return purchaseOrderSupplierRepository.findBySupplier((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+	}
+
+	@Override
+	public List<PurchaseOrderSupplier> getPendingOffersBySupplier() {
+		return purchaseOrderSupplierRepository.getPendingOffers(((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+	}
+
+	@Override
+	public String updateOffer(PurchaseOrderSupplier offer) {
+		String message = "";
+		PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findById(offer.getId()).get();
+		if (offerToUpdate != null) {
+			if (offer.getPrice() != null) {
+				offerToUpdate.setPrice(offer.getPrice());
+				purchaseOrderSupplierRepository.save(offerToUpdate);
+			}
+			if (offer.getDeliveryDate() != null) {
+				offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
+				purchaseOrderSupplierRepository.save(offerToUpdate);
+			}
+		} else {
+			message = "Update unsuccessfull!";
+		}
+		return message;
 	}
 }

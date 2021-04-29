@@ -1,6 +1,5 @@
 package com.MRSISA2021_T15.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -17,6 +15,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @DiscriminatorValue(value = "PHARMACIST")
 public class Pharmacist extends User{
+
+	private static final long serialVersionUID = 1L;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<AppointmentPharmacist> appointments;

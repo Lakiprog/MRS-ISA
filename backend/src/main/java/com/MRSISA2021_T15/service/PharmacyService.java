@@ -1,13 +1,13 @@
 package com.MRSISA2021_T15.service;
 
-import java.util.HashMap;
+import java.util.List;
 
 import com.MRSISA2021_T15.model.Pharmacy;
 
 public interface PharmacyService {
 	
-	String registerPharmacy(Pharmacy pharmacy);
+	void registerPharmacy(Pharmacy pharmacy);
 	
-	HashMap<Integer, String> getPharmacyAdminsWithNoPharmacy();
+	List<Pharmacy> getPharmacies();
 
 }

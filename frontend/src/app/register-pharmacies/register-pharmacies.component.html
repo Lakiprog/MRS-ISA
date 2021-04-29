@@ -33,13 +33,6 @@
                 <mat-label>Description</mat-label>
                 <textarea class = "textarea-size" matInput placeholder = "Description" formControlName = "description"></textarea>
             </mat-form-field>
-            <mat-form-field class = "field-width">
-                <mat-label>Select pharmacy administrators</mat-label>
-                <mat-select formControlName = "pharmacyAdminsIds" multiple required>
-                    <mat-option *ngFor = "let pharmacyAdmin of serverPharmacyAdmins" [value] = pharmacyAdmin.id>{{pharmacyAdmin['username']}}</mat-option> 
-                </mat-select>
-                <mat-error *ngIf = "hasError('pharmacyAdminsIds', 'required')">You must select at least one pharmacy administrator!</mat-error>
-            </mat-form-field>
         </form>
         <button (click) = "registerPharmacy()" [disabled] = "pharmacyRegistrationForm.invalid" mat-raised-button color="primary">Register</button>
     </mat-card>

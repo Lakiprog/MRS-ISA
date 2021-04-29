@@ -9,9 +9,9 @@ insert into user (USER_TYPE, email, name, surname, address, city, country, phone
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('PHARMACIST', 'farmaceut@gmail.com', 'Micko', 'Mica', 'Telep69', 'NS', 'Srbija', '0620602311', 'farmaceut', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', false, 1, true);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('DERMATOLOGIST', 'dermatolog@gmail.com', 'Petar', 'Markuza', 'Telep420', 'NS', 'Srbija', '0606023133', 'dermatolog', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', false, 5, true);
 
-insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, pharmacy_id, enabled, first_login) values ('PHARMACY_ADMIN', 'first@gmail.com', 'Pera', 'Peric', 'asdf', 'NS', 'Srbija', '0601234567', 'pharmacyAdmin1', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, true, false);
-insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, pharmacy_id, enabled, first_login) values ('PHARMACY_ADMIN', 'second@gmail.com', 'Mika', 'Mikic', 'asdf', 'NS', 'Srbija', '0601234568', 'pharmacyAdmin2', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, true, false);
-insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, pharmacy_id, enabled, first_login) values ('PHARMACY_ADMIN', 'third@gmail.com', 'Sara', 'Saric', 'asdf', 'NS', 'Srbija', '0601234569', 'pharmacyAdmin3', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, true, false);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, pharmacy_id, enabled, first_login) values ('PHARMACY_ADMIN', 'first@gmail.com', 'Pera', 'Peric', 'asdf', 'NS', 'Srbija', '0601234567', 'pharmacyadmin1', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', 1, true, false);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, pharmacy_id, enabled, first_login) values ('PHARMACY_ADMIN', 'second@gmail.com', 'Mika', 'Mikic', 'asdf', 'NS', 'Srbija', '0601234568', 'pharmacyadmin2', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', 1, true, false);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, pharmacy_id, enabled, first_login) values ('PHARMACY_ADMIN', 'third@gmail.com', 'Sara', 'Saric', 'asdf', 'NS', 'Srbija', '0601234569', 'pharmacyadmin3', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', 2, true, false);
 
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp1@gmail.com', 'Marko', 'Jovanovic', 'asdf', 'NS', 'Srbija', '0601234569', 'mare', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, false);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp2@gmail.com', 'Jovan', 'Petrovic', 'asdf', 'NS', 'Srbija', '0601234569', 'jova', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, false);
@@ -59,11 +59,11 @@ insert into absence (description, start, end, approved, doctor_id) values ("Ocu 
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-15 9:30:00', '2021-06-20 19:30:00', true, 6);
 
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('S123', 'medicine1', 'headache', 'pill', 'random stuff', 'mrsisa', true, 'comment');
+	values ('s123', 'medicine1', 'headache', 'pill', 'random stuff', 'mrsisa', true, 'comment');
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('S124', 'medicine2', 'headache', 'pill', 'random stuff', 'mrsisa', false, 'comment');
+	values ('s124', 'medicine2', 'headache', 'pill', 'random stuff', 'mrsisa', false, 'comment');
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('S125', 'medicine3', 'headache', 'pill', 'random stuff', 'mrsisa', true, null);
+	values ('s125', 'medicine3', 'headache', 'pill', 'random stuff', 'mrsisa', true, null);
 	
 
 insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 2);
@@ -93,15 +93,18 @@ insert into purchase_order (order_name, due_date_offer) values ('order1', '2021-
 insert into purchase_order (order_name, due_date_offer) values ('order2', '2021-05-01');
 insert into purchase_order (order_name, due_date_offer) values ('order3','2021-05-10');
 
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (1, 1, 'order1', 20);
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (1, 2, 'order1', 30);
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (1, 3, 'order1', 15);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 1, 20);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 2, 30);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 3, 15);
 
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (2, 1, 'order2', 5);
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (2, 3, 'order2', 10);
+insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 1, 5);
+insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 3, 10);
 
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, order_name, quantity) values (3, 2, 'order3', 20);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (3, 2, 20);
 
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (1, 10, '2021-06-10', 1000, 0);
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (2, 10, '2021-07-10', 900, 1);
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (3, 10, '2021-05-26', 700, 2);
 
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Dermatolog nije strucan, pogresne lekove mi je dodelio', 1, 6, null, null);
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Zivi bili, menjajte ga', 1, 6, null, null);
