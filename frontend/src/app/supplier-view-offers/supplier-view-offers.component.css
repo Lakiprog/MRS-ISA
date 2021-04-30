@@ -17,8 +17,12 @@
 }
 
 .field-width {
-    width: 100%;
-  }
+    width: 85%;
+}
+
+.clear-filter-button {
+    margin-left: 30px;
+}
 
 .table-card {
     width: 1000px;

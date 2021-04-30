@@ -9,13 +9,16 @@
     </mat-toolbar>
 
     <mat-card class = "table-card">
-        <mat-card-title>Offers</mat-card-title>
-        <mat-form-field class = "field-width">
-            <mat-label>Filter by status</mat-label>
-            <mat-select>
-                <mat-option *ngFor = "let option of filterOptions" matInput (click)="applyFilter(option)" [value] = "option">{{option}}</mat-option>
-            </mat-select>
-        </mat-form-field>
+        <form [formGroup] = "filterForm">
+            <mat-card-title>Offers</mat-card-title>
+            <mat-form-field class = "field-width">
+                <mat-label>Filter by status</mat-label>
+                <mat-select formControlName = "selectFilter">
+                    <mat-option *ngFor = "let option of filterOptions" (click)="applyFilter(option)" [value] = "option">{{option}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class = "clear-filter-button" (click) = "clearFilter()" mat-raised-button color="primary">Clear filter</button>
+        </form>
         <div class = "data-table">
             <table mat-table [dataSource]="offersDataSource">
                 <ng-container matColumnDef="id">

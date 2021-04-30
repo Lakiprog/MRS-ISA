@@ -18,6 +18,7 @@ export class SupplierViewOffersComponent implements OnInit, AfterViewInit {
   offersData = [];
   offersDataSource = new MatTableDataSource<any>(this.offersData);
   offerUpdateForm!: FormGroup;
+  filterForm! : FormGroup;
   offers = [];
   verticalPosition: MatSnackBarVerticalPosition = "top";
   RESPONSE_OK : number = 0;
@@ -35,6 +36,11 @@ export class SupplierViewOffersComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getPendingOffers();
+    this.filterForm = this.fb.group(
+      {
+        selectFilter: ['']
+      }
+    )
     this.offerUpdateForm = this.fb.group(
       {
         id: ['', Validators.required],
@@ -52,8 +58,13 @@ export class SupplierViewOffersComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(option: string) {
-    const filterValue = option;
-    this.offersDataSource.filter = filterValue;
+      const filterValue = option;
+      this.offersDataSource.filter = filterValue;
+  }
+
+  clearFilter() {
+    this.offersDataSource.filter = '';
+    this.filterForm.get('selectFilter')?.reset();
   }
 
   public hasError = (controlName: string, errorName: string) =>{
