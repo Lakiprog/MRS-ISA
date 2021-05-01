@@ -89,6 +89,7 @@ public class MedicineController {
 	public HashMap<Integer, String> getMedicineList() {
 		return medicineService.getMedicineList();
 	}
+	
 
 	@RequestMapping(path="/all")
 	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")

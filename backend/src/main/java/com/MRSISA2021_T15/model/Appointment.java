@@ -30,6 +30,9 @@ public abstract class Appointment {
 	private LocalDateTime start, end;
 	@Column
 	private double price;
+	@Column
+	private boolean done;
+	
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
@@ -73,6 +76,13 @@ public abstract class Appointment {
 	}
 	public void setPharmacy(Pharmacy pharmacy) {
 		this.pharmacy = pharmacy;
+	}
+	
+	public boolean isDone() {
+		return done;
+	}
+	public void setDone(boolean done) {
+		this.done = done;
 	}
 	
 }

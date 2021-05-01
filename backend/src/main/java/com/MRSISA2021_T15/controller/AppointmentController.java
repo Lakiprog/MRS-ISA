@@ -1,6 +1,9 @@
 package com.MRSISA2021_T15.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.AppointmentPharmacist;
 import com.MRSISA2021_T15.model.Patient;
@@ -58,5 +62,29 @@ public class AppointmentController {
 			return new ResponseEntity<String>(gson.toJson("Appointment succesfully assigned to patient."), HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping(path="/getPharmacist/id={id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public @ResponseBody Optional<Appointment> getAppointmentId(@PathVariable("id") Integer id) {
+		return service.findAllAppointmentsId(id);
+	}
+	
+	@GetMapping(path="/getDermatologist/id={id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public @ResponseBody Optional<Appointment> getAppointmentDermatologistId(@PathVariable("id") Integer id) {
+		return service.findAllAppointmentsId(id);
+	}
+	
+	@PutMapping(path="/setDonePharmacist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public void makeDone(@RequestBody AppointmentPharmacist appointment) {
+		service.makeTrue(appointment);
+	}
+	
+	@PutMapping(path="/setDoneDermatologist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public void makeDoneDermatologist(@RequestBody AppointmentDermatologist appointment) {
+		service.makeTrue(appointment);
 	}
 }

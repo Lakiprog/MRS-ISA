@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { DermatologistAppointmentCreationService } from './dermatologist-appointment-creation.service';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dermatologist-appointment-creation',
@@ -10,21 +11,22 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 })
 
 export class DermatologistAppointmentCreationComponent implements OnInit{
-    constructor(private fb: FormBuilder, private _dermatologistAppointmentCreationService: DermatologistAppointmentCreationService, private _snackBar: MatSnackBar) { }
+  constructor(private fb: FormBuilder, private _pharmacistAppointmentCreationService: DermatologistAppointmentCreationService, private _snackBar: MatSnackBar, private router: Router) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   appointmentForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
   dermatologist = {};
-  pharmacy = {};
+  app = {};
+  pharmacy = {appointmentPrice:0};
 
     ngOnInit(): void {
         this.appointmentForm = this.fb.group({
             meetingTime: ['', Validators.required],
             endingTime: ['', Validators.required],
         });
-        this._dermatologistAppointmentCreationService.getPharmacistData().subscribe((data:any) => {this.dermatologist = data;});
+        this._pharmacistAppointmentCreationService.getPharmacistData().subscribe((data:any) => {this.dermatologist = data;})
     }
 
     public hasError = (controlName: string, errorName: string) =>{
@@ -46,26 +48,14 @@ export class DermatologistAppointmentCreationComponent implements OnInit{
         }
         start.setHours(start.getHours() + 2);
         end.setHours(end.getHours() + 2);
-        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "dermatologist" : this.dermatologist, "pharmacy" : this.pharmacy, "price" : 0};
+        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {id:1} /*history.state.data.appointment.patient*/, "dermatologist" : this.dermatologist, 
+        "pharmacy" : {id:1} /*history.state.data.appointment.pharmacy*/, "price" : this.pharmacy.appointmentPrice};
     }
 
     public makeAppointment(){
         let appointment = this.checkTime();
         if(appointment){
-            const patient = {"id" : 1,
-            "email" : "kaki@gmail.com",
-            "name" : "Marko",
-            "surname" : "Markuza",
-            "address" : "Negde69",
-            "city" : "NS",
-            "country" : "Srbija",
-            "phone_number" : "060602311",
-            "username" : "kaki",
-            "password" : "kaki"}
-
-            appointment["patient"] = patient;
-            appointment["pharmacy"] = {"id" : 2};
-            this._dermatologistAppointmentCreationService.makeAppointment(appointment).subscribe(
+            this._pharmacistAppointmentCreationService.makeAppointment(appointment).subscribe(
                 response => {
                   this.openSnackBar(response, this.RESPONSE_OK);
                   this.appointmentForm.reset();
@@ -83,6 +73,13 @@ export class DermatologistAppointmentCreationComponent implements OnInit{
           verticalPosition: this.verticalPosition,
           panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
         });
+        if(responseCode === this.RESPONSE_OK){
+          this.back();
+        }
+      }
+
+      back(){
+        this.router.navigate(['/DermatologistAppointmentInfoComponent'], {state: {data: {appointment : this.app, information : {comment: history.state.data.information.comment, medication:[]}}}});
       }
     
 }

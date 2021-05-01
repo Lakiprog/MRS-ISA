@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<body class = "supplier-profile-page-background">
+    <mat-toolbar color = "primary">
+        <mat-toolbar-row>
+            <a mat-button (click) = "newAppointment()">Schedule new Appointment</a>
+            <a mat-button (click) = "predefinedAppointments()">Assign patient to reserved appointment</a>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-card class = "table-card">
+        <mat-card-title>Medication</mat-card-title>
+        <form [formGroup] = "medicineForm" class = "medicine-form">
+            <mat-form-field class = "field">
+                <mat-label>Search medication:</mat-label>
+                <input type = "text" (change) = "getMeds()" matInput placeholder = "medicationSearch" formControlName = "medicationSearch">
+            </mat-form-field>
+        </form>
+        <div class = "data-table">
+            <table mat-table [dataSource]="medicineSupplyDataSource">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef class = "coloumnName">Name</th>
+                    <td mat-cell *matCellDef="let element" class = "coloumnName"> {{element.medicine.name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="composition">
+                    <th mat-header-cell *matHeaderCellDef class = "coloumnComposition">Composition</th>
+                    <td mat-cell *matCellDef="let element" class = "coloumnComposition"> {{element.medicine.composition}} </td>
+                </ng-container>
+                <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef class = "coloumnQuantity">Quantity</th>
+                    <td mat-cell *matCellDef="let element" class = "coloumnQuantity"> {{element.quantity}} </td>
+                </ng-container>
+                <ng-container matColumnDef="add">
+                    <th mat-header-cell *matHeaderCellDef class = "add">Add</th>
+                    <td mat-cell *matCellDef="let element" class = "add"> <a mat-button (click) = "addMedicine()" class="addButton">Prescribe medicine</a> </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsMedicineSupply"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsMedicineSupply;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
+        </div>
+    </mat-card>
+    <mat-card class = "card">
+        <mat-card-title class = "card-title">Insert information about appointment</mat-card-title>
+        <form [formGroup] = "updateForm" class = "update-form">
+            <mat-form-field class = "field">
+                <mat-label>Comments:</mat-label>
+                <textarea rows="4" cols="50" name="comments" matInput placeholder = "comments" formControlName = "comments"></textarea>
+            </mat-form-field>
+            <mat-form-field class = "field">
+                <mat-label>Prescribe medication:</mat-label>
+                <input type = "text" matInput placeholder = "medication" formControlName = "medication">
+            </mat-form-field>
+        </form>
+        <button (click) = "endAppointment()" [disabled] = "updateForm.invalid" mat-raised-button color="primary">End Appointment</button>
+        <button (click) = "endAppointmentNoPatient()" [disabled] = "updateForm.invalid" mat-raised-button color="primary">Patient hasn't come</button>
+    </mat-card>
+</body>
