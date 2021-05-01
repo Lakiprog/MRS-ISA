@@ -25,9 +25,10 @@ public class MedicineServiceImpl implements MedicineService {
 	@Override
 	public String addMedicine(Medicine medicine) {
 		String message = "";
-		if (medicineRepository.findByMedicineCode(medicine.getMedicineCode()) != null) {
+		if (medicineRepository.findByMedicineCode(medicine.getMedicineCode().toLowerCase()) != null) {
 			message = "A medicine with this code already exists!";
 		} else {
+			medicine.setMedicineCode(medicine.getMedicineCode().toLowerCase());
 			medicineRepository.save(medicine);
 			List<Integer> substituteMedicineIds = medicine.getSubstituteMedicineIds();
 			if (substituteMedicineIds != null) {

@@ -17,9 +17,6 @@ public class PurchaseOrderMedicine {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column
-	private String orderName;
-	
 	@ManyToOne
 	@JoinColumn(name = "purchase_order_id")
 	private PurchaseOrder purchaseOrder;
@@ -39,14 +36,6 @@ public class PurchaseOrderMedicine {
 		this.id = id;
 	}
 	
-	public String getOrderName() {
-		return orderName;
-	}
-
-	public void setOrderName(String orderName) {
-		this.orderName = orderName;
-	}
-
 	public PurchaseOrder getPurchaseOrder() {
 		return purchaseOrder;
 	}
