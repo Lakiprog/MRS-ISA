@@ -20,33 +20,27 @@
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Name</mat-label>
-                <input type = "text" matInput placeholder = "Name" formControlName = "name" required>
-                <mat-error *ngIf = "hasError('name', 'required', updateForm)">Name is required!</mat-error>
+                <input type = "text" matInput placeholder = "Name" formControlName = "name">
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Surname</mat-label>
-                <input type = "text" matInput placeholder = "Surname" formControlName = "surname" required>
-                <mat-error *ngIf = "hasError('surname', 'required', updateForm)">Surname is required!</mat-error>
+                <input type = "text" matInput placeholder = "Surname" formControlName = "surname">
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Address</mat-label>
-                <input type = "text" matInput placeholder = "Address" formControlName = "address" required>
-                <mat-error *ngIf = "hasError('address', 'required', updateForm)">Address is required!</mat-error>
+                <input type = "text" matInput placeholder = "Address" formControlName = "address">
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>City</mat-label>
-                <input type = "text" matInput placeholder = "City" formControlName = "city" required>
-                <mat-error *ngIf = "hasError('city', 'required', updateForm)">City is required!</mat-error>
+                <input type = "text" matInput placeholder = "City" formControlName = "city">
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Country</mat-label>
-                <input type = "text" matInput placeholder = "Country" formControlName = "country" required>
-                <mat-error *ngIf = "hasError('country', 'required', updateForm)">Country is required!</mat-error>
+                <input type = "text" matInput placeholder = "Country" formControlName = "country">
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Phone number</mat-label>
-                <input type = "tel" matInput placeholder = "Phone number" formControlName = "phoneNumber" required>
-                <mat-error *ngIf = "hasError('phoneNumber', 'required', updateForm)">Phone number is required!</mat-error>
+                <input type = "tel" matInput placeholder = "Phone number" formControlName = "phoneNumber">
                 <mat-error *ngIf = "hasError('phoneNumber', 'maxlength', updateForm) || hasError('phoneNumber', 'minlength', updateForm)">
                     Phone number has to have 10 digits!
                 </mat-error>

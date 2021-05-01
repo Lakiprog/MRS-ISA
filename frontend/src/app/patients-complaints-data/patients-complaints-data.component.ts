@@ -13,7 +13,7 @@ import {MatTableDataSource} from '@angular/material/table';
 })
 export class PatientsComplaintsDataComponent implements OnInit {
 
-  displayedColumns: string[] = ["No", "Text"];
+  displayedColumns: string[] = ["No", "Text", "Response"];
   dataSource!: MatTableDataSource<any>;
   
   empty:boolean = false;

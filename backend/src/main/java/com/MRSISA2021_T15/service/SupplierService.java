@@ -11,7 +11,7 @@ import com.MRSISA2021_T15.model.Supplier;
 
 public interface SupplierService {
 	
-	String updateSupplierData(Supplier supplier);
+	void updateSupplierData(Supplier supplier);
 	
 	String updatePassword(ChangePassword passwords);
 	
@@ -29,6 +29,6 @@ public interface SupplierService {
 	
 	List<PurchaseOrderSupplier> getPendingOffersBySupplier();
 	
-	String updateOffer(PurchaseOrderSupplier offer);
+	void updateOffer(PurchaseOrderSupplier offer);
 
 }

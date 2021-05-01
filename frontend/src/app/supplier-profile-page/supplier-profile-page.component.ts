@@ -32,12 +32,12 @@ export class SupplierProfilePageComponent implements OnInit {
       {
         username: [''],
         email: [''],
-        name: ['', Validators.required],
-        surname: ['', Validators.required],
-        address: ['', Validators.required],
-        city: ['', Validators.required],
-        country: ['', Validators.required],
-        phoneNumber: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]],
+        name: [''],
+        surname: [''],
+        address: [''],
+        city: [''],
+        country: [''],
+        phoneNumber: ['', [Validators.maxLength(10), Validators.minLength(10)]],
       }
     );
     this.updatePasswordForm = this.fb.group(

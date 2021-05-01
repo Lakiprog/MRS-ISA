@@ -44,36 +44,38 @@ public class SupplierServiceImpl implements SupplierService {
 	private PurchaseOrderSupplierRepository purchaseOrderSupplierRepository;
 	
 	@Override
-	public String updateSupplierData(Supplier supplier) {
-		String message = "";
+	public void updateSupplierData(Supplier supplier) {
 		Supplier currentUser = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (currentUser != null) {
+		if (!supplier.getName().equals("")) {
 			currentUser.setName(supplier.getName());
-			currentUser.setSurname(supplier.getSurname());
-			currentUser.setAddress(supplier.getAddress());
-			currentUser.setCity(supplier.getCity());
-			currentUser.setCountry(supplier.getCountry());
-			currentUser.setPhoneNumber(supplier.getPhoneNumber());
-			userRepository.save(currentUser);
-		} else {
-			message = "Update unsuccessfull!";
 		}
-		return message;
+		if (!supplier.getSurname().equals("")) {
+			currentUser.setSurname(supplier.getSurname());
+		}
+		if (!supplier.getAddress().equals("")) {
+			currentUser.setAddress(supplier.getAddress());
+		}
+		if (!supplier.getCity().equals("")) {
+			currentUser.setCity(supplier.getCity());
+		}
+		if (!supplier.getCountry().equals("")) {
+			currentUser.setCountry(supplier.getCountry());
+		}
+		if (!supplier.getPhoneNumber().equals("")) {
+			currentUser.setPhoneNumber(supplier.getPhoneNumber());
+		}
+		userRepository.save(currentUser);
 	}
 	
 	@Override
 	public String updatePassword(ChangePassword passwords) {
 		String message = "";
 		Supplier currentUser = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (currentUser != null) {
-			if (!passwordEncoder.matches(passwords.getOldPassword(), currentUser.getPassword())) {
-				message = "Wrong old password!";
-			} else {
-				currentUser.setPassword(passwordEncoder.encode(passwords.getPassword()));
-				userRepository.save(currentUser);
-			}
+		if (!passwordEncoder.matches(passwords.getOldPassword(), currentUser.getPassword())) {
+			message = "Wrong old password!";
 		} else {
-			message = "Password update unsuccessfull!";
+			currentUser.setPassword(passwordEncoder.encode(passwords.getPassword()));
+			userRepository.save(currentUser);
 		}
 		return message;
 	}
@@ -130,21 +132,14 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	@Override
-	public String updateOffer(PurchaseOrderSupplier offer) {
-		String message = "";
+	public void updateOffer(PurchaseOrderSupplier offer) {
 		PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findById(offer.getId()).get();
-		if (offerToUpdate != null) {
-			if (offer.getPrice() != null) {
-				offerToUpdate.setPrice(offer.getPrice());
-				purchaseOrderSupplierRepository.save(offerToUpdate);
-			}
-			if (offer.getDeliveryDate() != null) {
-				offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
-				purchaseOrderSupplierRepository.save(offerToUpdate);
-			}
-		} else {
-			message = "Update unsuccessfull!";
+		if (offer.getPrice() != null) {
+			offerToUpdate.setPrice(offer.getPrice());
 		}
-		return message;
+		if (offer.getDeliveryDate() != null) {
+			offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
+		}
+		purchaseOrderSupplierRepository.save(offerToUpdate);
 	}
 }

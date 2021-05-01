@@ -26,11 +26,15 @@ public class Complaint {
 	private Integer id;
 	
 	@Column
-	private String text;
+	private String text, response;
 
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
+	
+	@ManyToOne
+	@JoinColumn(name = "system_admin_id")
+	private SystemAdmin systemAdmin;
 	
 	
 	public Integer getId() {
@@ -57,6 +61,19 @@ public class Complaint {
 		this.patient = patient;
 	}
 
-	
-	
+	public String getResponse() {
+		return response;
+	}
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
+	public SystemAdmin getSystemAdmin() {
+		return systemAdmin;
+	}
+
+	public void setSystemAdmin(SystemAdmin systemAdmin) {
+		this.systemAdmin = systemAdmin;
+	}
 }
