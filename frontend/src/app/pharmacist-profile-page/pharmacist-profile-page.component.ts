@@ -74,7 +74,6 @@ export class PharmacistProfilePageComponent implements OnInit {
   }
 
   update() {
-    console.log(this.updateForm.value);
     this._pharmacistUpdateService.updatePharmacistData(this.updateForm.value).subscribe(
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);

@@ -59,6 +59,11 @@ import { PatientRoutes } from './user-routes/PatientRoutes';
 import { UserComplaintComponent } from './user-complaint/user-complaint.component';
 import { PatientsComplaintsDataComponent } from './patients-complaints-data/patients-complaints-data.component';
 import { SupplierWriteOffersComponent } from './supplier-write-offers/supplier-write-offers.component';
+
+import { PharmacistAppointmentsComponent } from './pharmacist-appointments/pharmacist-appointments.component';
+import { PharmacistAppointmentInfoComponent } from './pharmacist-appointment-info/pharmacist-appointment-info.component';
+import { DermatologistAppointmentsComponent } from './dermatologist-appointments/dermatologist-appointments.component';
+import { DermatologistAppointmentInfoComponent } from './dermatologist-appointment-info/dermatologist-appointment-info.component';
 import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
 
 FullCalendarModule.registerPlugins([
@@ -103,6 +108,10 @@ FullCalendarModule.registerPlugins([
     UserComplaintComponent,
     PatientsComplaintsDataComponent,
     SupplierWriteOffersComponent,
+    PharmacistAppointmentsComponent,
+    PharmacistAppointmentInfoComponent,
+    DermatologistAppointmentsComponent,
+    DermatologistAppointmentInfoComponent,
     SupplierViewOffersComponent,
   ],
   imports: [
@@ -275,6 +284,26 @@ FullCalendarModule.registerPlugins([
         path: 'patientsComplaintsData',
         canActivate: [PatientRoutes],
         component: PatientsComplaintsDataComponent,
+      },
+      {
+        path: 'PharmacistAppointmentsComponent',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistAppointmentsComponent,
+      },
+      {
+        path: 'PharmacistAppointmentInfoComponent',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistAppointmentInfoComponent,
+      },
+      {
+        path: 'DermatologistAppointmentsComponent',
+        canActivate: [DermatologistRoutes],
+        component: DermatologistAppointmentsComponent,
+      },
+      {
+        path: 'DermatologistAppointmentInfoComponent',
+        canActivate: [DermatologistRoutes],
+        component: DermatologistAppointmentInfoComponent,
       },
     ]),
   ],
