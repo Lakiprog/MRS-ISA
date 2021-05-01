@@ -129,6 +129,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/complaint/addComplaintToDermatologist").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/complaint/addComplaintToPharmacist").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/complaint/addComplaintToPharmacy").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/complaint/getComplaintsToRespond").hasAuthority("ROLE_SYSTEM_ADMIN")
+				.antMatchers("/complaint/getResponses").hasAuthority("ROLE_SYSTEM_ADMIN")
+				.antMatchers("/complaint/sendResponse").hasAuthority("ROLE_SYSTEM_ADMIN")
 			.anyRequest().authenticated().and()
 			.cors().and()
 			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);

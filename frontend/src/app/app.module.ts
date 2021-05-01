@@ -65,6 +65,7 @@ import { PharmacistAppointmentInfoComponent } from './pharmacist-appointment-inf
 import { DermatologistAppointmentsComponent } from './dermatologist-appointments/dermatologist-appointments.component';
 import { DermatologistAppointmentInfoComponent } from './dermatologist-appointment-info/dermatologist-appointment-info.component';
 import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
+import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to-complaints.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -113,6 +114,7 @@ FullCalendarModule.registerPlugins([
     DermatologistAppointmentsComponent,
     DermatologistAppointmentInfoComponent,
     SupplierViewOffersComponent,
+    RespondToComplaintsComponent,
   ],
   imports: [
     BrowserModule,
@@ -168,6 +170,11 @@ FullCalendarModule.registerPlugins([
         path: 'addMedicine',
         canActivate: [SystemAdminRoutes],
         component: AddMedicineComponent,
+      },
+      {
+        path: 'respondToComplaints',
+        canActivate: [SystemAdminRoutes],
+        component: RespondToComplaintsComponent,
       },
       {
         path: 'systemAdminProfilePage',

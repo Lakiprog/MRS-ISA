@@ -26,6 +26,10 @@ export class SystemAdminProfilePageComponent implements OnInit {
     this.router.navigate(['/addMedicine']);
   }
 
+  respondToComplaints() {
+    this.router.navigate(['/respondToComplaints']);
+  }
+
   logout() {
     this.authService.logout();
   }

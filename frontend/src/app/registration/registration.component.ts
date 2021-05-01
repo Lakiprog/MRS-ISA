@@ -109,6 +109,7 @@ export class RegistrationComponent implements OnInit {
         this._registrationService.registerPharmacyAdministrator(this.registrationForm.value).subscribe(
           response => {
             this.openSnackBar(response, this.RESPONSE_OK);
+            this.selectedPharmacyAdmin = false;
             this.registrationForm.reset();
           },
           error => {
@@ -117,11 +118,12 @@ export class RegistrationComponent implements OnInit {
             } else {
               this.openSnackBar(error.error, this.RESPONSE_ERROR);
             }
+            this.selectedPharmacyAdmin = true;
           }
         );
-        this.selectedPharmacyAdmin = false;
       } else if (this.oldUserTypeValue.value === 'Dermatologist') {
         this.registrationForm.removeControl('confirmPassword');
+        this.registrationForm.removeControl('pharmacy');
         this._registrationService.registerDermatologist(this.registrationForm.value).subscribe(
           response => {
             this.openSnackBar(response, this.RESPONSE_OK);
@@ -138,6 +140,7 @@ export class RegistrationComponent implements OnInit {
         this.registrationForm.addControl('pharmacy', new FormControl());
       } else if (this.oldUserTypeValue.value === 'Supplier') {
         this.registrationForm.removeControl('confirmPassword');
+        this.registrationForm.removeControl('pharmacy');
         this._registrationService.registerSupplier(this.registrationForm.value).subscribe(
           response => {
             this.openSnackBar(response, this.RESPONSE_OK);
@@ -157,6 +160,7 @@ export class RegistrationComponent implements OnInit {
       this.registrationForm.addControl('userType', new FormControl(this.oldUserTypeValue?.value));
     } else {
       this.registrationForm.removeControl('confirmPassword');
+      this.registrationForm.removeControl('pharmacy');
       this._registrationService.registerPatient(this.registrationForm.value).subscribe(
         response => {
           this.openSnackBar(response, this.RESPONSE_OK);

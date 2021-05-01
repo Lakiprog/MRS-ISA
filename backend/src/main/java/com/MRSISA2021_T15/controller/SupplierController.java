@@ -39,13 +39,9 @@ public class SupplierController {
 	@PutMapping(value = "/updateSupplierData", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public ResponseEntity<String> updateSupplierData(@RequestBody Supplier supplier) {
-		String message = supplierService.updateSupplierData(supplier);
+		supplierService.updateSupplierData(supplier);
 		Gson gson = new GsonBuilder().create();
-		if (message.equals("")) {
-			return new ResponseEntity<String>(gson.toJson("Update successfull."), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		return new ResponseEntity<String>(gson.toJson("Update successfull!"), HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/updatePassword", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -111,12 +107,8 @@ public class SupplierController {
 	@PutMapping(value = "/updateOffer", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public ResponseEntity<String> updateOffer(@RequestBody PurchaseOrderSupplier offer) {
-		String message = supplierService.updateOffer(offer);
+		supplierService.updateOffer(offer);
 		Gson gson = new GsonBuilder().create();
-		if (message.equals("")) {
-			return new ResponseEntity<String>(gson.toJson("Offer updated successfully."), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		return new ResponseEntity<String>(gson.toJson("Offer updated successfully."), HttpStatus.OK);
 	}
 }
