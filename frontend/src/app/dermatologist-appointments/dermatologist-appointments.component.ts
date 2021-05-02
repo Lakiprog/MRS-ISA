@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {DermatologistAppointmentsService} from './dermatologist-appointments.service'
 import { CalendarOptions } from '@fullcalendar/angular';
 import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dermatologist-appointments',
@@ -10,9 +11,10 @@ import { Router } from '@angular/router';
 })
 export class DermatologistAppointmentsComponent implements OnInit {
 
-  constructor(private service : DermatologistAppointmentsService, private router: Router) { }
+  constructor(private service : DermatologistAppointmentsService, private router: Router, public dialog : MatDialog) { }
 
   events:any[] = [];
+  current:any;
 
   ngOnInit(): void {
     this.service.getAppointmentsPharmacist().subscribe((data:any) => {this.events = data; this.addEvents(); console.log(this.events)});
@@ -30,10 +32,24 @@ export class DermatologistAppointmentsComponent implements OnInit {
 
   handleEventClicked(info:any){
     let app = {};
-    this.service.getAppointmentWithId(info.event.id).subscribe(data=>{{app = data};
-      this.router.navigate(['/DermatologistAppointmentInfoComponent'], {state: {data: {appointment : app, information : {comment:"", medication:[]}}}});
-    });
-    }
+    
+    this.current = info.event
+    let dialogRef = this.dialog.open(DialogStartDermatologist, {
+      data:  this.current
+     });
+
+     dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.service.getAppointmentWithId(info.event.id).subscribe(data=>{{app = data};
+          this.router.navigate(['/DermatologistAppointmentInfoComponent'], {state: {data: {appointment : app, information : {comment:"", medication:[]}}}});
+        });
+      }
+      else{
+        dialogRef.close()
+      }
+    })
+
+  }
 
   addEvents(){
     this.events.forEach(event => {
@@ -51,4 +67,15 @@ export class DermatologistAppointmentsComponent implements OnInit {
     this.calendarOptions.events = this.events;
  }
 
+}
+
+@Component({
+  selector: 'start-dialog',
+  templateUrl: 'start-dialog.html',
+})
+export class DialogStartDermatologist {
+  constructor(
+      public dialogRef: MatDialogRef<DialogStartDermatologist>,
+      @Inject(MAT_DIALOG_DATA) public data:any
+ ) {}
 }
