@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject} from '@angular/core';
 import {PharmacistCalendarService} from './pharmacist-calendar.service'
 import { CalendarOptions } from '@fullcalendar/angular';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogClose, MatDialogActions, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-pharmacist-calendar',
@@ -9,9 +10,10 @@ import { CalendarOptions } from '@fullcalendar/angular';
 })
 export class PharmacistCalendarComponent implements OnInit {
 
-  constructor(private service : PharmacistCalendarService) { }
+  constructor(private service : PharmacistCalendarService, public dialog: MatDialog) { }
 
   events:any[] = [];
+  current:any;
 
   ngOnInit(): void {
     this.service.getAppointmentsPharmacist().subscribe((data:any) => {this.events = data; this.addEvents();});
@@ -25,7 +27,8 @@ export class PharmacistCalendarComponent implements OnInit {
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
     dateClick: this.handleDateClick.bind(this),
-    events: []
+    events: [],
+    eventClick: info => this.openDialog(info)
   };
 
   handleDateClick(arg:any) {
@@ -48,4 +51,24 @@ export class PharmacistCalendarComponent implements OnInit {
     this.calendarOptions.events = this.events;
  }
 
+ openDialog(info:any) {
+  this.current = info.event;
+  this.dialog.open(DialogDataExampleDialogPharmacist, {
+    data: this.current,
+    disableClose: false
+  });
+}
+
+}
+
+@Component({
+  selector: 'appointments-dialog',
+  templateUrl: 'appointments-dialog.html',
+})
+export class DialogDataExampleDialogPharmacist {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DialogDataExampleDialogPharmacist>) {}
+
+  public close(): void {
+    this.dialogRef.close();
+  }
 }

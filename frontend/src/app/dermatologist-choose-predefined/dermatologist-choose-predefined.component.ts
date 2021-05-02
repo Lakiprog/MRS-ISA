@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {DermatologistChoosePredefinedService} from './dermatologist-choose-predefined.service'
 import { CalendarOptions } from '@fullcalendar/angular';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 //import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 //import { Inject } from '@angular/core';
 
@@ -13,14 +14,19 @@ import { Router } from '@angular/router';
 })
 export class DermatologistChoosePredefinedComponent implements OnInit {
 
-  constructor(private service : DermatologistChoosePredefinedService, private _snackBar: MatSnackBar, private router:Router/*, public dialog: MatDialog*/) { }
+  constructor(private service : DermatologistChoosePredefinedService, private _snackBar: MatSnackBar, private router:Router, public dialog: MatDialog) { }
 
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
+  verticalPosition: MatSnackBarVerticalPosition = "top";
   events:any[] = [];
+  current:any;
 
   ngOnInit(): void {
-    this.service.getAppointmentsPredefinedDermatologist(history.state.data.appointment.pharmacy.id).subscribe((data:any) => {this.events = data; this.addEvents();});
+    this.service.getAppointmentsPredefinedDermatologist(history.state.data.appointment.pharmacy.id).subscribe((data:any) => {
+                                                                                                                              this.events = data; 
+                                                                                                                              this.addEvents();
+                                                                                                                            });
   }
 
   calendarOptions: CalendarOptions = {
@@ -54,14 +60,25 @@ export class DermatologistChoosePredefinedComponent implements OnInit {
   //  "username" : "kaki",
   //  "password" : "kaki"
  //   };
-    console.log(history.state.data.appointment.patient);
-    this.service.putAppointmentPredefinedDermatologist(info.event.id, history.state.data.appointment.patient).subscribe(response => {
-        this.openSnackBar(response, this.RESPONSE_OK);
-        info.event.remove();
-      },
-      error => {
-        this.openSnackBar(error.error, this.RESPONSE_ERROR);
-      })
+      this.current = info.event
+      let dialogRef = this.dialog.open(DialogPredefined, {
+       data:  this.current
+      });
+    
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.service.putAppointmentPredefinedDermatologist(info.event.id, history.state.data.appointment.patient).subscribe(response => {
+          this.openSnackBar(response, this.RESPONSE_OK);
+          info.event.remove();
+        },
+        error => {
+          this.openSnackBar(error.error, this.RESPONSE_ERROR);
+        })
+      }
+      else{
+        dialogRef.close()
+      }
+    })
   }
 
   handleDateClick(arg:any) {
@@ -95,17 +112,14 @@ export class DermatologistChoosePredefinedComponent implements OnInit {
 
 }
 
-//@Component({
- //   selector: 'dialog',
- //   templateUrl: 'dialog.html',
- // })
- // export class Dialog {
- //   constructor(
-  //      public dialogRef: MatDialogRef<DermatologistChoosePredefinedComponent>,
-  //      @Inject(MAT_DIALOG_DATA) public data:any
-  //   ) {}
+@Component({
+    selector: 'predefined-dialog',
+    templateUrl: 'predefined-dialog.html',
+  })
+  export class DialogPredefined {
+    constructor(
+        public dialogRef: MatDialogRef<DialogPredefined>,
+        @Inject(MAT_DIALOG_DATA) public data:any
+   ) {}
      
-   //  ngOnInit(): void {
-   //   console.log(this.data) // Here the data you passed through the method open
-   //  }
-  //}
+  }

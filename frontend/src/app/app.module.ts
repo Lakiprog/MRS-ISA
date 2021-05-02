@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular_material.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -27,13 +26,13 @@ import { PharmacistPatientComponent } from './pharmacist-patients/pharmacist-pat
 import { DermatologistPatientComponent } from './dermatologist-patients/dermatologist-patient.component';
 import { PatientProfileNavbarComponent } from './patient-profile-navbar/patient-profile-navbar.component';
 import { ChangePatientDataComponent } from './change-patient-data/change-patient-data.component';
-import { PharmacistCalendarComponent } from './pharmacist-calendar/pharmacist-calendar.component';
-import { DermatologistCalendarComponent } from './dermatologist-calendar/dermatologist-calendar.component';
+import { DialogDataExampleDialogPharmacist, PharmacistCalendarComponent } from './pharmacist-calendar/pharmacist-calendar.component';
+import { DermatologistCalendarComponent, DialogDataExampleDialogDermatologist } from './dermatologist-calendar/dermatologist-calendar.component';
 import { AddMedicineComponent } from './add-medicine/add-medicine.component';
 import { SystemAdminProfilePageComponent } from './system-admin-profile-page/system-admin-profile-page.component';
 import { SupplierProfilePageComponent } from './supplier-profile-page/supplier-profile-page.component';
 import { PharmacistAppointmentCreationComponent } from './pharmacist-appointment-creation/pharmacist-appointment-creation.component';
-import { DermatologistChoosePredefinedComponent } from './dermatologist-choose-predefined/dermatologist-choose-predefined.component';
+import { DermatologistChoosePredefinedComponent, DialogPredefined } from './dermatologist-choose-predefined/dermatologist-choose-predefined.component';
 import { DermatologistAppointmentCreationComponent } from './dermatologist-appointment-creation/dermatologist-appointment-creation.component';
 import { SearchPharmacyComponent } from './search-pharmacy/search-pharmacy.component';
 import { RegisterPharmaciesComponent } from './register-pharmacies/register-pharmacies.component';
@@ -115,6 +114,9 @@ FullCalendarModule.registerPlugins([
     DermatologistAppointmentInfoComponent,
     SupplierViewOffersComponent,
     RespondToComplaintsComponent,
+    DialogDataExampleDialogPharmacist,
+    DialogDataExampleDialogDermatologist,
+    DialogPredefined
   ],
   imports: [
     BrowserModule,
