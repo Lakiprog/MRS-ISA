@@ -61,7 +61,7 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
     this.updateForm.get('comments')?.setValue(data.information.comment);
     
     if(data.information.medication){
-      data.information.medication.forEach(element => {
+      data.information.medication.forEach((element:any) => {
         this.tableRows.push(this.fb.group({
           name: [element.name],
           medicationTherapy: [element.medicationTherapy],
@@ -96,15 +96,15 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
 
    newAppointment(){
     this.medicinePrescribedData= [];
-    this.tableRows.value.forEach(element => {
+    this.tableRows.value.forEach((element:any) => {
       this.medicinePrescribedData.push({name: element.name, medicationTherapy: element.medicationTherapy, medicationQuantity: element.medicationQuantity, medicine:element.medicine})
     });
     this.router.navigate(['/PharmacistAppointmentCreationComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication: this.medicinePrescribedData}}}});
    }
 
    endAppointment(){
-      let meds = []
-      this.tableRows.value.forEach(element => {
+      let meds: any = []
+      this.tableRows.value.forEach((element:any) => {
         meds.push({"medicine": element.medicine, "therapy": element.medicationTherapy, "quantity": element.medicationQuantity})
       });
       this.service.endAppointment(this.appointment, meds, this.updateForm.get('comments')?.value).subscribe(response => {
@@ -162,10 +162,10 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
 
   addToTable(medicine:any){
     let found = false;
-    this.tableRows.value.forEach(element => {
+    this.tableRows.value.forEach((element:any) => {
       if(element.name == medicine.name){
         
-        this.medicineSupplyData = this.medicineSupplyData.filter(med => med.medicine.name !== medicine.name);
+        this.medicineSupplyData = this.medicineSupplyData.filter((med:any) => med.medicine.name !== medicine.name);
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
 
         found = true;
@@ -187,7 +187,7 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
     this.medicinePrescribedData.push(medicine);
     this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
     
-    this.medicineSupplyData = this.medicineSupplyData.filter(med => med.medicine.name !== medicine.name);
+    this.medicineSupplyData = this.medicineSupplyData.filter((med:any) => med.medicine.name !== medicine.name);
     this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
   }
 
@@ -196,7 +196,7 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
     const control = <FormArray>this.medicinePrescribedForm.controls['tableRows'];
     control.removeAt(index);
 
-    this.medicinePrescribedData = this.medicinePrescribedData.filter(med => med.name !== medicine.name);
+    this.medicinePrescribedData = this.medicinePrescribedData.filter((med:any) => med.name !== medicine.name);
     this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
   }
 
