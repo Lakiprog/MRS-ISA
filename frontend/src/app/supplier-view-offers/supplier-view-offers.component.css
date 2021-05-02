@@ -4,20 +4,24 @@
     background-attachment: fixed;
 }
 
-.offer-form{
-    max-width: 500px;
-    width: 100%;
-}
-    
-.field-width {
-    width: 100%;
-}
-
 .card {
     width: 500px;
     margin-top: 20px;
     margin-left: 10px;
     background-color: #DEEDE6
+}
+
+.offer-form{
+    max-width: 500px;
+    width: 100%;
+}
+
+.field-width {
+    width: 85%;
+}
+
+.clear-filter-button {
+    margin-left: 30px;
 }
 
 .table-card {
@@ -36,25 +40,21 @@ table {
 }
 
 .coloumnId {
-    width: 10%;  
+    width: 5%;  
 }
 
 .coloumnOrderName {
-    width: 15%;  
+    width: 20%;  
 }
 
-.coloumnMedicineCode {
+.coloumnDeliveryDate {
     width: 10%; 
 }
 
-.coloumnName {
+.coloumnPrice{
     width: 15%; 
 }
 
-.coloumnQuantity {
+.coloumnOfferStatus{
     width: 10%; 
-}
-
-.coloumnDueDateOffer {
-    width: 15%;
 }

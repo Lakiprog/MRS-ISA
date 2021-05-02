@@ -1,6 +1,6 @@
 package com.MRSISA2021_T15.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,7 +39,7 @@ public class PurchaseOrder {
 	private Set<PurchaseOrderSupplier> purchaseOrderSupplier = new HashSet<PurchaseOrderSupplier>();
 	
 	@Column
-	private LocalDateTime dueDateOffer;
+	private LocalDate dueDateOffer;
 	
 	public Integer getId() {
 		return id;
@@ -73,11 +73,11 @@ public class PurchaseOrder {
 		this.purchaseOrderSupplier = purchaseOrderSupplier;
 	}
 
-	public LocalDateTime getDueDateOffer() {
+	public LocalDate getDueDateOffer() {
 		return dueDateOffer;
 	}
 
-	public void setDueDateOffer(LocalDateTime dueDateOffer) {
+	public void setDueDateOffer(LocalDate dueDateOffer) {
 		this.dueDateOffer = dueDateOffer;
 	}
 }

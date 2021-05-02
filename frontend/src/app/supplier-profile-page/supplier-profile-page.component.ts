@@ -117,6 +117,10 @@ export class SupplierProfilePageComponent implements OnInit {
     this.router.navigate(["/supplierWriteOffers"]);
   }
 
+  supplierViewOffers() {
+    this.router.navigate(["/supplierViewOffers"]);
+  }
+
   logout() {
     this.authService.logout();
   }

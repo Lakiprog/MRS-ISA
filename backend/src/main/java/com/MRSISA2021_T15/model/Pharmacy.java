@@ -20,18 +20,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "pharmacy")
 public class Pharmacy {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
 	@Column
 	private String name, address, city, country, description;
+	
 	@Column
 	private double rating;
+	
 	@Column
 	double appointmentPrice;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Employment> employments;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Appointment> appointments;
@@ -43,10 +49,11 @@ public class Pharmacy {
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<MedicinePharmacy> medicine;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();;
-	
+
 	@Transient
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -54,7 +61,7 @@ public class Pharmacy {
 	
 	@Transient
 	private ArrayList<Integer> pharmacyAdminsIds = new ArrayList<Integer>();
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -141,13 +148,5 @@ public class Pharmacy {
 
 	public void setPharmacyAdmins(Set<PharmacyAdmin> pharmacyAdmins) {
 		this.pharmacyAdmins = pharmacyAdmins;
-	}
-
-	public ArrayList<Integer> getPharmacyAdminsIds() {
-		return pharmacyAdminsIds;
-	}
-
-	public void setPharmacyAdminsIds(ArrayList<Integer> pharmacyAdminsIds) {
-		this.pharmacyAdminsIds = pharmacyAdminsIds;
 	}
 }

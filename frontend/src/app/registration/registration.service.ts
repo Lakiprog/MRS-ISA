@@ -26,6 +26,10 @@ export class RegistrationService {
                .pipe(catchError(this.errorHander));
   }
 
+  getPharmacies() {
+    return this._http.get<any>("http://localhost:8080/pharmacy/getPharmacies")
+  }
+
   registerDermatologist(dermatologist: any) {
     return this._http.post<any>("http://localhost:8080/registration/registerDermatologist", dermatologist)
                .pipe(catchError(this.errorHander));

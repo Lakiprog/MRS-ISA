@@ -65,10 +65,16 @@
                     Phone number has to have 10 digits!
                 </mat-error>
             </mat-form-field>
-            <mat-form-field *ngIf = "systemAdmin">
+            <mat-form-field class = "field-width" *ngIf = "systemAdmin">
                 <mat-label>Select user type</mat-label>
                 <mat-select [(value)]="selected" formControlName = "userType" required>
-                    <mat-option *ngFor = "let user of users" [value]="user">{{user}}</mat-option>
+                    <mat-option (click) = "pharamcyField()" *ngFor = "let user of users" [value]="user">{{user}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class = "field-width" *ngIf = "selectedPharmacyAdmin">
+                <mat-label>Select pharmacy</mat-label>
+                <mat-select formControlName = "pharmacy">
+                    <mat-option *ngFor = "let pharmacy of pharmacies" [value]="pharmacy">{{pharmacy['name']}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </form>
