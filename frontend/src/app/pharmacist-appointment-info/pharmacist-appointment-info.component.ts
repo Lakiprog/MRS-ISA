@@ -71,6 +71,7 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
       });
       this.medicinePrescribedData = data.information.medication;
       this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
+      this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
     }
     
     this.getMeds();
@@ -125,6 +126,7 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
       response => {
         this.medicineSupplyData = response;
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+        this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
       }
     )
    }
@@ -151,9 +153,11 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
         if(subs[0].medicine.name != "ERROR"){
           this.medicineSupplyData = subs;
           this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+          this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
         }else{
           this.medicineSupplyData = [];
           this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+          this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
         }
       }
     });
@@ -167,6 +171,7 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
         
         this.medicineSupplyData = this.medicineSupplyData.filter((med:any) => med.medicine.name !== medicine.name);
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+        this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
 
         found = true;
         return;
@@ -186,9 +191,11 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
 
     this.medicinePrescribedData.push(medicine);
     this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
+    this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
     
     this.medicineSupplyData = this.medicineSupplyData.filter((med:any) => med.medicine.name !== medicine.name);
     this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+    this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
   }
 
   removeMedicine(medicine:any){
@@ -198,6 +205,7 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
 
     this.medicinePrescribedData = this.medicinePrescribedData.filter((med:any) => med.name !== medicine.name);
     this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
+    this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
   }
 
 }
