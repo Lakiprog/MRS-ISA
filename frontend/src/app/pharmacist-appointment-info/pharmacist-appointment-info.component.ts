@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ɵɵsetComponentScope } from '@angular/core';
 import {PharmacistAppointmentInfoService} from './pharmacist-appointment-info.service'
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,15 +17,22 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   paginatorMedicineSupply!: MatPaginator;
+
+  @ViewChild(MatPaginator)
+  paginatorMedicinePrescribed!: MatPaginator;
   
   updateForm! : FormGroup;
   medicineForm! : FormGroup;
+  medicinePrescribedForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
   verticalPosition: MatSnackBarVerticalPosition = "top";
   displayedColumnsMedicineSupply: string[] = ['name', 'composition', 'quantity', 'add'];
+  displayedColumnsMedicinePrescribed: string[] = ['name', 'therapy', 'quantity', 'remove'];
   medicineSupplyData:any = [];
   medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+  medicinePrescribedData:any = [];
+  medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
   information = {};
   appointment:any = {};
 
@@ -35,27 +42,79 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
         medicationSearch: ['']
       }
     );
+    this.medicinePrescribedForm = this.fb.group(
+      {
+        therapy: ['', Validators.required],
+        quantity: ['', Validators.required],
+        tableRows: this.fb.array([])
+      }
+    );
     this.updateForm = this.fb.group(
         {
           comments: [''],
           medication: ['']
         }
     );
-    let data = history.state.data;
+    let data:any = history.state.data;
     this.information = data.information;
     this.appointment = data.appointment;
     this.updateForm.get('comments')?.setValue(data.information.comment);
+    
+    if(data.information.medication){
+      data.information.medication.forEach(element => {
+        this.tableRows.push(this.fb.group({
+          name: [element.name],
+          medicationTherapy: [element.medicationTherapy],
+          medicationQuantity: [element.medicationQuantity],
+          medicine: [element.medicine]
+        }));
+      });
+      this.medicinePrescribedData = data.information.medication;
+      this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
+    }
+    
+    this.getMeds();
   }
 
   ngAfterViewInit(): void {
     this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+    this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
   }
 
+  get getFormControls() {
+    return this.medicinePrescribedForm.get('tableRows') as FormArray;
+  }
+
+  get tableRows(){
+    return this.medicinePrescribedForm.get('tableRows') as FormArray;
+  }
+
+  get inputs(){
+    return this.medicinePrescribedForm.controls;
+  }
+
+
    newAppointment(){
-    this.router.navigate(['/PharmacistAppointmentCreationComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication:[]}}}});
+    this.medicinePrescribedData= [];
+    this.tableRows.value.forEach(element => {
+      this.medicinePrescribedData.push({name: element.name, medicationTherapy: element.medicationTherapy, medicationQuantity: element.medicationQuantity, medicine:element.medicine})
+    });
+    this.router.navigate(['/PharmacistAppointmentCreationComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication: this.medicinePrescribedData}}}});
    }
 
-   endAppointment(){}
+   endAppointment(){
+      let meds = []
+      this.tableRows.value.forEach(element => {
+        meds.push({"medicine": element.medicine, "therapy": element.medicationTherapy, "quantity": element.medicationQuantity})
+      });
+      this.service.endAppointment(this.appointment, meds, this.updateForm.get('comments')?.value).subscribe(response => {
+      this.openSnackBar(response, this.RESPONSE_OK);
+      this.router.navigate(['/PharmacistHomePage']);
+    },
+    error => {
+      this.openSnackBar(error.error, this.RESPONSE_ERROR);
+    })
+   }
    
    endAppointmentNoPatient(){
        this.service.setDone(this.appointment).subscribe(()=>this.router.navigate(['/PharmacistHomePage']));
@@ -78,8 +137,67 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
     });
   }
 
-  addMedicine(){
+  addMedicine(medicine:any, quantity:number){
+    this.service.getSubs(this.appointment.pharmacy.id, medicine.id, this.appointment.patient.id).
+    subscribe(subs=>{
+      if(subs.length == 0){
+        this.addToTable(medicine);
+      }else{
+        if(quantity == 0){
+          this.openSnackBar("There is no medicine of this kind in the pharmacy, the admin has been notified. If you wish to prescribe a substitute, we have searched them for you already.", this.RESPONSE_ERROR);
+        }else{
+          this.openSnackBar("The patient is allergic to this medication. If you wish to prescribe a substitute, we have searched them for you already.", this.RESPONSE_ERROR);
+        }
+        if(subs[0].medicine.name != "ERROR"){
+          this.medicineSupplyData = subs;
+          this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+        }else{
+          this.medicineSupplyData = [];
+          this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+        }
+      }
+    });
+    
+  }
 
+  addToTable(medicine:any){
+    let found = false;
+    this.tableRows.value.forEach(element => {
+      if(element.name == medicine.name){
+        
+        this.medicineSupplyData = this.medicineSupplyData.filter(med => med.medicine.name !== medicine.name);
+        this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+
+        found = true;
+        return;
+      }
+    });
+
+    if(found){
+      return;
+    }
+
+    this.tableRows.push(this.fb.group({
+      name: [medicine.name],
+      medicationTherapy: ['1'],
+      medicationQuantity: ['1'],
+      medicine : [medicine]
+    }));
+
+    this.medicinePrescribedData.push(medicine);
+    this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
+    
+    this.medicineSupplyData = this.medicineSupplyData.filter(med => med.medicine.name !== medicine.name);
+    this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+  }
+
+  removeMedicine(medicine:any){
+    let index = (<FormArray>this.medicinePrescribedForm.get('tableRows')).controls.findIndex(x => x.value.Name === medicine.name);
+    const control = <FormArray>this.medicinePrescribedForm.controls['tableRows'];
+    control.removeAt(index);
+
+    this.medicinePrescribedData = this.medicinePrescribedData.filter(med => med.name !== medicine.name);
+    this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
   }
 
 }

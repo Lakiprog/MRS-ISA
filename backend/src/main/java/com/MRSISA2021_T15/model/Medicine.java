@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -51,6 +52,11 @@ public class Medicine {
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<MedicineSupply> medicineSupply;
+	
+	@Transient
+	@JsonIgnore
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<MedicineQuantity> medicineQuantity;
 	
 	@Transient
 	private ArrayList<Integer> substituteMedicineIds = new ArrayList<Integer>();

@@ -17,4 +17,8 @@ public class MedicinePharmacyService {
 	public List<MedicinePharmacy> medcineInPharmacy(Integer id) {
 		return repo.findByPharmacyId(id);
 	}
+	
+	public MedicinePharmacy medcineExact(Integer pharmacy, Integer medicine) {
+		return repo.findByExact(pharmacy, medicine);
+	}
 }

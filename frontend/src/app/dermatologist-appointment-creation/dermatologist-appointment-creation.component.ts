@@ -18,7 +18,7 @@ export class DermatologistAppointmentCreationComponent implements OnInit{
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
   dermatologist = {};
-  app = {};
+  app = {price:0};
   pharmacy = {appointmentPrice:0};
 
     ngOnInit(): void {
@@ -26,6 +26,7 @@ export class DermatologistAppointmentCreationComponent implements OnInit{
             meetingTime: ['', Validators.required],
             endingTime: ['', Validators.required],
         });
+        this.app = history.state.data.appointment;
         this._pharmacistAppointmentCreationService.getPharmacistData().subscribe((data:any) => {this.dermatologist = data;})
     }
 
@@ -48,8 +49,8 @@ export class DermatologistAppointmentCreationComponent implements OnInit{
         }
         start.setHours(start.getHours() + 2);
         end.setHours(end.getHours() + 2);
-        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {id:1} /*history.state.data.appointment.patient*/, "dermatologist" : this.dermatologist, 
-        "pharmacy" : {id:1} /*history.state.data.appointment.pharmacy*/, "price" : this.pharmacy.appointmentPrice};
+        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : history.state.data.appointment.patient, "dermatologist" : this.dermatologist, 
+        "pharmacy" : history.state.data.appointment.pharmacy, "price" : this.app.price};
     }
 
     public makeAppointment(){
@@ -79,7 +80,7 @@ export class DermatologistAppointmentCreationComponent implements OnInit{
       }
 
       back(){
-        this.router.navigate(['/DermatologistAppointmentInfoComponent'], {state: {data: {appointment : this.app, information : {comment: history.state.data.information.comment, medication:[]}}}});
+        this.router.navigate(['/DermatologistAppointmentInfoComponent'], {state: {data: {appointment : this.app, information : {comment: history.state.data.information.comment, medication:history.state.data.information.medication}}}});
       }
     
 }

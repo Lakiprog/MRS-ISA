@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.MRSISA2021_T15.dto.AppointmentEnd;
+import com.MRSISA2021_T15.dto.AppointmentEndDermatologist;
 import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.AppointmentPharmacist;
+import com.MRSISA2021_T15.model.MedicineQuantity;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.service.AppointmentService;
 import com.google.gson.Gson;
@@ -86,5 +90,29 @@ public class AppointmentController {
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
 	public void makeDoneDermatologist(@RequestBody AppointmentDermatologist appointment) {
 		service.makeTrue(appointment);
+	}
+	
+	@PostMapping(path="/endAppointmentPharmacist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public @ResponseBody ResponseEntity<String> endAppointmentPharmacist(@RequestBody AppointmentEnd appointment) {
+		service.makeTrue(appointment.getAppointment());
+		String message = service.endAppointment(appointment.getAppointment(), appointment.getMeds(), appointment.getComments());
+		Gson gson = new GsonBuilder().create();
+		if (message == "") {
+			return new ResponseEntity<String>(gson.toJson("Appointment succesfully ended, information is saved."), HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping(path="/endAppointmentDermatologist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public @ResponseBody ResponseEntity<String> endAppointmentDermatologist(@RequestBody AppointmentEndDermatologist appointment) {
+		service.makeTrue(appointment.getAppointment());
+		String message = service.endAppointment(appointment.getAppointment(), appointment.getMeds(), appointment.getComments());
+		Gson gson = new GsonBuilder().create();
+		if (message == "") {
+			return new ResponseEntity<String>(gson.toJson("Appointment succesfully ended, information is saved."), HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

@@ -48,6 +48,11 @@ public class Pharmacy {
 	private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();;
 	
 	@Transient
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Reservation> reservations;
+	
+	@Transient
 	private ArrayList<Integer> pharmacyAdminsIds = new ArrayList<Integer>();
 	
 	public Integer getId() {
