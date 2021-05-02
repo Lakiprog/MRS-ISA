@@ -53,6 +53,9 @@ insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharma
 insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-01-23 12:30:00', '2021-01-23 17:30:00', 1000, 2, 5, null, 1, true);
 insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-02-22 18:30:00', '2021-02-22 19:30:00', 1000, 3, 5, null, 1, true);
 
+insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-05-02 18:30:00', '2021-05-02 23:30:00', 1000, 3, 13, null, 1, false);
+insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-05-02 17:30:00', '2021-05-02 18:45:00', 1000, 2, null, 6, 2, false);
+
 insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-01-22 16:30:00', '2021-01-22 18:30:00', 1000, 1, null, 6, 1, true);
 insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-02-22 9:30:00', '2021-02-22 10:00', 1000, 4, null, 6, 2, true);
 
@@ -69,19 +72,27 @@ insert into medicine (medicine_code, name, medicine_type, form, composition, man
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
 	values ('s124', 'medicine2', 'headache', 'pill', 'random stuff', 'mrsisa', false, 'comment');
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('s125', 'medicine3', 'headache', 'pill', 'random stuff', 'mrsisa', true, null);
+	values ('S125', 'medicine3', 'headache', 'pill', 'random stuff', 'mrsisa', true, null);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
+	values ('S126', 'bensedin', 'sleep', 'pill', 'drugs', 'mrsisa', true, 'commentary channel');
 	
 
 insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 2);
 insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 3);
 insert into substitute_medicine (medicine_id, substitute_medicine_id) values (2, 1);
+insert into substitute_medicine (medicine_id, substitute_medicine_id) values (4, 1);
+insert into substitute_medicine (medicine_id, substitute_medicine_id) values (4, 2);
+insert into substitute_medicine (medicine_id, substitute_medicine_id) values (4, 3);
 
 insert into allergy (medicine_id, patient_id) values (1, 3);
 insert into allergy (medicine_id, patient_id) values (2, 2);
+insert into allergy (medicine_id, patient_id) values (2, 1);
+insert into allergy (medicine_id, patient_id) values (4, 1);
 
-insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 1000, 1, 1);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 0, 1, 1);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (600, 400, 1, 2);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1000, 50, 1, 3);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (10, 5000, 1, 4);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 500, 2, 1);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (800, 800, 2, 2);
 

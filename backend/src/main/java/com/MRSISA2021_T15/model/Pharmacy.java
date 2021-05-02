@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -51,7 +53,15 @@ public class Pharmacy {
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();;
+
+	@Transient
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Reservation> reservations;
 	
+	@Transient
+	private ArrayList<Integer> pharmacyAdminsIds = new ArrayList<Integer>();
+
 	public Integer getId() {
 		return id;
 	}

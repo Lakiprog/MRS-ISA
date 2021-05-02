@@ -59,3 +59,11 @@ table {
 .addButton{
   background-color: steelblue;
 }
+
+.removeButton{
+  background-color: steelblue;
+}
+
+.inputTable{
+  margin: 5px;
+}
