@@ -70,6 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/medicine/{medicineId}/findById").hasAuthority("ROLE_PHARMACY_ADMIN")
 				.antMatchers("/medicine/{string}/findByString").hasAuthority("ROLE_PHARMACY_ADMIN")
 				.antMatchers("/medicine/{medicineId}/update").hasAuthority("ROLE_PHARMACY_ADMIN")
+				.antMatchers("/medicine/getMedicineTypes").permitAll()
 				.antMatchers("/medicinePharmacy/getMedicinePharmacist/pharmacy={pharmacyId}start={start}").hasAuthority("ROLE_PHARMACIST")
 				.antMatchers("/medicinePharmacy/getMedicineDermatologist/pharmacy={pharmacyId}start={start}").hasAuthority("ROLE_DERMATOLOGIST")
 				.antMatchers("/medicinePharmacy/getAllMedicinePharmacy").permitAll()

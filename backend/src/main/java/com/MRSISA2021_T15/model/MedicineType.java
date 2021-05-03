@@ -3,8 +3,9 @@ package com.MRSISA2021_T15.model;
 public enum MedicineType {
 	ANTIBIOTIC("Antibiotic"),
 	ANALGESIC("Analgesic"),
-	ANTIHISTAMINE("Antihistamine");
-	
+	ANTIHISTAMINE("Antihistamine"),
+	BENZODIAZEPINE("Benzodiazepine");
+
 	String type;
 	
 	private MedicineType(String type) { this.type = type; }

@@ -74,11 +74,11 @@ insert into medicine (medicine_code, name, medicine_type, form, composition, man
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
 	values ('S125', 'medicine3', 1, 2, 'random stuff', 'mrsisa', true, null, 2);
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
-	values ('S126', 'bensedin', 2, 2, 'drugs', 'mrsisa', true, 'commentary channel', 3);
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('S127', 'bromazepam', 2, 2, 'kinda cool', 'actavis', true, null);
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('S128', 'actasulid', 2, 2, 'noice', 'actavis', false, 'commentary channel');
+	values ('S126', 'bensedin', 3, 2, 'drugs', 'mrsisa', true, 'commentary channel', 3);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
+	values ('S127', 'bromazepam', 3, 2, 'kinda cool', 'actavis', true, null, 5);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
+	values ('S128', 'actasulid', 1, 2, 'noice', 'actavis', false, 'commentary channel', 1);
 	
 
 insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 2);

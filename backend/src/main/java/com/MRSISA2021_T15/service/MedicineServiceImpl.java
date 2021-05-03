@@ -1,6 +1,7 @@
 package com.MRSISA2021_T15.service;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.MRSISA2021_T15.model.Medicine;
+import com.MRSISA2021_T15.model.MedicineType;
 import com.MRSISA2021_T15.model.SubstituteMedicine;
 import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
@@ -54,5 +56,15 @@ public class MedicineServiceImpl implements MedicineService {
 			medicineList.put(m.getId(), m.getName());
 		}
 		return medicineList;
+	}
+
+	@Override
+	public HashSet<MedicineType> getMedicineTypes() {
+		HashSet<MedicineType> medicineTypes = new HashSet<MedicineType>();
+		Iterable<Medicine> medicine = medicineRepository.findAll();
+		for (Medicine m : medicine) {
+			medicineTypes.add(m.getMedicineType());
+		}
+		return medicineTypes;
 	}
 }

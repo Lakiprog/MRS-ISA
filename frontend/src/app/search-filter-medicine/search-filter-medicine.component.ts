@@ -16,7 +16,7 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
 
   displayedColumnsMedicine: string[] = ['name', 'medicineType', 'averageRating', 
     'viewMedicineDetails', 'pharmacy', 'price', 'quantity'];
-  medicineTypes = ['ANTIBIOTIC', 'ANALGESIC', 'ANTIHISTAMINE'];
+  medicineTypes = [];
   grades = ['1', '2', '3', '4', '5'];
   medicineData = [];
   searchResults = [];
@@ -38,6 +38,7 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
   paginatorMedicine!: MatPaginator;
 
   ngOnInit(): void {
+    this.getMedicineTypes();
     this.getAllMedicinePharmacy();
     this.searchAndFilterForm = this.fb.group(
       {
@@ -53,6 +54,14 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
 
   get search() {
     return this.searchAndFilterForm.get('search')?.value
+  }
+
+  getMedicineTypes() {
+    this.searchFilterMedicineService.getMedicineTypes().subscribe(
+      data => {
+        this.medicineTypes = data;
+      }
+    )
   }
 
   getAllMedicinePharmacy() {

@@ -15,4 +15,8 @@ export class SearchFilterMedicineService {
   searchMedicineByName(name:any) {
     return this.http.get<any>("http://localhost:8080/medicinePharmacy/searchMedicineByName/" + name);
   }
+
+  getMedicineTypes() {
+    return this.http.get<any>("http://localhost:8080/medicine/getMedicineTypes");
+  }
 }

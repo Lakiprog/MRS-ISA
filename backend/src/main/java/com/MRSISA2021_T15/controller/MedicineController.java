@@ -2,7 +2,7 @@ package com.MRSISA2021_T15.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
 
 import com.MRSISA2021_T15.model.SubstituteMedicine;
@@ -146,5 +146,10 @@ public class MedicineController {
 		med.setAdditionalComments(m.getAdditionalComments());
 		medicineRepository.save(med);
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping(value = "/getMedicineTypes", produces = MediaType.APPLICATION_JSON_VALUE)
+	public HashSet<MedicineType> getMedicineTypes() {
+		return medicineService.getMedicineTypes();
 	}
 }
