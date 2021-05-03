@@ -96,6 +96,7 @@ export class SupplierViewOffersComponent implements OnInit, AfterViewInit {
       data => {
         this.offersData = data;
         this.offersDataSource = new MatTableDataSource<any>(this.offersData);
+        this.offersDataSource.paginator = this.paginatorOffers;
       }
     );
   }

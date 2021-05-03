@@ -17,6 +17,8 @@ export class AddMedicineComponent implements OnInit {
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
   serverSubstituteMedicine : { id: string, name: string }[] = [];
+  medicineTypes = ['ANTIBIOTIC', 'ANALGESIC', 'ANTIHISTAMINE'];
+  medicineForms = ['POWDER', 'CAPSULE', 'PILL', 'FAT', 'PASTE', 'GEL', 'SIRUP'];
 
   ngOnInit(): void {
     this.addMedicineForm = this.fb.group(
