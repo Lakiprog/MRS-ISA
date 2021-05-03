@@ -21,12 +21,16 @@
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Medicine type</mat-label>
-                <input type = "text" matInput placeholder = "Medicine type" formControlName = "medicineType" required>
+                <mat-select formControlName = "medicineType">
+                    <mat-option *ngFor = "let type of medicineTypes" [value]="type">{{type}}</mat-option>
+                </mat-select>
                 <mat-error *ngIf = "hasError('medicineType', 'required')">Medicine type is required!</mat-error>
             </mat-form-field>
             <mat-form-field class = "field-width">
                 <mat-label>Form</mat-label>
-                <input type = "text" matInput placeholder = "Form" formControlName = "form" required>
+                <mat-select formControlName = "form">
+                    <mat-option *ngFor = "let f of medicineForms" [value]="f">{{f}}</mat-option>
+                </mat-select>
                 <mat-error *ngIf = "hasError('form', 'required')">Form is required!</mat-error>
             </mat-form-field>
             <mat-form-field class = "field-width">

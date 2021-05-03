@@ -66,6 +66,7 @@ import { DermatologistAppointmentsComponent } from './dermatologist-appointments
 import { DermatologistAppointmentInfoComponent } from './dermatologist-appointment-info/dermatologist-appointment-info.component';
 import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
 import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to-complaints.component';
+import { SearchFilterMedicineComponent } from './search-filter-medicine/search-filter-medicine.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -115,6 +116,7 @@ FullCalendarModule.registerPlugins([
     DermatologistAppointmentInfoComponent,
     SupplierViewOffersComponent,
     RespondToComplaintsComponent,
+    SearchFilterMedicineComponent,
   ],
   imports: [
     BrowserModule,
@@ -311,6 +313,10 @@ FullCalendarModule.registerPlugins([
         path: 'DermatologistAppointmentInfoComponent',
         canActivate: [DermatologistRoutes],
         component: DermatologistAppointmentInfoComponent,
+      },
+      {
+        path: 'searchFilterMedicine',
+        component: SearchFilterMedicineComponent,
       },
     ]),
   ],
