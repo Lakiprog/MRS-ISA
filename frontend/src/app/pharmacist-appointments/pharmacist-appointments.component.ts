@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {PharmacistAppointmentsService} from './pharmacist-appointments.service'
 import { CalendarOptions } from '@fullcalendar/angular';
 import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-pharmacist-appointments',
@@ -10,9 +11,10 @@ import { Router } from '@angular/router';
 })
 export class PharmacistAppointmentsComponent implements OnInit {
 
-  constructor(private service : PharmacistAppointmentsService, private router: Router) { }
+  constructor(private service : PharmacistAppointmentsService, private router: Router, public dialog : MatDialog) { }
 
   events:any[] = [];
+  current:any;
 
   ngOnInit(): void {
     this.service.getAppointmentsPharmacist().subscribe((data:any) => {this.events = data; this.addEvents(); console.log(this.events)});
@@ -21,8 +23,7 @@ export class PharmacistAppointmentsComponent implements OnInit {
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridDay',
     headerToolbar:{
-        center: 'title',
-        right: 'timeGridDay'
+        center: 'title'
     },
     events: [],
     eventClick: info => this.handleEventClicked(info)
@@ -30,10 +31,24 @@ export class PharmacistAppointmentsComponent implements OnInit {
 
   handleEventClicked(info:any){
     let app = {};
-    this.service.getAppointmentWithId(info.event.id).subscribe(data=>{{app = data};
-      this.router.navigate(['/PharmacistAppointmentInfoComponent'], {state: {data: {appointment : app, information : {comment:"", medication:[]}}}});
-    });
-    }
+    
+    this.current = info.event
+    let dialogRef = this.dialog.open(DialogStartPharmacist, {
+      data:  this.current
+     });
+
+     dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.service.getAppointmentWithId(info.event.id).subscribe(data=>{{app = data};
+          this.router.navigate(['/PharmacistAppointmentInfoComponent'], {state: {data: {appointment : app, information : {comment:"", medication:[]}}}});
+        });
+      }
+      else{
+        dialogRef.close()
+      }
+    })
+
+  }
 
   addEvents(){
     this.events.forEach(event => {
@@ -51,4 +66,15 @@ export class PharmacistAppointmentsComponent implements OnInit {
     this.calendarOptions.events = this.events;
  }
 
+}
+
+@Component({
+  selector: 'start-dialog',
+  templateUrl: 'start-dialog.html',
+})
+export class DialogStartPharmacist {
+  constructor(
+      public dialogRef: MatDialogRef<DialogStartPharmacist>,
+      @Inject(MAT_DIALOG_DATA) public data:any
+ ) {}
 }

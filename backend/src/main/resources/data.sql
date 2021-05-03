@@ -53,8 +53,8 @@ insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharma
 insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-01-23 12:30:00', '2021-01-23 17:30:00', 1000, 2, 5, null, 1, true);
 insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-02-22 18:30:00', '2021-02-22 19:30:00', 1000, 3, 5, null, 1, true);
 
-insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-05-02 18:30:00', '2021-05-02 23:30:00', 1000, 3, 13, null, 1, false);
-insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-05-02 17:30:00', '2021-05-02 18:45:00', 1000, 2, null, 6, 2, false);
+insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-05-03 18:30:00', '2021-05-03 23:30:00', 1000, 3, 13, null, 1, false);
+insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-05-03 17:30:00', '2021-05-03 18:45:00', 1000, 2, null, 6, 2, false);
 
 insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-01-22 16:30:00', '2021-01-22 18:30:00', 1000, 1, null, 6, 1, true);
 insert into appointment (APPOINTMENT_TYPE, start, end, price, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-02-22 9:30:00', '2021-02-22 10:00', 1000, 4, null, 6, 2, true);
@@ -74,7 +74,11 @@ insert into medicine (medicine_code, name, medicine_type, form, composition, man
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
 	values ('S125', 'medicine3', 1, 2, 'random stuff', 'mrsisa', true, null, 2);
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
-	values ('S126', 'bensedin', 0, 2, 'drugs', 'mrsisa', true, 'commentary channel', 3);
+	values ('S126', 'bensedin', 2, 2, 'drugs', 'mrsisa', true, 'commentary channel', 3);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
+	values ('S127', 'bromazepam', 2, 2, 'kinda cool', 'actavis', true, null);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
+	values ('S128', 'actasulid', 2, 2, 'noice', 'actavis', false, 'commentary channel');
 	
 
 insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 2);
@@ -93,6 +97,8 @@ insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (5
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (600, 400, 1, 2);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1000, 50, 1, 3);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (10, 5000, 1, 4);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1000, 50, 1, 5);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (100, 10, 1, 6);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 500, 2, 1);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (800, 800, 2, 2);
 
