@@ -49,8 +49,6 @@ export class SupplierViewOffersComponent implements OnInit, AfterViewInit {
       }, {validator: [DateValidator, PriceValidator]}
     );
     this.getOffersBySupplier();
-    this.offersDataSource.filterPredicate = (data, filter) =>
-      (data.offerStatus.indexOf(filter) !== -1);
   }
 
   ngAfterViewInit(): void {
@@ -97,6 +95,14 @@ export class SupplierViewOffersComponent implements OnInit, AfterViewInit {
         this.offersData = data;
         this.offersDataSource = new MatTableDataSource<any>(this.offersData);
         this.offersDataSource.paginator = this.paginatorOffers;
+        this.offersDataSource.filterPredicate = (data1, filter: string)  => {
+          const accumulator = (currentTerm:any, key:any) => {
+              return currentTerm + data1.offerStatus;
+          };
+          const dataStr = Object.keys(data1).reduce(accumulator, '').toLowerCase();
+          const transformedFilter = filter.trim().toLowerCase();
+          return dataStr.indexOf(transformedFilter) !== -1;
+        };
       }
     );
   }

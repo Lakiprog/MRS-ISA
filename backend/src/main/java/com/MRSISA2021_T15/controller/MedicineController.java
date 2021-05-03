@@ -152,4 +152,9 @@ public class MedicineController {
 	public HashSet<MedicineType> getMedicineTypes() {
 		return medicineService.getMedicineTypes();
 	}
+	
+	@GetMapping(value = "/getMedicineForms", produces = MediaType.APPLICATION_JSON_VALUE)
+	public HashSet<MedicineForm> getMedicineForms() {
+		return medicineService.getMedicineForms();
+	}
 }

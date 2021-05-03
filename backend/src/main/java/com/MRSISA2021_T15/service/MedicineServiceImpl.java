@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.MRSISA2021_T15.model.Medicine;
+import com.MRSISA2021_T15.model.MedicineForm;
 import com.MRSISA2021_T15.model.MedicineType;
 import com.MRSISA2021_T15.model.SubstituteMedicine;
 import com.MRSISA2021_T15.repository.MedicineRepository;
@@ -61,10 +62,18 @@ public class MedicineServiceImpl implements MedicineService {
 	@Override
 	public HashSet<MedicineType> getMedicineTypes() {
 		HashSet<MedicineType> medicineTypes = new HashSet<MedicineType>();
-		Iterable<Medicine> medicine = medicineRepository.findAll();
-		for (Medicine m : medicine) {
-			medicineTypes.add(m.getMedicineType());
+		for (MedicineType mt : MedicineType.values()) {
+			medicineTypes.add(mt);
 		}
 		return medicineTypes;
+	}
+
+	@Override
+	public HashSet<MedicineForm> getMedicineForms() {
+		HashSet<MedicineForm> medicineForms = new HashSet<MedicineForm>();
+		for (MedicineForm mf : MedicineForm.values()) {
+			medicineForms.add(mf);
+		}
+		return medicineForms;
 	}
 }

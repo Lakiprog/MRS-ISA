@@ -17,10 +17,20 @@ export class AddMedicineComponent implements OnInit {
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
   serverSubstituteMedicine : { id: string, name: string }[] = [];
-  medicineTypes = ['ANTIBIOTIC', 'ANALGESIC', 'ANTIHISTAMINE'];
-  medicineForms = ['POWDER', 'CAPSULE', 'PILL', 'FAT', 'PASTE', 'GEL', 'SIRUP'];
+  medicineTypes = [];
+  medicineForms = [];
 
   ngOnInit(): void {
+    this._addMedicineService.getMedicineForms().subscribe(
+      data => {
+        this.medicineForms = data;
+      }
+    );
+    this._addMedicineService.getMedicineTypes().subscribe(
+      data => {
+        this.medicineTypes = data;
+      }
+    );
     this.addMedicineForm = this.fb.group(
       {
         medicineCode: ['', Validators.required],
