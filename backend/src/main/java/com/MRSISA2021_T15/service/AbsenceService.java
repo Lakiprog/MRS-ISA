@@ -48,6 +48,7 @@ public class AbsenceService {
 			}
 		}
 		
+		absence.setDoctor(p);
 		absence.setApproved(false);
 		abs.save(absence);
 		
@@ -82,6 +83,7 @@ public class AbsenceService {
 			}
 		}
 		
+		absence.setDoctor(p);
 		absence.setApproved(false);
 		abs.save(absence);
 		
