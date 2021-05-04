@@ -284,17 +284,19 @@ public class AppointmentService {
 			repo7.save(ai);
 			
 			Reservation r = new Reservation();
-			r.setEnd(LocalDateTime.now().plusDays(30));
-			r.setPatient(appointment.getPatient());
-			r.setPharmacy(appointment.getPharmacy());
-			r.setTotal(0);
-			Reservation last = repo8.findFirstByOrderByIdDesc();
-			if(last == null) {
-				r.setReservationId("Res1");
-			}else {
-				r.setReservationId("Res" + (last.getId() + 1));	
+			if(meds.length != 0) {
+				r.setEnd(LocalDateTime.now().plusDays(30));
+				r.setPatient(appointment.getPatient());
+				r.setPharmacy(appointment.getPharmacy());
+				r.setTotal(0);
+				Reservation last = repo8.findFirstByOrderByIdDesc();
+				if(last == null) {
+					r.setReservationId("Res1");
+				}else {
+					r.setReservationId("Res" + (last.getId() + 1));	
+				}
+				repo8.save(r);
 			}
-			repo8.save(r);
 			
 			for (MedicineQuantity medicine : meds) {
 				for (MedicinePharmacy medicinePharm : repo4.findByPharmacyId(appointment.getPharmacy().getId())) {
