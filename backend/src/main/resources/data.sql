@@ -67,18 +67,18 @@ insert into absence (description, start, end, approved, doctor_id) values ("Ocu 
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-15 9:30:00', '2021-06-19 19:30:00', true, 5);
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-15 9:30:00', '2021-06-20 19:30:00', true, 6);
 
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('s123', 'medicine1', 'headache', 'pill', 'random stuff', 'mrsisa', true, 'comment');
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('s124', 'medicine2', 'headache', 'pill', 'random stuff', 'mrsisa', false, 'comment');
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('S125', 'medicine3', 'headache', 'pill', 'random stuff', 'mrsisa', true, null);
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('S126', 'bensedin', 'sleep', 'pill', 'drugs', 'mrsisa', true, 'commentary channel');
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('S127', 'bromazepam', 'cureall', 'pill', 'kinda cool', 'actavis', true, null);
-insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments)
-	values ('S128', 'actasulid', 'cold', 'pill', 'noice', 'actavis', false, 'commentary channel');
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
+	values ('s123', 'medicine1', 0, 1, 'Paracetamol 500 mg, Maize starch, potassium sorbate (E 202), purified talc, stearic acid, povidone\nstarch pregelatinised, hypromellose, triacetin', 'GE Healthcare', true, 'Not for every day usage.', 4);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
+	values ('s124', 'medicine2', 0, 1, 'random stuff', 'mrsisa', false, 'comment', 2);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
+	values ('S125', 'medicine3', 1, 2, 'random stuff', 'mrsisa', true, null, 2);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
+	values ('S126', 'bensedin', 3, 2, 'drugs', 'mrsisa', true, 'commentary channel', 3);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
+	values ('S127', 'bromazepam', 3, 2, 'kinda cool', 'actavis', true, null, 5);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating)
+	values ('S128', 'actasulid', 1, 2, 'noice', 'actavis', false, 'commentary channel', 1);
 	
 
 insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 2);

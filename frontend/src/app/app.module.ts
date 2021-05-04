@@ -67,6 +67,7 @@ import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-vie
 import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to-complaints.component';
 import { PharmacistAbsenceComponent } from './pharmacist-absence/pharmacist-absence.component';
 import { DermatologistAbsenceComponent } from './dermatologist-absence/dermatologist-absence.component';
+import { SearchFilterMedicineComponent } from './search-filter-medicine/search-filter-medicine.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -116,6 +117,7 @@ FullCalendarModule.registerPlugins([
     DermatologistAppointmentInfoComponent,
     SupplierViewOffersComponent,
     RespondToComplaintsComponent,
+    SearchFilterMedicineComponent,
     DialogDataExampleDialogPharmacist,
     DialogDataExampleDialogDermatologist,
     DialogPredefined,
@@ -328,7 +330,11 @@ FullCalendarModule.registerPlugins([
       {
         path: 'DermatologistAbsenceComponent',
         canActivate: [DermatologistRoutes],
-        component: DermatologistAbsenceComponent,
+        component: DermatologistAbsenceComponent
+      },
+      {
+        path: 'searchFilterMedicine',
+        component: SearchFilterMedicineComponent,
       },
     ]),
   ],
