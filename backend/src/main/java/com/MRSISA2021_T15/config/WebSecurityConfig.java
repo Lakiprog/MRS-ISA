@@ -95,6 +95,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/appointment_creation/endAppointmentDermatologist").hasAuthority("ROLE_DERMATOLOGIST")
 				.antMatchers("/appointment_creation/dermatologist").hasAuthority("ROLE_DERMATOLOGIST")
 				.antMatchers("/appointment_creation/dermatologistPredefined/{appointmentId}").hasAuthority("ROLE_DERMATOLOGIST")
+				.antMatchers("/absence/pharmacist").hasAuthority("ROLE_PHARMACIST")
+				.antMatchers("/absence/dermatologist").hasAuthority("ROLE_DERMATOLOGIST")
 				.antMatchers("/calendar/calendarPharmacist").hasAuthority("ROLE_PHARMACIST")
 				.antMatchers("/calendar/calendarPharmacistToday").hasAuthority("ROLE_PHARMACIST")
 				.antMatchers("/calendar/calendarDermatologist/id={dermatologistId}pharmacy={pharmacyId}").hasAuthority("ROLE_DERMATOLOGIST")

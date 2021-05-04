@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<body class = "appointment-creation-background">
+    <mat-toolbar color = "primary">
+    </mat-toolbar>
+    <mat-card class = "card">
+        <mat-card-title>Create absence request</mat-card-title>
+        <form [formGroup] = "appointmentForm" class = "appointment-form">
+            <mat-form-field class = "field-width">
+                <mat-label>Starting time</mat-label>
+                <input type="datetime-local" id="meetingTime" name="meetingTime" matInput placeholder="meetingTime" formControlName = "meetingTime" required>
+                <mat-error *ngIf = "hasError('meetingTime', 'required')">The meeting time is required!</mat-error>
+            </mat-form-field>
+            <mat-form-field class = "field-width">
+                <mat-label>Ending time</mat-label>
+                <input type="datetime-local" id="endingTime" name="endingTime" matInput placeholder="endingTime" formControlName = "endingTime" required>
+                <mat-error *ngIf = "hasError('endingTime', 'required')">The ending time is required!</mat-error>
+            </mat-form-field>
+            <mat-form-field class = "field-width">
+                <mat-label>Description:</mat-label>
+                <textarea rows="4" cols="50" name="description" matInput placeholder = "description" formControlName = "description"></textarea>
+            </mat-form-field>
+        </form>
+        <button (click) = "makeAbsence()" [disabled] = "appointmentForm.invalid" mat-raised-button color="primary">Create Absence</button>
+    </mat-card>
+</body>

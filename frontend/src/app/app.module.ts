@@ -65,6 +65,8 @@ import { DermatologistAppointmentsComponent, DialogStartDermatologist } from './
 import { DermatologistAppointmentInfoComponent } from './dermatologist-appointment-info/dermatologist-appointment-info.component';
 import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
 import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to-complaints.component';
+import { PharmacistAbsenceComponent } from './pharmacist-absence/pharmacist-absence.component';
+import { DermatologistAbsenceComponent } from './dermatologist-absence/dermatologist-absence.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -118,7 +120,9 @@ FullCalendarModule.registerPlugins([
     DialogDataExampleDialogDermatologist,
     DialogPredefined,
     DialogStartPharmacist,
-    DialogStartDermatologist
+    DialogStartDermatologist,
+    PharmacistAbsenceComponent,
+    DermatologistAbsenceComponent
   ],
   imports: [
     BrowserModule,
@@ -315,6 +319,16 @@ FullCalendarModule.registerPlugins([
         path: 'DermatologistAppointmentInfoComponent',
         canActivate: [DermatologistRoutes],
         component: DermatologistAppointmentInfoComponent,
+      },
+      {
+        path: 'PharmacistAbsenceComponent',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistAbsenceComponent,
+      },
+      {
+        path: 'DermatologistAbsenceComponent',
+        canActivate: [DermatologistRoutes],
+        component: DermatologistAbsenceComponent,
       },
     ]),
   ],
