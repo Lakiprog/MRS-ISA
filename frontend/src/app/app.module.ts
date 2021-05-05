@@ -69,6 +69,7 @@ import { PharmacistAbsenceComponent } from './pharmacist-absence/pharmacist-abse
 import { DermatologistAbsenceComponent } from './dermatologist-absence/dermatologist-absence.component';
 import { SearchFilterMedicineComponent } from './search-filter-medicine/search-filter-medicine.component';
 import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.component';
+import { PharmacistReservationsComponent } from './pharmacist-reservations/pharmacist-reservations.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -126,7 +127,8 @@ FullCalendarModule.registerPlugins([
     DialogStartDermatologist,
     PharmacistAbsenceComponent,
     DermatologistAbsenceComponent,
-    LoyaltyProgramComponent
+    LoyaltyProgramComponent,
+    PharmacistReservationsComponent
   ],
   imports: [
     BrowserModule,
@@ -342,6 +344,11 @@ FullCalendarModule.registerPlugins([
       {
         path: 'searchFilterMedicine',
         component: SearchFilterMedicineComponent,
+      },
+      {
+        path: 'PharmacistReservationsComponent',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistReservationsComponent,
       },
     ]),
   ],

@@ -2,7 +2,9 @@ package com.MRSISA2021_T15.service;
 
 import java.util.List;
 
+import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,10 @@ public class AbsenceService {
 	private AppointmentAbsenceRepository appoRepo;
 	@Autowired
 	private UserRepository us;
+	@Autowired
+	EmailSenderService emails;
+	@Autowired
+	Environment environment;
 
 	public String createAbsencePharmacist(Absence absence) {
 		Pharmacist p = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -48,13 +54,20 @@ public class AbsenceService {
 			}
 		}
 		
+		absence.setDoctor(p);
 		absence.setApproved(false);
 		abs.save(absence);
 		
 		Employment employment = emp.findByPharmacistId(p.getId());
 		for (PharmacyAdmin pharmacyAdmin : us.findAllPharmacyAdmins()) {
 			if(pharmacyAdmin.getPharmacy().getId() == employment.getPharmacy().getId()) {
-				// TODO send mails		
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+				mailMessage.setTo(pharmacyAdmin.getEmail());
+				mailMessage.setSubject("New absence request");
+				mailMessage.setFrom(environment.getProperty("spring.mail.username"));
+				mailMessage.setText("New absence request from pharmacist " + p.getName() + " " + p.getSurname() 
+				+ ". The pharmacist wishes to be absent from " + absence.getStart() + " to " +  absence.getEnd() + ". Please approve it or reject it.");
+				emails.sendEmail(mailMessage);
 			}
 		}
 
@@ -82,11 +95,18 @@ public class AbsenceService {
 			}
 		}
 		
+		absence.setDoctor(p);
 		absence.setApproved(false);
 		abs.save(absence);
 		
 		for (SystemAdmin systemAdmin : us.findAllSystemAdmins()) {
-			// TODO send mails
+			SimpleMailMessage mailMessage = new SimpleMailMessage();
+			mailMessage.setTo(systemAdmin.getEmail());
+			mailMessage.setSubject("New absence request");
+			mailMessage.setFrom(environment.getProperty("spring.mail.username"));
+			mailMessage.setText("New absence request from dermatologist " + p.getName() + " " + p.getSurname() 
+			+ ". The dermatologist wishes to be absent from " + absence.getStart() + " to " +  absence.getEnd() + ". Please approve it or reject it.");
+			emails.sendEmail(mailMessage);
 		}
 
 		return "";

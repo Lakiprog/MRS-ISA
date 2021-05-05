@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +62,11 @@ public class AppointmentService {
 	@Autowired
 	private ReservationItemRepository repo9;
 	@Autowired
-	private CategoryRepository categoryRepository;
+	EmailSenderService emailsend;
+	@Autowired
+	Environment en;
+  @Autowired
+  private CategoryRepository categoryRepository;
 	@Autowired
 	private AppointmentConsultationPointsRepository appointmentConsultationPointsRepository;
 	@Autowired
@@ -165,6 +171,7 @@ public class AppointmentService {
 			}
 		}
 		repository.save(appointment);
+		sendEmailAppointment(appointment);
 		return "";
 	}
 
@@ -242,6 +249,7 @@ public class AppointmentService {
 			}
 		}
 		repository.save(appointment);
+		sendEmailAppointment(appointment);
 		return "";
 	}
 
@@ -255,6 +263,7 @@ public class AppointmentService {
 		}
 		appointment.setPatient(patient);
 		repository.save(appointment);
+		sendEmailAppointment(appointment);
 		return "";
 	}
 
@@ -322,17 +331,27 @@ public class AppointmentService {
 			repo7.save(ai);
 			
 			Reservation r = new Reservation();
-			r.setEnd(LocalDateTime.now().plusDays(30));
-			r.setPatient(appointment.getPatient());
-			r.setPharmacy(appointment.getPharmacy());
-			r.setTotal(0);
-			Reservation last = repo8.findFirstByOrderByIdDesc();
-			if(last == null) {
-				r.setReservationId("Res1");
-			}else {
-				r.setReservationId("Res" + (last.getId() + 1));	
+			if(meds.length != 0) {
+				r.setEnd(LocalDateTime.now().plusDays(30));
+				r.setPatient(appointment.getPatient());
+				r.setPharmacy(appointment.getPharmacy());
+				r.setTotal(0);
+				Reservation last = repo8.findFirstByOrderByIdDesc();
+				if(last == null) {
+					r.setReservationId("Res1");
+				}else {
+					r.setReservationId("Res" + (last.getId() + 1));	
+				}
+				repo8.save(r);
+				
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+				mailMessage.setTo(appointment.getPatient().getEmail());
+				mailMessage.setSubject("Medication reservation");
+				mailMessage.setFrom(en.getProperty("spring.mail.username"));
+				mailMessage.setText("Medication has been reserved for you in pharmacy " + appointment.getPharmacy().getName() +  ". You can pick it up till one day before " 
+				+ r.getEnd() + ". When you come pick it up, you will have to give the pharmacist this identifier " + r.getReservationId() + ". Have a nice day!");
+				emailsend.sendEmail(mailMessage);
 			}
-			repo8.save(r);
 			
 			for (MedicineQuantity medicine : meds) {
 				for (MedicinePharmacy medicinePharm : repo4.findByPharmacyId(appointment.getPharmacy().getId())) {
@@ -359,6 +378,16 @@ public class AppointmentService {
 			repo8.save(r);
 		}
 		return msg;
+	}
+	
+	public void sendEmailAppointment(Appointment appointment) {
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(appointment.getPatient().getEmail());
+		mailMessage.setSubject("New appointment scheduled");
+		mailMessage.setFrom(en.getProperty("spring.mail.username"));
+		mailMessage.setText("New appointment scheduled in pharmacy " + appointment.getPharmacy().getName() 
+				+ ". It is scheduled to be from " + appointment.getStart() + " to " + appointment.getEnd() + ". Have a nice day!");
+		emailsend.sendEmail(mailMessage);
 	}
 
 }
