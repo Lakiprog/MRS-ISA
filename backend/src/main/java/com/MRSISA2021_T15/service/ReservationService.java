@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,10 @@ public class ReservationService {
 	ReservationItemRepository resiRepo;
 	@Autowired
 	EmploymentRepository employRepo;
+	@Autowired
+	EmailSenderService emailsS;
+	@Autowired
+	Environment envir;
 
 	public ArrayList<List<Object>> getReservations(Integer id){
 		ArrayList<List<Object>> list = new ArrayList<>();
@@ -62,6 +68,15 @@ public class ReservationService {
 	public String giveOut(Reservation reservation) {
 		reservation.setPickedUp(LocalDateTime.now());
 		resRepo.save(reservation);
+		
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(reservation.getPatient().getEmail());
+		mailMessage.setSubject("Successfull pickup");
+		mailMessage.setFrom(envir.getProperty("spring.mail.username"));
+		mailMessage.setText("You have successfully picked up your medications contained in reservation with identifier " + reservation.getReservationId() 
+		+ ". We hope you will visit us again at " + reservation.getPharmacy().getName() + ".");
+		emailsS.sendEmail(mailMessage);
+		
 		return "";
 	}
 }

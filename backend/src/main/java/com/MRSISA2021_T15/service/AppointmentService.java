@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,10 @@ public class AppointmentService {
 	private ReservationRepository repo8;
 	@Autowired
 	private ReservationItemRepository repo9;
+	@Autowired
+	EmailSenderService emailsend;
+	@Autowired
+	Environment en;
 
 	public List<Appointment> findAllPharmacist(Integer id) {
 		return repository.findAllPharmacistId(id);
@@ -152,6 +158,7 @@ public class AppointmentService {
 		}
 
 		repository.save(appointment);
+		sendEmailAppointment(appointment);
 		return "";
 	}
 
@@ -230,6 +237,7 @@ public class AppointmentService {
 		}
 
 		repository.save(appointment);
+		sendEmailAppointment(appointment);
 		return "";
 	}
 
@@ -243,6 +251,7 @@ public class AppointmentService {
 		}
 		appointment.setPatient(patient);
 		repository.save(appointment);
+		sendEmailAppointment(appointment);
 		return "";
 	}
 
@@ -296,6 +305,14 @@ public class AppointmentService {
 					r.setReservationId("Res" + (last.getId() + 1));	
 				}
 				repo8.save(r);
+				
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+				mailMessage.setTo(appointment.getPatient().getEmail());
+				mailMessage.setSubject("Medication reservation");
+				mailMessage.setFrom(en.getProperty("spring.mail.username"));
+				mailMessage.setText("Medication has been reserved for you in pharmacy " + appointment.getPharmacy().getName() +  ". You can pick it up till one day before " 
+				+ r.getEnd() + ". When you come pick it up, you will have to give the pharmacist this identifier " + r.getReservationId() + ". Have a nice day!");
+				emailsend.sendEmail(mailMessage);
 			}
 			
 			for (MedicineQuantity medicine : meds) {
@@ -323,6 +340,16 @@ public class AppointmentService {
 			repo8.save(r);
 		}
 		return msg;
+	}
+	
+	public void sendEmailAppointment(Appointment appointment) {
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(appointment.getPatient().getEmail());
+		mailMessage.setSubject("New appointment scheduled");
+		mailMessage.setFrom(en.getProperty("spring.mail.username"));
+		mailMessage.setText("New appointment scheduled in pharmacy " + appointment.getPharmacy().getName() 
+				+ ". It is scheduled to be from " + appointment.getStart() + " to " + appointment.getEnd() + ". Have a nice day!");
+		emailsend.sendEmail(mailMessage);
 	}
 
 }
