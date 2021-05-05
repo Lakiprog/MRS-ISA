@@ -68,6 +68,7 @@ import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to
 import { PharmacistAbsenceComponent } from './pharmacist-absence/pharmacist-absence.component';
 import { DermatologistAbsenceComponent } from './dermatologist-absence/dermatologist-absence.component';
 import { SearchFilterMedicineComponent } from './search-filter-medicine/search-filter-medicine.component';
+import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -124,7 +125,8 @@ FullCalendarModule.registerPlugins([
     DialogStartPharmacist,
     DialogStartDermatologist,
     PharmacistAbsenceComponent,
-    DermatologistAbsenceComponent
+    DermatologistAbsenceComponent,
+    LoyaltyProgramComponent
   ],
   imports: [
     BrowserModule,
@@ -185,6 +187,11 @@ FullCalendarModule.registerPlugins([
         path: 'respondToComplaints',
         canActivate: [SystemAdminRoutes],
         component: RespondToComplaintsComponent,
+      },
+      {
+        path: 'loyaltyProgram',
+        canActivate: [SystemAdminRoutes],
+        component: LoyaltyProgramComponent,
       },
       {
         path: 'systemAdminProfilePage',

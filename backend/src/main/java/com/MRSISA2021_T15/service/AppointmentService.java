@@ -13,6 +13,8 @@ import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.AppointmentInfo;
 import com.MRSISA2021_T15.model.AppointmentPharmacist;
+import com.MRSISA2021_T15.model.Category;
+import com.MRSISA2021_T15.model.CategoryName;
 import com.MRSISA2021_T15.model.EmploymentDermatologist;
 import com.MRSISA2021_T15.model.EmploymentPharmacist;
 import com.MRSISA2021_T15.model.MedicineAppointment;
@@ -23,14 +25,18 @@ import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.model.Reservation;
 import com.MRSISA2021_T15.model.ReservationItem;
 import com.MRSISA2021_T15.repository.AbsenceRepository;
+import com.MRSISA2021_T15.repository.AppointmentConsultationPointsRepository;
 import com.MRSISA2021_T15.repository.AppointmentCreationRepository;
 import com.MRSISA2021_T15.repository.AppointmentInfoRepository;
+import com.MRSISA2021_T15.repository.AppointmentRepository;
+import com.MRSISA2021_T15.repository.CategoryRepository;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
 import com.MRSISA2021_T15.repository.MedicineAppointmentRepository;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.MedicineQuantityRepository;
 import com.MRSISA2021_T15.repository.ReservationItemRepository;
 import com.MRSISA2021_T15.repository.ReservationRepository;
+import com.MRSISA2021_T15.repository.UserRepository;
 
 @Service
 public class AppointmentService {
@@ -53,6 +59,14 @@ public class AppointmentService {
 	private ReservationRepository repo8;
 	@Autowired
 	private ReservationItemRepository repo9;
+	@Autowired
+	private CategoryRepository categoryRepository;
+	@Autowired
+	private AppointmentConsultationPointsRepository appointmentConsultationPointsRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private AppointmentRepository appointmentRepository;
 
 	public List<Appointment> findAllPharmacist(Integer id) {
 		return repository.findAllPharmacistId(id);
@@ -150,7 +164,6 @@ public class AppointmentService {
 				return "This patient has already an appointment planned at that time!";
 			}
 		}
-
 		repository.save(appointment);
 		return "";
 	}
@@ -228,7 +241,6 @@ public class AppointmentService {
 				return "This patient has already an appointment planned at that time!";
 			}
 		}
-
 		repository.save(appointment);
 		return "";
 	}
@@ -276,9 +288,35 @@ public class AppointmentService {
 		}
 		
 		if (msg.equals("")) {
-
-			
 			AppointmentInfo ai = new AppointmentInfo();
+			Patient patient = (Patient) userRepository.findById(appointment.getPatient().getId()).get();
+			if (appointment.getClass() == AppointmentDermatologist.class) {
+				patient.setCollectedPoints(patient.getCollectedPoints() + appointmentConsultationPointsRepository.getPointsByType("APPOINTMENT"));
+			}
+			else if (appointment.getClass() == AppointmentPharmacist.class) {
+				patient.setCollectedPoints(patient.getCollectedPoints() + appointmentConsultationPointsRepository.getPointsByType("CONSULTATION"));
+			}
+			
+			if (patient.getCategoryName().equals(CategoryName.REGULAR)) {
+				Category c = categoryRepository.findByCategoryName(CategoryName.SILVER);
+				if (patient.getCollectedPoints() >= c.getRequiredNumberOfPoints()) {
+					patient.setCategoryName(CategoryName.SILVER);
+				}
+			} else if (patient.getCategoryName().equals(CategoryName.SILVER)) {
+				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
+				Category c2 = categoryRepository.findByCategoryName(CategoryName.SILVER);
+				if (patient.getCollectedPoints() >= c1.getRequiredNumberOfPoints()) {
+					patient.setCategoryName(CategoryName.GOLD);
+				}
+				appointment.setDiscount((100.0 - c2.getDiscount()) / 100.0);
+			} else if (patient.getCategoryName().equals(CategoryName.GOLD)) {
+				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
+				appointment.setDiscount((100.0 - c1.getDiscount()) / 100.0);
+			}
+			appointment.setPatient(patient);
+			appointmentRepository.save(appointment);
+			userRepository.save(patient);
+			
 			ai.setAppointment(appointment);
 			ai.setComments(comments);
 			repo7.save(ai);

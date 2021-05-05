@@ -26,7 +26,7 @@
                 </mat-select>
             </mat-form-field>
             <mat-form-field class = "field-width">
-                <mat-label>Filter by average grade</mat-label>
+                <mat-label>Filter by average rating</mat-label>
                 <mat-select formControlName = "averageRating">
                     <mat-option *ngFor = "let grade of grades" (click)="applyFilter(grade)" [value] = "grade">{{grade}}</mat-option>
                 </mat-select>

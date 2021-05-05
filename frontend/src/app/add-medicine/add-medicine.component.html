@@ -43,6 +43,12 @@
                 <input type = "text" matInput placeholder = "Manufacturer" formControlName = "manufacturer" required>
                 <mat-error *ngIf = "hasError('manufacturer', 'required')">Manufacturer is required!</mat-error>
             </mat-form-field>
+            <mat-form-field class = "field-width">
+                <mat-label>Points</mat-label>
+                <input type = "number" matInput (input) = "checkPoints()" formControlName = "points" min = "0" required>
+                <mat-error *ngIf = "hasError('points', 'required')">Points is required!</mat-error>
+                <mat-error *ngIf = "points?.invalid && !hasError('points','required')">Points must be a positive number!</mat-error>
+            </mat-form-field>
             <mat-label>Prescription</mat-label>
             <mat-radio-group class = "radio-group" formControlName = "prescription">
                 <mat-radio-button class = "radio-button" [value] = "true" [checked] = "true">Yes</mat-radio-button>

@@ -35,9 +35,10 @@ public abstract class Appointment {
 	@Column
 	private LocalDateTime start, end;
 	@Column
-	private double price;
+	private double price, discount;
 	@Column
 	private boolean done;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
@@ -94,5 +95,10 @@ public abstract class Appointment {
 	public void setDone(boolean done) {
 		this.done = done;
 	}
-	
+	public double getDiscount() {
+		return discount;
+	}
+	public void setDiscount(double discount) {
+		this.discount = discount;
+	}
 }

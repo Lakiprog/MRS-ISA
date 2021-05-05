@@ -41,6 +41,9 @@ public class Medicine {
 	
 	@Column
 	private Integer averageRating;
+	
+	@Column
+	private double points;
 
 	@Transient
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -188,5 +191,13 @@ public class Medicine {
 
 	public void setAverageRating(Integer averageRating) {
 		this.averageRating = averageRating;
+	}
+
+	public double getPoints() {
+		return points;
+	}
+
+	public void setPoints(double points) {
+		this.points = points;
 	}
 }
