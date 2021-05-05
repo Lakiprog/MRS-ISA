@@ -142,6 +142,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/complaint/getComplaintsToRespond").hasAuthority("ROLE_SYSTEM_ADMIN")
 				.antMatchers("/complaint/getResponses").hasAuthority("ROLE_SYSTEM_ADMIN")
 				.antMatchers("/complaint/sendResponse").hasAuthority("ROLE_SYSTEM_ADMIN")
+				.antMatchers("/loyaltyProgram/defineCategories").hasAuthority("ROLE_SYSTEM_ADMIN")
+				.antMatchers("/loyaltyProgram/getCategoryNames").hasAuthority("ROLE_SYSTEM_ADMIN")
+				.antMatchers("/loyaltyProgram/definePointsForAppointmentAndConsulation").hasAuthority("ROLE_SYSTEM_ADMIN")
 			.anyRequest().authenticated().and()
 			.cors().and()
 			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);

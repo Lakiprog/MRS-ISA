@@ -122,7 +122,7 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
       "Form: " + medicine.medicine.form + "\n\n" + 
       "Composition: " + medicine.medicine.composition + "\n\n" + 
       "Manufacturer: " + medicine.medicine.manufacturer + "\n\n" +
-      "Average grade: " + medicine.medicine.averageRating + "\n\n" +
+      "Average rating: " + medicine.medicine.averageRating + "\n\n" +
       "Additional comments: " + medicine.medicine.additionalComments, 0, 10
     );
     pdfDocument.save(medicine.medicine.name + " details");
@@ -135,7 +135,7 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
       this.router.navigate(['/systemAdminProfilePage']);
     } else if (this.authService.getTokenData()?.role === 'ROLE_FARMACIST') {
       this.router.navigate(['/PharmacistHomePage']);
-    } else if (this.authService.getTokenData()?.role === 'ROLE_DERMATLOGIST') {
+    } else if (this.authService.getTokenData()?.role === 'ROLE_DERMATOLOGIST') {
       this.router.navigate(['/DermatologistHomePage']);
     } else if (this.authService.getTokenData()?.role === 'ROLE_PHARMACY_ADMIN') {
       this.router.navigate(['/pharmacyAdmin']);
