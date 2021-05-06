@@ -19,9 +19,6 @@ public class Supplier extends User{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "first_login")
-	private boolean firstLogin;
-	
 	@Transient
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -30,14 +27,6 @@ public class Supplier extends User{
 	public Supplier() {
 		super();
 
-	}
-
-	public boolean isFirstLogin() {
-		return firstLogin;
-	}
-
-	public void setFirstLogin(boolean firstLogin) {
-		this.firstLogin = firstLogin;
 	}
 
 	public Set<MedicineSupply> getMedicineSupply() {

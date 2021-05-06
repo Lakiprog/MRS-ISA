@@ -2,8 +2,9 @@
 <body class = "supplier-profile-page-background">
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
-            <a mat-button (click) = "supplierWriteOffers()">Write offers for incoming purchase orders</a>
-            <a mat-button (click) = "supplierViewOffers()">View all offers</a>
+            <a mat-button (click) = "supplierWriteOffers()" [disabled] = "firstLogin">Write offers for incoming purchase orders</a>
+            <a mat-button (click) = "supplierViewOffers()" [disabled] = "firstLogin">View all offers</a>
+            <a mat-button (click) = "medicineStock()" [disabled] = "firstLogin">Medicine stock</a>
             <a mat-button (click) = "logout()">Logout</a>
         </mat-toolbar-row>
     </mat-toolbar>
@@ -46,7 +47,7 @@
                 </mat-error>
             </mat-form-field>
         </form>
-        <button (click) = "update()" [disabled] = "updateForm.invalid" mat-raised-button color="primary">Update</button>
+        <button (click) = "update()" [disabled] = "updateForm.invalid || firstLogin" mat-raised-button color="primary">Update</button>
     </mat-card>
     <mat-card class = "card">
         <mat-card-title class = "card-title">Change password</mat-card-title>

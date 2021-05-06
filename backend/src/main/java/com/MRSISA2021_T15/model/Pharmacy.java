@@ -61,7 +61,11 @@ public class Pharmacy {
 	
 	@Transient
 	private ArrayList<Integer> pharmacyAdminsIds = new ArrayList<Integer>();
-
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Promotion> promotions;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -148,5 +152,13 @@ public class Pharmacy {
 
 	public void setPharmacyAdmins(Set<PharmacyAdmin> pharmacyAdmins) {
 		this.pharmacyAdmins = pharmacyAdmins;
+	}
+
+	public Set<Promotion> getPromotions() {
+		return promotions;
+	}
+
+	public void setPromotions(Set<Promotion> promotions) {
+		this.promotions = promotions;
 	}
 }

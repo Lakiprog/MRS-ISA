@@ -31,4 +31,6 @@ public interface SupplierService {
 	
 	void updateOffer(PurchaseOrderSupplier offer);
 
+	String updateMedicineStock(MedicineSupply medicineSupply);
+
 }

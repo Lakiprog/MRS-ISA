@@ -31,6 +31,9 @@ public abstract class User implements UserDetails {
 	
 	@Column
     private boolean enabled;
+	
+	@Column
+	private Boolean firstLogin;
 
     @Column
     private Timestamp lastPasswordResetDate;
@@ -174,6 +177,12 @@ public abstract class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;
     }
-	
-	
+
+	public Boolean getFirstLogin() {
+		return firstLogin;
+	}
+
+	public void setFirstLogin(Boolean firstLogin) {
+		this.firstLogin = firstLogin;
+	}
 }

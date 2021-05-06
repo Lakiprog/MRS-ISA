@@ -74,6 +74,8 @@ import { DermatologistAbsenceComponent } from './dermatologist-absence/dermatolo
 import { SearchFilterMedicineComponent } from './search-filter-medicine/search-filter-medicine.component';
 import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.component';
 import { PharmacistReservationsComponent } from './pharmacist-reservations/pharmacist-reservations.component';
+import { SupplierMedicineStockComponent } from './supplier-medicine-stock/supplier-medicine-stock.component';
+import { PatientSubscribedPharmaciesComponent } from './patient-subscribed-pharmacies/patient-subscribed-pharmacies.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -135,7 +137,9 @@ FullCalendarModule.registerPlugins([
     PharmacistAbsenceComponent,
     DermatologistAbsenceComponent,
     LoyaltyProgramComponent,
-    PharmacistReservationsComponent
+    PharmacistReservationsComponent,
+    SupplierMedicineStockComponent,
+    PatientSubscribedPharmaciesComponent
   ],
   imports: [
     BrowserModule,
@@ -221,6 +225,11 @@ FullCalendarModule.registerPlugins([
         path: 'supplierViewOffers',
         canActivate: [SupplierRoutes],
         component: SupplierViewOffersComponent,
+      },
+      {
+        path: 'medicineStock',
+        canActivate: [SupplierRoutes],
+        component: SupplierMedicineStockComponent,
       },
       {
         path: 'pharmacyAdmin',
@@ -350,6 +359,11 @@ FullCalendarModule.registerPlugins([
         path: 'PatientScheduledDermaApp',
         canActivate: [PatientRoutes],
         component: PatientSchedDermaAppComponent,
+      },
+      {
+        path: 'subscribedPharmacies',
+        canActivate: [PatientRoutes],
+        component: PatientSubscribedPharmaciesComponent,
       },
       {
         path: 'PharmacistAbsenceComponent',

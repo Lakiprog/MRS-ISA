@@ -74,6 +74,9 @@ public class SupplierServiceImpl implements SupplierService {
 		if (!passwordEncoder.matches(passwords.getOldPassword(), currentUser.getPassword())) {
 			message = "Wrong old password!";
 		} else {
+			if (currentUser.getFirstLogin()) {
+				currentUser.setFirstLogin(false);
+			}
 			currentUser.setPassword(passwordEncoder.encode(passwords.getPassword()));
 			userRepository.save(currentUser);
 		}
@@ -141,5 +144,22 @@ public class SupplierServiceImpl implements SupplierService {
 			offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
 		}
 		purchaseOrderSupplierRepository.save(offerToUpdate);
+	}
+
+	@Override
+	public String updateMedicineStock(MedicineSupply medicineSupply) {
+		String message = "";
+		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		MedicineSupply ms = medicineSupplyRepository.getMedicineSupplyBySupplier(medicineSupply.getMedicine().getMedicineCode(), supplier.getId());
+		if (ms != null) {
+			ms.setQuantity(medicineSupply.getQuantity());
+			medicineSupplyRepository.save(ms);
+			message = "Medicine stock updated.";
+		} else {
+			medicineSupply.setSupplier(supplier);
+			medicineSupplyRepository.save(medicineSupply);
+			message = "Medicine is added to stock.";
+		}
+		return message;
 	}
 }

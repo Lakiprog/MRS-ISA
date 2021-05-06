@@ -16,5 +16,8 @@ public interface MedicineSupplyRepository extends CrudRepository<MedicineSupply,
 	@Query("select ms from PurchaseOrderMedicine pom left join MedicineSupply ms on pom.medicine.id = ms.medicine.id "
 			+ "where pom.purchaseOrder.id = ?1 AND ms.supplier.id = ?2 AND ms.quantity < pom.quantity")
 	List<MedicineSupply> hasNoMedicineInStock(Integer orderId, Integer supplierId);
+	
+	@Query("select ms from MedicineSupply ms where ms.medicine.medicineCode like ?1 AND ms.supplier.id = ?2")
+	MedicineSupply getMedicineSupplyBySupplier(String medicineCode, Integer supplierId);
 
 }
