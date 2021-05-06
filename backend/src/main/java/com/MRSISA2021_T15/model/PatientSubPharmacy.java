@@ -1,55 +1,32 @@
 package com.MRSISA2021_T15.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "promotion")
-public class Promotion {
-	
+@Table(name = "patient_sub_pharmacy")
+public class PatientSubPharmacy {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column
-	private LocalDate startingDate, endingDate;
-	
-	@Column
-	private String description;
+	@ManyToOne
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
 	
 	@ManyToOne
+	@JoinColumn(name = "pharmacy_id")
 	private Pharmacy pharmacy;
-
-	public LocalDate getStartingDate() {
-		return startingDate;
-	}
-
-	public void setStartingDate(LocalDate startingDate) {
-		this.startingDate = startingDate;
-	}
-
-	public LocalDate getEndingDate() {
-		return endingDate;
-	}
-
-	public void setEndingDate(LocalDate endingDate) {
-		this.endingDate = endingDate;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	
+	@Column
+	private Boolean subscribed;
 
 	public Integer getId() {
 		return id;
@@ -59,11 +36,27 @@ public class Promotion {
 		this.id = id;
 	}
 
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
 	public Pharmacy getPharmacy() {
 		return pharmacy;
 	}
 
 	public void setPharmacy(Pharmacy pharmacy) {
 		this.pharmacy = pharmacy;
+	}
+
+	public Boolean getSubscribed() {
+		return subscribed;
+	}
+
+	public void setSubscribed(Boolean subscribed) {
+		this.subscribed = subscribed;
 	}
 }

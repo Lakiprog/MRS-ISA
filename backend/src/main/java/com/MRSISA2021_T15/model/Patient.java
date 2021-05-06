@@ -38,7 +38,7 @@ public class Patient extends User{
 	
 	@Column
 	private CategoryName categoryName;
-
+	
 	public Set<Complaint> getComplaints() {
 		return complaints;
 	}
@@ -83,7 +83,7 @@ public class Patient extends User{
 	public void setCategoryName(CategoryName categoryName) {
 		this.categoryName = categoryName;
 	}
-
+	
 	public Patient() {
 		super();
 	}

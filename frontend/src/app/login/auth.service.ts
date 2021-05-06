@@ -55,7 +55,8 @@ export class AuthService {
       return {
         id: 0,
         username: "",
-        role: ""
+        role: "",
+        firstLogin: null
       };
     }
   }

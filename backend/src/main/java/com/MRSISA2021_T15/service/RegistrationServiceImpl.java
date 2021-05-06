@@ -55,6 +55,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             patient.setEmail(patient.getEmail().toLowerCase());
 			patient.setPassword(passwordEncoder.encode(patient.getPassword()));
 			patient.setEnabled(false);
+			patient.setFirstLogin(false);
 			List<Role> roles = new ArrayList<Role>();
 			Role role = roleRepository.findById(Constants.ROLE_PATIENT).get();
 			roles.add(role);
@@ -100,6 +101,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			systemAdmin.setEmail(systemAdmin.getEmail().toLowerCase());
 			systemAdmin.setPassword(passwordEncoder.encode(systemAdmin.getPassword()));
 			systemAdmin.setEnabled(true);
+			systemAdmin.setFirstLogin(true);
 			List<Role> roles = new ArrayList<Role>();
 			Role role = roleRepository.findById(Constants.ROLE_SYSTEM_ADMIN).get();
 			roles.add(role);
@@ -121,6 +123,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			dermatologist.setEmail(dermatologist.getEmail().toLowerCase());
 			dermatologist.setPassword(passwordEncoder.encode(dermatologist.getPassword()));
 			dermatologist.setEnabled(true);
+			dermatologist.setFirstLogin(true);
 			List<Role> roles = new ArrayList<Role>();
 			Role role = roleRepository.findById(Constants.ROLE_DERMATOLOGIST).get();
 			roles.add(role);
@@ -142,6 +145,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			supplier.setEmail(supplier.getEmail().toLowerCase());
 			supplier.setPassword(passwordEncoder.encode(supplier.getPassword()));
 			supplier.setEnabled(true);
+			supplier.setFirstLogin(true);
 			List<Role> roles = new ArrayList<Role>();
 			Role role = roleRepository.findById(Constants.ROLE_SUPPLIER).get();
 			roles.add(role);
@@ -163,6 +167,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			pharmacyAdmin.setEmail(pharmacyAdmin.getEmail().toLowerCase());
 			pharmacyAdmin.setPassword(passwordEncoder.encode(pharmacyAdmin.getPassword()));
 			pharmacyAdmin.setEnabled(true);
+			pharmacyAdmin.setFirstLogin(true);
 			List<Role> roles = new ArrayList<Role>();
 			Role role = roleRepository.findById(Constants.ROLE_PHARMACY_ADMIN).get();
 			roles.add(role);

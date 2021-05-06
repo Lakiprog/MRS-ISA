@@ -26,8 +26,12 @@ export class SupplierProfilePageComponent implements OnInit {
     private router: Router
   ) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
+  firstLogin = this.authService.getTokenData()?.firstLogin;
 
   ngOnInit(): void {
+    if (this.firstLogin) {
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
+    }
     this.updateForm = this.fb.group(
       {
         username: [''],
@@ -71,14 +75,14 @@ export class SupplierProfilePageComponent implements OnInit {
   update() {
     this._supplierUpdateService.updateSupplierData(this.updateForm.value).subscribe(
       response => {
-        this.openSnackBar(response, this.RESPONSE_OK);
+        this.openSnackBar(response, this.RESPONSE_OK, 3000);
         this._supplierUpdateService.getSupplierData().subscribe(
           data => {
             this.fillDataForm(data);
           });
       },
       error => {
-        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+        this.openSnackBar(error.error, this.RESPONSE_ERROR, 3000);
       }
     )
   }
@@ -89,14 +93,14 @@ export class SupplierProfilePageComponent implements OnInit {
         this.authService.logout();
       },
       error => {
-        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+        this.openSnackBar(error.error, this.RESPONSE_ERROR, 3000);
       }
     )
   }
 
-  openSnackBar(msg: string, responseCode: number) {
+  openSnackBar(msg: string, responseCode: number, duration: number) {
     this._snackBar.open(msg, "x", {
-      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      duration: responseCode === this.RESPONSE_OK ? duration : 20000,
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
@@ -114,11 +118,21 @@ export class SupplierProfilePageComponent implements OnInit {
   }
 
   supplierWriteOffers() {
-    this.router.navigate(["/supplierWriteOffers"]);
+    if (!this.firstLogin) {
+      this.router.navigate(["/supplierWriteOffers"]);
+    }
   }
 
   supplierViewOffers() {
-    this.router.navigate(["/supplierViewOffers"]);
+    if (!this.firstLogin) {
+      this.router.navigate(["/supplierViewOffers"]);
+    }
+  }
+
+  medicineStock() {
+    if (!this.firstLogin) {
+      this.router.navigate(["/medicineStock"]);
+    }
   }
 
   logout() {

@@ -62,7 +62,7 @@ public class AuthenticationController {
 			String jwt = tokenUtils.generateToken(user.getUsername());
 			int expiresIn = tokenUtils.getExpiredIn();
 
-			return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getId(), user.getUsername(), user.getRoles().get(0).getName()));
+			return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getId(), user.getUsername(), user.getRoles().get(0).getName(), user.getFirstLogin()));
 		} catch (DisabledException de) {
 			return new ResponseEntity<UserTokenState>(HttpStatus.FORBIDDEN);
 		} catch (BadCredentialsException bdc) {

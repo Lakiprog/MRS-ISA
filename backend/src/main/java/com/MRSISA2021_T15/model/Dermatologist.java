@@ -32,8 +32,6 @@ public class Dermatologist extends User{
 	@OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Absence> absence;
 
-	@Column(name = "first_login")
-	private boolean firstLogin;
 	@Column(name = "rating")
 	private double rating;
 
@@ -56,14 +54,5 @@ public class Dermatologist extends User{
 
 	public Dermatologist() {
 		super();
-	}
-
-	public boolean isFirstLogin() {
-		return firstLogin;
-	}
-
-	public void setFirstLogin(boolean firstLogin) {
-		this.firstLogin = firstLogin;
-	}
-	
+	}	
 }

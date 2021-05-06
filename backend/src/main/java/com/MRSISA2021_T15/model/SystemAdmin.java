@@ -3,7 +3,6 @@ package com.MRSISA2021_T15.model;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class SystemAdmin extends User{
 	
 	private static final long serialVersionUID = 1L;
-	
-	@Column(name = "first_login")
-	private boolean firstLogin;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "systemAdmin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -33,13 +29,4 @@ public class SystemAdmin extends User{
 			String phoneNumber, String username, String password) {
 		super(id, email, name, surname, adress, city, country, phoneNumber, username, password);
 	}*/
-	
-	public boolean isFirstLogin() {
-		return firstLogin;
-	}
-
-	public void setFirstLogin(boolean firstLogin) {
-		this.firstLogin = firstLogin;
-	}
-	
 }
