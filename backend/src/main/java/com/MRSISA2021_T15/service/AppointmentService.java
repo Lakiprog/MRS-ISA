@@ -24,6 +24,7 @@ import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.Pharmacist;
+import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.model.Reservation;
 import com.MRSISA2021_T15.model.ReservationItem;
 import com.MRSISA2021_T15.repository.AbsenceRepository;
@@ -380,6 +381,22 @@ public class AppointmentService {
 		return msg;
 	}
 	
+
+	
+	public List<AppointmentDermatologist>findAllFreeDermatologicalApp(){
+		return repository.findAllFreeDermatologicalApp();
+	}
+	
+	
+	public void saveDerApp(AppointmentDermatologist app) {
+		repository.save(app);
+	}
+	
+	
+	public List<AppointmentDermatologist> findAllDerAppWithPatientId(Integer id){
+		return repository.findAllDerAppWithPatientId(id);
+  }
+
 	public void sendEmailAppointment(Appointment appointment) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(appointment.getPatient().getEmail());

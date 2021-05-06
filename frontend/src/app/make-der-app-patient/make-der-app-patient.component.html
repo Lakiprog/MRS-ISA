@@ -1,0 +1,112 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>My App</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+</mat-toolbar>
+
+
+<section class="sectionN">
+    <mat-card class="card">
+        <div class="inputic"> 
+          <mat-form-field class="example-full-width">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="NS" #input>
+          </mat-form-field>
+        </div>
+        
+        
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" matSort>
+        
+        
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> NAME </th>
+              <td mat-cell *matCellDef="let row"> {{row['name']}} </td>
+            </ng-container>
+        
+        
+            <ng-container matColumnDef="address">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> ADRESS </th>
+              <td mat-cell *matCellDef="let row"> {{row['address']}} </td>
+            </ng-container>
+        
+          
+            <ng-container matColumnDef="city">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> CITY </th>
+              <td mat-cell *matCellDef="let row"> {{row['city']}} </td>
+            </ng-container>
+        
+        
+            <ng-container matColumnDef="country">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> COUNTRY </th>
+              <td mat-cell *matCellDef="let row"> {{row['country']}} </td>
+            </ng-container>
+        
+          
+            <ng-container matColumnDef="rate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> RATE </th>
+              <td mat-cell *matCellDef="let row"> {{row['rating']}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="homepage">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> HOMEPAGE </th>
+                <td mat-cell *matCellDef="let row"> 
+                    <button (click) = "makeHomePage(row)" mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+                        <mat-icon>home</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+           
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="5">No data matching the filter "{{input.value}}"</td>
+            </tr>
+          </table>
+        
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>  
+    </mat-card>  
+  
+    <br />
+
+    <div *ngIf="showHomePage" class="pharmacyDiv">
+    <mat-card  class="pharmacyCard">
+        <mat-card-header>
+            <mat-card-title>PHARMACY</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image src="pharmacyLogo.jpg">
+          <mat-card-content>
+            <p class="info">
+            NAME: {{pharmacyData.name}}
+            <br />
+            ADRESS: {{pharmacyData['address']}}
+            <br />
+            CITY: {{pharmacyData['city']}}
+            <br />
+            COUNTRY: {{pharmacyData['country']}}
+            <br />
+            RATE: {{pharmacyData['rating']}}
+            <br />
+            DESCRIPTION:  {{pharmacyData['description']}}
+            <br />
+          </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button class="dermaButton" (click) = "dermaApp(pharmacyData)" mat-button>MAKE A DERMATOLOGICAL APPOINTMENT</button>
+          </mat-card-actions>
+    </mat-card>
+  </div>
+</section>
+  
+  

@@ -65,6 +65,10 @@ import { DermatologistAppointmentsComponent, DialogStartDermatologist } from './
 import { DermatologistAppointmentInfoComponent } from './dermatologist-appointment-info/dermatologist-appointment-info.component';
 import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
 import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to-complaints.component';
+
+import { MakeDerAppPatientComponent } from './make-der-app-patient/make-der-app-patient.component';
+import { MakeDerAppPatientPart2Component } from './make-der-app-patient-part2/make-der-app-patient-part2.component';
+import { PatientSchedDermaAppComponent } from './patient-sched-derma-app/patient-sched-derma-app.component';
 import { PharmacistAbsenceComponent } from './pharmacist-absence/pharmacist-absence.component';
 import { DermatologistAbsenceComponent } from './dermatologist-absence/dermatologist-absence.component';
 import { SearchFilterMedicineComponent } from './search-filter-medicine/search-filter-medicine.component';
@@ -125,6 +129,9 @@ FullCalendarModule.registerPlugins([
     DialogPredefined,
     DialogStartPharmacist,
     DialogStartDermatologist,
+    MakeDerAppPatientComponent,
+    MakeDerAppPatientPart2Component,
+    PatientSchedDermaAppComponent,
     PharmacistAbsenceComponent,
     DermatologistAbsenceComponent,
     LoyaltyProgramComponent,
@@ -289,7 +296,6 @@ FullCalendarModule.registerPlugins([
         canActivate: [PharmacyAdminRoutes],
         component: UpdateMedicineComponent,
       },
-
       {
         path: 'PharmacistProfilePageComponent',
         canActivate: [PharmacistRoutes],
@@ -300,7 +306,6 @@ FullCalendarModule.registerPlugins([
         canActivate: [DermatologistRoutes],
         component: DermatologistProfilePageComponent,
       },
-
       {
         path: 'userComplaint',
         canActivate: [PatientRoutes],
@@ -330,6 +335,21 @@ FullCalendarModule.registerPlugins([
         path: 'DermatologistAppointmentInfoComponent',
         canActivate: [DermatologistRoutes],
         component: DermatologistAppointmentInfoComponent,
+      },
+      {
+        path: 'MakeDermatologistAppointment',
+        canActivate: [PatientRoutes],
+        component: MakeDerAppPatientComponent,
+      },
+      {
+        path: 'MakeDermatologistAppointmentPart2',
+        canActivate: [PatientRoutes],
+        component: MakeDerAppPatientPart2Component,
+      },
+      {
+        path: 'PatientScheduledDermaApp',
+        canActivate: [PatientRoutes],
+        component: PatientSchedDermaAppComponent,
       },
       {
         path: 'PharmacistAbsenceComponent',
