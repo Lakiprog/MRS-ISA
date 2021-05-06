@@ -1,0 +1,17 @@
+table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+
+  td, th {
+    width: 8%;
+}

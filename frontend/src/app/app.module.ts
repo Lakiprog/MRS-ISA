@@ -65,6 +65,9 @@ import { DermatologistAppointmentsComponent, DialogStartDermatologist } from './
 import { DermatologistAppointmentInfoComponent } from './dermatologist-appointment-info/dermatologist-appointment-info.component';
 import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
 import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to-complaints.component';
+import { MakeDerAppPatientComponent } from './make-der-app-patient/make-der-app-patient.component';
+import { MakeDerAppPatientPart2Component } from './make-der-app-patient-part2/make-der-app-patient-part2.component';
+import { PatientSchedDermaAppComponent } from './patient-sched-derma-app/patient-sched-derma-app.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -118,7 +121,10 @@ FullCalendarModule.registerPlugins([
     DialogDataExampleDialogDermatologist,
     DialogPredefined,
     DialogStartPharmacist,
-    DialogStartDermatologist
+    DialogStartDermatologist,
+    MakeDerAppPatientComponent,
+    MakeDerAppPatientPart2Component,
+    PatientSchedDermaAppComponent
   ],
   imports: [
     BrowserModule,
@@ -316,6 +322,22 @@ FullCalendarModule.registerPlugins([
         canActivate: [DermatologistRoutes],
         component: DermatologistAppointmentInfoComponent,
       },
+      {
+        path: 'MakeDermatologistAppointment',
+        canActivate: [PatientRoutes],
+        component: MakeDerAppPatientComponent,
+      },
+      {
+        path: 'MakeDermatologistAppointmentPart2',
+        canActivate: [PatientRoutes],
+        component: MakeDerAppPatientPart2Component,
+      },
+      {
+        path: 'PatientScheduledDermaApp',
+        canActivate: [PatientRoutes],
+        component: PatientSchedDermaAppComponent,
+      }
+
     ]),
   ],
 

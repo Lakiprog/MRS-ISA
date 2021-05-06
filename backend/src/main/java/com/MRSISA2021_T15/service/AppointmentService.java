@@ -20,11 +20,13 @@ import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.Pharmacist;
+import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.model.Reservation;
 import com.MRSISA2021_T15.model.ReservationItem;
 import com.MRSISA2021_T15.repository.AbsenceRepository;
 import com.MRSISA2021_T15.repository.AppointmentCreationRepository;
 import com.MRSISA2021_T15.repository.AppointmentInfoRepository;
+import com.MRSISA2021_T15.repository.AppointmentRepository;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
 import com.MRSISA2021_T15.repository.MedicineAppointmentRepository;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
@@ -321,6 +323,21 @@ public class AppointmentService {
 			repo8.save(r);
 		}
 		return msg;
+	}
+	
+	
+	public List<AppointmentDermatologist>findAllFreeDermatologicalApp(){
+		return repository.findAllFreeDermatologicalApp();
+	}
+	
+	
+	public void saveDerApp(AppointmentDermatologist app) {
+		repository.save(app);
+	}
+	
+	
+	public List<AppointmentDermatologist> findAllDerAppWithPatientId(Integer id){
+		return repository.findAllDerAppWithPatientId(id);
 	}
 
 }

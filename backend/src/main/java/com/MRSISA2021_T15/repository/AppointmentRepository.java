@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import com.MRSISA2021_T15.model.Appointment;
+import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.Patient;
 
 @NoRepositoryBean
@@ -28,6 +29,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	public List<Patient> findAllDAwithPatientId(Integer id, Integer id2);
 	
 	
+	
+	
+	@Query("select distinct a from Appointment a where a.patient.id = null and APPOINTMENT_TYPE = 'APPOINTMENT_DERMATOLOGIST'")
+	public List<AppointmentDermatologist>findAllFreeDermatologicalApp();
+	
+	@Query("select distinct a from Appointment a where a.patient.id = ?1 and APPOINTMENT_TYPE = 'APPOINTMENT_DERMATOLOGIST'")
+	public List<AppointmentDermatologist> findAllDerAppWithPatientId(Integer id);
 	
 	
 	

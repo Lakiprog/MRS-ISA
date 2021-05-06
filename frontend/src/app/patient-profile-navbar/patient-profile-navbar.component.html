@@ -14,7 +14,7 @@
       <a mat-list-item href="#"><strong class='list_item'> PHARMACISTS VISITS</strong></a>
       <br />
       <br />
-      <a mat-list-item href="#"><strong class='list_item'>SCHEDULED DERMATOLOGICAL EXAMINATIONS</strong></a>
+      <a mat-list-item routerLink="/PatientScheduledDermaApp"><strong class='list_item'>SCHEDULED DERMATOLOGICAL EXAMINATIONS</strong></a>
       <br />
       <br />
       <a mat-list-item href="#"><strong class='list_item'>SCHEDULED PHARMACISTS VISITS</strong></a>
@@ -41,11 +41,11 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>My Profile</span>
+      <span>MY PROFILE</span>
 
       <span class='header'><nav>
         <span class='data'><a  routerLink="/UserHomePage" routerLinkActive="true" >HOMEPAGE</a></span>
-        <span class='data'><a  routerLink="/PatientChangeData"> CHANGE USERNAME/PASSWORD </a></span> <!--ovdje formu ubaciti --> 
+        <span class='data'><a  routerLink="/PatientChangeData"> CHANGE DATA</a></span> <!--ovdje formu ubaciti --> 
         <span class='data'><a  href=""> PENALTIES</a></span>
         <span class='data'><a  href=""> LOGOUT </a></span>
       </nav></span>
@@ -68,7 +68,7 @@
             SURNAME: {{patient['surname']}}
             <br />
             <br />
-            address:  {{patient['address']}}
+            ADRESS:  {{patient['address']}}
             <br />
             <br />
             CITY: {{patient['city']}}
