@@ -91,6 +91,7 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
       response => {
         this.medicineSupplyData = response;
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+        this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
       }
     )
   }
@@ -101,6 +102,7 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
         data => {
           this.orderData = data;
           this.orderDataSource = new MatTableDataSource<any>(this.orderData);
+          this.orderDataSource.paginator = this.paginatorOrders
         }
       )
   }

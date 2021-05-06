@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
 import com.MRSISA2021_T15.model.SubstituteMedicine;
 import com.MRSISA2021_T15.service.AllergyService;
+import com.MRSISA2021_T15.service.EmailSenderService;
 import com.MRSISA2021_T15.service.MedicinePharmacyService;
 import com.MRSISA2021_T15.service.SubstituteMedicineService;
 
@@ -32,6 +34,11 @@ public class AllergyController {
 	
 	@Autowired
 	SubstituteMedicineService service2;
+	
+	@Autowired
+	EmailSenderService emailsending;
+	@Autowired
+	Environment envi;
 	
 	@GetMapping(value = "/checkForAllergiesPharmacist/pharmacy={pharmacyId}medicine={medicineId}patient={patientId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -109,4 +116,5 @@ public class AllergyController {
 		}
 		return subs;
 	}
+	
 }

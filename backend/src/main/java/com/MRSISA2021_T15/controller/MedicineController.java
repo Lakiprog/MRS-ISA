@@ -2,6 +2,7 @@ package com.MRSISA2021_T15.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 
 import com.MRSISA2021_T15.model.SubstituteMedicine;
@@ -114,10 +115,10 @@ public class MedicineController {
 			if((medicine.getName() != null && medicine.getName().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getMedicineCode() != null && medicine.getMedicineCode().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getManufacturer() != null && medicine.getManufacturer().toLowerCase().contains(string.toLowerCase()))||
-					(medicine.getMedicineType() != null && medicine.getMedicineType().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getMedicineType() != null && medicine.getMedicineType().toString().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getAdditionalComments() != null && medicine.getAdditionalComments().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getComposition() != null && medicine.getComposition().toLowerCase().contains(string.toLowerCase()))||
-					(medicine.getForm() != null && medicine.getForm().contains(string.toLowerCase())))
+					(medicine.getForm() != null && medicine.getForm().toString().contains(string.toLowerCase())))
 				returnList.add(medicine);
 		}
 		return returnList;
@@ -145,5 +146,15 @@ public class MedicineController {
 		med.setAdditionalComments(m.getAdditionalComments());
 		medicineRepository.save(med);
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping(value = "/getMedicineTypes", produces = MediaType.APPLICATION_JSON_VALUE)
+	public HashSet<MedicineType> getMedicineTypes() {
+		return medicineService.getMedicineTypes();
+	}
+	
+	@GetMapping(value = "/getMedicineForms", produces = MediaType.APPLICATION_JSON_VALUE)
+	public HashSet<MedicineForm> getMedicineForms() {
+		return medicineService.getMedicineForms();
 	}
 }

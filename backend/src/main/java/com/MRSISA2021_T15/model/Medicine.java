@@ -11,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -29,10 +28,22 @@ public class Medicine {
 	private Integer id;
 	
 	@Column
-	private String medicineCode, name, medicineType, form, composition, manufacturer, additionalComments;
+	private String medicineCode, name, composition, manufacturer, additionalComments;
+	
+	@Column
+	private MedicineType medicineType;
+	
+	@Column
+	private MedicineForm form;
 	
 	@Column
 	private boolean prescription;
+	
+	@Column
+	private Integer averageRating;
+	
+	@Column
+	private double points;
 
 	@Transient
 	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -86,11 +97,11 @@ public class Medicine {
 		this.name = name;
 	}
 
-	public String getMedicineType() {
+	public MedicineType getMedicineType() {
 		return medicineType;
 	}
 
-	public void setMedicineType(String medicineType) {
+	public void setMedicineType(MedicineType medicineType) {
 		this.medicineType = medicineType;
 	}
 
@@ -110,11 +121,11 @@ public class Medicine {
 		this.medicineCode = medicineCode;
 	}
 
-	public String getForm() {
+	public MedicineForm getForm() {
 		return form;
 	}
 
-	public void setForm(String form) {
+	public void setForm(MedicineForm form) {
 		this.form = form;
 	}
 
@@ -172,5 +183,21 @@ public class Medicine {
 
 	public void setMedicineSupply(Set<MedicineSupply> medicineSupply) {
 		this.medicineSupply = medicineSupply;
+	}
+
+	public Integer getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(Integer averageRating) {
+		this.averageRating = averageRating;
+	}
+
+	public double getPoints() {
+		return points;
+	}
+
+	public void setPoints(double points) {
+		this.points = points;
 	}
 }

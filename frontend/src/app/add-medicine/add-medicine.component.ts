@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { AddMedicineService } from './add-medicine.service';
+import { MedicinePointsValidator } from './MedicinePointsValidator';
 
 @Component({
   selector: 'app-add-medicine',
@@ -17,8 +18,20 @@ export class AddMedicineComponent implements OnInit {
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
   serverSubstituteMedicine : { id: string, name: string }[] = [];
+  medicineTypes = [];
+  medicineForms = [];
 
   ngOnInit(): void {
+    this._addMedicineService.getMedicineForms().subscribe(
+      data => {
+        this.medicineForms = data;
+      }
+    );
+    this._addMedicineService.getMedicineTypes().subscribe(
+      data => {
+        this.medicineTypes = data;
+      }
+    );
     this.addMedicineForm = this.fb.group(
       {
         medicineCode: ['', Validators.required],
@@ -27,10 +40,11 @@ export class AddMedicineComponent implements OnInit {
         form: ['', Validators.required],
         composition: ['', Validators.required],
         manufacturer: ['', Validators.required],
+        points: ['', Validators.required],
         prescription: [true],
         substituteMedicineIds: [],
         addtionalComments: []
-      }
+      }, {validator: MedicinePointsValidator}
     );
     this._addMedicineService.getSubstituteMedicine().subscribe(
       response => {
@@ -42,11 +56,21 @@ export class AddMedicineComponent implements OnInit {
         this.serverSubstituteMedicine = list;
       }
     );
-}
+  }
 
   public hasError = (controlName: string, errorName: string) => {
     return this.addMedicineForm.controls[controlName].hasError(errorName);
-}
+  }
+
+  get points() {
+    return this.addMedicineForm.get('points');
+  }
+
+  checkPoints() {
+    if (this.addMedicineForm.hasError('pointsInvalid')) {
+      this.addMedicineForm.get('points')?.setErrors([{'pointsInvalid': true}]);
+    }
+  }
 
   addMedicine() {
     this._addMedicineService.addMedicine(this.addMedicineForm.value).subscribe( 

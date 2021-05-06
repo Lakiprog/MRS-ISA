@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +32,12 @@ public class Patient extends User{
 	@JsonIgnore
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Reservation> reservation;
+	
+	@Column
+	private double collectedPoints;
+	
+	@Column
+	private CategoryName categoryName;
 
 	public Set<Complaint> getComplaints() {
 		return complaints;
@@ -55,11 +62,27 @@ public class Patient extends User{
 	public void setAllergies(Set<Allergy> allergies) {
 		this.allergies = allergies;
 	}
-
+	
 	/*public Patient(Set<Allergy> allergies) {
 		super();
 		this.allergies = allergies;
 	}*/
+
+	public double getCollectedPoints() {
+		return collectedPoints;
+	}
+
+	public void setCollectedPoints(double collectedPoints) {
+		this.collectedPoints = collectedPoints;
+	}
+
+	public CategoryName getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(CategoryName categoryName) {
+		this.categoryName = categoryName;
+	}
 
 	public Patient() {
 		super();

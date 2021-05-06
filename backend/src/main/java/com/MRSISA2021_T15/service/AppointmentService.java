@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.AppointmentInfo;
 import com.MRSISA2021_T15.model.AppointmentPharmacist;
+import com.MRSISA2021_T15.model.Category;
+import com.MRSISA2021_T15.model.CategoryName;
 import com.MRSISA2021_T15.model.EmploymentDermatologist;
 import com.MRSISA2021_T15.model.EmploymentPharmacist;
 import com.MRSISA2021_T15.model.MedicineAppointment;
@@ -24,15 +28,18 @@ import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.model.Reservation;
 import com.MRSISA2021_T15.model.ReservationItem;
 import com.MRSISA2021_T15.repository.AbsenceRepository;
+import com.MRSISA2021_T15.repository.AppointmentConsultationPointsRepository;
 import com.MRSISA2021_T15.repository.AppointmentCreationRepository;
 import com.MRSISA2021_T15.repository.AppointmentInfoRepository;
 import com.MRSISA2021_T15.repository.AppointmentRepository;
+import com.MRSISA2021_T15.repository.CategoryRepository;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
 import com.MRSISA2021_T15.repository.MedicineAppointmentRepository;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.MedicineQuantityRepository;
 import com.MRSISA2021_T15.repository.ReservationItemRepository;
 import com.MRSISA2021_T15.repository.ReservationRepository;
+import com.MRSISA2021_T15.repository.UserRepository;
 
 @Service
 public class AppointmentService {
@@ -55,6 +62,18 @@ public class AppointmentService {
 	private ReservationRepository repo8;
 	@Autowired
 	private ReservationItemRepository repo9;
+	@Autowired
+	EmailSenderService emailsend;
+	@Autowired
+	Environment en;
+  @Autowired
+  private CategoryRepository categoryRepository;
+	@Autowired
+	private AppointmentConsultationPointsRepository appointmentConsultationPointsRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private AppointmentRepository appointmentRepository;
 
 	public List<Appointment> findAllPharmacist(Integer id) {
 		return repository.findAllPharmacistId(id);
@@ -152,8 +171,8 @@ public class AppointmentService {
 				return "This patient has already an appointment planned at that time!";
 			}
 		}
-
 		repository.save(appointment);
+		sendEmailAppointment(appointment);
 		return "";
 	}
 
@@ -230,8 +249,8 @@ public class AppointmentService {
 				return "This patient has already an appointment planned at that time!";
 			}
 		}
-
 		repository.save(appointment);
+		sendEmailAppointment(appointment);
 		return "";
 	}
 
@@ -245,6 +264,7 @@ public class AppointmentService {
 		}
 		appointment.setPatient(patient);
 		repository.save(appointment);
+		sendEmailAppointment(appointment);
 		return "";
 	}
 
@@ -278,25 +298,61 @@ public class AppointmentService {
 		}
 		
 		if (msg.equals("")) {
-
-			
 			AppointmentInfo ai = new AppointmentInfo();
+			Patient patient = (Patient) userRepository.findById(appointment.getPatient().getId()).get();
+			if (appointment.getClass() == AppointmentDermatologist.class) {
+				patient.setCollectedPoints(patient.getCollectedPoints() + appointmentConsultationPointsRepository.getPointsByType("APPOINTMENT"));
+			}
+			else if (appointment.getClass() == AppointmentPharmacist.class) {
+				patient.setCollectedPoints(patient.getCollectedPoints() + appointmentConsultationPointsRepository.getPointsByType("CONSULTATION"));
+			}
+			
+			if (patient.getCategoryName().equals(CategoryName.REGULAR)) {
+				Category c = categoryRepository.findByCategoryName(CategoryName.SILVER);
+				if (patient.getCollectedPoints() >= c.getRequiredNumberOfPoints()) {
+					patient.setCategoryName(CategoryName.SILVER);
+				}
+			} else if (patient.getCategoryName().equals(CategoryName.SILVER)) {
+				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
+				Category c2 = categoryRepository.findByCategoryName(CategoryName.SILVER);
+				if (patient.getCollectedPoints() >= c1.getRequiredNumberOfPoints()) {
+					patient.setCategoryName(CategoryName.GOLD);
+				}
+				appointment.setDiscount((100.0 - c2.getDiscount()) / 100.0);
+			} else if (patient.getCategoryName().equals(CategoryName.GOLD)) {
+				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
+				appointment.setDiscount((100.0 - c1.getDiscount()) / 100.0);
+			}
+			appointment.setPatient(patient);
+			appointmentRepository.save(appointment);
+			userRepository.save(patient);
+			
 			ai.setAppointment(appointment);
 			ai.setComments(comments);
 			repo7.save(ai);
 			
 			Reservation r = new Reservation();
-			r.setEnd(LocalDateTime.now().plusDays(30));
-			r.setPatient(appointment.getPatient());
-			r.setPharmacy(appointment.getPharmacy());
-			r.setTotal(0);
-			Reservation last = repo8.findFirstByOrderByIdDesc();
-			if(last == null) {
-				r.setReservationId("Res1");
-			}else {
-				r.setReservationId("Res" + (last.getId() + 1));	
+			if(meds.length != 0) {
+				r.setEnd(LocalDateTime.now().plusDays(30));
+				r.setPatient(appointment.getPatient());
+				r.setPharmacy(appointment.getPharmacy());
+				r.setTotal(0);
+				Reservation last = repo8.findFirstByOrderByIdDesc();
+				if(last == null) {
+					r.setReservationId("Res1");
+				}else {
+					r.setReservationId("Res" + (last.getId() + 1));	
+				}
+				repo8.save(r);
+				
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+				mailMessage.setTo(appointment.getPatient().getEmail());
+				mailMessage.setSubject("Medication reservation");
+				mailMessage.setFrom(en.getProperty("spring.mail.username"));
+				mailMessage.setText("Medication has been reserved for you in pharmacy " + appointment.getPharmacy().getName() +  ". You can pick it up till one day before " 
+				+ r.getEnd() + ". When you come pick it up, you will have to give the pharmacist this identifier " + r.getReservationId() + ". Have a nice day!");
+				emailsend.sendEmail(mailMessage);
 			}
-			repo8.save(r);
 			
 			for (MedicineQuantity medicine : meds) {
 				for (MedicinePharmacy medicinePharm : repo4.findByPharmacyId(appointment.getPharmacy().getId())) {
@@ -325,6 +381,7 @@ public class AppointmentService {
 		return msg;
 	}
 	
+
 	
 	public List<AppointmentDermatologist>findAllFreeDermatologicalApp(){
 		return repository.findAllFreeDermatologicalApp();
@@ -338,6 +395,16 @@ public class AppointmentService {
 	
 	public List<AppointmentDermatologist> findAllDerAppWithPatientId(Integer id){
 		return repository.findAllDerAppWithPatientId(id);
+  }
+
+	public void sendEmailAppointment(Appointment appointment) {
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(appointment.getPatient().getEmail());
+		mailMessage.setSubject("New appointment scheduled");
+		mailMessage.setFrom(en.getProperty("spring.mail.username"));
+		mailMessage.setText("New appointment scheduled in pharmacy " + appointment.getPharmacy().getName() 
+				+ ". It is scheduled to be from " + appointment.getStart() + " to " + appointment.getEnd() + ". Have a nice day!");
+		emailsend.sendEmail(mailMessage);
 	}
 
 }

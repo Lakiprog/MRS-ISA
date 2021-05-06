@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
 import com.MRSISA2021_T15.service.MedicinePharmacyService;
@@ -52,5 +51,15 @@ public class MedicinePharmacyController {
 			}
 		}
 		return meds;
+	}
+	
+	@GetMapping(value = "/getAllMedicinePharmacy")
+	public List<MedicinePharmacy> getAllMedicinePharmacy() {
+		return mService.getAllMedicinePharmacy();
+	}
+	
+	@GetMapping(value = "/searchMedicineByName/{name}")
+	public List<MedicinePharmacy> searchMedicineByName(@PathVariable String name) {
+		return mService.searchMedicineByName(name);
 	}
 }

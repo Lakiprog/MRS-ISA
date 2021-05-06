@@ -65,9 +65,15 @@ import { DermatologistAppointmentsComponent, DialogStartDermatologist } from './
 import { DermatologistAppointmentInfoComponent } from './dermatologist-appointment-info/dermatologist-appointment-info.component';
 import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
 import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to-complaints.component';
+
 import { MakeDerAppPatientComponent } from './make-der-app-patient/make-der-app-patient.component';
 import { MakeDerAppPatientPart2Component } from './make-der-app-patient-part2/make-der-app-patient-part2.component';
 import { PatientSchedDermaAppComponent } from './patient-sched-derma-app/patient-sched-derma-app.component';
+import { PharmacistAbsenceComponent } from './pharmacist-absence/pharmacist-absence.component';
+import { DermatologistAbsenceComponent } from './dermatologist-absence/dermatologist-absence.component';
+import { SearchFilterMedicineComponent } from './search-filter-medicine/search-filter-medicine.component';
+import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.component';
+import { PharmacistReservationsComponent } from './pharmacist-reservations/pharmacist-reservations.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -117,6 +123,7 @@ FullCalendarModule.registerPlugins([
     DermatologistAppointmentInfoComponent,
     SupplierViewOffersComponent,
     RespondToComplaintsComponent,
+    SearchFilterMedicineComponent,
     DialogDataExampleDialogPharmacist,
     DialogDataExampleDialogDermatologist,
     DialogPredefined,
@@ -124,7 +131,11 @@ FullCalendarModule.registerPlugins([
     DialogStartDermatologist,
     MakeDerAppPatientComponent,
     MakeDerAppPatientPart2Component,
-    PatientSchedDermaAppComponent
+    PatientSchedDermaAppComponent,
+    PharmacistAbsenceComponent,
+    DermatologistAbsenceComponent,
+    LoyaltyProgramComponent,
+    PharmacistReservationsComponent
   ],
   imports: [
     BrowserModule,
@@ -185,6 +196,11 @@ FullCalendarModule.registerPlugins([
         path: 'respondToComplaints',
         canActivate: [SystemAdminRoutes],
         component: RespondToComplaintsComponent,
+      },
+      {
+        path: 'loyaltyProgram',
+        canActivate: [SystemAdminRoutes],
+        component: LoyaltyProgramComponent,
       },
       {
         path: 'systemAdminProfilePage',
@@ -280,7 +296,6 @@ FullCalendarModule.registerPlugins([
         canActivate: [PharmacyAdminRoutes],
         component: UpdateMedicineComponent,
       },
-
       {
         path: 'PharmacistProfilePageComponent',
         canActivate: [PharmacistRoutes],
@@ -291,7 +306,6 @@ FullCalendarModule.registerPlugins([
         canActivate: [DermatologistRoutes],
         component: DermatologistProfilePageComponent,
       },
-
       {
         path: 'userComplaint',
         canActivate: [PatientRoutes],
@@ -336,8 +350,26 @@ FullCalendarModule.registerPlugins([
         path: 'PatientScheduledDermaApp',
         canActivate: [PatientRoutes],
         component: PatientSchedDermaAppComponent,
-      }
-
+      },
+      {
+        path: 'PharmacistAbsenceComponent',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistAbsenceComponent,
+      },
+      {
+        path: 'DermatologistAbsenceComponent',
+        canActivate: [DermatologistRoutes],
+        component: DermatologistAbsenceComponent
+      },
+      {
+        path: 'searchFilterMedicine',
+        component: SearchFilterMedicineComponent,
+      },
+      {
+        path: 'PharmacistReservationsComponent',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistReservationsComponent,
+      },
     ]),
   ],
 

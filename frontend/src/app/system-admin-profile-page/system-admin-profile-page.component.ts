@@ -30,6 +30,14 @@ export class SystemAdminProfilePageComponent implements OnInit {
     this.router.navigate(['/respondToComplaints']);
   }
 
+  loyaltyProgram() {
+    this.router.navigate(['/loyaltyProgram']);
+  }
+
+  searchFilterMedicine() {
+    this.router.navigate(['/searchFilterMedicine']);
+  }
+
   logout() {
     this.authService.logout();
   }
