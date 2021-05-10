@@ -28,7 +28,7 @@ public class PatientSearchService {
 	}
 	
 	public List<Appointment> all(){
-		return repository.findAll();
+		return repository.findAllByOrderByStartDesc();
 	}
 	
 	public List<Patient> allPharmacist(Integer id){

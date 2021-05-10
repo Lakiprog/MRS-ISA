@@ -8,8 +8,8 @@ export class DermatologistPatientService {
 
   constructor(private _http: HttpClient) { }
 
-    public getPatientsDermatologist(){
+    public getPatientsDermatologist(start:string){
 
-        return this._http.get("http://localhost:8080/patient-search/searchPatientsDermatologist")
+        return this._http.get("http://localhost:8080/patient-search/searchPatientsDermatologist/start="+start)
     }
 }
