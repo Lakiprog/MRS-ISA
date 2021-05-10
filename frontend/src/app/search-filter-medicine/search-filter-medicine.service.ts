@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 })
 export class SearchFilterMedicineService {
 
+  
+
   constructor(private http: HttpClient) { }
 
   getAllMedicinePharmacy() {
@@ -19,4 +21,10 @@ export class SearchFilterMedicineService {
   getMedicineTypes() {
     return this.http.get<any>("http://localhost:8080/medicine/getMedicineTypes");
   }
+
+  orderMedicine(medicine:any){
+    return this.http.post<any>("http://localhost:8080/medicinePharmacy/orderMedicine", medicine);
+  }
+
 }
+
