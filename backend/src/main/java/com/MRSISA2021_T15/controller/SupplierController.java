@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
+import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.MedicineSupply;
 import com.MRSISA2021_T15.model.PurchaseOrder;
 import com.MRSISA2021_T15.model.PurchaseOrderMedicine;
 import com.MRSISA2021_T15.model.PurchaseOrderSupplier;
 import com.MRSISA2021_T15.model.Supplier;
+import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.PurchaseOrderRepository;
 import com.MRSISA2021_T15.service.SupplierService;
 import com.google.gson.Gson;
@@ -35,6 +37,9 @@ public class SupplierController {
 	
 	@Autowired
 	private PurchaseOrderRepository purchaseOrderRepository;
+	
+	@Autowired
+	private MedicineRepository medicineRepository;
 	
 	@PutMapping(value = "/updateSupplierData", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
@@ -110,5 +115,19 @@ public class SupplierController {
 		supplierService.updateOffer(offer);
 		Gson gson = new GsonBuilder().create();
 		return new ResponseEntity<String>(gson.toJson("Offer updated successfully."), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllMedicine", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
+	public List<Medicine> getAllMedicine() {
+		return (List<Medicine>) medicineRepository.findAll();
+	}
+	
+	@PostMapping(value = "/updateMedicineStock", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
+	public ResponseEntity<String> updateMedicineStock(@RequestBody MedicineSupply medicineSupply) {
+		String message = supplierService.updateMedicineStock(medicineSupply);
+		Gson gson = new GsonBuilder().create();
+		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.OK);
 	}
 }

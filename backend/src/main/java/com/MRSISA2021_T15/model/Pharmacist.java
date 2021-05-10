@@ -30,8 +30,6 @@ public class Pharmacist extends User{
 	@JsonIgnore
 	@OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Absence> absence;
-	@Column(name = "first_login")
-	private boolean firstLogin;
 	@Column(name = "rating")
 	private double rating;
 	@OneToOne(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -56,13 +54,4 @@ public class Pharmacist extends User{
 	public Pharmacist() {
 		super();
 	}
-
-	public boolean isFirstLogin() {
-		return firstLogin;
-	}
-
-	public void setFirstLogin(boolean firstLogin) {
-		this.firstLogin = firstLogin;
-	}
-	
 }

@@ -90,6 +90,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/suppliers/getOffersBySupplier").hasAuthority("ROLE_SUPPLIER")
 				.antMatchers("/suppliers/getPendingOffersBySupplier").hasAuthority("ROLE_SUPPLIER")
 				.antMatchers("/suppliers/updateOffer").hasAuthority("ROLE_SUPPLIER")
+				.antMatchers("/suppliers/getAllMedicine").hasAuthority("ROLE_SUPPLIER")
+				.antMatchers("/suppliers/updateMedicineStock").hasAuthority("ROLE_SUPPLIER")
 				.antMatchers("/appointment_creation/pharmacist").hasAuthority("ROLE_PHARMACIST")
 				.antMatchers("/appointment_creation/getPharmacist/id={id}").hasAuthority("ROLE_PHARMACIST")
 				.antMatchers("/appointment_creation/getDermatologist/id={id}").hasAuthority("ROLE_DERMATOLOGIST")
@@ -119,6 +121,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/patients/searchPatient").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/patients/changeData").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/patients/updatePassword").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/patients/subscribeToPharamacy").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/patients/unsubscribeToPharamacy").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/patients/getSubscribedPharmacies").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/patient-search/searchPatientsPharmacist").hasAuthority("ROLE_PHARMACIST")
 				.antMatchers("/patient-search/searchPatientsDermatologist").hasAuthority("ROLE_DERMATOLOGIST")
 				.antMatchers("/pharmacist/add").hasAuthority("ROLE_PHARMACY_ADMIN")
@@ -149,6 +154,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/loyaltyProgram/getCategoryNames").hasAuthority("ROLE_SYSTEM_ADMIN")
 				.antMatchers("/loyaltyProgram/definePointsForAppointmentAndConsulation").hasAuthority("ROLE_SYSTEM_ADMIN")
 				.antMatchers("/medicinePharmacy/orderMedicine").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/systemAdmin/updatePassword").hasAuthority("ROLE_SYSTEM_ADMIN")
+
 			.anyRequest().authenticated().and()
 			.cors().and()
 			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailsService), BasicAuthenticationFilter.class);

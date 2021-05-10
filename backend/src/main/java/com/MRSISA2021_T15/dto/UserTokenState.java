@@ -7,6 +7,7 @@ public class UserTokenState {
     private Integer id;
     private String username;
     private String role;
+    private Boolean firstLogin;
 
     public UserTokenState() {
         this.accessToken = null;
@@ -14,14 +15,16 @@ public class UserTokenState {
         this.id = null;
         this.username = null;
         this.role = null;
+        this.firstLogin = null;
     }
 
-    public UserTokenState(String accessToken, long expiresIn, Integer id, String username, String role) {
+    public UserTokenState(String accessToken, long expiresIn, Integer id, String username, String role, Boolean firstLogin) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.id = id;
         this.username = username;
         this.role = role;
+        this.firstLogin = firstLogin;
     }
 
     public String getAccessToken() {
@@ -62,5 +65,13 @@ public class UserTokenState {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Boolean getFirstLogin() {
+		return firstLogin;
+	}
+
+	public void setFirstLogin(Boolean firstLogin) {
+		this.firstLogin = firstLogin;
 	}
 }
