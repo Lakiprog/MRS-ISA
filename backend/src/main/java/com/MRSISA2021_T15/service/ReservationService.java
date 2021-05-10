@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +13,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.model.Employment;
+import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
+import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.model.Reservation;
 import com.MRSISA2021_T15.model.ReservationItem;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
+import com.MRSISA2021_T15.repository.MedicineQuantityRepository;
 import com.MRSISA2021_T15.repository.ReservationItemRepository;
 import com.MRSISA2021_T15.repository.ReservationRepository;
 
@@ -33,6 +37,10 @@ public class ReservationService {
 	EmailSenderService emailsS;
 	@Autowired
 	Environment envir;
+	@Autowired
+	MedicineQuantityRepository medicineQuantityRepo;
+	
+	private static Integer reservationId = 1;
 
 	public ArrayList<List<Object>> getReservations(Integer id){
 		ArrayList<List<Object>> list = new ArrayList<>();
@@ -79,4 +87,31 @@ public class ReservationService {
 		
 		return "";
 	}
+	
+	
+	public void saveReservation(MedicinePharmacy order, Patient patient, LocalDateTime date) {
+		MedicineQuantity mq = new MedicineQuantity();
+		mq.setMedicine(order.getMedicine());
+		mq.setQuantity(order.getAmount());
+		medicineQuantityRepo.save(mq);
+		
+		Reservation r = new Reservation();
+		r.setPatient(patient);
+		r.setPharmacy(order.getPharmacy());
+		r.setEnd(date);
+		r.setReservationId(reservationId.toString());
+		reservationId++;
+		r.setTotal(order.getCost());
+		
+		ReservationItem ri = new ReservationItem();
+		ri.setMedicine(mq);
+		
+		ri.setReservation(r);
+		
+		resRepo.save(r);
+		resiRepo.save(ri);
+		
+	}
+	
+	
 }

@@ -1,5 +1,7 @@
 package com.MRSISA2021_T15.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +20,14 @@ public class MedicinePharmacy {
 	private double cost;
 	@Column
 	private int amount;
+	@Column
+	private LocalDateTime date;
+	public LocalDateTime getDate() {
+		return date;
+	}
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
 	@ManyToOne
 	private Pharmacy pharmacy;
 	@ManyToOne

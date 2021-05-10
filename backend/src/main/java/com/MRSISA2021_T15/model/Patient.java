@@ -33,11 +33,14 @@ public class Patient extends User{
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Reservation> reservation;
 	
+	
 	@Column
 	private double collectedPoints;
 	
 	@Column
 	private CategoryName categoryName;
+	
+
 
 	public Set<Complaint> getComplaints() {
 		return complaints;

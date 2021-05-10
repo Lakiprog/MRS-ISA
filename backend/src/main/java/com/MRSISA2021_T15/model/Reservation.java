@@ -37,7 +37,8 @@ public class Reservation {
 	@OneToMany(mappedBy = "reservation", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ReservationItem> items;
 	
-
+	@Column
+	private double ReservationItem;
 
 	public Integer getId() {
 		return id;

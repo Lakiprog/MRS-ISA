@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../login/auth.service';
 import { SearchFilterMedicineService } from './search-filter-medicine.service';
 import jspdf from 'jspdf';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-search-filter-medicine',
@@ -15,7 +17,7 @@ import jspdf from 'jspdf';
 export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
 
   displayedColumnsMedicine: string[] = ['name', 'medicineType', 'averageRating', 
-    'viewMedicineDetails', 'pharmacy', 'price', 'quantity'];
+    'viewMedicineDetails', 'pharmacy', 'price', 'quantity', 'schedule'];
   medicineTypes = [];
   grades = ['1', '2', '3', '4', '5'];
   medicineData = [];
@@ -26,12 +28,22 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
   selectedMedicine: any;
   isPatientLoggedOn = this.authService.getTokenData()?.role === 'ROLE_PATIENT' ? true : false;
 
+
+  minDate: any;
+  maxDate: any;
+
+  RESPONSE_OK : number = 0;
+  RESPONSE_ERROR : number = -1;
+
+  verticalPosition: MatSnackBarVerticalPosition = "top";
+
   constructor
   (
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
     private searchFilterMedicineService: SearchFilterMedicineService,
+    private snackBar: MatSnackBar
   ) {}
 
   @ViewChild(MatPaginator)
@@ -47,6 +59,13 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
         search: ['']
       }
     ); 
+
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    
+    this.minDate = new Date(currentYear, currentMonth, 1);
+    this.maxDate = new Date(currentYear, currentMonth+6);
+    
   }
   ngAfterViewInit(): void {
     this.medicineDataSource.paginator = this.paginatorMedicine;
@@ -141,4 +160,50 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
       this.router.navigate(['/pharmacyAdmin']);
     }
   }
+
+
+  showMedicineCard:boolean = false;
+  chosenMedicine:any;
+  pickedDate:any;
+
+  
+
+  schedule(row:any){
+    this.showMedicineCard = true;
+    this.chosenMedicine = row;
+
+  }
+
+  addEvent(event: MatDatepickerInputEvent<Date>, medicine:any) {
+    this.pickedDate = event.value;
+    this.chosenMedicine.date = this.pickedDate.toISOString();
+    
+  }
+
+  order(){
+    console.log(this.chosenMedicine);
+    this.searchFilterMedicineService.orderMedicine(this.chosenMedicine).subscribe(
+      response => {
+        this.openSnackBar(response, this.RESPONSE_OK);
+      },
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+      }
+    );
+}
+
+openSnackBar(msg: string, responseCode: number) {
+  this.snackBar.open(msg, "x", {
+    duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+    verticalPosition: this.verticalPosition,
+    panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
+  });
+  if(responseCode === this.RESPONSE_OK){
+    this.back();
+  }
+}
+  quit(){
+    this.showMedicineCard = false;
+  }
+
 }

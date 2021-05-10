@@ -27,19 +27,19 @@ table {
 }
 
 .coloumnName {
-    width: 20%;  
+    width: 15%;  
 }
 
 .coloumnMedicineType {
-    width: 10%; 
+    width: 15%; 
 }
 
 .coloumnaverageRating{
-    width: 5%; 
+    width: 10%; 
 }
 
 .coloumnViewMedicineDetails {
-    width: 10%;
+    width: 20%;
 }
 
 .coloumnPharmacy {
@@ -47,9 +47,34 @@ table {
 }
 
 .coloumnPrice {
-    width: 5%;
+    width: 10%;
 }
 
 .coloumnQuantity {
-    width: 5%;
+    width: 10%;
+}
+
+.buttonSchedule{
+    width: 15%;
+}
+
+.imageP{
+    width: 300px;
+    height: 200px;
+    margin-left: 55px;
+}
+
+.medicineCardDiv{
+    margin-left: 1050px;
+    margin-top: -650px;
+}
+
+.medicineCard{
+    background-color: #DEEDE6;
+    width: 410px;
+    
+}
+
+ng-container{
+    margin-left: 5px;
 }
