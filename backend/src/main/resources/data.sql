@@ -16,7 +16,11 @@ insert into user (USER_TYPE, email, name, surname, address, city, country, phone
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp1@gmail.com', 'Marko', 'Jovanovic', 'asdf', 'NS', 'Srbija', '0601234569', 'mare', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, true);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp2@gmail.com', 'Jovan', 'Petrovic', 'asdf', 'NS', 'Srbija', '0601234569', 'jova', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, false);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp3@gmail.com', 'Stefan', 'Teodorovic', 'asdf', 'NS', 'Srbija', '0601234569', 'stefan', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, false);
+
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('PHARMACIST', 'workaholic@gmail.com', 'Mika', 'Markuka', 'Telep', 'NS', 'Srbija', '0620602311', 'workaholic', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', false, 1, true);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('PHARMACIST', 'firster@gmail.com', 'Moka', 'Markuka', 'Telep', 'NS', 'Srbija', '0623602311', 'firstlog', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, 1, true);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('DERMATOLOGIST', 'firster2@gmail.com', 'Mokadon', 'Markukadon', 'Telep', 'NS', 'Srbija', '0623602511', 'firstlogder', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, 1, true);
+
 
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SYSTEM_ADMIN', 'admin@gmail.com', 'Ranko', 'Urosevic', 'asdf', 'NS', 'Srbija', '0601234569', 'rane', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, true);
 
@@ -53,7 +57,7 @@ insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-01-23 12:30:00', '2021-01-23 17:30:00', 1000, 0, 2, 5, null, 1, true);
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-02-22 18:30:00', '2021-02-22 19:30:00', 1000, 0, 3, 5, null, 1, true);
 
-insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-05-10 18:30:00', '2021-05-10 23:30:00', 1000, 0, 3, 13, null, 1, false);
+insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-05-12 12:30:00', '2021-05-12 14:00:00', 1000, 0, 3, 5, null, 1, false);
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-05-12 17:30:00', '2021-05-12 18:45:00', 1000, 0, 2, null, 6, 2, false);
 
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-01-22 16:30:00', '2021-01-22 18:30:00', 1000, 0, 1, null, 6, 1, true);

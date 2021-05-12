@@ -66,6 +66,10 @@ export class PharmacistAppointmentsComponent implements OnInit {
     this.calendarOptions.events = this.events;
  }
 
+ back(){
+  this.router.navigate(['/PharmacistHomePage']);
+}
+
 }
 
 @Component({

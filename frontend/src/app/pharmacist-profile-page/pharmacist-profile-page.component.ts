@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { AuthService } from '../login/auth.service';
 import { PasswordValidator } from '../registration/validators/passwordValidator';
 import { PharmacistUpdateService } from './pharmacist-update.service';
@@ -16,7 +17,7 @@ export class PharmacistProfilePageComponent implements OnInit {
   updatePasswordForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  constructor(private fb: FormBuilder, private _pharmacistUpdateService: PharmacistUpdateService, private _snackBar: MatSnackBar, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private _pharmacistUpdateService: PharmacistUpdateService, private _snackBar: MatSnackBar, private authService: AuthService, public router: Router) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   ngOnInit(): void {
@@ -105,6 +106,10 @@ export class PharmacistProfilePageComponent implements OnInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  back(){
+    this.router.navigate(['/PharmacistHomePage']);
   }
 
 }

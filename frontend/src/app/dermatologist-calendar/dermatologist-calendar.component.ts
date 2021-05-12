@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import {DermatologistCalendarService} from './dermatologist-calendar.service'
 import { CalendarOptions } from '@fullcalendar/angular';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dermatologist-calendar',
@@ -10,7 +11,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class DermatologistCalendarComponent implements OnInit {
 
-  constructor(private service : DermatologistCalendarService, public dialog: MatDialog) { }
+  constructor(private service : DermatologistCalendarService, public dialog: MatDialog, public router : Router) { }
 
   events:any[] = [];
   current:any;
@@ -57,6 +58,10 @@ export class DermatologistCalendarComponent implements OnInit {
     data: this.current,
     disableClose: false
   });
+}
+
+back(){
+  this.router.navigate(['/DermatologistHomePage']);
 }
 
 }

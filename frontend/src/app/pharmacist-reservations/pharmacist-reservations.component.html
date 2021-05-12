@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <body class = "supplier-profile-page-background">
-    <mat-toolbar color = "primary"></mat-toolbar>
+    <mat-toolbar color = "primary">
+        <mat-toolbar-row>
+            <a mat-button (click) = "back()">Back</a>
+        </mat-toolbar-row>
+    </mat-toolbar>
     <mat-card class = "table-card">
         <mat-card-title>See reservation</mat-card-title>
         <form [formGroup] = "medicinePrescribedForm" class = "medicine-form">

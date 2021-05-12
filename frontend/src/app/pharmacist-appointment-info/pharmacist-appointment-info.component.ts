@@ -208,4 +208,12 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
     this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
   }
 
+  back(){
+    this.router.navigate(['/PharmacistAppointmentsComponent']);
+  }
+
+  homepage(){
+    this.router.navigate(['/PharmacistHomePage']);
+  }
+
 }

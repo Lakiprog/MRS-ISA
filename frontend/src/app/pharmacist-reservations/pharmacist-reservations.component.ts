@@ -76,6 +76,7 @@ export class PharmacistReservationsComponent implements OnInit {
             response => {
               this.openSnackBar(response, this.RESPONSE_OK);
               this.reset();
+              this.back();
             },
             error => {
               this.openSnackBar(error.error, this.RESPONSE_ERROR);
@@ -97,4 +98,7 @@ export class PharmacistReservationsComponent implements OnInit {
     this.reservation = undefined;
   }
 
+  back(){
+    this.router.navigate(['/PharmacistHomePage']);
+  }
 }

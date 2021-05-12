@@ -106,10 +106,13 @@ export class DermatologistChoosePredefinedComponent implements OnInit {
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
     if(responseCode === this.RESPONSE_OK){
-      this.router.navigate(['/DermatologistAppointmentInfoComponent'], {state: {data: {appointment : history.state.data.appointment, information : {comment: history.state.data.information.comment, medication:history.state.data.information.medication}}}});
+      this.back();
     }
   }
 
+  back(){
+    this.router.navigate(['/DermatologistAppointmentInfoComponent'], {state: {data: {appointment : history.state.data.appointment, information : {comment: history.state.data.information.comment, medication:history.state.data.information.medication}}}});
+  }
 }
 
 @Component({
