@@ -18,11 +18,12 @@ insert into user (USER_TYPE, email, name, surname, address, city, country, phone
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp3@gmail.com', 'Stefan', 'Teodorovic', 'asdf', 'NS', 'Srbija', '0601234569', 'stefan', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, false);
 
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('PHARMACIST', 'workaholic@gmail.com', 'Mika', 'Markuka', 'Telep', 'NS', 'Srbija', '0620602311', 'workaholic', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', false, 1, true);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SYSTEM_ADMIN', 'admin@gmail.com', 'Ranko', 'Urosevic', 'asdf', 'NS', 'Srbija', '0601234569', 'rane', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, true);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('PHARMACIST', 'firster@gmail.com', 'Moka', 'Markuka', 'Telep', 'NS', 'Srbija', '0623602311', 'firstlog', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, 1, true);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('DERMATOLOGIST', 'firster2@gmail.com', 'Mokadon', 'Markukadon', 'Telep', 'NS', 'Srbija', '0623602511', 'firstlogder', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, 1, true);
 
 
-insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SYSTEM_ADMIN', 'admin@gmail.com', 'Ranko', 'Urosevic', 'asdf', 'NS', 'Srbija', '0601234569', 'rane', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, true);
+
 
 insert into role (name) values ('ROLE_PATIENT');
 insert into role (name) values ('ROLE_SYSTEM_ADMIN');
@@ -45,6 +46,8 @@ insert into user_role (user_id, role_id) values (11, 4);
 insert into user_role (user_id, role_id) values (12, 4);
 insert into user_role (user_id, role_id) values (13, 6);
 insert into user_role (user_id, role_id) values (14, 2);
+insert into user_role (user_id, role_id) values (15, 6);
+insert into user_role (user_id, role_id) values (16, 5);
 
 
 insert into employment (EMPLOYMENT_TYPE, end, start, pharmacy_id, pharmacist_id) values ('EMPLOYMENT_PHARMACIST', 20, 9, 1, 5);

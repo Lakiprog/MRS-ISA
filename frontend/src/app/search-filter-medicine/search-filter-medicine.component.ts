@@ -152,7 +152,7 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
       this.router.navigate(['/UserHomePage']);
     } else if (this.authService.getTokenData()?.role === 'ROLE_SYSTEM_ADMIN') {
       this.router.navigate(['/systemAdminProfilePage']);
-    } else if (this.authService.getTokenData()?.role === 'ROLE_FARMACIST') {
+    } else if (this.authService.getTokenData()?.role === 'ROLE_PHARMACIST') {
       this.router.navigate(['/PharmacistHomePage']);
     } else if (this.authService.getTokenData()?.role === 'ROLE_DERMATOLOGIST') {
       this.router.navigate(['/DermatologistHomePage']);
