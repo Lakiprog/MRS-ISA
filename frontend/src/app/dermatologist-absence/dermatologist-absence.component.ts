@@ -54,6 +54,7 @@ export class DermatologistAbsenceComponent implements OnInit{
                 response => {
                   this.openSnackBar(response, this.RESPONSE_OK);
                   this.appointmentForm.reset();
+                  this.back();
                 },
                 error => {
                   this.openSnackBar(error.error, this.RESPONSE_ERROR);
@@ -68,6 +69,10 @@ export class DermatologistAbsenceComponent implements OnInit{
           verticalPosition: this.verticalPosition,
           panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
         });
+      }
+      
+      back(){
+        this.router.navigate(['/DermatologistHomePage']);
       }
     
 }

@@ -54,6 +54,7 @@ export class PharmacistAbsenceComponent implements OnInit{
                 response => {
                   this.openSnackBar(response, this.RESPONSE_OK);
                   this.appointmentForm.reset();
+                  this.back();
                 },
                 error => {
                   this.openSnackBar(error.error, this.RESPONSE_ERROR);
@@ -70,4 +71,7 @@ export class PharmacistAbsenceComponent implements OnInit{
         });
       }
     
+      back(){
+        this.router.navigate(['/PharmacistHomePage']);
+      }
 }
