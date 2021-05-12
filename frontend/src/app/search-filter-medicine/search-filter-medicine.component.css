@@ -1,3 +1,9 @@
+body {
+    background: url(./medicinePill.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
 .field-width {
     width: 100%;
 }

@@ -49,6 +49,30 @@ public class PatientSearchController {
 
 		return patients;
 	}
+	
+	@GetMapping(value = "/searchAllPharmacist/name={name}surname={surname}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public Collection<Patient> searchAllPharmacist(@PathVariable("name") String name, @PathVariable("surname") String surname) {
+		ArrayList<Patient> patients = new ArrayList<>();
+		for (Patient patient : service.allPatients()) {
+			if(patient.getName().startsWith(name) && patient.getSurname().startsWith(surname)) {
+				patients.add(patient);
+			}
+		}
+		return patients;
+	}
+	
+	@GetMapping(value = "/searchAllDermatologist/name={name}surname={surname}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public Collection<Patient> searchAllDermatologist(@PathVariable("name") String name, @PathVariable("surname") String surname) {
+		ArrayList<Patient> patients = new ArrayList<>();
+		for (Patient patient : service.allPatients()) {
+			if(patient.getName().startsWith(name) && patient.getSurname().startsWith(surname)) {
+				patients.add(patient);
+			}
+		}
+		return patients;
+	}
 
 	@GetMapping(value = "/searchPatientsDermatologist/start={start}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
