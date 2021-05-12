@@ -54,6 +54,8 @@ insert into employment (EMPLOYMENT_TYPE, end, start, pharmacy_id, pharmacist_id)
 insert into employment (EMPLOYMENT_TYPE, end, start, pharmacy_id, dermatologist_id) values ('EMPLOYMENT_DERMATOLOGIST', 20, 8, 1, 6);
 insert into employment (EMPLOYMENT_TYPE, end, start, pharmacy_id, dermatologist_id) values ('EMPLOYMENT_DERMATOLOGIST', 19, 9, 2, 6);
 insert into employment (EMPLOYMENT_TYPE, end, start, pharmacy_id, pharmacist_id) values ('EMPLOYMENT_PHARMACIST', 24, 0, 1, 13);
+insert into employment (EMPLOYMENT_TYPE, end, start, pharmacy_id, pharmacist_id) values ('EMPLOYMENT_PHARMACIST', 20, 9, 1, 15);
+insert into employment (EMPLOYMENT_TYPE, end, start, pharmacy_id, dermatologist_id) values ('EMPLOYMENT_DERMATOLOGIST', 20, 8, 1, 16);
 
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-01-22 18:30:00', '2021-01-22 19:30:00', 1000, 0, 1, 5, null, 1, true);
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-01-22 19:45:00', '2021-01-22 20:30:00', 1000, 0, 1, 5, null, 1, true);

@@ -23,10 +23,12 @@ body {
 
 button{
   margin-right: 10px;
+  margin-bottom: 10px;
+  display: block;
 }
 
 .table-card {
-  width: 700px;
+  width: 50%;
   margin-top: 10px;
   margin-left: 10px;
   background-color: #DEEDE6
@@ -42,10 +44,6 @@ table {
 }
 
 .coloumnComposition {
-  width: 20%; 
-}
-
-.coloumnName {
   width: 20%; 
 }
 

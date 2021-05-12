@@ -41,36 +41,56 @@ import { AuthService } from '../login/auth.service';
     patients(){
       if(!this.firstLogin){
         this.router.navigate(["/DermatologistPatientComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
+      }
+    }
+
+    allPatients(){
+      if(!this.firstLogin){
+        this.router.navigate(["/DermatologistUsersComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     calendar(){
       if(!this.firstLogin){
         this.router.navigate(["/DermatologistCalendarComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     absence(){
       if(!this.firstLogin){
         this.router.navigate(["/DermatologistAbsenceComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     appointments(){
       if(!this.firstLogin){
         this.router.navigate(["/DermatologistAppointmentsComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     reservations(){
       if(!this.firstLogin){
         this.router.navigate(["/DermatologistReservationsComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     medicine(){
       if(!this.firstLogin){
         this.router.navigate(["/searchFilterMedicine"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
   

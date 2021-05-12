@@ -76,6 +76,8 @@ import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.compo
 import { PharmacistReservationsComponent } from './pharmacist-reservations/pharmacist-reservations.component';
 import { SupplierMedicineStockComponent } from './supplier-medicine-stock/supplier-medicine-stock.component';
 import { PatientSubscribedPharmaciesComponent } from './patient-subscribed-pharmacies/patient-subscribed-pharmacies.component';
+import { PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.component';
+import { DermatologistUsersComponent } from './dermatologist-users/dermatologist-users.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -139,7 +141,9 @@ FullCalendarModule.registerPlugins([
     LoyaltyProgramComponent,
     PharmacistReservationsComponent,
     SupplierMedicineStockComponent,
-    PatientSubscribedPharmaciesComponent
+    PatientSubscribedPharmaciesComponent,
+    PharmacistUsersComponent,
+    DermatologistUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -383,6 +387,16 @@ FullCalendarModule.registerPlugins([
         path: 'PharmacistReservationsComponent',
         canActivate: [PharmacistRoutes],
         component: PharmacistReservationsComponent,
+      },
+      {
+        path: 'PharmacistUsersComponent',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistUsersComponent,
+      },
+      {
+        path: 'DermatologistUsersComponent',
+        canActivate: [DermatologistRoutes],
+        component: DermatologistUsersComponent,
       },
     ]),
   ],

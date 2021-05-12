@@ -1,5 +1,5 @@
-.supplier-profile-page-background {
-    /*background: url(../pictures/supplier-profile-page.jpg);*/
+body {
+    background: url(../pictures/patients.png);
     background-size: cover;
     background-attachment: fixed;
   }

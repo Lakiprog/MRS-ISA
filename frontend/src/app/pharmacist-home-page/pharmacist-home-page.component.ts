@@ -41,36 +41,56 @@ import { AuthService } from '../login/auth.service';
     patients(){
       if(!this.firstLogin){
         this.router.navigate(["/PharmacistPatientComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
+      }
+    }
+
+    allPatients(){
+      if(!this.firstLogin){
+        this.router.navigate(["/PharmacistUsersComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     calendar(){
       if(!this.firstLogin){
         this.router.navigate(["/PharmacistCalendarComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     absence(){
       if(!this.firstLogin){
         this.router.navigate(["/PharmacistAbsenceComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     appointments(){
       if(!this.firstLogin){
         this.router.navigate(["/PharmacistAppointmentsComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     reservations(){
       if(!this.firstLogin){
         this.router.navigate(["/PharmacistReservationsComponent"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
 
     medicine(){
       if(!this.firstLogin){
         this.router.navigate(["/searchFilterMedicine"]);
+      }else{
+        this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK, 20000);
       }
     }
   
