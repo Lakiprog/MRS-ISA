@@ -14,10 +14,18 @@ export class DermatologistCalendarComponent implements OnInit {
   constructor(private service : DermatologistCalendarService, public dialog: MatDialog, public router : Router) { }
 
   events:any[] = [];
+  pharmacies:any[] = [];
   current:any;
+  pharmaci:any;
 
   ngOnInit(): void {
-    this.service.getAppointmentsDermatologist().subscribe((data:any) => {this.events = data; console.log(this.events); this.addEvents();});
+    this.service.getAppointmentsDermatologist().subscribe((data:any) => {this.events = data; this.addEvents();});
+    this.service.getEmployments().subscribe((data:any) =>{
+      data.forEach((employment:any) => {
+        this.pharmacies.push(employment.pharmacy);
+      });
+    })
+    this.pharmaci = "All";
   }
 
   calendarOptions: CalendarOptions = {
@@ -62,6 +70,14 @@ export class DermatologistCalendarComponent implements OnInit {
 
 back(){
   this.router.navigate(['/DermatologistHomePage']);
+}
+
+change(){
+  if( typeof this.pharmaci === 'string'){
+    this.service.getAppointmentsDermatologist().subscribe((data:any) => {this.events = data; this.addEvents();});
+  }else{
+    this.service.getAppointmentsPharmacy(this.pharmaci.id).subscribe((data:any) => {this.events = data; this.addEvents();});
+  }
 }
 
 }

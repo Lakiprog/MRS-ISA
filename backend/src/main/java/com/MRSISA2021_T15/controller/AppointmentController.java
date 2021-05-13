@@ -22,6 +22,7 @@ import com.MRSISA2021_T15.dto.AppointmentEndDermatologist;
 import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.AppointmentPharmacist;
+import com.MRSISA2021_T15.model.EmploymentDermatologist;
 import com.MRSISA2021_T15.model.MedicineQuantity;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.service.AppointmentService;
@@ -114,5 +115,11 @@ public class AppointmentController {
 			return new ResponseEntity<String>(gson.toJson("Appointment succesfully ended, information is saved."), HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping(path="/employmentsDermatologist", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public @ResponseBody List<EmploymentDermatologist> getEmploymentsDermatologistId() {
+		return service.employmentsDermatologist();
 	}
 }
