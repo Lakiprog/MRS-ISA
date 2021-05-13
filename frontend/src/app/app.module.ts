@@ -11,6 +11,7 @@ import { AngularMaterialModule } from './angular_material.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSortModule } from '@angular/material/sort';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -78,6 +79,7 @@ import { SupplierMedicineStockComponent } from './supplier-medicine-stock/suppli
 import { PatientSubscribedPharmaciesComponent } from './patient-subscribed-pharmacies/patient-subscribed-pharmacies.component';
 import { PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.component';
 import { DermatologistUsersComponent } from './dermatologist-users/dermatologist-users.component';
+import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-prescription.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -143,7 +145,8 @@ FullCalendarModule.registerPlugins([
     SupplierMedicineStockComponent,
     PatientSubscribedPharmaciesComponent,
     PharmacistUsersComponent,
-    DermatologistUsersComponent
+    DermatologistUsersComponent,
+    MedicinePrescriptionComponent
   ],
   imports: [
     BrowserModule,
@@ -156,6 +159,7 @@ FullCalendarModule.registerPlugins([
     ReactiveFormsModule,
     MatSortModule,
     LayoutModule,
+    MaterialFileInputModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
@@ -397,6 +401,11 @@ FullCalendarModule.registerPlugins([
         path: 'DermatologistUsersComponent',
         canActivate: [DermatologistRoutes],
         component: DermatologistUsersComponent,
+      },
+      {
+        path: 'medicinePrescription',
+        canActivate: [PatientRoutes],
+        component: MedicinePrescriptionComponent,
       },
     ]),
   ],

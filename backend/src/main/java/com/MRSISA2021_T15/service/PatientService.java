@@ -1,6 +1,14 @@
 package com.MRSISA2021_T15.service;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -10,12 +18,26 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.PatientSubPharmacyRepository;
+import com.MRSISA2021_T15.repository.PharmacyRepository;
 import com.MRSISA2021_T15.repository.PromotionRepository;
 import com.MRSISA2021_T15.repository.UserRepository;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.Dermatologist;
+import com.MRSISA2021_T15.model.EReceiptMedicineDetails;
+import com.MRSISA2021_T15.model.EReceiptSearch;
+import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.PatientSubPharmacy;
 import com.MRSISA2021_T15.model.Pharmacist;
@@ -41,6 +63,12 @@ public class PatientService {
 	
 	@Autowired
 	private Environment env;
+	
+	@Autowired
+	private MedicinePharmacyRepository medicinePharmacyRepository;
+	
+	@Autowired
+	private PharmacyRepository pharmacyRepository;
 	
 	public List<Patient> findAllPatients(){
 		return repository.findAllPatients();
@@ -135,13 +163,48 @@ public class PatientService {
 	public void sendPromotionMails() throws InterruptedException {
 		List<PatientSubPharmacy> subscribedPatients = patientSubPharmacyRepository.findBySubscribedTrue();
 		for (PatientSubPharmacy psp: subscribedPatients) {
-			SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(psp.getPatient().getEmail());
-            mailMessage.setSubject("Pharmacy " + psp.getPharmacy().getName() + " PROMOTION!!!!");
-            mailMessage.setFrom(env.getProperty("spring.mail.username"));
-            mailMessage.setText(promotionRepository.getDescriptionByPharmacyId(psp.getPharmacy().getId()));
-            emailSenderService.sendEmail(mailMessage);
-            Thread.sleep(3000);
+			List<String> descriptions = promotionRepository.getDescriptionByPharmacyId(psp.getPharmacy().getId(), LocalDate.now());
+			for (String description : descriptions) {
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+	            mailMessage.setTo(psp.getPatient().getEmail());
+	            mailMessage.setSubject("Pharmacy " + psp.getPharmacy().getName() + " PROMOTION!!!!");
+	            mailMessage.setFrom(env.getProperty("spring.mail.username"));
+	            mailMessage.setText(description);
+	            emailSenderService.sendEmail(mailMessage);
+	            Thread.sleep(3000);
+			}
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<EReceiptSearch> sendQrCode(MultipartFile file) throws IOException, NotFoundException {
+		InputStream is = new ByteArrayInputStream(file.getBytes());
+        BufferedImage newBi = ImageIO.read(is);
+		BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(newBi)));
+		Result result = new MultiFormatReader().decode(binaryBitmap);
+		String jsonString = result.getText();
+		Gson gson = new Gson();
+		List<EReceiptMedicineDetails> requiredMedicine = (List<EReceiptMedicineDetails>) gson.fromJson(jsonString, new TypeToken<List<EReceiptMedicineDetails>>(){}.getType());
+		List<Pharmacy> pharmacies = (List<Pharmacy>) pharmacyRepository.findAll();
+		List<EReceiptSearch> pharmaciesWithRequiredMedicine = new ArrayList<EReceiptSearch>();
+		for (Pharmacy p : pharmacies) {
+			List<MedicinePharmacy> tempList = new ArrayList<MedicinePharmacy>();
+			for (EReceiptMedicineDetails ermd: requiredMedicine) {
+				MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCode(p.getId(), ermd.getMedicineCode());
+				if (pharmacyWithRequiredMedicine != null) {
+					tempList.add(pharmacyWithRequiredMedicine);
+				}
+			}
+			if (tempList.size() == requiredMedicine.size()) {
+				EReceiptSearch ers = new EReceiptSearch();
+				ers.setPharmacy(p);
+				ers.seteReceiptMedicineDetails(requiredMedicine);
+				for (MedicinePharmacy mp : tempList) {
+					ers.setTotal(ers.getTotal() + mp.getCost());
+				}
+				pharmaciesWithRequiredMedicine.add(ers);
+			}
+		}
+		return pharmaciesWithRequiredMedicine;
 	}
 }
