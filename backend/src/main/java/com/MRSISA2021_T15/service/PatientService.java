@@ -190,7 +190,7 @@ public class PatientService {
 		for (Pharmacy p : pharmacies) {
 			List<MedicinePharmacy> tempList = new ArrayList<MedicinePharmacy>();
 			for (EReceiptMedicineDetails ermd: requiredMedicine) {
-				MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCode(p.getId(), ermd.getMedicineCode());
+				MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCode(p.getId(), ermd.getMedicineCode(), ermd.getQuantity());
 				if (pharmacyWithRequiredMedicine != null) {
 					tempList.add(pharmacyWithRequiredMedicine);
 				}
