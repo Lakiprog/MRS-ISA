@@ -4,5 +4,12 @@
             <a mat-button (click) = "back()">Back</a>
         </mat-toolbar-row>
     </mat-toolbar>
+        <mat-form-field class="field">
+            <mat-label>Select a pharmacy </mat-label>
+            <mat-select  [(ngModel)]="pharmaci" (ngModelChange) = "change()" id="pharmacies" #ctrl="ngModel"> 
+                <mat-option value="All">All</mat-option>
+                <mat-option *ngFor = "let pharmacy of pharmacies" [value]="pharmacy">{{pharmacy['name']}}</mat-option>
+            </mat-select>
+        </mat-form-field>
     <full-calendar id = "calendar" [options]="calendarOptions"></full-calendar>
 </body>
