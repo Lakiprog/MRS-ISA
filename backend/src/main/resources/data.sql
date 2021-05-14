@@ -110,6 +110,8 @@ insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (100, 10, 1, 6);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 500, 2, 1);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (800, 800, 2, 2);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (400, 1000, 2, 3);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (200, 3000, 2, 6);
 
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 1, 200);
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 2, 100); 

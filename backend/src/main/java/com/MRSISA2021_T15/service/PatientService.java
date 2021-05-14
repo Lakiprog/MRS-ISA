@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.MRSISA2021_T15.repository.AllergyRepository;
 import com.MRSISA2021_T15.repository.EReceiptAndMedicineDetailsRepository;
 import com.MRSISA2021_T15.repository.EReceiptMedicineDetailsRepository;
 import com.MRSISA2021_T15.repository.EReceiptRepository;
@@ -39,7 +38,6 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.MRSISA2021_T15.dto.ChangePassword;
-import com.MRSISA2021_T15.model.Allergy;
 import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.EReceipt;
 import com.MRSISA2021_T15.model.EReceiptAndMedicineDetails;
@@ -86,9 +84,6 @@ public class PatientService {
 	
 	@Autowired
 	private EReceiptAndMedicineDetailsRepository eReceiptAndMedicineDetailsRepository;
-	
-	@Autowired
-	private AllergyRepository allergyRepository;
 	
 	public List<Patient> findAllPatients(){
 		return repository.findAllPatients();
@@ -220,7 +215,12 @@ public class PatientService {
 				ers.setPharmacy(p);
 				ers.seteReceiptMedicineDetails(requiredMedicine);
 				for (MedicinePharmacy mp : tempList) {
-					ers.setTotal(ers.getTotal() + mp.getCost());
+					for (EReceiptMedicineDetails ermd: requiredMedicine) {
+						if (mp.getMedicine().getMedicineCode().equals(ermd.getMedicineCode())) {
+							ers.setTotal(ers.getTotal() + (mp.getCost() * ermd.getQuantity()));
+							break;
+						}
+					}
 				}
 				pharmaciesWithRequiredMedicine.add(ers);
 			}
@@ -228,16 +228,8 @@ public class PatientService {
 		return pharmaciesWithRequiredMedicine;
 	}
 
-	public String issueEReceipt(EReceiptSearch eReceiptSearch) {
+	public void issueEReceipt(EReceiptSearch eReceiptSearch) {
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<Allergy> patientAllergies = allergyRepository.findAllPatients(patient.getId());
-		for (Allergy a : patientAllergies) {
-			for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
-				if (ermd.getMedicineCode().equals(a.getMedicine().getMedicineCode())) {
-					return "The medicine can not be issued due to allergies!";
-				}
-			}
-		}
 		EReceipt eReceipt = new EReceipt();
 		eReceipt.seteReceiptCode(UUID.randomUUID().toString());
 		eReceipt.setIssueDate(LocalDate.now());
@@ -272,6 +264,5 @@ public class PatientService {
 			}
 		}
 		medicinePharmacyRepository.saveAll(toUpdatePharmacyStock);
-		return "";
 	}
 }
