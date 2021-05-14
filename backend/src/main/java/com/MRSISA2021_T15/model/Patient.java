@@ -33,6 +33,7 @@ public class Patient extends User{
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Reservation> reservation;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<EReceipt> eReceipts;
 	
