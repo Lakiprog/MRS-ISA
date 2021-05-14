@@ -250,6 +250,18 @@ public class PatientService {
 			eramd.seteReceiptMedicineDetails(ermd);
 			eReceiptAndMedicineDetailsRepository.save(eramd);
 		}
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(patient.getEmail());
+        mailMessage.setSubject("Medicine issue via EReceipt from pharmacy " + eReceiptSearch.getPharmacy().getName());
+        mailMessage.setFrom(env.getProperty("spring.mail.username"));
+        String mailText = "You have been issued the following medication: \n";
+        for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
+        	mailText += "\t" + ermd.getMedicineName() + ", Quantity: " + ermd.getQuantity() + "\n";
+        }
+        mailText += "\tTotal price: " + eReceiptSearch.getTotal() + "\n";
+        mailText += "\nBest regards,\nPharmacy " + eReceiptSearch.getPharmacy().getName();
+        mailMessage.setText(mailText);
+        emailSenderService.sendEmail(mailMessage);
 		List<MedicinePharmacy> toUpdatePharmacyStock = medicinePharmacyRepository.findByPharmacyId(eReceiptSearch.getPharmacy().getId());
 		for (MedicinePharmacy mp : toUpdatePharmacyStock) {
 			for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
