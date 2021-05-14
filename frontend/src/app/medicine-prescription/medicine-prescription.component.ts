@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FileInput } from 'ngx-material-file-input';
@@ -16,12 +17,16 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
   constructor
   (
     private fb: FormBuilder,
-    private medicinePrescriptionService: MedicinePrescriptionService
+    private medicinePrescriptionService: MedicinePrescriptionService,
+    private _snackBar: MatSnackBar
   ) { }
   qrCodeForm!: FormGroup;
-  displayedColumnsPharmacies: string[] = ['name', 'address', 'rating', 'totalPrice'];
+  displayedColumnsPharmacies: string[] = ['name', 'address', 'rating', 'totalPrice', 'issue'];
   pharmacyData = [];
   pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
+  verticalPosition: MatSnackBarVerticalPosition = "top";
+  RESPONSE_OK : number = 0;
+  RESPONSE_ERROR : number = -1;
 
   ngOnInit(): void {
     this.qrCodeForm = this.fb.group(
@@ -69,5 +74,27 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
         }
       )
     }
+  }
+
+  issueEReceipt(data: any) {
+    this.medicinePrescriptionService.issueEReceipt(data).subscribe(
+      response => {
+        this.openSnackBar(response, this.RESPONSE_OK);
+      },
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+      }
+    );
+    this.pharmacyData = [];
+    this.pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
+    this.pharmaciesDataSource.paginator = this.paginatorPharmacies;
+  }
+
+  openSnackBar(msg: string, responseCode: number) {
+    this._snackBar.open(msg, "x", {
+      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      verticalPosition: this.verticalPosition,
+      panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
+    });
   }
 }

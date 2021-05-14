@@ -45,9 +45,13 @@ table {
 }
 
 .coloumnAverageRating {
-    width: 5%; 
+    width: 10%; 
 }
 
 .coloumnTotalPrice{
+    width: 10%; 
+}
+
+.coloumnIssue{
     width: 10%; 
 }

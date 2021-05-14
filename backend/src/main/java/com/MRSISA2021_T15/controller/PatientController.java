@@ -91,6 +91,18 @@ public class PatientController {
 	public List<EReceiptSearch> sendQrCode(@RequestParam("qrCode") MultipartFile file) throws IOException, NotFoundException {
 		return service.sendQrCode(file);
 	}
+	
+	@PostMapping(value = "/issueEReceipt", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<String> issueEReceipt(@RequestBody EReceiptSearch eReceiptSearch) {
+		String message =  service.issueEReceipt(eReceiptSearch);
+		Gson gson = new GsonBuilder().create();
+		if (message.equals("")) {
+			return new ResponseEntity<String>(gson.toJson("Medicine issued successfully."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 }
 

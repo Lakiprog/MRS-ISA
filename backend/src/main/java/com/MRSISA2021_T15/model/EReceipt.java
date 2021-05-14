@@ -1,19 +1,46 @@
 package com.MRSISA2021_T15.model;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "eReceipt")
 public class EReceipt {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 
+	@Column
 	private String eReceiptCode;
 	
-	private String patientName;
+	@ManyToOne
+	private Patient patient;
 	
-	private String patientSurname;
-	
+	@Column
 	private LocalDate issueDate;
+
+	@OneToMany(mappedBy = "eReceipt", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<EReceiptAndMedicineDetails> eReceiptAndMedicineDetails;
 	
-	private List<EReceiptMedicineDetails> medicineDetails;
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String geteReceiptCode() {
 		return eReceiptCode;
@@ -23,20 +50,12 @@ public class EReceipt {
 		this.eReceiptCode = eReceiptCode;
 	}
 
-	public String getPatientName() {
-		return patientName;
+	public Patient getPatient() {
+		return patient;
 	}
 
-	public void setPatientName(String patientName) {
-		this.patientName = patientName;
-	}
-
-	public String getPatientSurname() {
-		return patientSurname;
-	}
-
-	public void setPatientSurname(String patientSurname) {
-		this.patientSurname = patientSurname;
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	public LocalDate getIssueDate() {
@@ -47,11 +66,11 @@ public class EReceipt {
 		this.issueDate = issueDate;
 	}
 
-	public List<EReceiptMedicineDetails> getMedicineDetails() {
-		return medicineDetails;
+	public Set<EReceiptAndMedicineDetails> geteReceiptAndMedicineDetails() {
+		return eReceiptAndMedicineDetails;
 	}
 
-	public void setMedicineDetails(List<EReceiptMedicineDetails> medicineDetails) {
-		this.medicineDetails = medicineDetails;
+	public void seteReceiptAndMedicineDetails(Set<EReceiptAndMedicineDetails> eReceiptAndMedicineDetails) {
+		this.eReceiptAndMedicineDetails = eReceiptAndMedicineDetails;
 	}
 }
