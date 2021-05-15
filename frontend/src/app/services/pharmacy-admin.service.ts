@@ -159,10 +159,25 @@ export class PharmacyAdminService {
     );
   }
 
+  public getPharmacyData() {
+    return this.httpClient.get<any>(
+      'http://localhost:8080/pharmacyAdmin/getPharmacyData'
+    );
+  }
+
   public updatePharmacyAdminData(supplier: any) {
     return this.httpClient
       .put<any>(
         'http://localhost:8080/pharmacyAdmin/updatePharmacyAdminData',
+        supplier
+      )
+      .pipe(catchError(this.errorHander));
+  }
+
+  public updatePharmacyData(supplier: any) {
+    return this.httpClient
+      .put<any>(
+        'http://localhost:8080/pharmacyAdmin/updatePharmacyData',
         supplier
       )
       .pipe(catchError(this.errorHander));
