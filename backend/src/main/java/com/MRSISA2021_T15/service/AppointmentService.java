@@ -17,6 +17,7 @@ import com.MRSISA2021_T15.model.AppointmentInfo;
 import com.MRSISA2021_T15.model.AppointmentPharmacist;
 import com.MRSISA2021_T15.model.Category;
 import com.MRSISA2021_T15.model.CategoryName;
+import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.EmploymentDermatologist;
 import com.MRSISA2021_T15.model.EmploymentPharmacist;
 import com.MRSISA2021_T15.model.MedicineAppointment;
@@ -93,6 +94,11 @@ public class AppointmentService {
 
 	public Optional<Appointment> findAllAppointmentsId(Integer id) {
 		return repository.findById(id);
+	}
+	
+	public List<EmploymentDermatologist> employmentsDermatologist(){
+		Dermatologist p = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return repo2.findByDermatologistId(p.getId());
 	}
 
 	public void makeTrue(Appointment appointment) {

@@ -216,4 +216,12 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
     this.router.navigate(['/DermatologistChoosePredefinedComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication:this.medicinePrescribedData}}}});
    }
 
+   back(){
+    this.router.navigate(['/DermatologistAppointmentsComponent']);
+  }
+
+  homepage(){
+    this.router.navigate(['/DermatologistHomePage']);
+  }
+
 }

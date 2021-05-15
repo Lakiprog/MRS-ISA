@@ -2,13 +2,14 @@
     <section>
         <div class="wave"></div>
         <ul>
-            <li> <a routerLink="/DermatologistProfilePageComponent"> MY PROFILE</a> </li>
-            <li> <a routerLink="/DermatologistPatientComponent"> VIEW PATIENTS</a></li>
-            <li> <a routerLink="/DermatologistCalendarComponent"> WORK CALENDAR</a></li>
-            <li> <a routerLink="/DermatologistAbsenceComponent"> ABSENCE FORM </a></li>
-            <li> <a routerLink="/DermatologistAppointmentsComponent"> APPOINTMENTS </a></li>
-            <li> <a routerLink="/searchFilterMedicine">VIEW MEDICINE</a></li>
-            <li (click) = "logout()"><a>LOGOUT</a></li>
+            <li> <a mat-button (click) = "profile()"> MY PROFILE</a> </li>
+            <li> <a mat-button (click) = "patients()" [disabled] = "firstLogin"> VIEW EXAMINED PATIENTS</a></li>
+            <li> <a mat-button (click) = "allPatients()" [disabled] = "firstLogin"> VIEW ALL PATIENTS</a></li>
+            <li> <a mat-button (click) = "calendar()" [disabled] = "firstLogin"> WORK CALENDAR</a></li>
+            <li> <a mat-button (click) = "absence()" [disabled] = "firstLogin"> ABSENCE FORM </a></li>
+            <li> <a mat-button (click) = "appointments()" [disabled] = "firstLogin"> APPOINTMENTS </a></li>
+            <li> <a mat-button (click) = "medicine()" [disabled] = "firstLogin">VIEW MEDICINE</a></li>
+            <li> <a mat-button (click) = "logout()">LOGOUT</a></li>
         </ul>
     </section>
 </body>

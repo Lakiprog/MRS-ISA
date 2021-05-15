@@ -11,6 +11,7 @@ import { AngularMaterialModule } from './angular_material.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSortModule } from '@angular/material/sort';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -91,9 +92,15 @@ import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.compo
 import { PharmacistReservationsComponent } from './pharmacist-reservations/pharmacist-reservations.component';
 import { SupplierMedicineStockComponent } from './supplier-medicine-stock/supplier-medicine-stock.component';
 import { PatientSubscribedPharmaciesComponent } from './patient-subscribed-pharmacies/patient-subscribed-pharmacies.component';
+
 import { AddMedicineToPharmacyComponent } from './components/add-medicine-to-pharmacy/add-medicine-to-pharmacy.component';
 import { AddPharmacistToPharmacyComponent } from './components/add-pharmacist-to-pharmacy/add-pharmacist-to-pharmacy.component';
 import { AddDermatologistToPharmacyComponent } from './components/add-dermatologist-to-pharmacy/add-dermatologist-to-pharmacy.component';
+
+import { PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.component';
+import { DermatologistUsersComponent } from './dermatologist-users/dermatologist-users.component';
+import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-prescription.component';
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -161,6 +168,9 @@ FullCalendarModule.registerPlugins([
     AddMedicineToPharmacyComponent,
     AddPharmacistToPharmacyComponent,
     AddDermatologistToPharmacyComponent,
+    PharmacistUsersComponent,
+    DermatologistUsersComponent,
+    MedicinePrescriptionComponent
   ],
   imports: [
     BrowserModule,
@@ -173,6 +183,7 @@ FullCalendarModule.registerPlugins([
     ReactiveFormsModule,
     MatSortModule,
     LayoutModule,
+    MaterialFileInputModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
@@ -419,6 +430,19 @@ FullCalendarModule.registerPlugins([
         path: 'addDermatologistToPharmacy',
         canActivate: [PharmacyAdminRoutes],
         component: AddDermatologistToPharmacyComponent,
+        path: 'PharmacistUsersComponent',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistUsersComponent,
+      },
+      {
+        path: 'DermatologistUsersComponent',
+        canActivate: [DermatologistRoutes],
+        component: DermatologistUsersComponent,
+      },
+      {
+        path: 'medicinePrescription',
+        canActivate: [PatientRoutes],
+        component: MedicinePrescriptionComponent,
       },
     ]),
   ],

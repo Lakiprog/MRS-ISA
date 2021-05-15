@@ -1,11 +1,13 @@
 package com.MRSISA2021_T15.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.MRSISA2021_T15.model.Allergy;
 import com.MRSISA2021_T15.model.Medicine;
+import com.MRSISA2021_T15.model.MedicineNeeded;
 import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
-import com.MRSISA2021_T15.model.SubstituteMedicine;
+import com.MRSISA2021_T15.model.Pharmacy;
+import com.MRSISA2021_T15.model.PharmacyAdmin;
+import com.MRSISA2021_T15.repository.MedicineNeededRepository;
+import com.MRSISA2021_T15.repository.UserRepository;
 import com.MRSISA2021_T15.service.AllergyService;
 import com.MRSISA2021_T15.service.EmailSenderService;
 import com.MRSISA2021_T15.service.MedicinePharmacyService;
@@ -36,6 +42,12 @@ public class AllergyController {
 	SubstituteMedicineService service2;
 	
 	@Autowired
+	MedicineNeededRepository repo;
+	
+	@Autowired
+	UserRepository adminsrepo;
+	
+	@Autowired
 	EmailSenderService emailsending;
 	@Autowired
 	Environment envi;
@@ -47,7 +59,7 @@ public class AllergyController {
 		for (MedicinePharmacy medicine : medps) {
 			if(medicine.getMedicine().getId() == medicineId) {
 				if(medicine.getAmount() == 0) {
-					//TODO send notification to admin
+					saveNeededs(medicine.getMedicine(), medicine.getPharmacy());
 					return dummySubs(medicineId, patientId, medps);
 				}
 				break;
@@ -69,7 +81,7 @@ public class AllergyController {
 		for (MedicinePharmacy medicine : medps) {
 			if(medicine.getMedicine().getId() == medicineId) {
 				if(medicine.getAmount() == 0) {
-					//TODO send notification to admin
+					saveNeededs(medicine.getMedicine(), medicine.getPharmacy());
 					return dummySubs(medicineId, patientId, medps);
 				}
 				break;
@@ -115,6 +127,26 @@ public class AllergyController {
 			subs.add(dummy);
 		}
 		return subs;
+	}
+	
+	public void saveNeededs(Medicine medicine, Pharmacy pharmacy) {
+		MedicineNeeded med = new MedicineNeeded();
+		med.setMedicine(medicine);
+		med.setPharmacy(pharmacy);
+		med.setRequested(LocalDateTime.now());
+		repo.save(med);
+		
+		for (PharmacyAdmin pharmacyAdmin : adminsrepo.findAllPharmacyAdmins()) {
+			if(pharmacyAdmin.getPharmacy().getId() == pharmacy.getId()) {
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+				mailMessage.setTo(pharmacyAdmin.getEmail());
+				mailMessage.setSubject("Medicine not in stock");
+				mailMessage.setFrom(envi.getProperty("spring.mail.username"));
+				mailMessage.setText("Medicine " + medicine.getName() + " was requested in pharmacy " + pharmacy.getName()
+				+ ". You should consider restocking this medicine.");
+				emailsending.sendEmail(mailMessage);
+			}
+		}
 	}
 	
 }

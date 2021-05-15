@@ -70,6 +70,11 @@ public class Medicine {
 	private Set<MedicineQuantity> medicineQuantity;
 	
 	@Transient
+	@JsonIgnore
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<MedicineNeeded> medicineNeeded;
+	
+	@Transient
 	private ArrayList<Integer> substituteMedicineIds = new ArrayList<Integer>();
 
 	

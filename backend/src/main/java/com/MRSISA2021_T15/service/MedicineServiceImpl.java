@@ -12,6 +12,7 @@ import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.MedicineForm;
 import com.MRSISA2021_T15.model.MedicineType;
 import com.MRSISA2021_T15.model.SubstituteMedicine;
+import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
 
@@ -23,6 +24,8 @@ public class MedicineServiceImpl implements MedicineService {
 	
 	@Autowired
 	private SubstituteMedicineRepository substituteMedicineRepository;
+	
+	private MedicinePharmacyRepository medicinePharmacyRepository;
 
 	@Transactional
 	@Override
@@ -76,4 +79,7 @@ public class MedicineServiceImpl implements MedicineService {
 		}
 		return medicineForms;
 	}
+	
+	
+	
 }

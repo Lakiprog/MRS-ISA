@@ -106,6 +106,9 @@ public class DermatologistController {
 			if (!encod.matches(passwords.getOldPassword(), p.getPassword())) {
 				return new ResponseEntity<String>(gson.toJson("Wrong old password!"), HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
+				if (p.getFirstLogin()) {
+					p.setFirstLogin(false);
+				}
 				p.setPassword(encod.encode(passwords.getPassword()));
 				dermatologistRepository.save(p);
 				return new ResponseEntity<String>(gson.toJson(""), HttpStatus.OK);

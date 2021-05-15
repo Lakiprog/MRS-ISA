@@ -51,6 +51,10 @@ public class Pharmacy {
 	private Set<MedicinePharmacy> medicine;
 	
 	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<MedicineNeeded> medicineNeeded;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();;
 

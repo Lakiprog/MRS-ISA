@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.authentication.AuthenticationManagerBeanDefinitionParser;
 import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.model.MedicinePharmacy;
@@ -36,5 +37,12 @@ public class MedicinePharmacyService {
 			}
 		}
 		return retVal;
+	}
+	
+	public void updateQuantity(MedicinePharmacy mp) {
+		MedicinePharmacy mpb = new MedicinePharmacy();
+		Integer number = mpb.getAmount() - mp.getAmount();
+		mpb.setAmount(number);
+		repo.save(mpb);
 	}
 }

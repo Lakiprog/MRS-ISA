@@ -67,6 +67,10 @@ export class DermatologistAppointmentsComponent implements OnInit {
     this.calendarOptions.events = this.events;
  }
 
+ back(){
+  this.router.navigate(['/DermatologistHomePage']);
+}
+
 }
 
 @Component({
