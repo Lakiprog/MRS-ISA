@@ -100,6 +100,7 @@ import { AddDermatologistToPharmacyComponent } from './components/add-dermatolog
 import { PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.component';
 import { DermatologistUsersComponent } from './dermatologist-users/dermatologist-users.component';
 import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-prescription.component';
+import { PharmacyProfilePageComponent } from './components/pharmacy-profile-page/pharmacy-profile-page.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -170,6 +171,7 @@ FullCalendarModule.registerPlugins([
     PharmacistUsersComponent,
     DermatologistUsersComponent,
     MedicinePrescriptionComponent,
+    PharmacyProfilePageComponent,
   ],
   imports: [
     BrowserModule,
@@ -444,6 +446,10 @@ FullCalendarModule.registerPlugins([
         path: 'medicinePrescription',
         canActivate: [PatientRoutes],
         component: MedicinePrescriptionComponent,
+      },
+      {
+        path: 'pharmacyProfilePage',
+        component: PharmacyProfilePageComponent,
       },
     ]),
   ],

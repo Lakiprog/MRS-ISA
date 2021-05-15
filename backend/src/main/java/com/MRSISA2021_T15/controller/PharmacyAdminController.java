@@ -1,15 +1,13 @@
 package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
-import com.MRSISA2021_T15.model.EmploymentDermatologist;
-import com.MRSISA2021_T15.model.EmploymentPharmacist;
-import com.MRSISA2021_T15.model.MedicinePharmacy;
-import com.MRSISA2021_T15.model.PharmacyAdmin;
+import com.MRSISA2021_T15.model.*;
 import com.MRSISA2021_T15.repository.EmploymentDermatologistRepository;
 import com.MRSISA2021_T15.repository.EmploymentPharmacistsRepository;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.PharmacyAdminRepository;
 import com.MRSISA2021_T15.service.PharmacyAdminService;
+import com.MRSISA2021_T15.service.PharmacyService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +34,8 @@ public class PharmacyAdminController {
     private EmploymentPharmacistsRepository employmentPharmacistsRepository;
     @Autowired
     private EmploymentDermatologistRepository employmentDermatologistRepository;
+    @Autowired
+    private PharmacyService pharmacyService;
 
     @RequestMapping(path="/{pharmacyAdminId}/findById")
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
@@ -47,6 +47,18 @@ public class PharmacyAdminController {
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ResponseEntity<String> updatePharmacyAdminData(@RequestBody PharmacyAdmin pharmacyAdmin) {
         String message = pharmacyAdminService.updatePharmacyAdminData(pharmacyAdmin);
+        Gson gson = new GsonBuilder().create();
+        if (message.equals("")) {
+            return new ResponseEntity<String>(gson.toJson("Update successfull."), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/updatePharmacyData", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> updatePharmacyData(@RequestBody Pharmacy pharmacy) {
+        String message = pharmacyService.updatePharmacyData(pharmacy);
         Gson gson = new GsonBuilder().create();
         if (message.equals("")) {
             return new ResponseEntity<String>(gson.toJson("Update successfull."), HttpStatus.OK);
@@ -70,6 +82,12 @@ public class PharmacyAdminController {
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public PharmacyAdmin getPharmacyAdminData() {
         return pharmacyAdminService.getPharmacyAdminData();
+    }
+
+    @GetMapping(value = "/getPharmacyData", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public Pharmacy getPharmacyData() {
+        return pharmacyService.getPharmacyData();
     }
 
 
