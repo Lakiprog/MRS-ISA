@@ -1,3 +1,5 @@
+import { Pharmacy } from '../user-complaint/user-complaint.component';
+
 export class PharmacyAdmin {
   id!: string;
   address!: string;
@@ -10,4 +12,5 @@ export class PharmacyAdmin {
   surname!: string;
   username!: string;
   rating!: Number;
+  pharmacy!: Pharmacy;
 }

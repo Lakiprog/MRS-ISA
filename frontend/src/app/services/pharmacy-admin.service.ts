@@ -6,6 +6,8 @@ import { Medicine } from '../models/medicine';
 import { Dermatologist } from '../models/dermatologist';
 import { PharmacyAdmin } from '../models/pharmacy-admin';
 import { catchError } from 'rxjs/operators';
+import { MedicinePharmacy } from '../models/medicine-pharmacy';
+import { Employment } from '../models/employment';
 
 @Injectable({
   providedIn: 'root',
@@ -110,6 +112,27 @@ export class PharmacyAdminService {
     );
   }
 
+  public addMedicineToPharmacy(medicinePharmacy: MedicinePharmacy) {
+    return this.httpClient.post<MedicinePharmacy>(
+      'http://localhost:8080/pharmacyAdmin/addMedicineToPharmacy',
+      medicinePharmacy
+    );
+  }
+
+  public addPharmacistToPharmacy(employment: Employment) {
+    return this.httpClient.post<Employment>(
+      'http://localhost:8080/pharmacyAdmin/addPharmacistToPharmacy',
+      employment
+    );
+  }
+
+  public addDermatologistToPharmacy(employment: Employment) {
+    return this.httpClient.post<Employment>(
+      'http://localhost:8080/pharmacyAdmin/addDermatologistToPharmacy',
+      employment
+    );
+  }
+
   public searchDermatologistArrayById(dermatologistId: String) {
     return this.httpClient.get<Dermatologist[]>(
       'http://localhost:8080/dermatologist/' +
@@ -135,6 +158,7 @@ export class PharmacyAdminService {
       'http://localhost:8080/pharmacyAdmin/getPharmacyAdminData'
     );
   }
+
   public updatePharmacyAdminData(supplier: any) {
     return this.httpClient
       .put<any>(

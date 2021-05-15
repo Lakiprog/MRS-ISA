@@ -26,13 +26,22 @@ import { PharmacistPatientComponent } from './pharmacist-patients/pharmacist-pat
 import { DermatologistPatientComponent } from './dermatologist-patients/dermatologist-patient.component';
 import { PatientProfileNavbarComponent } from './patient-profile-navbar/patient-profile-navbar.component';
 import { ChangePatientDataComponent } from './change-patient-data/change-patient-data.component';
-import { DialogDataExampleDialogPharmacist, PharmacistCalendarComponent } from './pharmacist-calendar/pharmacist-calendar.component';
-import { DermatologistCalendarComponent, DialogDataExampleDialogDermatologist } from './dermatologist-calendar/dermatologist-calendar.component';
+import {
+  DialogDataExampleDialogPharmacist,
+  PharmacistCalendarComponent,
+} from './pharmacist-calendar/pharmacist-calendar.component';
+import {
+  DermatologistCalendarComponent,
+  DialogDataExampleDialogDermatologist,
+} from './dermatologist-calendar/dermatologist-calendar.component';
 import { AddMedicineComponent } from './add-medicine/add-medicine.component';
 import { SystemAdminProfilePageComponent } from './system-admin-profile-page/system-admin-profile-page.component';
 import { SupplierProfilePageComponent } from './supplier-profile-page/supplier-profile-page.component';
 import { PharmacistAppointmentCreationComponent } from './pharmacist-appointment-creation/pharmacist-appointment-creation.component';
-import { DermatologistChoosePredefinedComponent, DialogPredefined } from './dermatologist-choose-predefined/dermatologist-choose-predefined.component';
+import {
+  DermatologistChoosePredefinedComponent,
+  DialogPredefined,
+} from './dermatologist-choose-predefined/dermatologist-choose-predefined.component';
 import { DermatologistAppointmentCreationComponent } from './dermatologist-appointment-creation/dermatologist-appointment-creation.component';
 import { SearchPharmacyComponent } from './search-pharmacy/search-pharmacy.component';
 import { RegisterPharmaciesComponent } from './register-pharmacies/register-pharmacies.component';
@@ -59,9 +68,15 @@ import { UserComplaintComponent } from './user-complaint/user-complaint.componen
 import { PatientsComplaintsDataComponent } from './patients-complaints-data/patients-complaints-data.component';
 import { SupplierWriteOffersComponent } from './supplier-write-offers/supplier-write-offers.component';
 
-import { DialogStartPharmacist, PharmacistAppointmentsComponent } from './pharmacist-appointments/pharmacist-appointments.component';
+import {
+  DialogStartPharmacist,
+  PharmacistAppointmentsComponent,
+} from './pharmacist-appointments/pharmacist-appointments.component';
 import { PharmacistAppointmentInfoComponent } from './pharmacist-appointment-info/pharmacist-appointment-info.component';
-import { DermatologistAppointmentsComponent, DialogStartDermatologist } from './dermatologist-appointments/dermatologist-appointments.component';
+import {
+  DermatologistAppointmentsComponent,
+  DialogStartDermatologist,
+} from './dermatologist-appointments/dermatologist-appointments.component';
 import { DermatologistAppointmentInfoComponent } from './dermatologist-appointment-info/dermatologist-appointment-info.component';
 import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
 import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to-complaints.component';
@@ -76,6 +91,9 @@ import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.compo
 import { PharmacistReservationsComponent } from './pharmacist-reservations/pharmacist-reservations.component';
 import { SupplierMedicineStockComponent } from './supplier-medicine-stock/supplier-medicine-stock.component';
 import { PatientSubscribedPharmaciesComponent } from './patient-subscribed-pharmacies/patient-subscribed-pharmacies.component';
+import { AddMedicineToPharmacyComponent } from './components/add-medicine-to-pharmacy/add-medicine-to-pharmacy.component';
+import { AddPharmacistToPharmacyComponent } from './components/add-pharmacist-to-pharmacy/add-pharmacist-to-pharmacy.component';
+import { AddDermatologistToPharmacyComponent } from './components/add-dermatologist-to-pharmacy/add-dermatologist-to-pharmacy.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -139,7 +157,10 @@ FullCalendarModule.registerPlugins([
     LoyaltyProgramComponent,
     PharmacistReservationsComponent,
     SupplierMedicineStockComponent,
-    PatientSubscribedPharmaciesComponent
+    PatientSubscribedPharmaciesComponent,
+    AddMedicineToPharmacyComponent,
+    AddPharmacistToPharmacyComponent,
+    AddDermatologistToPharmacyComponent,
   ],
   imports: [
     BrowserModule,
@@ -373,7 +394,7 @@ FullCalendarModule.registerPlugins([
       {
         path: 'DermatologistAbsenceComponent',
         canActivate: [DermatologistRoutes],
-        component: DermatologistAbsenceComponent
+        component: DermatologistAbsenceComponent,
       },
       {
         path: 'searchFilterMedicine',
@@ -383,6 +404,21 @@ FullCalendarModule.registerPlugins([
         path: 'PharmacistReservationsComponent',
         canActivate: [PharmacistRoutes],
         component: PharmacistReservationsComponent,
+      },
+      {
+        path: 'addMedicineToPharmacy',
+        canActivate: [PharmacyAdminRoutes],
+        component: AddMedicineToPharmacyComponent,
+      },
+      {
+        path: 'addPharmacistToPharmacy',
+        canActivate: [PharmacyAdminRoutes],
+        component: AddPharmacistToPharmacyComponent,
+      },
+      {
+        path: 'addDermatologistToPharmacy',
+        canActivate: [PharmacyAdminRoutes],
+        component: AddDermatologistToPharmacyComponent,
       },
     ]),
   ],
