@@ -15,6 +15,8 @@ import { PurchaseOrderMedicine } from 'src/app/models/purchase-order-medicine';
 import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
 import { Pharmacist } from 'src/app/user-complaint/user-complaint.component';
 import { AddMedicineToCartPopupComponent } from '../add-medicine-to-cart-popup/add-medicine-to-cart-popup.component';
+import { stringify } from '@angular/compiler/src/util';
+import { SubmitPurchaseOrderPopupComponent } from '../submit-purchase-order-popup/submit-purchase-order-popup.component';
 
 export interface DialogData {
   quantity: Number;
@@ -72,7 +74,6 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     };
     purchaseOrderMedicine.medicine = medicine;
 
-    this.purchaseOrderMedicine;
     const dialogRef = this.dialog.open(AddMedicineToCartPopupComponent, {
       width: '250px',
       data: {
@@ -90,13 +91,26 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     });
   }
   createPurchaseOrder() {
-    this.purchaseOrder.purchaseOrderName = 'haha';
     this.purchaseOrder.pharmacy = this.pharmacyAdmin.pharmacy;
-    //this.purchaseOrder.purchaseOrderName = data.purchaseOrderName;
-    this.pharmacyAdminService
-      .createPurchaseOrder(this.purchaseOrder)
-      .subscribe();
-    localStorage.removeItem('pharmacist');
-    this.router.navigate(['/pharmacyProfilePage']);
+
+    const dialogRef = this.dialog.open(SubmitPurchaseOrderPopupComponent, {
+      width: '250px',
+      data: {
+        purchaseOrderName: this.purchaseOrder.purchaseOrderName,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      this.purchaseOrder.purchaseOrderName = result;
+      if (result != null) {
+        this.pharmacyAdminService
+          .createPurchaseOrder(this.purchaseOrder)
+          .subscribe((res) => {
+            localStorage.removeItem('pharmacist');
+            this.router.navigate(['/pharmacyProfilePage']);
+          });
+      }
+    });
   }
 }

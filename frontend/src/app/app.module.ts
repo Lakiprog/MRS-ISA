@@ -103,6 +103,7 @@ import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-
 import { PharmacyProfilePageComponent } from './components/pharmacy-profile-page/pharmacy-profile-page.component';
 import { MedicinePurchaseOrderComponent } from './components/medicine-purchase-order/medicine-purchase-order.component';
 import { AddMedicineToCartPopupComponent } from './components/add-medicine-to-cart-popup/add-medicine-to-cart-popup.component';
+import { SubmitPurchaseOrderPopupComponent } from './components/submit-purchase-order-popup/submit-purchase-order-popup.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -176,6 +177,7 @@ FullCalendarModule.registerPlugins([
     PharmacyProfilePageComponent,
     MedicinePurchaseOrderComponent,
     AddMedicineToCartPopupComponent,
+    SubmitPurchaseOrderPopupComponent,
   ],
   imports: [
     BrowserModule,

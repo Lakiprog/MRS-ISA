@@ -115,14 +115,22 @@ public class PharmacyAdminController {
 
     @PostMapping(value = "/createPurchaseOrder")
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
-    public ResponseEntity<String> createPurchaseOrder(@RequestBody PurchaseOrder po){
-        //purchaseOrderMedicineRepository.saveAll(po.getPurchaseOrderMedicine());
-        //purchaseOrderMedicine list is empty
-        for (PurchaseOrderMedicine pom: po.getPurchaseOrderMedicine()
-             ) {
+    public ResponseEntity<String> createPurchaseOrder(@RequestBody PurchaseOrderDto pod){
+        PurchaseOrder po = new PurchaseOrder();
+        po.setPharmacy(pod.getPharmacy());
+        po.setDueDateOffer(pod.getDueDateOffer());
+        po.setPurchaseOrderName(pod.getPurchaseOrderName());
+        for (PurchaseOrderMedicine pom: pod.getPurchaseOrderMedicine())
+        {
+            po.getPurchaseOrderMedicine().add(pom);
             purchaseOrderMedicineRepository.save(pom);
         }
         purchaseOrderRepository.save(po);
+        for (PurchaseOrderMedicine pom: po.getPurchaseOrderMedicine()) {
+            pom.setPurchaseOrder(po);
+            purchaseOrderMedicineRepository.save(pom);
+        }
+
         return ResponseEntity.ok().build();
     }
 }

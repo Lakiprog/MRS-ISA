@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export interface DialogData {
   medicineName: String;
   quantity: Number;
+  purchaseOrderName: string;
 }
 @Component({
   selector: 'app-add-medicine-to-cart-popup',
