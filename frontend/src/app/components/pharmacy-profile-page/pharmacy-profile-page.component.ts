@@ -9,6 +9,7 @@ import { PasswordValidator } from 'src/app/change-patient-data/passwordValidator
 import { AuthService } from 'src/app/login/auth.service';
 import { PharmacyAdmin } from 'src/app/models/pharmacy-admin';
 import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-pharmacy-profile-page',
@@ -26,7 +27,8 @@ export class PharmacyProfilePageComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private _snackBar: MatSnackBar,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private location: Location
   ) {}
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
@@ -84,6 +86,9 @@ export class PharmacyProfilePageComponent implements OnInit {
   ) => {
     return form.controls[controlName].hasError(errorName);
   };
+  back(): void {
+    this.location.back();
+  }
 
   logout() {
     this.authService.logout();

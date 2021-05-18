@@ -1,15 +1,13 @@
 package com.MRSISA2021_T15.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Optional;
-
-import com.MRSISA2021_T15.model.SubstituteMedicine;
+import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.repository.AllergyRepository;
+import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
-import com.MRSISA2021_T15.model.*;
-import com.MRSISA2021_T15.repository.*;
+import com.MRSISA2021_T15.service.MedicineService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,9 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.MRSISA2021_T15.service.MedicineService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -96,6 +92,16 @@ public class MedicineController {
 	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public @ResponseBody Iterable<Medicine> getAllMedicine() {
 		return medicineRepository.findAll();
+	}
+
+	@RequestMapping(path="/{pharmacyId}/getMedicineFromPharmacy")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ArrayList<Medicine> getMedicineFromPharmacy(@PathVariable Integer pharmacyId){
+		List<MedicinePharmacy> medicinePharmacies = medicinePharmacyRepository.findByPharmacyId(pharmacyId);
+		ArrayList<Medicine> returnList = new ArrayList<>();
+		for (MedicinePharmacy mp : medicinePharmacies)
+			returnList.add(mp.getMedicine());
+		return returnList;
 	}
 
 	@RequestMapping(path="/{medicineId}/findArrayById")

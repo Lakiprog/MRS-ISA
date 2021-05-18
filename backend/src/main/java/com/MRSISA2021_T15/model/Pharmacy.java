@@ -59,6 +59,10 @@ public class Pharmacy {
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Promotion> promotions;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<PurchaseOrder> purchaseOrder;
 	
 	public Integer getId() {
 		return id;
@@ -154,6 +158,14 @@ public class Pharmacy {
 
 	public void setPromotions(Set<Promotion> promotions) {
 		this.promotions = promotions;
+	}
+
+	public Set<PurchaseOrder> getPurchaseOrder() {
+		return purchaseOrder;
+	}
+
+	public void setPurchaseOrderMedicines(Set<PurchaseOrder> purchaseOrder) {
+		this.purchaseOrder = purchaseOrder;
 	}
 
 	public double getAppointmentPrice() {
