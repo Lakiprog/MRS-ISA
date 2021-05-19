@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MakeDerAppPatientPart2Service } from './make-der-app-patient-part2.service';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-make-der-app-patient-part2',
@@ -26,7 +27,7 @@ export class MakeDerAppPatientPart2Component implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
 
-  constructor(public service:MakeDerAppPatientPart2Service, private snackBar: MatSnackBar) { 
+  constructor(public service:MakeDerAppPatientPart2Service, private snackBar: MatSnackBar, private router:Router) { 
     this.Fpharamcy = history.state.data.pharmacyInfo;
     this.service.getAllFreeDerApp().subscribe((data2:any)=>{
       this.elems = data2.filter((el: { pharmacy: any; patient:any }) =>{
@@ -61,6 +62,7 @@ export class MakeDerAppPatientPart2Component implements OnInit {
       response => {
         console.log(response);
         this.openSnackBar(response, this.RESPONSE_OK);
+        this.router.navigate(['/UserHomePage']);
       },
       error => {
         console.log(error);

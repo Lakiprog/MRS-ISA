@@ -76,6 +76,14 @@ import { LoyaltyProgramComponent } from './loyalty-program/loyalty-program.compo
 import { PharmacistReservationsComponent } from './pharmacist-reservations/pharmacist-reservations.component';
 import { SupplierMedicineStockComponent } from './supplier-medicine-stock/supplier-medicine-stock.component';
 import { PatientSubscribedPharmaciesComponent } from './patient-subscribed-pharmacies/patient-subscribed-pharmacies.component';
+import { PatientSchedFarmaAppComponent } from './patient-sched-farma-app/patient-sched-farma-app.component';
+
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { PatientSchedFarmaApp2Component } from './patient-sched-farma-app2/patient-sched-farma-app2.component';
+import { PatientSchedFarmaApp3Component } from './patient-sched-farma-app3/patient-sched-farma-app3.component';
+import { PatientOrdersMedicineComponent } from './patient-orders-medicine/patient-orders-medicine.component';
+import { PatiensMedicinesComponent } from './patiens-medicines/patiens-medicines.component';
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -139,7 +147,12 @@ FullCalendarModule.registerPlugins([
     LoyaltyProgramComponent,
     PharmacistReservationsComponent,
     SupplierMedicineStockComponent,
-    PatientSubscribedPharmaciesComponent
+    PatientSubscribedPharmaciesComponent,
+    PatientSchedFarmaAppComponent,
+    PatientSchedFarmaApp2Component,
+    PatientSchedFarmaApp3Component,
+    PatientOrdersMedicineComponent,
+    PatiensMedicinesComponent
   ],
   imports: [
     BrowserModule,
@@ -152,6 +165,7 @@ FullCalendarModule.registerPlugins([
     ReactiveFormsModule,
     MatSortModule,
     LayoutModule,
+    NgxMaterialTimepickerModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
@@ -384,6 +398,32 @@ FullCalendarModule.registerPlugins([
         canActivate: [PharmacistRoutes],
         component: PharmacistReservationsComponent,
       },
+      {
+        path: 'PatientScheduleFarmaApp',
+        canActivate: [PatientRoutes],
+        component: PatientSchedFarmaAppComponent,
+      },
+      {
+        path: 'PatientScheduleFarmaApp2',
+        canActivate: [PatientRoutes],
+        component: PatientSchedFarmaApp2Component,
+      },
+      {
+        path: 'PatientScheduleFarmaApp3',
+        canActivate: [PatientRoutes],
+        component: PatientSchedFarmaApp3Component,
+      },
+      {
+        path: 'PatientOrdersMedicine',
+        canActivate: [PatientRoutes],
+        component: PatientOrdersMedicineComponent,
+      },
+      {
+        path: 'PatiensMedicines',
+        canActivate: [PatientRoutes],
+        component: PatiensMedicinesComponent,
+      },
+      
     ]),
   ],
 

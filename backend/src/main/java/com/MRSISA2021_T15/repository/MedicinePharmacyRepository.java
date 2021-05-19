@@ -14,4 +14,7 @@ public interface MedicinePharmacyRepository extends CrudRepository<MedicinePharm
 	@Query("select m from MedicinePharmacy m where pharmacy.id = ?1 and medicine.id = ?1")
 	public MedicinePharmacy findByExact(Integer pharmacyId, Integer medicineId);
 	
+	@Query("select m from MedicinePharmacy m where m.id = ?1")
+	public MedicinePharmacy findUsingId(Integer id);
+	
 }

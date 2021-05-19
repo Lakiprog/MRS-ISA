@@ -15,6 +15,7 @@ import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.AppointmentInfo;
 import com.MRSISA2021_T15.model.AppointmentPharmacist;
+import com.MRSISA2021_T15.model.CanceledPharAppoinment;
 import com.MRSISA2021_T15.model.Category;
 import com.MRSISA2021_T15.model.CategoryName;
 import com.MRSISA2021_T15.model.EmploymentDermatologist;
@@ -32,6 +33,7 @@ import com.MRSISA2021_T15.repository.AppointmentConsultationPointsRepository;
 import com.MRSISA2021_T15.repository.AppointmentCreationRepository;
 import com.MRSISA2021_T15.repository.AppointmentInfoRepository;
 import com.MRSISA2021_T15.repository.AppointmentRepository;
+import com.MRSISA2021_T15.repository.CanceledPharmaAppointmentRepository;
 import com.MRSISA2021_T15.repository.CategoryRepository;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
 import com.MRSISA2021_T15.repository.MedicineAppointmentRepository;
@@ -74,6 +76,8 @@ public class AppointmentService {
 	private UserRepository userRepository;
 	@Autowired
 	private AppointmentRepository appointmentRepository;
+	@Autowired
+	private CanceledPharmaAppointmentRepository canceledRepository;
 
 	public List<Appointment> findAllPharmacist(Integer id) {
 		return repository.findAllPharmacistId(id);
@@ -263,7 +267,7 @@ public class AppointmentService {
 			return "This appointment is already assigned";
 		}
 		appointment.setPatient(patient);
-		repository.save(appointment);
+		repository.save(appointment); //prepravi da ga nadjes
 		sendEmailAppointment(appointment);
 		return "";
 	}
@@ -395,7 +399,11 @@ public class AppointmentService {
 	
 	public List<AppointmentDermatologist> findAllDerAppWithPatientId(Integer id){
 		return repository.findAllDerAppWithPatientId(id);
-  }
+	}
+	
+	public List<AppointmentPharmacist> findAllPharAppWithPatientId(Integer id){
+		return repository.findAllPharAppWithPatientId(id);
+	}
 
 	public void sendEmailAppointment(Appointment appointment) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -406,5 +414,46 @@ public class AppointmentService {
 				+ ". It is scheduled to be from " + appointment.getStart() + " to " + appointment.getEnd() + ". Have a nice day!");
 		emailsend.sendEmail(mailMessage);
 	}
+	
+	
+	public List<AppointmentPharmacist> getPharmacisApp() {
+		List<AppointmentPharmacist> l = appointmentRepository.getAllPharmacistApp();
+		System.out.println("mama");
+		for(int i = 0; i<l.size(); i++) {
+			System.out.println(l.get(i).getId());
+		}
+		return appointmentRepository.getAllPharmacistApp();
+	}
+	
+	
+	public void newPharmaciesApp(AppointmentPharmacist appoinment) {
+		appoinment.setPrice(1000);
+		appointmentRepository.save(appoinment);
+		
+	}
+	
+	
+	public void deleteDermatologicalApp(AppointmentDermatologist appointment) {
+		Appointment app = appointmentRepository.findDerAppWithId(appointment.getId());
+		app.setPatient(null);
+	}
+	
+	
+	//ovdje stavi upis u onu tabelu
+	public void deletePharmaciestApp(AppointmentPharmacist appoinment) {
+		appointmentRepository.delete(appoinment);
+		
+		CanceledPharAppoinment canceled = new CanceledPharAppoinment();
+		canceled.setPatient(appoinment.getPatient());
+		canceled.setPharmacist(appoinment.getPharmacist());
+		canceled.setPharmacy(appoinment.getPharmacy());
+		canceled.setStart(appoinment.getStart());
+		canceled.setEnd(appoinment.getEnd());
+		
+		canceledRepository.save(canceled);
+		
+	}
+	
+	
 
 }

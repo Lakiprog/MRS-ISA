@@ -2,19 +2,32 @@ package com.MRSISA2021_T15.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.authentication.AuthenticationManagerBeanDefinitionParser;
 import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.model.MedicinePharmacy;
+import com.MRSISA2021_T15.model.OrderedMedicine;
+import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.ReservationItem;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
+import com.MRSISA2021_T15.repository.MedicineQuantityRepository;
+import com.MRSISA2021_T15.repository.ReservationItemRepository;
+import com.MRSISA2021_T15.repository.ReservationRepository;
 
 @Service
 public class MedicinePharmacyService {
 
 	@Autowired
 	private MedicinePharmacyRepository repo;
+	@Autowired
+	private ReservationItemRepository reservationRepo;
+	@Autowired
+	private ReservationRepository rr;
+	@Autowired
+	private MedicineQuantityRepository mr;
 	
 	public List<MedicinePharmacy> medcineInPharmacy(Integer id) {
 		return repo.findByPharmacyId(id);
@@ -39,10 +52,28 @@ public class MedicinePharmacyService {
 		return retVal;
 	}
 	
-	public void updateQuantity(MedicinePharmacy mp) {
-		MedicinePharmacy mpb = new MedicinePharmacy();
-		Integer number = mpb.getAmount() - mp.getAmount();
+	public void updateQuantity(OrderedMedicine order) {
+		MedicinePharmacy mpb = repo.findUsingId(order.getMedicinePharmacy().getId());
+		int number = mpb.getAmount() - order.getAmount();
 		mpb.setAmount(number);
 		repo.save(mpb);
+	}
+	
+	public List<ReservationItem>getAllReservationItem(Patient p){
+		List<ReservationItem> returnList = new ArrayList<ReservationItem>();
+		List<ReservationItem> list = (List<ReservationItem>) reservationRepo.findAll();
+		for(ReservationItem ri: list) {
+			if(p.getId() == ri.getReservation().getPatient().getId()) {
+				returnList.add(ri);
+			}
+		}
+		return returnList;
+	}
+	
+	
+	public void deleteMedicine(ReservationItem item) {
+		reservationRepo.deleteById(item.getId());
+		mr.deleteById(item.getMedicine().getId());
+		rr.deleteById(item.getReservation().getId());
 	}
 }

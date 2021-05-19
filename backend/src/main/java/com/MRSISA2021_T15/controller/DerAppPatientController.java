@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,6 +72,45 @@ public class DerAppPatientController {
 		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return AppService.findAllDerAppWithPatientId(p.getId());
 	}
+	
+	
+	
+	@PutMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<String> delete(@RequestBody AppointmentDermatologist appointment){
+		
+		String message = "";
+		LocalDateTime now = LocalDateTime.now();
+		if(now.getYear() == appointment.getStart().getYear()) {
+			if(now.getMonthValue() == appointment.getStart().getMonthValue()) {
+				if(now.getDayOfMonth() == appointment.getStart().getDayOfMonth()) {
+					message = "You can't cancel your appointment under 24h before it's beggining!";
+				}else if(now.getDayOfMonth() + 1 == appointment.getStart().getDayOfMonth()) { //ako je otkazujem dan prije
+					//provjeri sate i minute onda
+					if(now.getHour() > appointment.getStart().getHour()) {
+						message = "You can't cancel your appointment under 24h before it's beggining!";
+					}else if(now.getHour() == appointment.getStart().getHour()) {
+						//ovdje provjeri minute
+						if(now.getMinute() >  appointment.getStart().getMinute()) { //moze tacno 24 od pocetka da otkaze
+							message = "You can't cancel your appointment under 24h before it's beggining!";
+						}
+					}
+				}
+			}
+		}
+		
+		if(message.equals("")) {
+			AppService.deleteDermatologicalApp(appointment);
+		}
+		
+		Gson gson = new GsonBuilder().create();
+		if (message.equals("")) {
+			return new ResponseEntity<String>(gson.toJson("You canceled your appointment with dermatologist!"), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	
 	
 	

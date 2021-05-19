@@ -34,6 +34,12 @@ public class Patient extends User{
 	private Set<Reservation> reservation;
 	
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CanceledPharAppoinment> canceledAppointments;
+	
+	
+	
 	@Column
 	private double collectedPoints;
 	
