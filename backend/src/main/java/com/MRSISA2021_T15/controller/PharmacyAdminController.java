@@ -1,9 +1,13 @@
 package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
-import com.MRSISA2021_T15.model.PharmacyAdmin;
+import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.repository.EmploymentDermatologistRepository;
+import com.MRSISA2021_T15.repository.EmploymentPharmacistsRepository;
+import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.PharmacyAdminRepository;
 import com.MRSISA2021_T15.service.PharmacyAdminService;
+import com.MRSISA2021_T15.service.PharmacyService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,33 +28,37 @@ public class PharmacyAdminController {
     private PharmacyAdminRepository pharmacyAdminRepository;
     @Autowired
     private PharmacyAdminService pharmacyAdminService;
+    @Autowired
+    private MedicinePharmacyRepository medicinePharmacyRepository;
+    @Autowired
+    private EmploymentPharmacistsRepository employmentPharmacistsRepository;
+    @Autowired
+    private EmploymentDermatologistRepository employmentDermatologistRepository;
+    @Autowired
+    private PharmacyService pharmacyService;
 
     @RequestMapping(path="/{pharmacyAdminId}/findById")
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public Optional<PharmacyAdmin> getPharmacyAdminById(@PathVariable Integer pharmacyAdminId){
         return pharmacyAdminRepository.findById(pharmacyAdminId);
     }
-/*
-    @PutMapping(path="/{pharmacyAdminId}/update")
-    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
-    public ResponseEntity edit(@PathVariable Integer pharmacyAdminId, @RequestBody PharmacyAdmin pa) throws NotFoundException {
-        PharmacyAdmin pharmacyAdmin = pharmacyAdminRepository.findById(pharmacyAdminId).orElseThrow(() -> new NotFoundException("Ne postoji id"));
-        pharmacyAdmin.setName(pa.getName());
-        pharmacyAdmin.setSurname(pa.getSurname());
-        pharmacyAdmin.setUsername(pa.getUsername());
-        pharmacyAdmin.setAdress(pa.getAdress());
-        pharmacyAdmin.setCity(pa.getCity());
-        pharmacyAdmin.setCountry(pa.getCountry());
-        pharmacyAdmin.setEmail(pa.getEmail());
-        pharmacyAdmin.setPhoneNumber(pa.getPhoneNumber());
-        pharmacyAdmin.setPassword(pa.getPassword());
-        pharmacyAdminRepository.save(pharmacyAdmin);
-        return ResponseEntity.ok().build();
-    }*/
+
     @PutMapping(value = "/updatePharmacyAdminData", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ResponseEntity<String> updatePharmacyAdminData(@RequestBody PharmacyAdmin pharmacyAdmin) {
         String message = pharmacyAdminService.updatePharmacyAdminData(pharmacyAdmin);
+        Gson gson = new GsonBuilder().create();
+        if (message.equals("")) {
+            return new ResponseEntity<String>(gson.toJson("Update successfull."), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/updatePharmacyData", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> updatePharmacyData(@RequestBody Pharmacy pharmacy) {
+        String message = pharmacyService.updatePharmacyData(pharmacy);
         Gson gson = new GsonBuilder().create();
         if (message.equals("")) {
             return new ResponseEntity<String>(gson.toJson("Update successfull."), HttpStatus.OK);
@@ -76,4 +84,31 @@ public class PharmacyAdminController {
         return pharmacyAdminService.getPharmacyAdminData();
     }
 
+    @GetMapping(value = "/getPharmacyData", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public Pharmacy getPharmacyData() {
+        return pharmacyService.getPharmacyData();
+    }
+
+
+    @PostMapping(value = "/addMedicineToPharmacy")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> addMedicineToPharmacy(@RequestBody MedicinePharmacy mp) {
+        medicinePharmacyRepository.save(mp);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/addPharmacistToPharmacy")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> addPharmacistToPharmacy(@RequestBody EmploymentPharmacist ep) {
+        employmentPharmacistsRepository.save(ep);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/addDermatologistToPharmacy")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> addDermatologistToPharmacy(@RequestBody EmploymentDermatologist ed) {
+        employmentDermatologistRepository.save(ed);
+        return ResponseEntity.ok().build();
+    }
 }

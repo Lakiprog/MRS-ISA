@@ -8,4 +8,7 @@ export class Medicine {
   medicineCode!: string;
   medicineType!: string;
   prescription!: boolean;
+  averageRating!: string;
+  points!: string;
+  substituteMedicineIds!: [];
 }

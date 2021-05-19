@@ -115,6 +115,9 @@ public class PharmacistController {
 			if (!encoder.matches(passwords.getOldPassword(), p.getPassword())) {
 				return new ResponseEntity<String>(gson.toJson("Wrong old password!"), HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
+				if (p.getFirstLogin()) {
+					p.setFirstLogin(false);
+				}
 				p.setPassword(encoder.encode(passwords.getPassword()));
 				pharmacistRepository.save(p);
 				return new ResponseEntity<String>(gson.toJson(""), HttpStatus.OK);

@@ -17,8 +17,14 @@
 .card {
   width: 700px;
   height: 150px;
-  margin-top: 10px;
-  margin-left: 10px;
   text-align: center;
   background-color: #DEEDE6
+}
+
+.main-div {
+  height: 50vh;
+  padding-right: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

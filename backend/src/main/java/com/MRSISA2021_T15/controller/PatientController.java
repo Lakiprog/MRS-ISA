@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +14,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
+import com.MRSISA2021_T15.model.EReceiptSearch;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.service.PatientService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.zxing.NotFoundException;
 
 @RestController
 @RequestMapping("/patients")
@@ -80,6 +85,19 @@ public class PatientController {
 	public List<Pharmacy> getSubscribedPharmacies() {
 		return service.getSubscribedPharmacies();
 	}
-
+	
+	@PostMapping(value = "/sendQrCode", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<EReceiptSearch> sendQrCode(@RequestParam("qrCode") MultipartFile file) throws IOException, NotFoundException {
+		return service.sendQrCode(file);
+	}
+	
+	@PostMapping(value = "/issueEReceipt", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<String> issueEReceipt(@RequestBody EReceiptSearch eReceiptSearch) {
+		service.issueEReceipt(eReceiptSearch);
+		Gson gson = new GsonBuilder().create();
+		return new ResponseEntity<String>(gson.toJson("Medicine issued successfully."), HttpStatus.OK);
+	}
 }
 

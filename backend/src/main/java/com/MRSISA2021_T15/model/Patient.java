@@ -33,6 +33,9 @@ public class Patient extends User{
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Reservation> reservation;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<EReceipt> eReceipts;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -92,6 +95,14 @@ public class Patient extends User{
 		this.categoryName = categoryName;
 	}
 	
+	public Set<EReceipt> geteReceipts() {
+		return eReceipts;
+	}
+
+	public void seteReceipts(Set<EReceipt> eReceipts) {
+		this.eReceipts = eReceipts;
+	}
+
 	public Patient() {
 		super();
 	}

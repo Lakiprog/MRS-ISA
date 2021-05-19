@@ -11,6 +11,7 @@ import { AngularMaterialModule } from './angular_material.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSortModule } from '@angular/material/sort';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -26,13 +27,22 @@ import { PharmacistPatientComponent } from './pharmacist-patients/pharmacist-pat
 import { DermatologistPatientComponent } from './dermatologist-patients/dermatologist-patient.component';
 import { PatientProfileNavbarComponent } from './patient-profile-navbar/patient-profile-navbar.component';
 import { ChangePatientDataComponent } from './change-patient-data/change-patient-data.component';
-import { DialogDataExampleDialogPharmacist, PharmacistCalendarComponent } from './pharmacist-calendar/pharmacist-calendar.component';
-import { DermatologistCalendarComponent, DialogDataExampleDialogDermatologist } from './dermatologist-calendar/dermatologist-calendar.component';
+import {
+  DialogDataExampleDialogPharmacist,
+  PharmacistCalendarComponent,
+} from './pharmacist-calendar/pharmacist-calendar.component';
+import {
+  DermatologistCalendarComponent,
+  DialogDataExampleDialogDermatologist,
+} from './dermatologist-calendar/dermatologist-calendar.component';
 import { AddMedicineComponent } from './add-medicine/add-medicine.component';
 import { SystemAdminProfilePageComponent } from './system-admin-profile-page/system-admin-profile-page.component';
 import { SupplierProfilePageComponent } from './supplier-profile-page/supplier-profile-page.component';
 import { PharmacistAppointmentCreationComponent } from './pharmacist-appointment-creation/pharmacist-appointment-creation.component';
-import { DermatologistChoosePredefinedComponent, DialogPredefined } from './dermatologist-choose-predefined/dermatologist-choose-predefined.component';
+import {
+  DermatologistChoosePredefinedComponent,
+  DialogPredefined,
+} from './dermatologist-choose-predefined/dermatologist-choose-predefined.component';
 import { DermatologistAppointmentCreationComponent } from './dermatologist-appointment-creation/dermatologist-appointment-creation.component';
 import { SearchPharmacyComponent } from './search-pharmacy/search-pharmacy.component';
 import { RegisterPharmaciesComponent } from './register-pharmacies/register-pharmacies.component';
@@ -59,9 +69,15 @@ import { UserComplaintComponent } from './user-complaint/user-complaint.componen
 import { PatientsComplaintsDataComponent } from './patients-complaints-data/patients-complaints-data.component';
 import { SupplierWriteOffersComponent } from './supplier-write-offers/supplier-write-offers.component';
 
-import { DialogStartPharmacist, PharmacistAppointmentsComponent } from './pharmacist-appointments/pharmacist-appointments.component';
+import {
+  DialogStartPharmacist,
+  PharmacistAppointmentsComponent,
+} from './pharmacist-appointments/pharmacist-appointments.component';
 import { PharmacistAppointmentInfoComponent } from './pharmacist-appointment-info/pharmacist-appointment-info.component';
-import { DermatologistAppointmentsComponent, DialogStartDermatologist } from './dermatologist-appointments/dermatologist-appointments.component';
+import {
+  DermatologistAppointmentsComponent,
+  DialogStartDermatologist,
+} from './dermatologist-appointments/dermatologist-appointments.component';
 import { DermatologistAppointmentInfoComponent } from './dermatologist-appointment-info/dermatologist-appointment-info.component';
 import { SupplierViewOffersComponent } from './supplier-view-offers/supplier-view-offers.component';
 import { RespondToComplaintsComponent } from './respond-to-complaints/respond-to-complaints.component';
@@ -84,6 +100,15 @@ import { PatientSchedFarmaApp3Component } from './patient-sched-farma-app3/patie
 import { PatientOrdersMedicineComponent } from './patient-orders-medicine/patient-orders-medicine.component';
 import { PatiensMedicinesComponent } from './patiens-medicines/patiens-medicines.component';
 
+
+import { AddMedicineToPharmacyComponent } from './components/add-medicine-to-pharmacy/add-medicine-to-pharmacy.component';
+import { AddPharmacistToPharmacyComponent } from './components/add-pharmacist-to-pharmacy/add-pharmacist-to-pharmacy.component';
+import { AddDermatologistToPharmacyComponent } from './components/add-dermatologist-to-pharmacy/add-dermatologist-to-pharmacy.component';
+
+import { PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.component';
+import { DermatologistUsersComponent } from './dermatologist-users/dermatologist-users.component';
+import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-prescription.component';
+import { PharmacyProfilePageComponent } from './components/pharmacy-profile-page/pharmacy-profile-page.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -148,11 +173,21 @@ FullCalendarModule.registerPlugins([
     PharmacistReservationsComponent,
     SupplierMedicineStockComponent,
     PatientSubscribedPharmaciesComponent,
+
     PatientSchedFarmaAppComponent,
     PatientSchedFarmaApp2Component,
     PatientSchedFarmaApp3Component,
     PatientOrdersMedicineComponent,
-    PatiensMedicinesComponent
+    PatiensMedicinesComponent,
+
+    AddMedicineToPharmacyComponent,
+    AddPharmacistToPharmacyComponent,
+    AddDermatologistToPharmacyComponent,
+    PharmacistUsersComponent,
+    DermatologistUsersComponent,
+    MedicinePrescriptionComponent,
+    PharmacyProfilePageComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -165,7 +200,11 @@ FullCalendarModule.registerPlugins([
     ReactiveFormsModule,
     MatSortModule,
     LayoutModule,
+
     NgxMaterialTimepickerModule,
+
+    MaterialFileInputModule,
+
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
@@ -387,7 +426,7 @@ FullCalendarModule.registerPlugins([
       {
         path: 'DermatologistAbsenceComponent',
         canActivate: [DermatologistRoutes],
-        component: DermatologistAbsenceComponent
+        component: DermatologistAbsenceComponent,
       },
       {
         path: 'searchFilterMedicine',
@@ -423,7 +462,40 @@ FullCalendarModule.registerPlugins([
         canActivate: [PatientRoutes],
         component: PatiensMedicinesComponent,
       },
-      
+        path: 'addMedicineToPharmacy',
+        canActivate: [PharmacyAdminRoutes],
+        component: AddMedicineToPharmacyComponent,
+      },
+      {
+        path: 'addPharmacistToPharmacy',
+        canActivate: [PharmacyAdminRoutes],
+        component: AddPharmacistToPharmacyComponent,
+      },
+      {
+        path: 'addDermatologistToPharmacy',
+        canActivate: [PharmacyAdminRoutes],
+        component: AddDermatologistToPharmacyComponent,
+      },
+      {
+        path: 'PharmacistUsersComponent',
+        canActivate: [PharmacistRoutes],
+        component: PharmacistUsersComponent,
+      },
+      {
+        path: 'DermatologistUsersComponent',
+        canActivate: [DermatologistRoutes],
+        component: DermatologistUsersComponent,
+      },
+      {
+        path: 'medicinePrescription',
+        canActivate: [PatientRoutes],
+        component: MedicinePrescriptionComponent,
+      },
+      {
+        path: 'pharmacyProfilePage',
+        component: PharmacyProfilePageComponent,
+      },
+
     ]),
   ],
 

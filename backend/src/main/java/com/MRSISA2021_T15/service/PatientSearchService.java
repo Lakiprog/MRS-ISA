@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.repository.PatientSearchRepository;
+import com.MRSISA2021_T15.repository.UserRepository;
 
 @Service
 public class PatientSearchService {
 	
 	@Autowired
 	private PatientSearchRepository repository;
+	
+	@Autowired
+	private UserRepository patientsRepo;
 
 	public List<Patient> patientsPharmacist(String startsWith){
 		return repository.findAllByUsernamePharmacist(startsWith);
@@ -28,10 +32,14 @@ public class PatientSearchService {
 	}
 	
 	public List<Appointment> all(){
-		return repository.findAll();
+		return repository.findAllByOrderByStartDesc();
 	}
 	
 	public List<Patient> allPharmacist(Integer id){
 		return repository.findPatientsPharmacist(id);
+	}
+	
+	public List<Patient> allPatients(){
+		return patientsRepo.findAllPatients();
 	}
 }

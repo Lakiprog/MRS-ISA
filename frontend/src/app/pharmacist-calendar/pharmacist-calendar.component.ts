@@ -2,6 +2,7 @@ import { Component, OnInit, Inject} from '@angular/core';
 import {PharmacistCalendarService} from './pharmacist-calendar.service'
 import { CalendarOptions } from '@fullcalendar/angular';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogClose, MatDialogActions, MatDialogRef} from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pharmacist-calendar',
@@ -10,7 +11,7 @@ import {MatDialog, MAT_DIALOG_DATA, MatDialogClose, MatDialogActions, MatDialogR
 })
 export class PharmacistCalendarComponent implements OnInit {
 
-  constructor(private service : PharmacistCalendarService, public dialog: MatDialog) { }
+  constructor(private service : PharmacistCalendarService, public dialog: MatDialog, public router : Router) { }
 
   events:any[] = [];
   current:any;
@@ -57,6 +58,10 @@ export class PharmacistCalendarComponent implements OnInit {
     data: this.current,
     disableClose: false
   });
+}
+
+back(){
+  this.router.navigate(['/PharmacistHomePage']);
 }
 
 }

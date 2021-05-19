@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DummyModel } from 'src/app/models/dummy-model';
 import { Pharmacist } from 'src/app/models/pharmacist';
 import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
@@ -17,6 +18,7 @@ export class ListOfPharmacistsComponent implements OnInit {
   pharmacistId!: DummyModel;
   constructor(
     private pharmacyAdminService: PharmacyAdminService,
+    private router: Router,
     private formBuilder: FormBuilder
   ) {
     this.searchForm = this.formBuilder.group({
@@ -59,5 +61,10 @@ export class ListOfPharmacistsComponent implements OnInit {
   clearSearch(): void {
     this.pharmacistList = this.pharmacistListBackup;
     this.searchForm.reset();
+  }
+
+  addPharmacistToPharmacy(pharmacist: Pharmacist): void {
+    localStorage.setItem('pharmacist', JSON.stringify(pharmacist));
+    this.router.navigate(['addPharmacistToPharmacy']);
   }
 }

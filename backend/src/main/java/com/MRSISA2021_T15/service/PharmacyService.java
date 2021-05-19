@@ -1,13 +1,17 @@
 package com.MRSISA2021_T15.service;
 
-import java.util.List;
-
 import com.MRSISA2021_T15.model.Pharmacy;
+
+import java.util.List;
 
 public interface PharmacyService {
 	
 	void registerPharmacy(Pharmacy pharmacy);
-	
+
+	Pharmacy getPharmacyData();
+
+	String updatePharmacyData(Pharmacy pharmacy);
+
 	List<Pharmacy> getPharmacies();
 
 }

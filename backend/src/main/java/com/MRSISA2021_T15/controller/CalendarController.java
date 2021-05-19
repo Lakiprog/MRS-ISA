@@ -59,10 +59,11 @@ public class CalendarController {
 		return events;
 	}
 	
-	@GetMapping(value = "/calendarDermatologist/id={dermatologistId}pharmacy={pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/calendarDermatologist/pharmacy={pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
-	public Collection<Event> calendarDermatologist(@PathVariable("dermatologistId") Integer dermatologistId, @PathVariable("pharmacyId") Integer pharmacyId){
-		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
+	public Collection<Event> calendarDermatologist(@PathVariable("pharmacyId") Integer pharmacyId){
+		Dermatologist d = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Appointment> appointments = service.findAllDermatologist(d.getId());
 		ArrayList<Event> events = new ArrayList<Event>();
 		for (Appointment appointment : appointments) {
 			if(appointment.getPharmacy().getId() == pharmacyId) {

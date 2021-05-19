@@ -1,21 +1,11 @@
 package com.MRSISA2021_T15.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "pharmacy")
@@ -49,6 +39,10 @@ public class Pharmacy {
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<MedicinePharmacy> medicine;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<MedicineNeeded> medicineNeeded;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -167,5 +161,13 @@ public class Pharmacy {
 
 	public void setPromotions(Set<Promotion> promotions) {
 		this.promotions = promotions;
+	}
+
+	public double getAppointmentPrice() {
+		return appointmentPrice;
+	}
+
+	public void setAppointmentPrice(double appointmentPrice) {
+		this.appointmentPrice = appointmentPrice;
 	}
 }

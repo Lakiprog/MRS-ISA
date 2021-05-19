@@ -47,6 +47,12 @@ export class ListOfMedicineComponent implements OnInit {
     localStorage.setItem('medicineId', medicine.id);
     this.router.navigate(['updateMedicine']);
   }
+
+  addMedicineToPharmacy(medicine: Medicine): void {
+    localStorage.setItem('medicine', JSON.stringify(medicine));
+    this.router.navigate(['addMedicineToPharmacy']);
+  }
+
   searchMedicineById(): void {
     this.medicineId = this.searchForm.value;
     this.pharmacyAdminService
