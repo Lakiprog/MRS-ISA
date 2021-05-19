@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
+import com.MRSISA2021_T15.model.OrderedMedicine;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.ReservationItem;
 import com.MRSISA2021_T15.service.MedicinePharmacyService;
 import com.MRSISA2021_T15.service.ReservationService;
 import com.google.gson.Gson;
@@ -78,20 +82,14 @@ public class MedicinePharmacyController {
 	
 
 	
-	@PostMapping(value = "/orderMedicine", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/orderMedicine", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public ResponseEntity<String>orderMedicine(@RequestBody MedicinePharmacy order){
+	public ResponseEntity<String>orderMedicine(@RequestBody OrderedMedicine order){
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		String message = "";
-		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		System.out.println("123");
-		System.out.println(patient.getId());
-		
-		System.out.println(order.getDate());
-		
-		
 		mService.updateQuantity(order);
-		reservationService.saveReservation(order, patient, order.getDate());
+		reservationService.saveReservation(patient, order);
 		
 		
 		Gson gson = new GsonBuilder().create();
@@ -102,5 +100,52 @@ public class MedicinePharmacyController {
 		}
 	}
 	
+	
+	
+	@GetMapping(value = "/getAllPatientsMedicines")
+	public List<ReservationItem> getAllPatientsMedicines() {
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return mService.getAllReservationItem(patient);
+	}
+	
+	
+	
+	@PutMapping(value = "/cancelMedicine", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<String>cancelMedicine(@RequestBody ReservationItem reservationItem){
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		String message = "";
+		LocalDateTime now = LocalDateTime.now();
+		if(now.getYear() == reservationItem.getReservation().getEnd().getYear()) {
+			if(now.getMonthValue() == reservationItem.getReservation().getEnd().getMonthValue()) {
+				if(now.getDayOfMonth() == reservationItem.getReservation().getEnd().getDayOfMonth()) {
+					message = "You can't cancel your appointment under 24h before it's beggining!";
+				}else if(now.getDayOfMonth() + 1 == reservationItem.getReservation().getEnd().getDayOfMonth()) { //ako je otkazujem dan prije
+					//provjeri sate i minute onda
+					if(now.getHour() > reservationItem.getReservation().getEnd().getHour()) {
+						message = "You can't cancel your appointment under 24h before it's beggining!";
+					}else if(now.getHour() == reservationItem.getReservation().getEnd().getHour()) {
+						//ovdje provjeri minute
+						if(now.getMinute() >  reservationItem.getReservation().getEnd().getMinute()) { //moze tacno 24 od pocetka da otkaze
+							message = "You can't cancel your appointment under 24h before it's beggining!";
+						}
+					}
+				}
+			}
+		}
+		
+		if(message.equals("")) {
+			mService.deleteMedicine(reservationItem);
+		}
+		
+		
+		Gson gson = new GsonBuilder().create();
+		if (message.equals("")) {
+			return new ResponseEntity<String>(gson.toJson("You cancel your medicine. :)"), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 }
