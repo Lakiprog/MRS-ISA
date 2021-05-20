@@ -19,6 +19,7 @@ export class DermatologistProfilePageComponent implements OnInit {
   RESPONSE_ERROR : number = -1;
   constructor(private fb: FormBuilder, private _pharmacistUpdateService: DermatologistUpdateService, private _snackBar: MatSnackBar, private authService: AuthService, public router : Router) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
+  firstLogin = this.authService.getTokenData()?.firstLogin;
 
   ngOnInit(): void {
     this.updateForm = this.fb.group(
@@ -111,5 +112,69 @@ export class DermatologistProfilePageComponent implements OnInit {
 
   back(){
     this.router.navigate(['/DermatologistHomePage']);
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+  
+  profile(){
+    this.router.navigate(["/DermatologistProfilePageComponent"]);
+  }
+  
+  patients(){
+    if(!this.firstLogin){
+      this.router.navigate(["/DermatologistPatientComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  allPatients(){
+    if(!this.firstLogin){
+      this.router.navigate(["/DermatologistUsersComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  calendar(){
+    if(!this.firstLogin){
+      this.router.navigate(["/DermatologistCalendarComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  absence(){
+    if(!this.firstLogin){
+      this.router.navigate(["/DermatologistAbsenceComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  appointments(){
+    if(!this.firstLogin){
+      this.router.navigate(["/DermatologistAppointmentsComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  reservations(){
+    if(!this.firstLogin){
+      this.router.navigate(["/DermatologistReservationsComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  medicine(){
+    if(!this.firstLogin){
+      this.router.navigate(["/searchFilterMedicine"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
   }
 }

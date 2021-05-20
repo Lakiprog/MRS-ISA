@@ -5,6 +5,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { AuthService } from '../login/auth.service';
 
 @Component({
   selector: 'app-pharmacist-appointment-info',
@@ -13,13 +14,15 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class PharmacistAppointmentInfoComponent implements OnInit {
 
-  constructor(private service : PharmacistAppointmentInfoService, private router: Router, private fb: FormBuilder, private _snackBar: MatSnackBar) { }
+  constructor(private service : PharmacistAppointmentInfoService, private router: Router, private fb: FormBuilder, private _snackBar: MatSnackBar, private  authService: AuthService) { }
 
   @ViewChild(MatPaginator)
   paginatorMedicineSupply!: MatPaginator;
 
   @ViewChild(MatPaginator)
   paginatorMedicinePrescribed!: MatPaginator;
+
+  firstLogin = this.authService.getTokenData()?.firstLogin;
   
   updateForm! : FormGroup;
   medicineForm! : FormGroup;
@@ -214,6 +217,70 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
 
   homepage(){
     this.router.navigate(['/PharmacistHomePage']);
+  }
+
+  profile(){
+    this.router.navigate(["/PharmacistProfilePageComponent"]);
+  }
+  
+  patients(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistPatientComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  allPatients(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistUsersComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  calendar(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistCalendarComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  absence(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistAbsenceComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  appointments(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistAppointmentsComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  reservations(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistReservationsComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  medicine(){
+    if(!this.firstLogin){
+      this.router.navigate(["/searchFilterMedicine"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }
