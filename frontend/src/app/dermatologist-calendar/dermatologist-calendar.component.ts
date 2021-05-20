@@ -3,6 +3,8 @@ import {DermatologistCalendarService} from './dermatologist-calendar.service'
 import { CalendarOptions } from '@fullcalendar/angular';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
 
 @Component({
   selector: 'app-dermatologist-calendar',
@@ -11,7 +13,11 @@ import { Router } from '@angular/router';
 })
 export class DermatologistCalendarComponent implements OnInit {
 
-  constructor(private service : DermatologistCalendarService, public dialog: MatDialog, public router : Router) { }
+  constructor(private service : DermatologistCalendarService, public dialog: MatDialog, public router : Router, private _snackBar: MatSnackBar, private authService: AuthService) { }
+  verticalPosition: MatSnackBarVerticalPosition = "top";
+  firstLogin = this.authService.getTokenData()?.firstLogin;
+  RESPONSE_OK : number = 0;
+  RESPONSE_ERROR : number = -1;
 
   events:any[] = [];
   pharmacies:any[] = [];
@@ -68,16 +74,88 @@ export class DermatologistCalendarComponent implements OnInit {
   });
 }
 
-back(){
-  this.router.navigate(['/DermatologistHomePage']);
-}
-
 change(){
   if( typeof this.pharmaci === 'string'){
     this.service.getAppointmentsDermatologist().subscribe((data:any) => {this.events = data; this.addEvents();});
   }else{
     this.service.getAppointmentsPharmacy(this.pharmaci.id).subscribe((data:any) => {this.events = data; this.addEvents();});
   }
+}
+
+openSnackBar(msg: string, responseCode: number) {
+  this._snackBar.open(msg, "x", {
+    duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+    verticalPosition: this.verticalPosition,
+    panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
+  });
+}
+
+logout() {
+  this.authService.logout();
+}
+
+profile(){
+  this.router.navigate(["/DermatologistProfilePageComponent"]);
+}
+
+patients(){
+  if(!this.firstLogin){
+    this.router.navigate(["/DermatologistPatientComponent"]);
+  }else{
+    this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+  }
+}
+
+allPatients(){
+  if(!this.firstLogin){
+    this.router.navigate(["/DermatologistUsersComponent"]);
+  }else{
+    this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+  }
+}
+
+calendar(){
+  if(!this.firstLogin){
+    this.router.navigate(["/DermatologistCalendarComponent"]);
+  }else{
+    this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+  }
+}
+
+absence(){
+  if(!this.firstLogin){
+    this.router.navigate(["/DermatologistAbsenceComponent"]);
+  }else{
+    this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+  }
+}
+
+appointments(){
+  if(!this.firstLogin){
+    this.router.navigate(["/DermatologistAppointmentsComponent"]);
+  }else{
+    this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+  }
+}
+
+reservations(){
+  if(!this.firstLogin){
+    this.router.navigate(["/DermatologistReservationsComponent"]);
+  }else{
+    this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+  }
+}
+
+medicine(){
+  if(!this.firstLogin){
+    this.router.navigate(["/searchFilterMedicine"]);
+  }else{
+    this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+  }
+}
+
+back(){
+  this.router.navigate(['/DermatologistHomePage']);
 }
 
 }

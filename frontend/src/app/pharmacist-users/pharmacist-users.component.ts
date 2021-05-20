@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';;
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
 
 @Component({
   selector: 'app-pharmacist-users',
@@ -12,11 +14,15 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class PharmacistUsersComponent implements OnInit {
 
-  constructor(private service : PharmacistUsersService, private router: Router, private fb: FormBuilder) { }
+  constructor(private service : PharmacistUsersService, private router: Router, private fb: FormBuilder, private _snackBar: MatSnackBar, private authService: AuthService) { }
 
   @ViewChild(MatPaginator)
   paginatorPatients!: MatPaginator;
 
+  firstLogin = this.authService.getTokenData()?.firstLogin;
+  RESPONSE_OK : number = 0;
+  RESPONSE_ERROR : number = -1;
+  verticalPosition: MatSnackBarVerticalPosition = "top";
   patientsForm! : FormGroup;
   displayedColumnsPatients: string[] = ['name', 'surname', 'username', 'email', 'adress', 'city', 'country', 'phoneNumber'];
   patientsData:any = [];
@@ -47,6 +53,82 @@ export class PharmacistUsersComponent implements OnInit {
 
   filter(){
     this.getPatients(this.patientsForm.get("nameSearch")?.value, this.patientsForm.get("surnameSearch")?.value);
+  }
+
+  homepage(){
+    this.router.navigate(['/PharmacistHomePage']);
+  }
+
+  profile(){
+    this.router.navigate(["/PharmacistProfilePageComponent"]);
+  }
+  
+  allPatients(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistUsersComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  calendar(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistCalendarComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  absence(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistAbsenceComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  appointments(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistAppointmentsComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+
+  patients(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistPatientComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  reservations(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistReservationsComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  medicine(){
+    if(!this.firstLogin){
+      this.router.navigate(["/searchFilterMedicine"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
+  openSnackBar(msg: string, responseCode: number) {
+    this._snackBar.open(msg, "x", {
+      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      verticalPosition: this.verticalPosition,
+      panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
+    });
   }
 
   back(){

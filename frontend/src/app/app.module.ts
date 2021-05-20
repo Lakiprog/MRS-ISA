@@ -462,6 +462,7 @@ FullCalendarModule.registerPlugins([
         canActivate: [PatientRoutes],
         component: PatiensMedicinesComponent,
       },
+      {
         path: 'addMedicineToPharmacy',
         canActivate: [PharmacyAdminRoutes],
         component: AddMedicineToPharmacyComponent,
