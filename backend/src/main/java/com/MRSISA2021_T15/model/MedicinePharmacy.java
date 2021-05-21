@@ -1,14 +1,20 @@
 package com.MRSISA2021_T15.model;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "medicine_pharmacy")
@@ -20,14 +26,13 @@ public class MedicinePharmacy {
 	private double cost;
 	@Column
 	private int amount;
-	@Column
-	private LocalDateTime date;
-	public LocalDateTime getDate() {
-		return date;
-	}
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
+	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "medicinePharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<OrderedMedicine> orderedMedicines;
+	
+
 	@ManyToOne
 	private Pharmacy pharmacy;
 	@ManyToOne

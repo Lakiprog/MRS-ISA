@@ -64,6 +64,13 @@ public class Pharmacy {
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PurchaseOrder> purchaseOrder;
 	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CanceledPharAppoinment> canceledAppointments;
+	
+	
+	
 	public Integer getId() {
 		return id;
 	}
