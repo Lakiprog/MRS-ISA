@@ -2,10 +2,7 @@ package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.*;
-import com.MRSISA2021_T15.repository.EmploymentDermatologistRepository;
-import com.MRSISA2021_T15.repository.EmploymentPharmacistsRepository;
-import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
-import com.MRSISA2021_T15.repository.PharmacyAdminRepository;
+import com.MRSISA2021_T15.repository.*;
 import com.MRSISA2021_T15.service.PharmacyAdminService;
 import com.MRSISA2021_T15.service.PharmacyService;
 import com.google.gson.Gson;
@@ -36,6 +33,10 @@ public class PharmacyAdminController {
     private EmploymentDermatologistRepository employmentDermatologistRepository;
     @Autowired
     private PharmacyService pharmacyService;
+    @Autowired
+    private PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    private PurchaseOrderMedicineRepository purchaseOrderMedicineRepository;
 
     @RequestMapping(path="/{pharmacyAdminId}/findById")
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
@@ -109,6 +110,27 @@ public class PharmacyAdminController {
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ResponseEntity<String> addDermatologistToPharmacy(@RequestBody EmploymentDermatologist ed) {
         employmentDermatologistRepository.save(ed);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/createPurchaseOrder")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> createPurchaseOrder(@RequestBody PurchaseOrderDto pod){
+        PurchaseOrder po = new PurchaseOrder();
+        po.setPharmacy(pod.getPharmacy());
+        po.setDueDateOffer(pod.getDueDateOffer());
+        po.setPurchaseOrderName(pod.getPurchaseOrderName());
+        for (PurchaseOrderMedicine pom: pod.getPurchaseOrderMedicine())
+        {
+            po.getPurchaseOrderMedicine().add(pom);
+            purchaseOrderMedicineRepository.save(pom);
+        }
+        purchaseOrderRepository.save(po);
+        for (PurchaseOrderMedicine pom: po.getPurchaseOrderMedicine()) {
+            pom.setPurchaseOrder(po);
+            purchaseOrderMedicineRepository.save(pom);
+        }
+
         return ResponseEntity.ok().build();
     }
 }

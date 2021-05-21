@@ -109,6 +109,9 @@ import { PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.co
 import { DermatologistUsersComponent } from './dermatologist-users/dermatologist-users.component';
 import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-prescription.component';
 import { PharmacyProfilePageComponent } from './components/pharmacy-profile-page/pharmacy-profile-page.component';
+import { MedicinePurchaseOrderComponent } from './components/medicine-purchase-order/medicine-purchase-order.component';
+import { AddMedicineToCartPopupComponent } from './components/add-medicine-to-cart-popup/add-medicine-to-cart-popup.component';
+import { SubmitPurchaseOrderPopupComponent } from './components/submit-purchase-order-popup/submit-purchase-order-popup.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -187,7 +190,9 @@ FullCalendarModule.registerPlugins([
     DermatologistUsersComponent,
     MedicinePrescriptionComponent,
     PharmacyProfilePageComponent,
-
+    MedicinePurchaseOrderComponent,
+    AddMedicineToCartPopupComponent,
+    SubmitPurchaseOrderPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -496,7 +501,11 @@ FullCalendarModule.registerPlugins([
         path: 'pharmacyProfilePage',
         component: PharmacyProfilePageComponent,
       },
-
+      {
+        path: 'medicinePurchaseOrder',
+        canActivate: [PharmacyAdminRoutes],
+        component: MedicinePurchaseOrderComponent,
+      },
     ]),
   ],
 

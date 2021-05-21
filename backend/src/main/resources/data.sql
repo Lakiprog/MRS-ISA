@@ -125,9 +125,9 @@ insert into medicine_supply (supplier_id, medicine_id, quantity) values (12, 1, 
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (12, 2, 600); 
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (12, 3, 100);
 
-insert into purchase_order (order_name, due_date_offer) values ('order1', '2021-07-05');
-insert into purchase_order (order_name, due_date_offer) values ('order2', '2021-07-01');
-insert into purchase_order (order_name, due_date_offer) values ('order3','2021-07-10');
+insert into purchase_order (purchase_order_name, due_date_offer) values ('order1', '2021-07-05');
+insert into purchase_order (purchase_order_name, due_date_offer) values ('order2', '2021-07-01');
+insert into purchase_order (purchase_order_name, due_date_offer) values ('order3','2021-07-10');
 
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 1, 20);
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 2, 30);
