@@ -59,4 +59,6 @@ public class PurchaseOrderMedicine {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
+
+
 }
