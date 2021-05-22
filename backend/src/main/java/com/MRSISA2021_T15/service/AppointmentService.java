@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.model.Absence;
+import com.MRSISA2021_T15.model.Allergy;
 import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.AppointmentInfo;
@@ -30,6 +31,7 @@ import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.model.Reservation;
 import com.MRSISA2021_T15.model.ReservationItem;
 import com.MRSISA2021_T15.repository.AbsenceRepository;
+import com.MRSISA2021_T15.repository.AllergyRepository;
 import com.MRSISA2021_T15.repository.AppointmentConsultationPointsRepository;
 import com.MRSISA2021_T15.repository.AppointmentCreationRepository;
 import com.MRSISA2021_T15.repository.AppointmentInfoRepository;
@@ -79,6 +81,8 @@ public class AppointmentService {
 	private AppointmentRepository appointmentRepository;
 	@Autowired
 	private CanceledPharmaAppointmentRepository canceledRepository;
+	@Autowired
+	private AllergyRepository allergyrepo;
 
 	public List<Appointment> findAllPharmacist(Integer id) {
 		return repository.findAllPharmacistId(id);
@@ -112,6 +116,13 @@ public class AppointmentService {
 	}
 
 	public String makeAppointmentPharmacist(AppointmentPharmacist appointment) {
+		
+		if(appointment.getStart().isAfter(appointment.getEnd())) {
+			return "Start can't be after end!";	
+		}else if(appointment.getStart().isBefore(LocalDateTime.now()) || appointment.getStart().isEqual(LocalDateTime.now())) {
+			return "Can't schedule appointment into past!";
+		}
+		
 		List<Appointment> appointmentsPatient = findAllPatients(appointment.getPatient().getId());
 		List<Appointment> appointmentsPharmacist = findAllPharmacist(appointment.getPharmacist().getId());
 		List<Absence> absences = repo3.findAllApproved();
@@ -187,6 +198,13 @@ public class AppointmentService {
 	}
 
 	public String makeAppointmentDermatologist(AppointmentDermatologist appointment) {
+		
+		if(appointment.getStart().isAfter(appointment.getEnd())) {
+			return "Start can't be after end!";	
+		}else if(appointment.getStart().isBefore(LocalDateTime.now()) || appointment.getStart().isEqual(LocalDateTime.now())) {
+			return "Can't schedule appointment into past!";
+		}
+		
 		List<Appointment> appointmentsPatient = findAllPatients(appointment.getPatient().getId());
 		List<Appointment> appointmentsPharmacist = findAllDermatologist(appointment.getDermatologist().getId());
 		List<Absence> absences = repo3.findAllApproved();
@@ -266,10 +284,14 @@ public class AppointmentService {
 
 	public String makeAppointmentDermatologistPredefined(Integer id, Patient patient) {
 		Appointment appointment = repository.findWithId(id);
+		
 		if (appointment == null) {
 			return "This appointment doesnt exist!";
-		}
-		if (appointment.getPatient() != null) {
+		}else if(appointment.getStart().isAfter(appointment.getEnd())) {
+			return "Start can't be after end!";	
+		}else if(appointment.getStart().isBefore(LocalDateTime.now()) || appointment.getStart().isEqual(LocalDateTime.now())) {
+			return "Can't schedule appointment into past!";
+		}else if (appointment.getPatient() != null) {
 			return "This appointment is already assigned";
 		}
 		appointment.setPatient(patient);
@@ -293,7 +315,17 @@ public class AppointmentService {
 	public String endAppointment(Appointment appointment, MedicineQuantity[] meds, String comments) {
 		String msg = "";
 		
+		List<Allergy> allergies =  allergyrepo.findAllPatients(appointment.getPatient().getId());
+		
 		for (MedicineQuantity medicine : meds) {
+			
+			for (Allergy allergy : allergies) {
+				if(allergy.getMedicine().getId() == medicine.getMedicine().getId()) {
+					msg = "Patient is allergic to this medicine!";
+					break;
+				}
+			}
+			
 			for (MedicinePharmacy medicinePharm : repo4.findByPharmacyId(appointment.getPharmacy().getId())) {
 
 				if (medicine.getMedicine().getId() == medicinePharm.getMedicine().getId()) {
@@ -309,11 +341,12 @@ public class AppointmentService {
 		
 		if (msg.equals("")) {
 			AppointmentInfo ai = new AppointmentInfo();
+			
 			Patient patient = (Patient) userRepository.findById(appointment.getPatient().getId()).get();
-			if (appointment.getClass() == AppointmentDermatologist.class) {
+			if (appointment instanceof AppointmentDermatologist) {
 				patient.setCollectedPoints(patient.getCollectedPoints() + appointmentConsultationPointsRepository.getPointsByType("APPOINTMENT"));
 			}
-			else if (appointment.getClass() == AppointmentPharmacist.class) {
+			else if (appointment instanceof AppointmentPharmacist) {
 				patient.setCollectedPoints(patient.getCollectedPoints() + appointmentConsultationPointsRepository.getPointsByType("CONSULTATION"));
 			}
 			
@@ -333,6 +366,7 @@ public class AppointmentService {
 				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
 				appointment.setDiscount((100.0 - c1.getDiscount()) / 100.0);
 			}
+			
 			appointment.setPatient(patient);
 			appointmentRepository.save(appointment);
 			userRepository.save(patient);

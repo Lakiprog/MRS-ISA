@@ -2,10 +2,28 @@
 <body class = "supplier-profile-page-background">
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
-            <a mat-button (click) = "newAppointment()">Schedule new Appointment</a>
+            <!-- <a mat-button (click) = "newAppointment()">Schedule new Appointment</a> -->
             <a mat-button (click) = "back()">BACK</a>
         </mat-toolbar-row>
     </mat-toolbar>
+    
+    <mat-card class = "card"  id="appointment">
+        <mat-card-title>Schedule new Appointment</mat-card-title>
+        <form [formGroup] = "appointmentForm" class = "appointment-form">
+            <mat-form-field class = "field">
+                <mat-label>Starting time</mat-label>
+                <input type="datetime-local" id="meetingTime" name="meetingTime" matInput placeholder="meetingTime" value="2021-03-12T19:30" formControlName = "meetingTime" required>
+                <mat-error *ngIf = "hasError('meetingTime', 'required')">The meeting time is required!</mat-error>
+            </mat-form-field>
+            <mat-form-field class = "field">
+                <mat-label>Ending time</mat-label>
+                <input type="time" id="endingTime" name="endingTime" matInput placeholder="endingTime" formControlName = "endingTime" required>
+                <mat-error *ngIf = "hasError('endingTime', 'required')">The ending time is required!</mat-error>
+            </mat-form-field>
+        </form>
+        <button (click) = "makeAppointment()" [disabled] = "appointmentForm.invalid" mat-raised-button color="primary">Create Appointment</button>
+    </mat-card>
+    
     <mat-card class = "table-card">
         <mat-card-title>Lookup Medication</mat-card-title>
         <form [formGroup] = "medicineForm" class = "medicine-form">
@@ -38,6 +56,8 @@
             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
         </div>
     </mat-card>
+
+
     <mat-card class = "table-card">
         <mat-card-title>Prescribed Medication</mat-card-title>
         <form [formGroup] = "medicinePrescribedForm" class = "medicine-form">
@@ -76,6 +96,7 @@
             </div>
         </form>
     </mat-card>
+
     <mat-card class = "card">
         <mat-card-title class = "card-title">Insert information about appointment</mat-card-title>
         <form [formGroup] = "updateForm" class = "update-form">

@@ -14,7 +14,7 @@
         </mat-toolbar-row>
     </mat-toolbar>
     <mat-card class = "table-card">
-        <mat-card-title>See reservation</mat-card-title>
+        <mat-card-title>See reservations</mat-card-title>
         <form [formGroup] = "medicinePrescribedForm" class = "medicine-form">
             <mat-form-field class = "field">
                 <div class="inline">
@@ -38,7 +38,6 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumnsMedicinePrescribed"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumnsMedicinePrescribed;"></tr>
                 </table>
-                <button (click) = "giveOut()" [disabled] = "medicinePrescribedForm.invalid" mat-raised-button color="primary">Give out medications</button>
             </div>
         </form>
     </mat-card>
@@ -59,5 +58,6 @@
             </table>
             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
         </div>
+        <button (click) = "giveOut()" [disabled] = "medicinePrescribedForm.invalid" mat-raised-button color="primary">Give out medications</button>
     </mat-card>
 </body>

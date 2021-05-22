@@ -21,6 +21,7 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
   @ViewChild(MatPaginator)
   paginatorMedicinePrescribed!: MatPaginator;
   
+  appointmentForm! : FormGroup;
   updateForm! : FormGroup;
   medicineForm! : FormGroup;
   medicinePrescribedForm! : FormGroup;
@@ -35,6 +36,9 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
   medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
   information = {};
   appointment:any = {};
+  dermatologist = {};
+  app = {price:0};
+  pharmacy = {appointmentPrice:0};
 
   ngOnInit(): void {
     this.medicineForm = this.fb.group(
@@ -55,10 +59,15 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
           medication: ['']
         }
     );
+    this.appointmentForm = this.fb.group({
+      meetingTime: ['', Validators.required],
+      endingTime: ['', Validators.required],
+    });
     let data:any = history.state.data;
     this.information = data.information;
     this.appointment = data.appointment;
     this.updateForm.get('comments')?.setValue(data.information.comment);
+    this.service.getPharmacistData().subscribe((data:any) => {this.dermatologist = data;})
     
     if(data.information.medication){
       data.information.medication.forEach((element:any) => {
@@ -94,13 +103,51 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
     return this.medicinePrescribedForm.controls;
   }
 
+  public hasError = (controlName: string, errorName: string) =>{
+    return this.appointmentForm.controls[controlName].hasError(errorName);
+}
+
+  checkTime(){
+    const today = new Date(Date.now());
+    const start = new Date(this.appointmentForm.get("meetingTime")?.value);
+    if(start < today){
+        this.appointmentForm.get("meetingTime")?.setErrors([{'timeMismatch': true}])
+        return null;
+    }
+    let spliting = this.appointmentForm.get("endingTime")?.value.split(':')
+    const end = new Date(start.getFullYear(), start.getMonth(), start.getDate(), spliting[0], spliting[1]);
+    if(start > end){
+        this.appointmentForm.get("endingTime")?.setErrors([{'timeMismatch': true}])
+        return null;
+    }
+    start.setHours(start.getHours() + 2);
+    end.setHours(end.getHours() + 2);
+    return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : history.state.data.appointment.patient, "dermatologist" : this.dermatologist, 
+    "pharmacy" : history.state.data.appointment.pharmacy, "price" : this.app.price};
+}
+
+public makeAppointment(){
+    let appointment = this.checkTime();
+    if(appointment){
+        this.service.makeAppointment(appointment).subscribe(
+            response => {
+              this.openSnackBar(response, this.RESPONSE_OK);
+              this.appointmentForm.reset();
+            },
+            error => {
+              this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            }
+          );
+    }
+}
+
 
    newAppointment(){
-    this.medicinePrescribedData= [];
-    this.tableRows.value.forEach((element:any) => {
-      this.medicinePrescribedData.push({name: element.name, medicationTherapy: element.medicationTherapy, medicationQuantity: element.medicationQuantity, medicine:element.medicine})
-    });
-    this.router.navigate(['/DermatologistAppointmentCreationComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication: this.medicinePrescribedData}}}});
+    //this.medicinePrescribedData= [];
+   // this.tableRows.value.forEach((element:any) => {
+    //  this.medicinePrescribedData.push({name: element.name, medicationTherapy: element.medicationTherapy, medicationQuantity: element.medicationQuantity, medicine:element.medicine})
+   // });
+    //this.router.navigate(['/DermatologistAppointmentCreationComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication: this.medicinePrescribedData}}}});
    }
 
    endAppointment(){

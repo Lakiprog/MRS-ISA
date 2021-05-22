@@ -38,6 +38,9 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
   medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
   information = {};
   appointment:any = {};
+  pharmacist = {};
+  pharmacy = {appointmentPrice:0};
+  appointmentForm! : FormGroup;
 
   ngOnInit(): void {
     this.medicineForm = this.fb.group(
@@ -58,6 +61,10 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
           medication: ['']
         }
     );
+    this.appointmentForm = this.fb.group({
+      meetingTime: ['', Validators.required],
+      endingTime: ['', Validators.required],
+    });
     let data:any = history.state.data;
     this.information = data.information;
     this.appointment = data.appointment;
@@ -75,10 +82,51 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
       this.medicinePrescribedData = data.information.medication;
       this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
       this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
+      this.service.getPharmacistData().subscribe((data:any) => {this.pharmacist = data;})
+      this.service.getPharmacyData().subscribe((data:any) => {this.pharmacy = data;})
     }
     
     this.getMeds();
   }
+
+  public hasError = (controlName: string, errorName: string) =>{
+    return this.appointmentForm.controls[controlName].hasError(errorName);
+}
+
+checkTime(){
+    const today = new Date(Date.now());
+    const start = new Date(this.appointmentForm.get("meetingTime")?.value);
+    if(start < today){
+        this.appointmentForm.get("meetingTime")?.setErrors([{'timeMismatch': true}])
+        return null;
+    }
+    let spliting = this.appointmentForm.get("endingTime")?.value.split(':')
+    const end = new Date(start.getFullYear(), start.getMonth(), start.getDate(), spliting[0], spliting[1]);
+    if(start > end){
+        this.appointmentForm.get("endingTime")?.setErrors([{'timeMismatch': true}])
+        return null;
+    }
+    start.setHours(start.getHours() + 2);
+    end.setHours(end.getHours() + 2);
+    console.log(this.pharmacy);
+    return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : history.state.data.appointment.patient, "pharmacist" : this.pharmacist, 
+    "pharmacy" : this.pharmacy, "price" : this.appointment.price};
+}
+
+public makeAppointment(){
+    let appointment = this.checkTime();
+    if(appointment){
+        this.service.makeAppointment(appointment).subscribe(
+            response => {
+              this.openSnackBar(response, this.RESPONSE_OK);
+              this.appointmentForm.reset();
+            },
+            error => {
+              this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            }
+          );
+    }
+}
 
   ngAfterViewInit(): void {
     this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
@@ -99,11 +147,11 @@ export class PharmacistAppointmentInfoComponent implements OnInit {
 
 
    newAppointment(){
-    this.medicinePrescribedData= [];
-    this.tableRows.value.forEach((element:any) => {
-      this.medicinePrescribedData.push({name: element.name, medicationTherapy: element.medicationTherapy, medicationQuantity: element.medicationQuantity, medicine:element.medicine})
-    });
-    this.router.navigate(['/PharmacistAppointmentCreationComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication: this.medicinePrescribedData}}}});
+   //this.medicinePrescribedData= [];
+   //this.tableRows.value.forEach((element:any) => {
+   //this.medicinePrescribedData.push({name: element.name, medicationTherapy: element.medicationTherapy, medicationQuantity: element.medicationQuantity, medicine:element.medicine})
+   //});
+   //this.router.navigate(['/PharmacistAppointmentCreationComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication: this.medicinePrescribedData}}}});
    }
 
    endAppointment(){

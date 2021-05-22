@@ -105,8 +105,8 @@ import { AddMedicineToPharmacyComponent } from './components/add-medicine-to-pha
 import { AddPharmacistToPharmacyComponent } from './components/add-pharmacist-to-pharmacy/add-pharmacist-to-pharmacy.component';
 import { AddDermatologistToPharmacyComponent } from './components/add-dermatologist-to-pharmacy/add-dermatologist-to-pharmacy.component';
 
-import { PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.component';
-import { DermatologistUsersComponent } from './dermatologist-users/dermatologist-users.component';
+import { DialogStartPharmacistPatients, PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.component';
+import { DermatologistUsersComponent, DialogStartDermatologistPatients } from './dermatologist-users/dermatologist-users.component';
 import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-prescription.component';
 import { PharmacyProfilePageComponent } from './components/pharmacy-profile-page/pharmacy-profile-page.component';
 
@@ -187,7 +187,8 @@ FullCalendarModule.registerPlugins([
     DermatologistUsersComponent,
     MedicinePrescriptionComponent,
     PharmacyProfilePageComponent,
-
+    DialogStartDermatologistPatients,
+    DialogStartPharmacistPatients,
   ],
   imports: [
     BrowserModule,

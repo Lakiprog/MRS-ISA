@@ -12,13 +12,15 @@ body {
     
   .field {
     width: 100%;
+    display: block;
   }
   
   .card {
-    width: 800px;
+    width: 700px;
     margin-top: 10px;
     margin-left: 10px;
     background-color: #DEEDE6;
+    display: block;
   }
 
   button{
@@ -29,15 +31,29 @@ body {
     width: 700px;
     margin-top: 10px;
     margin-left: 10px;
-    background-color: #DEEDE6
+    background-color: #DEEDE6;
+    display: block;
+}
+
+#appointment{
+  height: auto;
+  width: auto;
+  margin-right: 700px;
+  float: right;
 }
 
 table {
     width: 100%;
+    display: block;
 }
 
 .data-table {
     width: 100%;
+    display: block;
+}
+
+.table-card{
+  display: block;
 }
 
 .coloumnComposition {
@@ -49,17 +65,21 @@ table {
 }
 
 .coloumnQuantity {
-  width: 10%; 
+    width: 10%; 
 }
 
 .add {
-width: 10%;
+  width: 10%;
 }
 
 .addButton{
-background-color: steelblue;
+  background-color: steelblue;
 }
 
 .removeButton{
   background-color: steelblue;
+}
+
+.inputTable{
+  margin: 5px;
 }
