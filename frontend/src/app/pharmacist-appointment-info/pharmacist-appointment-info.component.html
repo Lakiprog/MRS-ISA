@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<body class = "supplier-profile-page-background">
+<div>
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
             <!-- <a mat-button (click) = "newAppointment()">Schedule new Appointment</a> -->
@@ -108,4 +108,4 @@
         <button (click) = "endAppointment()" [disabled] = "updateForm.invalid" mat-raised-button color="primary">End Appointment</button>
         <button (click) = "endAppointmentNoPatient()" [disabled] = "updateForm.invalid" mat-raised-button color="primary">Patient hasn't come</button>
     </mat-card>
-</body>
+</div>

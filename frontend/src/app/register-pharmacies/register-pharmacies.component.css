@@ -16,12 +16,6 @@
     background-color: #DEEDE6
 }
 
-.register-pharmacy-background {
-    background: url(../pictures/it.jpg);
-    background-size: cover;
-    background-attachment: fixed;
-}
-
 .textarea-size {
   max-width: 500px; 
   max-height: 100px;

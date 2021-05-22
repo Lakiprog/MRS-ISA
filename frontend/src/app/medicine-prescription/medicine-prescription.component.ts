@@ -22,8 +22,11 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
   ) { }
   qrCodeForm!: FormGroup;
   displayedColumnsPharmacies: string[] = ['name', 'address', 'rating', 'totalPrice', 'issue'];
+  displayedColumnsMedicine: string[] = ['medicineCode', 'name', 'quantity'];
   pharmacyData = [];
   pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
+  medicineData = [];
+  medicineDataSource = new MatTableDataSource<any>(this.medicineData);
   verticalPosition: MatSnackBarVerticalPosition = "top";
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
@@ -39,8 +42,12 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator)
   paginatorPharmacies!: MatPaginator;
 
+  @ViewChild(MatPaginator)
+  paginatorMedicine!: MatPaginator;
+
   ngAfterViewInit(): void {
     this.pharmaciesDataSource.paginator = this.paginatorPharmacies;
+    this.medicineDataSource.paginator = this.paginatorMedicine;
   }
 
   sortData(sort: Sort) {
@@ -69,8 +76,13 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
       this.medicinePrescriptionService.sendQrCode(formData).subscribe(
         response => {
           this.pharmacyData = response;
+          if (response != null) {
+            this.medicineData = response[0]['eReceiptMedicineDetails'];
+          }
           this.pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
           this.pharmaciesDataSource.paginator = this.paginatorPharmacies;
+          this.medicineDataSource = new MatTableDataSource<any>(this.medicineData);
+          this.medicineDataSource.paginator = this.paginatorMedicine;
         }
       )
     }
@@ -88,6 +100,9 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
     this.pharmacyData = [];
     this.pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
     this.pharmaciesDataSource.paginator = this.paginatorPharmacies;
+    this.medicineData = [];
+    this.medicineDataSource = new MatTableDataSource<any>(this.medicineData);
+    this.medicineDataSource.paginator = this.paginatorMedicine;
   }
 
   openSnackBar(msg: string, responseCode: number) {

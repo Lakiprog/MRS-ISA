@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from '../login/auth.service';
 import { RespondToComplaintsService } from './respond-to-complaints.service';
 
 @Component({
@@ -27,7 +28,8 @@ export class RespondToComplaintsComponent implements OnInit, AfterViewInit {
   (
     private respondToCompaintsService: RespondToComplaintsService,
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private authService: AuthService
   ) { }
 
   @ViewChild(MatPaginator)
@@ -90,5 +92,9 @@ export class RespondToComplaintsComponent implements OnInit, AfterViewInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

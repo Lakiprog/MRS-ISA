@@ -15,12 +15,6 @@
     background-color: #DEEDE6
 }
 
-.add-medicine-background {
-    background: url(../pictures/it.jpg);
-    background-size: cover;
-    background-attachment: fixed;
-}
-
 .radio-group {
     display: flex;
     flex-direction: column;

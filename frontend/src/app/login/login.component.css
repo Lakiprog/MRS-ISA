@@ -1,5 +1,5 @@
 .login-background {
-  background: url(../pictures/xp.jpg);
+  background: url(../pictures/app_background.jpg);
   background-size: cover;
   background-attachment: fixed;
 }
@@ -23,8 +23,7 @@
 
 .main-div {
   height: 50vh;
-  padding-right: 40px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-top: 150px;
 }
