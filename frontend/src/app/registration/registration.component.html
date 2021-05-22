@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<body [class] = "picture">
+<div>
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
-            <span>Registration</span>
+            <span *ngIf = "!systemAdmin">REGISTRATION</span>
+            <span *ngIf = "systemAdmin">REGISTER USERS</span>
             <span style = "flex: 1 1 auto;"></span>
-            <a mat-button (click) = "systemAdminProfilePage()" *ngIf = "systemAdmin">Back</a>
-            <a mat-button routerLink = "/login" *ngIf = "!systemAdmin">Login</a>
+            <a mat-button routerLink = "/login" *ngIf = "!systemAdmin">LOGIN</a>
+            <a mat-button routerLink = "/searchFilterMedicine" *ngIf = "!systemAdmin">VIEW MEDICINE</a>
+            <a mat-button routerLink = "/searchPharmacy" *ngIf = "!systemAdmin">VIEW PHARMACIES</a>
+            <a mat-button routerLink = "/systemAdminProfilePage" *ngIf = "systemAdmin">MY PROFILE</a>
+            <a mat-button routerLink = "/registerPharmacies" *ngIf = "systemAdmin">REGISTER PHARMACIES</a>
+            <a mat-button routerLink = "/addMedicine" *ngIf = "systemAdmin">ADD MEDICINE</a>
+            <a mat-button routerLink = "/respondToComplaints" *ngIf = "systemAdmin">RESPOND TO PATIENT COMPLAINTS</a>
+            <a mat-button routerLink = "/loyaltyProgram" *ngIf = "systemAdmin">LOYALTY PROGRAM</a>
+            <a mat-button routerLink = "/searchFilterMedicine" *ngIf = "systemAdmin">VIEW MEDICINE</a>
+            <a mat-button (click) = "logout()" *ngIf = "systemAdmin">LOGOUT</a>
         </mat-toolbar-row>
     </mat-toolbar>
     <mat-card class = "card">
@@ -80,4 +89,4 @@
         </form>
         <button (click) = "register()" [disabled] = "registrationForm.invalid" mat-raised-button color="primary">Register</button>
     </mat-card>
-</body>
+</div>

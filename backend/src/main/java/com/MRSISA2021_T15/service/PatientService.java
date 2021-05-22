@@ -21,10 +21,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.MRSISA2021_T15.repository.CategoryRepository;
 import com.MRSISA2021_T15.repository.EReceiptAndMedicineDetailsRepository;
 import com.MRSISA2021_T15.repository.EReceiptMedicineDetailsRepository;
 import com.MRSISA2021_T15.repository.EReceiptRepository;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
+import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.PatientSubPharmacyRepository;
 import com.MRSISA2021_T15.repository.PharmacyRepository;
 import com.MRSISA2021_T15.repository.PromotionRepository;
@@ -38,6 +40,8 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.MRSISA2021_T15.dto.ChangePassword;
+import com.MRSISA2021_T15.model.Category;
+import com.MRSISA2021_T15.model.CategoryName;
 import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.EReceipt;
 import com.MRSISA2021_T15.model.EReceiptAndMedicineDetails;
@@ -84,6 +88,12 @@ public class PatientService {
 	
 	@Autowired
 	private EReceiptAndMedicineDetailsRepository eReceiptAndMedicineDetailsRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private MedicineRepository medicineRepository;
 	
 	public List<Patient> findAllPatients(){
 		return repository.findAllPatients();
@@ -236,12 +246,25 @@ public class PatientService {
 		eReceipt.setPatient(patient);
 		eReceipt = eReceiptRepository.save(eReceipt);
 		for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
+			patient.setCollectedPoints(patient.getCollectedPoints() + (medicineRepository.getPointsByMedicineCode(ermd.getMedicineCode()) * ermd.getQuantity()));
+			if (patient.getCategoryName().equals(CategoryName.REGULAR)) {
+				Category c = categoryRepository.findByCategoryName(CategoryName.SILVER);
+				if (patient.getCollectedPoints() >= c.getRequiredNumberOfPoints()) {
+					patient.setCategoryName(CategoryName.SILVER);
+				}
+			} else if (patient.getCategoryName().equals(CategoryName.SILVER)) {
+				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
+				if (patient.getCollectedPoints() >= c1.getRequiredNumberOfPoints()) {
+					patient.setCategoryName(CategoryName.GOLD);
+				}
+			}
 			ermd = eReceiptMedicineDetailsRepository.save(ermd);
 			EReceiptAndMedicineDetails eramd = new EReceiptAndMedicineDetails();
 			eramd.seteReceipt(eReceipt);
 			eramd.seteReceiptMedicineDetails(ermd);
 			eReceiptAndMedicineDetailsRepository.save(eramd);
 		}
+		repository.save(patient);
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(patient.getEmail());
         mailMessage.setSubject("Medicine issue via EReceipt from pharmacy " + eReceiptSearch.getPharmacy().getName());

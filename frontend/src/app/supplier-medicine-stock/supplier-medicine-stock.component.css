@@ -1,9 +1,3 @@
-.supplier-background {
-    background: url(../pictures/supplier-profile-page.jpg);
-    background-size: cover;
-    background-attachment: fixed;
-}
-
 .update-medicine-stock {
     max-width: 500px;
     width: 100%;

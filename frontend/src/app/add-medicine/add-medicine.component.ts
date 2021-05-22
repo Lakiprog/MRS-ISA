@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
 import { AddMedicineService } from './add-medicine.service';
 import { MedicinePointsValidator } from './MedicinePointsValidator';
 
@@ -11,7 +12,13 @@ import { MedicinePointsValidator } from './MedicinePointsValidator';
 })
 export class AddMedicineComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private _addMedicineService: AddMedicineService, private _snackBar: MatSnackBar) { }
+  constructor
+  (
+    private fb: FormBuilder, 
+    private _addMedicineService: AddMedicineService, 
+    private _snackBar: MatSnackBar,
+    private authService: AuthService
+    ) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   addMedicineForm! : FormGroup;
@@ -101,5 +108,9 @@ export class AddMedicineComponent implements OnInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

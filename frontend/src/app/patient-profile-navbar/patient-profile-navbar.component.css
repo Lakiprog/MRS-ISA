@@ -1,6 +1,5 @@
 .sidenav-container {
   height: 100%;
-  background: url(back2.jpg);
 }
 
 .sidenav {
@@ -38,11 +37,6 @@ a{
 
 .example-card {
   max-width: 400px;
-}
-
-.example-header-image {
-  background-image: url('profileIcon.jpg');
-  background-size: cover;
 }
 
 mat-card{

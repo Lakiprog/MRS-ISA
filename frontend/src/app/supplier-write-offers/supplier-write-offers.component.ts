@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { AuthService } from '../login/auth.service';
 import { DateValidator } from './DateValidator';
 import { PriceValidator } from './PriceValidator';
 import { SupplierWriteOffersService } from './supplier-write-offers.service';
@@ -18,7 +20,8 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   (
     private fb: FormBuilder, 
     private supplierWriteOffersService: SupplierWriteOffersService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private authService: AuthService,
   ) { }
 
   @ViewChild(MatPaginator)
@@ -124,6 +127,10 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

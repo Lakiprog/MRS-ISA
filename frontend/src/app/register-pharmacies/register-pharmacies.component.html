@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<body class = "register-pharmacy-background">
+<div>
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
-            <span>Register pharmacies</span>
+            <span>REGISTER PHARMACIES</span>
             <span style = "flex: 1 1 auto;"></span>
-            <a mat-button routerLink = "/systemAdminProfilePage">Back</a>
+            <a mat-button routerLink = "/systemAdminProfilePage">MY PROFILE</a>
+            <a mat-button routerLink = "/register">REGISTER USERS</a>
+            <a mat-button routerLink = "/addMedicine">ADD MEDICINE</a>
+            <a mat-button routerLink = "/respondToComplaints">RESPOND TO PATIENT COMPLAINTS</a>
+            <a mat-button routerLink = "/loyaltyProgram">LOYALTY PROGRAM</a>
+            <a mat-button routerLink = "/searchFilterMedicine">VIEW MEDICINE</a>
+            <a mat-button (click) = "logout()">LOGOUT</a>
         </mat-toolbar-row>
     </mat-toolbar>
     <mat-card class = "card">
@@ -36,4 +42,4 @@
         </form>
         <button (click) = "registerPharmacy()" [disabled] = "pharmacyRegistrationForm.invalid" mat-raised-button color="primary">Register</button>
     </mat-card>
-</body>
+</div>

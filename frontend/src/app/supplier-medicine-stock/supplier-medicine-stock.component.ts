@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from '../login/auth.service';
 import { SupplierWriteOffersService } from '../supplier-write-offers/supplier-write-offers.service';
 import { QuantityValidator } from './QuantityValidator';
 import { SupplierMedicineStockService } from './supplier-medicine-stock.service';
@@ -19,7 +20,8 @@ export class SupplierMedicineStockComponent implements OnInit {
     private fb: FormBuilder, 
     private supplierWriteOffersService: SupplierWriteOffersService,
     private supplierMedicineStockService: SupplierMedicineStockService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private authService: AuthService
   ) { }
 
   @ViewChild(MatPaginator)
@@ -96,5 +98,9 @@ export class SupplierMedicineStockComponent implements OnInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

@@ -27,7 +27,6 @@ import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.Pharmacist;
-import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.model.Reservation;
 import com.MRSISA2021_T15.model.ReservationItem;
 import com.MRSISA2021_T15.repository.AbsenceRepository;
@@ -42,6 +41,7 @@ import com.MRSISA2021_T15.repository.EmploymentRepository;
 import com.MRSISA2021_T15.repository.MedicineAppointmentRepository;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.MedicineQuantityRepository;
+import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.ReservationItemRepository;
 import com.MRSISA2021_T15.repository.ReservationRepository;
 import com.MRSISA2021_T15.repository.UserRepository;
@@ -83,6 +83,8 @@ public class AppointmentService {
 	private CanceledPharmaAppointmentRepository canceledRepository;
 	@Autowired
 	private AllergyRepository allergyrepo;
+	@Autowired
+	private MedicineRepository medicineRepository;
 
 	public List<Appointment> findAllPharmacist(Integer id) {
 		return repository.findAllPharmacistId(id);
@@ -341,8 +343,21 @@ public class AppointmentService {
 		
 		if (msg.equals("")) {
 			AppointmentInfo ai = new AppointmentInfo();
-			
 			Patient patient = (Patient) userRepository.findById(appointment.getPatient().getId()).get();
+			for (MedicineQuantity medicine : meds) {
+				patient.setCollectedPoints(patient.getCollectedPoints() + (medicineRepository.getPointsByMedicineCode(medicine.getMedicine().getMedicineCode()) * medicine.getQuantity()));
+				if (patient.getCategoryName().equals(CategoryName.REGULAR)) {
+					Category c = categoryRepository.findByCategoryName(CategoryName.SILVER);
+					if (patient.getCollectedPoints() >= c.getRequiredNumberOfPoints()) {
+						patient.setCategoryName(CategoryName.SILVER);
+					}
+				} else if (patient.getCategoryName().equals(CategoryName.SILVER)) {
+					Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
+					if (patient.getCollectedPoints() >= c1.getRequiredNumberOfPoints()) {
+						patient.setCategoryName(CategoryName.GOLD);
+					}
+				}
+			}
 			if (appointment instanceof AppointmentDermatologist) {
 				patient.setCollectedPoints(patient.getCollectedPoints() + appointmentConsultationPointsRepository.getPointsByType("APPOINTMENT"));
 			}
