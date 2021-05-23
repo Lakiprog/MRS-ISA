@@ -4,6 +4,7 @@ export interface DialogData {
   medicineName: String;
   quantity: Number;
   purchaseOrderName: string;
+  purchaseOrderDate: Date;
 }
 @Component({
   selector: 'app-add-medicine-to-cart-popup',

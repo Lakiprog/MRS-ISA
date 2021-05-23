@@ -5,7 +5,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DummyModel } from 'src/app/models/dummy-model';
 import { Medicine } from 'src/app/models/medicine';
@@ -17,6 +17,9 @@ import { Pharmacist } from 'src/app/user-complaint/user-complaint.component';
 import { AddMedicineToCartPopupComponent } from '../add-medicine-to-cart-popup/add-medicine-to-cart-popup.component';
 import { stringify } from '@angular/compiler/src/util';
 import { SubmitPurchaseOrderPopupComponent } from '../submit-purchase-order-popup/submit-purchase-order-popup.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 
 export interface DialogData {
   quantity: Number;
@@ -39,8 +42,11 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     medicine: null as any,
   };
   purchaseOrder: PurchaseOrder = {
+    id: null as any,
     pharmacy: null as any,
     purchaseOrderName: null as any,
+    purchaseOrderDate: '' as any,
+    dueDateOffer: '' as any,
     purchaseOrderMedicine: [],
     purchaseOrderSupplier: null as any,
   };
@@ -52,12 +58,14 @@ export class MedicinePurchaseOrderComponent implements OnInit {
   ) {
     this.purchaseOrderMedicineForm = this.formBuilder.group({
       purchaseOrderName: [],
+      purchaseOrderDate: [],
     });
   }
 
   ngOnInit(): void {
     this.purchaseOrderMedicineForm = this.formBuilder.group({
       purchaseOrderName: [],
+      purchaseOrderDate: [],
     });
     this.pharmacyAdminService.getPharmacyAdminData().subscribe((data) => {
       this.pharmacyAdmin = data;
@@ -73,7 +81,6 @@ export class MedicinePurchaseOrderComponent implements OnInit {
       medicine: null as any,
     };
     purchaseOrderMedicine.medicine = medicine;
-
     const dialogRef = this.dialog.open(AddMedicineToCartPopupComponent, {
       width: '250px',
       data: {
@@ -96,13 +103,17 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     const dialogRef = this.dialog.open(SubmitPurchaseOrderPopupComponent, {
       width: '250px',
       data: {
-        purchaseOrderName: this.purchaseOrder.purchaseOrderName,
+        purchaseOrderName: '',
+        purchaseOrderDate: '',
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      this.purchaseOrder.purchaseOrderName = result;
+      this.purchaseOrder.purchaseOrderName = result.value.purchaseOrderName;
+      this.purchaseOrder.purchaseOrderDate = result.value.purchaseOrderDate;
+      console.log(result.value);
+      console.log(this.purchaseOrder);
       if (result != null) {
         this.pharmacyAdminService
           .createPurchaseOrder(this.purchaseOrder)

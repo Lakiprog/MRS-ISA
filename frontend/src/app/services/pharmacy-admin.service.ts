@@ -10,6 +10,7 @@ import { MedicinePharmacy } from '../models/medicine-pharmacy';
 import { Employment } from '../models/employment';
 import { Pharmacy } from '../user-complaint/user-complaint.component';
 import { PurchaseOrder } from '../models/purchase-order';
+import { PurchaseOrderMedicine } from '../models/purchase-order-medicine';
 
 @Injectable({
   providedIn: 'root',
@@ -199,6 +200,20 @@ export class PharmacyAdminService {
     return this.httpClient.post<PurchaseOrder>(
       'http://localhost:8080/pharmacyAdmin/createPurchaseOrder',
       purchaseOrder
+    );
+  }
+
+  public getActivePurchaseOrders(): Observable<PurchaseOrder[]> {
+    return this.httpClient.get<PurchaseOrder[]>(
+      'http://localhost:8080/purchaseOrder/activePurchaseOrders'
+    );
+  }
+
+  public getPurchaseOrder(purchaseOrderId: Number) {
+    return this.httpClient.get<PurchaseOrderMedicine[]>(
+      'http://localhost:8080/purchaseOrder/' +
+        purchaseOrderId +
+        '/getPurchaseOrder'
     );
   }
 

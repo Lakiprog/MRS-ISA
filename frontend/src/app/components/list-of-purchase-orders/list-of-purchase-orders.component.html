@@ -1,0 +1,33 @@
+<mat-toolbar color = "primary">
+    <mat-toolbar-row>
+
+        <a mat-button (click) = "back()">Back</a>
+
+        <a mat-button (click) = "logout()">Logout</a>
+
+    </mat-toolbar-row>
+</mat-toolbar>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Due date offer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let purchaseOrder of purchaseOrderList ">
+        <td>{{ purchaseOrder.purchaseOrderName }}</td>
+        <td>{{ purchaseOrder.dueDateOffer }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="displayPurchaseOrderData(purchaseOrder)">
+            Display purchase order data
+          </button>
+
+          
+        </td>
+      </tr>
+
+    </tbody>
+
+  </table>
+  
