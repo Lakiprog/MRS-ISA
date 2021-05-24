@@ -319,9 +319,13 @@ public class ComplaintController {
 	@PutMapping(value = "/sendResponse", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<String> sendResponse(@RequestBody Complaint response) {
-		service.sendResponse(response);
+		String message = service.sendResponse(response);
 		Gson gson = new GsonBuilder().create();
-		return new ResponseEntity<String>(gson.toJson("Response has been sent successully."), HttpStatus.OK);
+		if (message.equals("")) {
+			return new ResponseEntity<String>(gson.toJson("Response has been sent successully."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	

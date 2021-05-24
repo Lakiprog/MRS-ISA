@@ -34,10 +34,13 @@ public class PharmacyController {
 	@PostMapping(value = "/registerPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<String> registerPharmacy(@RequestBody Pharmacy pharmacy) {
-		pharmacyService.registerPharmacy(pharmacy);
+		String message = pharmacyService.registerPharmacy(pharmacy);
 		Gson gson = new GsonBuilder().create();
-		return new ResponseEntity<String>(gson.toJson("The pharmacy has been registered successfully."),
-					HttpStatus.OK);
+		if (message.equals("")) {
+			return new ResponseEntity<String>(gson.toJson("The pharmacy has been registered successfully."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@GetMapping(value = "/getPharmacyForPharmacist", produces = MediaType.APPLICATION_JSON_VALUE)

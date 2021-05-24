@@ -92,17 +92,17 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
     this.medicinePrescriptionService.issueEReceipt(data).subscribe(
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);
+        this.pharmacyData = [];
+        this.pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
+        this.pharmaciesDataSource.paginator = this.paginatorPharmacies;
+        this.medicineData = [];
+        this.medicineDataSource = new MatTableDataSource<any>(this.medicineData);
+        this.medicineDataSource.paginator = this.paginatorMedicine;
       },
       error => {
         this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     );
-    this.pharmacyData = [];
-    this.pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
-    this.pharmaciesDataSource.paginator = this.paginatorPharmacies;
-    this.medicineData = [];
-    this.medicineDataSource = new MatTableDataSource<any>(this.medicineData);
-    this.medicineDataSource.paginator = this.paginatorMedicine;
   }
 
   openSnackBar(msg: string, responseCode: number) {

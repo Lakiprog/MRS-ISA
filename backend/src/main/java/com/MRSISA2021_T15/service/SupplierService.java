@@ -2,6 +2,8 @@ package com.MRSISA2021_T15.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.MedicineSupply;
 import com.MRSISA2021_T15.model.PurchaseOrder;
@@ -29,8 +31,8 @@ public interface SupplierService {
 	
 	List<PurchaseOrderSupplier> getPendingOffersBySupplier();
 	
-	void updateOffer(PurchaseOrderSupplier offer);
+	String updateOffer(PurchaseOrderSupplier offer);
 
-	String updateMedicineStock(MedicineSupply medicineSupply);
+	ResponseEntity<String> updateMedicineStock(MedicineSupply medicineSupply);
 
 }

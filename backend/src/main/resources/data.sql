@@ -13,12 +13,12 @@ insert into user (USER_TYPE, email, name, surname, address, city, country, phone
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, pharmacy_id, enabled, first_login) values ('PHARMACY_ADMIN', 'mrs_isa_2021_t15_6@hotmail.com', 'Mika', 'Mikic', 'asdf', 'NS', 'Srbija', '0601234568', 'pharmacyadmin2', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', 1, true, false);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, pharmacy_id, enabled, first_login) values ('PHARMACY_ADMIN', 'third@gmail.com', 'Sara', 'Saric', 'asdf', 'NS', 'Srbija', '0601234569', 'pharmacyadmin3', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', 2, true, false);
 
-insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp1@gmail.com', 'Marko', 'Jovanovic', 'asdf', 'NS', 'Srbija', '0601234569', 'mare', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, true);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp1@gmail.com', 'Marko', 'Jovanovic', 'asdf', 'NS', 'Srbija', '0601234569', 'mare', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, false);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp2@gmail.com', 'Jovan', 'Petrovic', 'asdf', 'NS', 'Srbija', '0601234569', 'jova', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, false);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SUPPLIER', 'supp3@gmail.com', 'Stefan', 'Teodorovic', 'asdf', 'NS', 'Srbija', '0601234569', 'stefan', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, false);
 
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('PHARMACIST', 'workaholic@gmail.com', 'Mika', 'Markuka', 'Telep', 'NS', 'Srbija', '0620602311', 'workaholic', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', false, 1, true);
-insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SYSTEM_ADMIN', 'admin@gmail.com', 'Ranko', 'Urosevic', 'asdf', 'NS', 'Srbija', '0601234569', 'rane', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, true);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, enabled, first_login) values ('SYSTEM_ADMIN', 'admin@gmail.com', 'Ranko', 'Urosevic', 'asdf', 'NS', 'Srbija', '0601234569', 'rane', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, false);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('PHARMACIST', 'firster@gmail.com', 'Moka', 'Markuka', 'Telep', 'NS', 'Srbija', '0623602311', 'firstlog', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, 1, true);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled) values ('DERMATOLOGIST', 'firster2@gmail.com', 'Mokadon', 'Markukadon', 'Telep', 'NS', 'Srbija', '0623602511', 'firstlogder', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', true, 1, true);
 
@@ -88,6 +88,14 @@ insert into medicine (medicine_code, name, medicine_type, form, composition, man
 	values ('s127', 'bromazepam', 3, 2, 'kinda cool', 'actavis', true, null, 5, 20);
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating, points)
 	values ('s128', 'actasulid', 1, 2, 'noice', 'actavis', false, 'commentary channel', 1, 63);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating, points)
+	values ('s129', 'Povidone-iodine', 4, 7, 'Contains from 9.0% to 12.0% available iodine', 'Pfizer', true, 'Side effects include skin irritation and sometimes swelling', 4, 35);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating, points)
+	values ('s130', 'Chlorhexidine', 4, 7, 'Contains 0.12% of the medicinal ingredient, \nchlorhexidine gluconate and the following non-medicinal ingredients: alcohol, FD&C Blue # 1, flavour, glycerin, PEG 40-sorbitan diisostearate,
+					\nsaccharin sodium and USP Purified water.', 'Basic Pharma Life Science Pvt. Ltd.', true, 'Used for cleaning wounds, preventing dental plaque, treating yeast infections of the mouth, and to keep urinary catheters from blocking', 3, 20);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating, points)
+	values ('s131', 'Imitrex', 5, 2, 'Contains the inactive ingredients croscarmellose sodium, dibasic calcium phosphate, \nmagnesium stearate, microcrystalline cellulose, and sodium bicarbonate.', 'GlaxoSmithKline', true, 
+			'It used to treat migraine headaches in adults. Imitrex will only treat a headache', 5, 10);
 	
 
 insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 2);
@@ -108,10 +116,16 @@ insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (10, 5000, 1, 4);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1000, 50, 1, 5);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (100, 10, 1, 6);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (200, 25, 1, 7);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (150, 15, 1, 8);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (300, 30, 1, 9);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 500, 2, 1);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (800, 800, 2, 2);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (400, 1000, 2, 3);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (200, 3000, 2, 6);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (100, 10, 2, 7);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (250, 75, 2, 8);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (400, 50, 2, 9);
 
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 1, 200);
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 2, 100); 

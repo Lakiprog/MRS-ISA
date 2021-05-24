@@ -82,6 +82,9 @@ export class RespondToComplaintsComponent implements OnInit, AfterViewInit {
         this.openSnackBar(response, this.RESPONSE_OK);
         this.getComplaintsToRespond();
         this.getResponses();
+      }, 
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     );
   }
