@@ -62,7 +62,7 @@ insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-01-23 12:30:00', '2021-01-23 17:30:00', 1000, 0, 2, 5, null, 1, true);
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-02-22 18:30:00', '2021-02-22 19:30:00', 1000, 0, 3, 5, null, 1, true);
 
-insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-05-22 12:30:00', '2021-05-22 14:00:00', 1000, 0, 3, 5, null, 1, false);
+insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_PHARMACIST', '2021-05-24 23:59:00', '2021-05-25 14:00:00', 1000, 0, 3, 5, null, 1, false);
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-05-22 17:30:00', '2021-05-22 18:45:00', 1000, 0, 2, null, 6, 2, false);
 
 insert into appointment (APPOINTMENT_TYPE, start, end, price, discount, patient_id, pharmacist_id, dermatologist_id, pharmacy_id, done) values ('APPOINTMENT_DERMATOLOGIST', '2021-01-22 16:30:00', '2021-01-22 18:30:00', 1000, 0, 1, null, 6, 1, true);
@@ -132,6 +132,10 @@ insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 2, 
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 3, 500);
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 4, 300);
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 5, 100);
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 6, 170);
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 7, 50); 
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 8, 600);
+insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 9, 500);
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (11, 1, 50);
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (11, 2, 0); 
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (11, 3, 15);
@@ -146,6 +150,12 @@ insert into purchase_order (purchase_order_name, due_date_offer) values ('order3
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 1, 20);
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 2, 30);
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 3, 15);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 4, 20);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 5, 30);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 6, 15);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 7, 20);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 8, 30);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 9, 25);
 
 insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 1, 5);
 insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 3, 10);

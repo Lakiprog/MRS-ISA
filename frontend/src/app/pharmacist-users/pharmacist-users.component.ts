@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import {PharmacistUsersService} from './pharmacist-users.service'
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';;
@@ -17,11 +17,7 @@ export class PharmacistUsersComponent implements OnInit {
 
   constructor(private service : PharmacistUsersService, private router: Router, private fb: FormBuilder, private _snackBar: MatSnackBar, private authService: AuthService, public dialog : MatDialog) { }
 
-  @ViewChild(MatPaginator)
-  paginatorPatients!: MatPaginator;
-
-  @ViewChild(MatPaginator)
-  paginatorAppointments!: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   firstLogin = this.authService.getTokenData()?.firstLogin;
   RESPONSE_OK : number = 0;
@@ -47,7 +43,8 @@ export class PharmacistUsersComponent implements OnInit {
     }
 
   ngAfterViewInit(): void {
-    this.patientsDataSource.paginator = this.paginatorPatients;
+    this.patientsDataSource.paginator = this.paginator.toArray()[0];
+    this.appointmentsDataSource.paginator = this.paginator.toArray()[1];
   }
 
    getPatients(name:string, surname:string){
@@ -55,7 +52,7 @@ export class PharmacistUsersComponent implements OnInit {
       response =>{
         this.patientsData = response;
         this.patientsDataSource = new MatTableDataSource<any>(this.patientsData);
-        this.patientsDataSource.paginator = this.paginatorPatients;
+        this.patientsDataSource.paginator = this.paginator.toArray()[0];
       }
     );
    }
@@ -65,7 +62,7 @@ export class PharmacistUsersComponent implements OnInit {
       response =>{
         this.appointmentsData = response;
         this.appointmentsDataSource = new MatTableDataSource<any>(this.appointmentsData);
-        this.appointmentsDataSource.paginator = this.paginatorAppointments;
+        this.appointmentsDataSource.paginator = this.paginator.toArray()[1];
       }
     );
    }

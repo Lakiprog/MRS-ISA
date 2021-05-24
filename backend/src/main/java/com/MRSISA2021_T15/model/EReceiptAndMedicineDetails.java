@@ -20,6 +20,9 @@ public class EReceiptAndMedicineDetails {
 	
 	@ManyToOne
 	private EReceiptMedicineDetails eReceiptMedicineDetails;
+	
+	@ManyToOne
+	private Pharmacy pharmacy;
 
 	public Integer getId() {
 		return id;
@@ -43,5 +46,13 @@ public class EReceiptAndMedicineDetails {
 
 	public void seteReceiptMedicineDetails(EReceiptMedicineDetails eReceiptMedicineDetails) {
 		this.eReceiptMedicineDetails = eReceiptMedicineDetails;
+	}
+
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
 	}
 }

@@ -276,6 +276,7 @@ public class PatientService {
 			EReceiptAndMedicineDetails eramd = new EReceiptAndMedicineDetails();
 			eramd.seteReceipt(eReceipt);
 			eramd.seteReceiptMedicineDetails(ermd);
+			eramd.setPharmacy(eReceiptSearch.getPharmacy());
 			eReceiptAndMedicineDetailsRepository.save(eramd);
 		}
 		repository.save(patient);

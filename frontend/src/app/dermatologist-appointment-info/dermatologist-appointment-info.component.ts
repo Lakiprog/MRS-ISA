@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import {DermatologistAppointmentInfoService} from './dermatologist-appointment-info.service'
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,11 +15,7 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
 
   constructor(private service : DermatologistAppointmentInfoService, private router: Router, private fb: FormBuilder, private _snackBar: MatSnackBar) { }
 
-  @ViewChild(MatPaginator)
-  paginatorMedicineSupply!: MatPaginator;
-
-  @ViewChild(MatPaginator)
-  paginatorMedicinePrescribed!: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
   
   appointmentForm! : FormGroup;
   updateForm! : FormGroup;
@@ -80,15 +76,15 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
       });
       this.medicinePrescribedData = data.information.medication;
       this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
-      this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
+      this.medicinePrescribedDataSource.paginator = this.paginator.toArray()[1];
     }
     
     this.getMeds();
   }
 
   ngAfterViewInit(): void {
-    this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
-    this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
+    this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
+    this.medicinePrescribedDataSource.paginator = this.paginator.toArray()[1];
   }
 
   get getFormControls() {
@@ -173,7 +169,7 @@ public makeAppointment(){
       response => {
         this.medicineSupplyData = response;
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-        this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+        this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
       }
     )
    }
@@ -200,11 +196,11 @@ public makeAppointment(){
         if(subs[0].medicine.name != "ERROR"){
           this.medicineSupplyData = subs;
           this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-          this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+          this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
         }else{
           this.medicineSupplyData = [];
           this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-          this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+          this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
         }
       }
     });
@@ -218,7 +214,7 @@ public makeAppointment(){
         
         this.medicineSupplyData = this.medicineSupplyData.filter((med:any) => med.medicine.name !== medicine.name);
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-        this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+        this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
 
         found = true;
         return;
@@ -238,11 +234,11 @@ public makeAppointment(){
 
     this.medicinePrescribedData.push(medicine);
     this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
-    this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
+    this.medicinePrescribedDataSource.paginator = this.paginator.toArray()[1];
     
     this.medicineSupplyData = this.medicineSupplyData.filter((med:any) => med.medicine.name !== medicine.name);
     this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-    this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+    this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
   }
 
   removeMedicine(medicine:any){
@@ -252,7 +248,7 @@ public makeAppointment(){
 
     this.medicinePrescribedData = this.medicinePrescribedData.filter((med:any) => med.name !== medicine.name);
     this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
-    this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
+    this.medicinePrescribedDataSource.paginator = this.paginator.toArray()[1];
   }
 
    predefinedAppointments(){

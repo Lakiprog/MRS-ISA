@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
@@ -39,15 +39,11 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
     );
   }
 
-  @ViewChild(MatPaginator)
-  paginatorPharmacies!: MatPaginator;
-
-  @ViewChild(MatPaginator)
-  paginatorMedicine!: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   ngAfterViewInit(): void {
-    this.pharmaciesDataSource.paginator = this.paginatorPharmacies;
-    this.medicineDataSource.paginator = this.paginatorMedicine;
+    this.pharmaciesDataSource.paginator = this.paginator.toArray()[0];
+    this.medicineDataSource.paginator = this.paginator.toArray()[1];
   }
 
   sortData(sort: Sort) {
@@ -80,9 +76,9 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
             this.medicineData = response[0]['eReceiptMedicineDetails'];
           }
           this.pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
-          this.pharmaciesDataSource.paginator = this.paginatorPharmacies;
+          this.pharmaciesDataSource.paginator = this.paginator.toArray()[0];
           this.medicineDataSource = new MatTableDataSource<any>(this.medicineData);
-          this.medicineDataSource.paginator = this.paginatorMedicine;
+          this.medicineDataSource.paginator = this.paginator.toArray()[1];
         }
       )
     }
@@ -94,10 +90,10 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
         this.openSnackBar(response, this.RESPONSE_OK);
         this.pharmacyData = [];
         this.pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
-        this.pharmaciesDataSource.paginator = this.paginatorPharmacies;
+        this.pharmaciesDataSource.paginator = this.paginator.toArray()[0];
         this.medicineData = [];
         this.medicineDataSource = new MatTableDataSource<any>(this.medicineData);
-        this.medicineDataSource.paginator = this.paginatorMedicine;
+        this.medicineDataSource.paginator = this.paginator.toArray()[1];
       },
       error => {
         this.openSnackBar(error.error, this.RESPONSE_ERROR);

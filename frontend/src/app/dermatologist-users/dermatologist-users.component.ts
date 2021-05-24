@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import {DermatologistUsersService} from './dermatologist-users.service'
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';;
@@ -18,11 +18,7 @@ export class DermatologistUsersComponent implements OnInit {
 
   constructor(private service : DermatologistUsersService, private router: Router, private fb: FormBuilder, private _snackBar: MatSnackBar, private authService: AuthService, public dialog : MatDialog, ) { }
 
-  @ViewChild(MatPaginator)
-  paginatorPatients!: MatPaginator;
-
-  @ViewChild(MatPaginator)
-  paginatorAppointments!: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   verticalPosition: MatSnackBarVerticalPosition = "top";
   firstLogin = this.authService.getTokenData()?.firstLogin;
@@ -49,7 +45,8 @@ export class DermatologistUsersComponent implements OnInit {
     }
 
   ngAfterViewInit(): void {
-    this.patientsDataSource.paginator = this.paginatorPatients;
+    this.patientsDataSource.paginator = this.paginator.toArray()[0];
+    this.appointmentsDataSource.paginator = this.paginator.toArray()[1];
   }
 
    getPatients(name:string, surname:string){
@@ -57,7 +54,7 @@ export class DermatologistUsersComponent implements OnInit {
       response =>{
         this.patientsData = response;
         this.patientsDataSource = new MatTableDataSource<any>(this.patientsData);
-        this.patientsDataSource.paginator = this.paginatorPatients;
+        this.patientsDataSource.paginator = this.paginator.toArray()[0];
       }
     );
    }
@@ -67,7 +64,7 @@ export class DermatologistUsersComponent implements OnInit {
       response =>{
         this.appointmentsData = response;
         this.appointmentsDataSource = new MatTableDataSource<any>(this.appointmentsData);
-        this.appointmentsDataSource.paginator = this.paginatorAppointments;
+        this.appointmentsDataSource.paginator = this.paginator.toArray()[1];
       }
     );
    }
