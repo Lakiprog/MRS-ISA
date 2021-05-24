@@ -209,13 +209,15 @@ public class PatientService {
 		Result result = new MultiFormatReader().decode(binaryBitmap);
 		String jsonString = result.getText();
 		Gson gson = new Gson();
-		List<EReceiptMedicineDetails> requiredMedicine = (List<EReceiptMedicineDetails>) gson.fromJson(jsonString, new TypeToken<List<EReceiptMedicineDetails>>(){}.getType());
+		List<EReceiptMedicineDetails> requiredMedicine = 
+				(List<EReceiptMedicineDetails>) gson.fromJson(jsonString, new TypeToken<List<EReceiptMedicineDetails>>(){}.getType());
 		List<Pharmacy> pharmacies = (List<Pharmacy>) pharmacyRepository.findAll();
 		List<EReceiptSearch> pharmaciesWithRequiredMedicine = new ArrayList<EReceiptSearch>();
 		for (Pharmacy p : pharmacies) {
 			List<MedicinePharmacy> tempList = new ArrayList<MedicinePharmacy>();
 			for (EReceiptMedicineDetails ermd: requiredMedicine) {
-				MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCode(p.getId(), ermd.getMedicineCode(), ermd.getQuantity());
+				MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCode(p.getId(), 
+						ermd.getMedicineCode(), Math.abs(ermd.getQuantity()));
 				if (pharmacyWithRequiredMedicine != null) {
 					tempList.add(pharmacyWithRequiredMedicine);
 				}
@@ -227,7 +229,7 @@ public class PatientService {
 				for (MedicinePharmacy mp : tempList) {
 					for (EReceiptMedicineDetails ermd: requiredMedicine) {
 						if (mp.getMedicine().getMedicineCode().equals(ermd.getMedicineCode())) {
-							ers.setTotal(ers.getTotal() + (mp.getCost() * ermd.getQuantity()));
+							ers.setTotal(Math.abs(ers.getTotal()) + (Math.abs(mp.getCost()) * Math.abs(ermd.getQuantity())));
 							break;
 						}
 					}
@@ -238,7 +240,18 @@ public class PatientService {
 		return pharmaciesWithRequiredMedicine;
 	}
 
-	public void issueEReceipt(EReceiptSearch eReceiptSearch) {
+	public String issueEReceipt(EReceiptSearch eReceiptSearch) {
+		for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
+			MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCode
+			(
+					eReceiptSearch.getPharmacy().getId(), 
+					ermd.getMedicineCode(), 
+					Math.abs(ermd.getQuantity())
+			);
+			if (pharmacyWithRequiredMedicine == null) {
+				return "The pharmacy does not have the required medicine!";
+			}
+		}
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		EReceipt eReceipt = new EReceipt();
 		eReceipt.seteReceiptCode(UUID.randomUUID().toString());
@@ -246,15 +259,16 @@ public class PatientService {
 		eReceipt.setPatient(patient);
 		eReceipt = eReceiptRepository.save(eReceipt);
 		for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
-			patient.setCollectedPoints(patient.getCollectedPoints() + (medicineRepository.getPointsByMedicineCode(ermd.getMedicineCode()) * ermd.getQuantity()));
+			patient.setCollectedPoints(Math.abs(patient.getCollectedPoints()) + 
+					(medicineRepository.getPointsByMedicineCode(ermd.getMedicineCode()) * (Math.abs(ermd.getQuantity()))));
 			if (patient.getCategoryName().equals(CategoryName.REGULAR)) {
 				Category c = categoryRepository.findByCategoryName(CategoryName.SILVER);
-				if (patient.getCollectedPoints() >= c.getRequiredNumberOfPoints()) {
+				if (Math.abs(patient.getCollectedPoints()) >= Math.abs(c.getRequiredNumberOfPoints())) {
 					patient.setCategoryName(CategoryName.SILVER);
 				}
 			} else if (patient.getCategoryName().equals(CategoryName.SILVER)) {
 				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
-				if (patient.getCollectedPoints() >= c1.getRequiredNumberOfPoints()) {
+				if (Math.abs(patient.getCollectedPoints()) >= Math.abs(c1.getRequiredNumberOfPoints())) {
 					patient.setCategoryName(CategoryName.GOLD);
 				}
 			}
@@ -271,9 +285,9 @@ public class PatientService {
         mailMessage.setFrom(env.getProperty("spring.mail.username"));
         String mailText = "You have been issued the following medication: \n";
         for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
-        	mailText += "\t" + ermd.getMedicineName() + ", Quantity: " + ermd.getQuantity() + "\n";
+        	mailText += "\t" + ermd.getMedicineName() + ", Quantity: " + Math.abs(ermd.getQuantity()) + "\n";
         }
-        mailText += "\tTotal price: " + eReceiptSearch.getTotal() + "\n";
+        mailText += "\tTotal price: " + Math.abs(eReceiptSearch.getTotal()) + "\n";
         mailText += "\nBest regards,\nPharmacy " + eReceiptSearch.getPharmacy().getName();
         mailMessage.setText(mailText);
         emailSenderService.sendEmail(mailMessage);
@@ -281,11 +295,12 @@ public class PatientService {
 		for (MedicinePharmacy mp : toUpdatePharmacyStock) {
 			for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
 				if (mp.getMedicine().getMedicineCode().equals(ermd.getMedicineCode())) {
-					mp.setAmount(mp.getAmount() - ermd.getQuantity());
+					mp.setAmount(Math.abs(mp.getAmount()) - Math.abs(ermd.getQuantity()));
 					break;
 				}
 			}
 		}
 		medicinePharmacyRepository.saveAll(toUpdatePharmacyStock);
+		return "";
 	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PharmacyService {
 	
-	void registerPharmacy(Pharmacy pharmacy);
+	String registerPharmacy(Pharmacy pharmacy);
 
 	Pharmacy getPharmacyData();
 

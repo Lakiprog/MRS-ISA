@@ -1,13 +1,19 @@
 package com.MRSISA2021_T15.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.model.AppointmentConsultationPoints;
 import com.MRSISA2021_T15.model.Category;
 import com.MRSISA2021_T15.model.CategoryName;
+import com.MRSISA2021_T15.model.SystemAdmin;
 import com.MRSISA2021_T15.repository.AppointmentConsultationPointsRepository;
 import com.MRSISA2021_T15.repository.CategoryRepository;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Service
 public class LoyaltyProgramServiceImpl implements LoyaltyProgramService {
@@ -19,35 +25,51 @@ public class LoyaltyProgramServiceImpl implements LoyaltyProgramService {
 	private AppointmentConsultationPointsRepository appointmentConsultationPointsRepository;
 	
 	@Override
-	public String defineCategories(Category category) {
+	public ResponseEntity<String> defineCategories(Category category) {
 		String message = "";
-		Category ca = categoryRepository.findByCategoryName(category.getCategoryName());
-		if (ca != null) {
-			ca.setDiscount(category.getDiscount());
-			ca.setRequiredNumberOfPoints(category.getRequiredNumberOfPoints());
-			categoryRepository.save(ca);
-			message = "Category information updated.";
+		Gson gson = new GsonBuilder().create();
+		SystemAdmin systemAdmin = (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (systemAdmin.getFirstLogin()) {
+			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-			categoryRepository.save(category);
-			message = "Category successfully defined.";
-			
+			Category ca = categoryRepository.findByCategoryName(category.getCategoryName());
+			if (ca != null) {
+				ca.setDiscount(Math.abs(category.getDiscount()));
+				ca.setRequiredNumberOfPoints(Math.abs(category.getRequiredNumberOfPoints()));
+				categoryRepository.save(ca);
+				message = "Category information updated.";
+			} else {
+				category.setDiscount(Math.abs(category.getDiscount()));
+				category.setRequiredNumberOfPoints(Math.abs(category.getRequiredNumberOfPoints()));
+				categoryRepository.save(category);
+				message = "Category successfully defined.";
+			}
 		}
-		return message;
+		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.OK);
 	}
 	
 	@Override
-	public String definePointsForAppointmentAndConsulation(AppointmentConsultationPoints appointmentConsultationPoints) {
+	public ResponseEntity<String> definePointsForAppointmentAndConsulation(AppointmentConsultationPoints appointmentConsultationPoints) {
 		String message = "";
-		AppointmentConsultationPoints acp = appointmentConsultationPointsRepository.findByType(appointmentConsultationPoints.getType());
-		if (acp != null) {
-			acp.setPoints(appointmentConsultationPoints.getPoints());
-			appointmentConsultationPointsRepository.save(acp);
-			message = "Points for " + appointmentConsultationPoints.getType() + " successfully updated.";
+		Gson gson = new GsonBuilder().create();
+		SystemAdmin systemAdmin = (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (systemAdmin.getFirstLogin()) {
+			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-			appointmentConsultationPointsRepository.save(appointmentConsultationPoints);
-			message = "Points for " + appointmentConsultationPoints.getType() + " successfully defined.";
+			AppointmentConsultationPoints acp = appointmentConsultationPointsRepository.findByType(appointmentConsultationPoints.getType());
+			if (acp != null) {
+				acp.setPoints(Math.abs(appointmentConsultationPoints.getPoints()));
+				appointmentConsultationPointsRepository.save(acp);
+				message = "Points for " + appointmentConsultationPoints.getType() + " successfully updated.";
+			} else {
+				appointmentConsultationPoints.setPoints(Math.abs(appointmentConsultationPoints.getPoints()));
+				appointmentConsultationPointsRepository.save(appointmentConsultationPoints);
+				message = "Points for " + appointmentConsultationPoints.getType() + " successfully defined.";
+			}
 		}
-		return message;
+		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.OK);
 	}
 
 	@Override

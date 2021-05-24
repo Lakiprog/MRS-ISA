@@ -92,6 +92,9 @@ export class LoyaltyProgramComponent implements OnInit {
     this.loyaltyProgramService.defineCategories(this.defineCategoriesForm.value).subscribe(
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);
+      }, 
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     )
   }
@@ -100,6 +103,9 @@ export class LoyaltyProgramComponent implements OnInit {
     this.loyaltyProgramService.definePointsForAppointmentAndConsulation(this.appointmentAndConsultationForm.value).subscribe(
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);
+      }, 
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     )
   }

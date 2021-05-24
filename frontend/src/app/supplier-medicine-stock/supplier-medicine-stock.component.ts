@@ -88,6 +88,9 @@ export class SupplierMedicineStockComponent implements OnInit {
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);
         this.getMedicineSupply();
+      }, 
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     );
   }

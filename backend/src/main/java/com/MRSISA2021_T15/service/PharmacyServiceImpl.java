@@ -2,6 +2,7 @@ package com.MRSISA2021_T15.service;
 
 import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.model.PharmacyAdmin;
+import com.MRSISA2021_T15.model.SystemAdmin;
 import com.MRSISA2021_T15.repository.PharmacyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,8 +17,14 @@ public class PharmacyServiceImpl implements PharmacyService {
 	private PharmacyRepository pharmacyRepository;
 
 	@Override
-	public void registerPharmacy(Pharmacy pharmacy) {
-		pharmacyRepository.save(pharmacy);
+	public String registerPharmacy(Pharmacy pharmacy) {
+		SystemAdmin systemAdmin = (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (systemAdmin.getFirstLogin()) {
+			return "You are logging in for the first time, you must change password before you can use this functionality!";
+		}  else {
+			pharmacyRepository.save(pharmacy);
+		}
+		return "";
 	}
 
 	@Override

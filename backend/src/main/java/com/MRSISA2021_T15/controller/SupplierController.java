@@ -112,9 +112,13 @@ public class SupplierController {
 	@PutMapping(value = "/updateOffer", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public ResponseEntity<String> updateOffer(@RequestBody PurchaseOrderSupplier offer) {
-		supplierService.updateOffer(offer);
+		String message = supplierService.updateOffer(offer);
 		Gson gson = new GsonBuilder().create();
-		return new ResponseEntity<String>(gson.toJson("Offer updated successfully."), HttpStatus.OK);
+		if (message.equals("")) {
+			return new ResponseEntity<String>(gson.toJson("Offer updated successfully."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping(value = "/getAllMedicine", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -126,8 +130,6 @@ public class SupplierController {
 	@PostMapping(value = "/updateMedicineStock", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SUPPLIER')")
 	public ResponseEntity<String> updateMedicineStock(@RequestBody MedicineSupply medicineSupply) {
-		String message = supplierService.updateMedicineStock(medicineSupply);
-		Gson gson = new GsonBuilder().create();
-		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.OK);
+		return supplierService.updateMedicineStock(medicineSupply);
 	}
 }
