@@ -30,7 +30,17 @@ public class Pharmacist extends User{
 	@OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CanceledPharAppoinment> canceledAppointments;
 	
+	@Column
+	private int numOfRating;
 	
+	public int getNumOfRating() {
+		return numOfRating;
+	}
+
+	public void setNumOfRating(int numOfRating) {
+		this.numOfRating = numOfRating;
+	}
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Absence> absence;
