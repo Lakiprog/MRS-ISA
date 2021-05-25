@@ -11,6 +11,8 @@ import { Employment } from '../models/employment';
 import { Pharmacy } from '../user-complaint/user-complaint.component';
 import { PurchaseOrder } from '../models/purchase-order';
 import { PurchaseOrderMedicine } from '../models/purchase-order-medicine';
+import { Appointment } from '../models/appointment';
+import { AppointmentDermatologist } from '../models/appointmentDermatologist';
 
 @Injectable({
   providedIn: 'root',
@@ -214,6 +216,13 @@ export class PharmacyAdminService {
       'http://localhost:8080/purchaseOrder/' +
         purchaseOrderId +
         '/getPurchaseOrder'
+    );
+  }
+
+  public createPredefinedDermatologistAppointment(appointment: Appointment) {
+    return this.httpClient.post<AppointmentDermatologist>(
+      'http://localhost:8080/appointment_creation/defineDermatologistAppointment',
+      appointment
     );
   }
 

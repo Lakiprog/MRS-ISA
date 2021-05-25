@@ -1,1 +1,23 @@
-<p>predefine-dermatologist-appointment works!</p>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dermatologist of dermatologistList ">
+        <td>{{ dermatologist.name }}</td>
+
+        <td>
+            &nbsp;            
+            <button class="btn btn-danger" (click)="addDermatologist(dermatologist)">Add dermatologist to appointment</button>
+            
+        </td>
+       </tr>
+    </tbody>
+
+
+</table>
+<button class="btn btn-danger" (click)="openDialog()">Edit appointment data</button>
+<button class="btn btn-danger" (click)="createAppointment()">Create appointment</button>

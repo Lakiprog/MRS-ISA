@@ -1,7 +1,6 @@
 import { Appointment } from './appointment';
 import { Dermatologist } from './dermatologist';
 
-export class DermatologistAppointment {
+export class AppointmentDermatologist {
   appointment!: Appointment;
-  dermatologist!: Dermatologist;
 }

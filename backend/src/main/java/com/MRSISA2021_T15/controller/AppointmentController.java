@@ -113,11 +113,21 @@ public class AppointmentController {
 		return service.employmentsDermatologist();
 	}
 
-	@PostMapping(path="/defineDermatologistAppointment", consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path="/defineDermatologistAppointment")
 	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public ResponseEntity<String> defineDermatologistAppointment(@RequestBody AppointmentDermatologist ad) {
+		List<Appointment> allAppointments = appointmentRepository.findAllDermatologistId(ad.getDermatologist().getId());
+		boolean isValid = true;
 
-		appointmentRepository.save(ad);
+		for (Appointment a : allAppointments){
+			if(ad.getEnd().isAfter(a.getStart()) && ad.getStart().isBefore(a.getEnd()))
+				isValid = false;
+			else if (ad.getStart().isBefore(a.getEnd()) && ad.getEnd().isAfter(a.getStart()))
+				isValid = false;
+		}
+
+		if(isValid)
+			appointmentRepository.save(ad);
 		return ResponseEntity.ok().build();
 	}
 

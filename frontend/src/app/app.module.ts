@@ -115,6 +115,7 @@ import { ListOfPurchaseOrdersComponent } from './components/list-of-purchase-ord
 import { DisplayActivePurchaseOrdersComponent } from './components/display-active-purchase-orders/display-active-purchase-orders.component';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PredefineDermatologistAppointmentComponent } from './components/predefine-dermatologist-appointment/predefine-dermatologist-appointment.component';
+import { DermatologistAppointmentPopupComponent } from './components/dermatologist-appointment-popup/dermatologist-appointment-popup.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -199,6 +200,7 @@ FullCalendarModule.registerPlugins([
     ListOfPurchaseOrdersComponent,
     DisplayActivePurchaseOrdersComponent,
     PredefineDermatologistAppointmentComponent,
+    DermatologistAppointmentPopupComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,5 @@
 import { Pharmacy } from '../user-complaint/user-complaint.component';
+import { Dermatologist } from './dermatologist';
 
 export class Appointment {
   start!: Date;
@@ -7,4 +8,5 @@ export class Appointment {
   discount!: Number;
   done!: Boolean;
   pharmacy!: Pharmacy;
+  dermatologist!: Dermatologist;
 }

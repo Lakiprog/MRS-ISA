@@ -112,8 +112,6 @@ export class MedicinePurchaseOrderComponent implements OnInit {
       console.log('The dialog was closed');
       this.purchaseOrder.purchaseOrderName = result.value.purchaseOrderName;
       this.purchaseOrder.purchaseOrderDate = result.value.purchaseOrderDate;
-      console.log(result.value);
-      console.log(this.purchaseOrder);
       if (result != null) {
         this.pharmacyAdminService
           .createPurchaseOrder(this.purchaseOrder)
