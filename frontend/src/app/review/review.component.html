@@ -1,0 +1,47 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Review</span>
+    <span class="example-spacer"></span>
+  <button mat-icon-button (click) = "home()" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>home</mat-icon>
+  </button>
+  <button mat-icon-button (click) = "profile()"  class="example-icon" aria-label="Example icon-button with share icon">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-toolbar>
+
+
+  
+  <br />
+  <br />
+  <br />
+  
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <span class="title_card"><h2>REVIEW</h2></span>
+    </mat-card-header>
+    <img mat-card-image src="assets/giveReview.jpg" alt="Photo of a review">
+    <mat-card-content>
+        <h3 class="h3_title"><strong>Please pick an option to make a review.</strong></h3>
+        <br />
+        <div class="example-button-row">
+            <button (click) = "showDermatologists()" class="dermabutton" mat-raised-button color="primary">DERMATOLOG</button>
+            <br />
+            <br />
+            <button (click) = "showPharmacists()" class="pharmabutton" mat-raised-button color="basic">PHARMACIST</button>
+            <br />
+            <br />
+            <button (click) = "showPharmacies()" class="pharbutton" mat-raised-button color="primary">PHARMACY</button>
+            <br />
+            <br />
+            <button (click) = "showMedicines()" class="medicinebutton" mat-raised-button color="basic">MEDICINE</button>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="exit"> 
+    <button (click) = "exit()" mat-button>EXIT</button>
+    </mat-card-actions>
+  </mat-card>
+

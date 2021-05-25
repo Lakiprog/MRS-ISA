@@ -109,6 +109,11 @@ import { PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.co
 import { DermatologistUsersComponent } from './dermatologist-users/dermatologist-users.component';
 import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-prescription.component';
 import { PharmacyProfilePageComponent } from './components/pharmacy-profile-page/pharmacy-profile-page.component';
+import { ReviewComponent } from './review/review.component';
+import { DermatologistReviewComponent } from './dermatologist-review/dermatologist-review.component';
+import { PharmacistReviewComponent } from './pharmacist-review/pharmacist-review.component';
+import { PharmacyReviewComponent } from './pharmacy-review/pharmacy-review.component';
+import { MedicineReviewComponent } from './medicine-review/medicine-review.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -187,6 +192,11 @@ FullCalendarModule.registerPlugins([
     DermatologistUsersComponent,
     MedicinePrescriptionComponent,
     PharmacyProfilePageComponent,
+    ReviewComponent,
+    DermatologistReviewComponent,
+    PharmacistReviewComponent,
+    PharmacyReviewComponent,
+    MedicineReviewComponent,
 
   ],
   imports: [
@@ -495,6 +505,31 @@ FullCalendarModule.registerPlugins([
       {
         path: 'pharmacyProfilePage',
         component: PharmacyProfilePageComponent,
+      },
+      {
+        path: 'Review',
+        canActivate: [PatientRoutes],
+        component: ReviewComponent,
+      },
+      {
+        path: 'DermatologistReview',
+        canActivate: [PatientRoutes],
+        component: DermatologistReviewComponent,
+      },
+      {
+        path: 'PharmacistReview',
+        canActivate: [PatientRoutes],
+        component: PharmacistReviewComponent,
+      },
+      {
+        path: 'PharmacyReview',
+        canActivate: [PatientRoutes],
+        component: PharmacyReviewComponent,
+      },
+      {
+        path: 'MedicineReview',
+        canActivate: [PatientRoutes],
+        component: MedicineReviewComponent,
       },
 
     ]),
