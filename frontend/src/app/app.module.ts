@@ -109,9 +109,17 @@ import { DialogStartPharmacistPatients, PharmacistUsersComponent } from './pharm
 import { DermatologistUsersComponent, DialogStartDermatologistPatients } from './dermatologist-users/dermatologist-users.component';
 import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-prescription.component';
 import { PharmacyProfilePageComponent } from './components/pharmacy-profile-page/pharmacy-profile-page.component';
+
+import { ReviewComponent } from './review/review.component';
+import { DermatologistReviewComponent } from './dermatologist-review/dermatologist-review.component';
+import { PharmacistReviewComponent } from './pharmacist-review/pharmacist-review.component';
+import { PharmacyReviewComponent } from './pharmacy-review/pharmacy-review.component';
+import { MedicineReviewComponent } from './medicine-review/medicine-review.component';
+
 import { MedicinePurchaseOrderComponent } from './components/medicine-purchase-order/medicine-purchase-order.component';
 import { AddMedicineToCartPopupComponent } from './components/add-medicine-to-cart-popup/add-medicine-to-cart-popup.component';
 import { SubmitPurchaseOrderPopupComponent } from './components/submit-purchase-order-popup/submit-purchase-order-popup.component';
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -190,11 +198,20 @@ FullCalendarModule.registerPlugins([
     DermatologistUsersComponent,
     MedicinePrescriptionComponent,
     PharmacyProfilePageComponent,
+
+    ReviewComponent,
+    DermatologistReviewComponent,
+    PharmacistReviewComponent,
+    PharmacyReviewComponent,
+    MedicineReviewComponent,
+
+
     DialogStartDermatologistPatients,
     DialogStartPharmacistPatients,
     MedicinePurchaseOrderComponent,
     AddMedicineToCartPopupComponent,
     SubmitPurchaseOrderPopupComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -504,10 +521,36 @@ FullCalendarModule.registerPlugins([
         component: PharmacyProfilePageComponent,
       },
       {
+        path: 'Review',
+        canActivate: [PatientRoutes],
+        component: ReviewComponent,
+      },
+      {
+        path: 'DermatologistReview',
+        canActivate: [PatientRoutes],
+        component: DermatologistReviewComponent,
+      },
+      {
+        path: 'PharmacistReview',
+        canActivate: [PatientRoutes],
+        component: PharmacistReviewComponent,
+      },
+      {
+        path: 'PharmacyReview',
+        canActivate: [PatientRoutes],
+        component: PharmacyReviewComponent,
+      },
+      {
+        path: 'MedicineReview',
+        canActivate: [PatientRoutes],
+        component: MedicineReviewComponent,
+      },
+      {
         path: 'medicinePurchaseOrder',
         canActivate: [PharmacyAdminRoutes],
         component: MedicinePurchaseOrderComponent,
       },
+
     ]),
   ],
 
