@@ -1,33 +1,21 @@
 package com.MRSISA2021_T15.controller;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.MRSISA2021_T15.dto.AppointmentEnd;
+import com.MRSISA2021_T15.dto.AppointmentEndDermatologist;
+import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.repository.AppointmentRepository;
+import com.MRSISA2021_T15.service.AppointmentService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
-import com.MRSISA2021_T15.dto.AppointmentEnd;
-import com.MRSISA2021_T15.dto.AppointmentEndDermatologist;
-import com.MRSISA2021_T15.model.Appointment;
-import com.MRSISA2021_T15.model.AppointmentDermatologist;
-import com.MRSISA2021_T15.model.AppointmentPharmacist;
-import com.MRSISA2021_T15.model.EmploymentDermatologist;
-import com.MRSISA2021_T15.model.MedicineQuantity;
-import com.MRSISA2021_T15.model.Patient;
-import com.MRSISA2021_T15.service.AppointmentService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/appointment_creation")
@@ -35,6 +23,8 @@ public class AppointmentController {
 
 	@Autowired
 	private AppointmentService service;
+	@Autowired
+	private AppointmentRepository appointmentRepository;
 	
 	@PostMapping(path="/pharmacist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -122,4 +112,14 @@ public class AppointmentController {
 	public @ResponseBody List<EmploymentDermatologist> getEmploymentsDermatologistId() {
 		return service.employmentsDermatologist();
 	}
+
+	@PostMapping(path="/defineDermatologistAppointment", consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ResponseEntity<String> defineDermatologistAppointment(@RequestBody AppointmentDermatologist ad) {
+
+		appointmentRepository.save(ad);
+		return ResponseEntity.ok().build();
+	}
+
+
 }
