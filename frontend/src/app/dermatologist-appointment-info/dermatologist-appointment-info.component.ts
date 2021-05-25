@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import {DermatologistAppointmentInfoService} from './dermatologist-appointment-info.service'
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,12 +15,9 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
 
   constructor(private service : DermatologistAppointmentInfoService, private router: Router, private fb: FormBuilder, private _snackBar: MatSnackBar) { }
 
-  @ViewChild(MatPaginator)
-  paginatorMedicineSupply!: MatPaginator;
-
-  @ViewChild(MatPaginator)
-  paginatorMedicinePrescribed!: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
   
+  appointmentForm! : FormGroup;
   updateForm! : FormGroup;
   medicineForm! : FormGroup;
   medicinePrescribedForm! : FormGroup;
@@ -35,6 +32,9 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
   medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
   information = {};
   appointment:any = {};
+  dermatologist = {};
+  app = {price:0};
+  pharmacy = {appointmentPrice:0};
 
   ngOnInit(): void {
     this.medicineForm = this.fb.group(
@@ -55,10 +55,15 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
           medication: ['']
         }
     );
+    this.appointmentForm = this.fb.group({
+      meetingTime: ['', Validators.required],
+      endingTime: ['', Validators.required],
+    });
     let data:any = history.state.data;
     this.information = data.information;
     this.appointment = data.appointment;
     this.updateForm.get('comments')?.setValue(data.information.comment);
+    this.service.getPharmacistData().subscribe((data:any) => {this.dermatologist = data;})
     
     if(data.information.medication){
       data.information.medication.forEach((element:any) => {
@@ -71,15 +76,15 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
       });
       this.medicinePrescribedData = data.information.medication;
       this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
-      this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
+      this.medicinePrescribedDataSource.paginator = this.paginator.toArray()[1];
     }
     
     this.getMeds();
   }
 
   ngAfterViewInit(): void {
-    this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
-    this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
+    this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
+    this.medicinePrescribedDataSource.paginator = this.paginator.toArray()[1];
   }
 
   get getFormControls() {
@@ -94,13 +99,51 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
     return this.medicinePrescribedForm.controls;
   }
 
+  public hasError = (controlName: string, errorName: string) =>{
+    return this.appointmentForm.controls[controlName].hasError(errorName);
+}
+
+  checkTime(){
+    const today = new Date(Date.now());
+    const start = new Date(this.appointmentForm.get("meetingTime")?.value);
+    if(start < today){
+        this.appointmentForm.get("meetingTime")?.setErrors([{'timeMismatch': true}])
+        return null;
+    }
+    let spliting = this.appointmentForm.get("endingTime")?.value.split(':')
+    const end = new Date(start.getFullYear(), start.getMonth(), start.getDate(), spliting[0], spliting[1]);
+    if(start > end){
+        this.appointmentForm.get("endingTime")?.setErrors([{'timeMismatch': true}])
+        return null;
+    }
+    start.setHours(start.getHours() + 2);
+    end.setHours(end.getHours() + 2);
+    return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : history.state.data.appointment.patient, "dermatologist" : this.dermatologist, 
+    "pharmacy" : history.state.data.appointment.pharmacy, "price" : this.app.price};
+}
+
+public makeAppointment(){
+    let appointment = this.checkTime();
+    if(appointment){
+        this.service.makeAppointment(appointment).subscribe(
+            response => {
+              this.openSnackBar(response, this.RESPONSE_OK);
+              this.appointmentForm.reset();
+            },
+            error => {
+              this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            }
+          );
+    }
+}
+
 
    newAppointment(){
-    this.medicinePrescribedData= [];
-    this.tableRows.value.forEach((element:any) => {
-      this.medicinePrescribedData.push({name: element.name, medicationTherapy: element.medicationTherapy, medicationQuantity: element.medicationQuantity, medicine:element.medicine})
-    });
-    this.router.navigate(['/DermatologistAppointmentCreationComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication: this.medicinePrescribedData}}}});
+    //this.medicinePrescribedData= [];
+   // this.tableRows.value.forEach((element:any) => {
+    //  this.medicinePrescribedData.push({name: element.name, medicationTherapy: element.medicationTherapy, medicationQuantity: element.medicationQuantity, medicine:element.medicine})
+   // });
+    //this.router.navigate(['/DermatologistAppointmentCreationComponent'], {state: {data: {appointment : this.appointment, information : {comment: this.updateForm.get('comments')?.value, medication: this.medicinePrescribedData}}}});
    }
 
    endAppointment(){
@@ -126,7 +169,7 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
       response => {
         this.medicineSupplyData = response;
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-        this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+        this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
       }
     )
    }
@@ -153,11 +196,11 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
         if(subs[0].medicine.name != "ERROR"){
           this.medicineSupplyData = subs;
           this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-          this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+          this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
         }else{
           this.medicineSupplyData = [];
           this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-          this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+          this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
         }
       }
     });
@@ -171,7 +214,7 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
         
         this.medicineSupplyData = this.medicineSupplyData.filter((med:any) => med.medicine.name !== medicine.name);
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-        this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+        this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
 
         found = true;
         return;
@@ -191,11 +234,11 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
 
     this.medicinePrescribedData.push(medicine);
     this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
-    this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
+    this.medicinePrescribedDataSource.paginator = this.paginator.toArray()[1];
     
     this.medicineSupplyData = this.medicineSupplyData.filter((med:any) => med.medicine.name !== medicine.name);
     this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-    this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+    this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
   }
 
   removeMedicine(medicine:any){
@@ -205,7 +248,7 @@ export class DermatologistAppointmentInfoComponent implements OnInit {
 
     this.medicinePrescribedData = this.medicinePrescribedData.filter((med:any) => med.name !== medicine.name);
     this.medicinePrescribedDataSource = new MatTableDataSource<any>(this.medicinePrescribedData);
-    this.medicinePrescribedDataSource.paginator = this.paginatorMedicinePrescribed;
+    this.medicinePrescribedDataSource.paginator = this.paginator.toArray()[1];
   }
 
    predefinedAppointments(){

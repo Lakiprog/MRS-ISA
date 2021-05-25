@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<body class = "pharmacy-admin-background">
+<div>
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
 
             <a mat-button routerLink="/pharmacyProfilePage">Pharmacy profile</a>
+
+            <a mat-button routerLink="/medicinePurchaseOrder">Purchase order</a>
+
+            <a mat-button (click) = "back()">Back</a>
 
             <a mat-button (click) = "logout()">Logout</a>
 
@@ -50,4 +54,4 @@
         </form>
         <button (click) = "update()" [disabled] = "updateForm.invalid" mat-raised-button color="primary">Update</button>
     </mat-card>
-</body>
+</div>

@@ -1,21 +1,12 @@
 package com.MRSISA2021_T15.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "purchase_order")
@@ -26,7 +17,7 @@ public class PurchaseOrder {
 	private Integer id;
 	
 	@Column
-	private String orderName;
+	private String purchaseOrderName;
 	
 	@JsonIgnore
 	@Transient
@@ -37,7 +28,14 @@ public class PurchaseOrder {
 	@Transient
 	@OneToMany(mappedBy = "purchase_order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PurchaseOrderSupplier> purchaseOrderSupplier = new HashSet<PurchaseOrderSupplier>();
-	
+
+	@ManyToOne
+	@JoinColumn(name="pharmacy_id")
+	private Pharmacy pharmacy;
+
+	@Transient
+	private ArrayList<Integer> substituteMedicineIds = new ArrayList<Integer>();
+
 	@Column
 	private LocalDate dueDateOffer;
 	
@@ -49,12 +47,12 @@ public class PurchaseOrder {
 		this.id = id;
 	}
 
-	public String getOrderName() {
-		return orderName;
+	public String getPurchaseOrderName() {
+		return purchaseOrderName;
 	}
 
-	public void setOrderName(String orderName) {
-		this.orderName = orderName;
+	public void setPurchaseOrderName(String purchaseOrderName) {
+		this.purchaseOrderName = purchaseOrderName;
 	}
 
 	public Set<PurchaseOrderMedicine> getPurchaseOrderMedicine() {
@@ -79,5 +77,13 @@ public class PurchaseOrder {
 
 	public void setDueDateOffer(LocalDate dueDateOffer) {
 		this.dueDateOffer = dueDateOffer;
+	}
+
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
 	}
 }

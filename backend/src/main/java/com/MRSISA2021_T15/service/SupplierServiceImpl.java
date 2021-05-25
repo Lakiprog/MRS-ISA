@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ import com.MRSISA2021_T15.repository.PurchaseOrderMedicineRepository;
 import com.MRSISA2021_T15.repository.PurchaseOrderRepository;
 import com.MRSISA2021_T15.repository.PurchaseOrderSupplierRepository;
 import com.MRSISA2021_T15.repository.UserRepository;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Service
 public class SupplierServiceImpl implements SupplierService {
@@ -103,18 +107,27 @@ public class SupplierServiceImpl implements SupplierService {
 	public String writeOffer(PurchaseOrderSupplier offer) {
 		String message = "";
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(offer.getPurchaseOrder().getId(), supplier.getId());
-		if (pos == null) {
-			List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStock(offer.getPurchaseOrder().getId(), supplier.getId());
-			if (ms.isEmpty()) {
-				offer.setOfferStatus(OfferStatus.PENDING);
-				offer.setSupplier(supplier);
-				purchaseOrderSupplierRepository.save(offer);
-			} else {
-				message = "You do not have enough of medicine in stock!";
-			}	
+		if (supplier.getFirstLogin()) {
+			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
+		} else if (offer.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
+			message = "Due date must be before today's date!";
+		} else if (LocalDate.now().isAfter(offer.getDeliveryDate())) {
+			message = "Delivery date must be after today's date!";
 		} else {
-			message = "Supplier has already given an offer for this order!";
+			PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(offer.getPurchaseOrder().getId(), supplier.getId());
+			if (pos == null) {
+				List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStock(offer.getPurchaseOrder().getId(), supplier.getId());
+				if (ms.isEmpty()) {
+					offer.setOfferStatus(OfferStatus.PENDING);
+					offer.setSupplier(supplier);
+					offer.setPrice(Math.abs(offer.getPrice()));
+					purchaseOrderSupplierRepository.save(offer);
+				} else {
+					message = "You do not have enough of medicine in stock!";
+				}	
+			} else {
+				message = "Supplier has already given an offer for this order!";
+			}
 		}
 		return message;
 	}
@@ -135,31 +148,49 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	@Override
-	public void updateOffer(PurchaseOrderSupplier offer) {
-		PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findById(offer.getId()).get();
-		if (offer.getPrice() != null) {
-			offerToUpdate.setPrice(offer.getPrice());
+	public String updateOffer(PurchaseOrderSupplier offer) {
+		String message = "";
+		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (supplier.getFirstLogin()) {
+			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
+		} else if (LocalDate.now().isAfter(offer.getDeliveryDate())) {
+			message = "Delivery date must be after today's date!";
+		} else if (offer.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
+			message = "Due date must be before today's date!";
+		} else {
+			PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findById(offer.getId()).get();
+			if (offer.getPrice() != null) {
+				offerToUpdate.setPrice(Math.abs(offer.getPrice()));
+			}
+			if (offer.getDeliveryDate() != null) {
+				offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
+			}
+			purchaseOrderSupplierRepository.save(offerToUpdate);
 		}
-		if (offer.getDeliveryDate() != null) {
-			offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
-		}
-		purchaseOrderSupplierRepository.save(offerToUpdate);
+		return message;
 	}
 
 	@Override
-	public String updateMedicineStock(MedicineSupply medicineSupply) {
+	public ResponseEntity<String> updateMedicineStock(MedicineSupply medicineSupply) {
 		String message = "";
+		Gson gson = new GsonBuilder().create();
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (supplier.getFirstLogin()) {
+			message = "You are logging in for the first time, you must change password before you can use this functionality!";
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		} else {
 		MedicineSupply ms = medicineSupplyRepository.getMedicineSupplyBySupplier(medicineSupply.getMedicine().getMedicineCode(), supplier.getId());
 		if (ms != null) {
-			ms.setQuantity(medicineSupply.getQuantity());
+			ms.setQuantity(Math.abs(medicineSupply.getQuantity()));
 			medicineSupplyRepository.save(ms);
 			message = "Medicine stock updated.";
 		} else {
 			medicineSupply.setSupplier(supplier);
+			medicineSupply.setQuantity(Math.abs(medicineSupply.getQuantity()));
 			medicineSupplyRepository.save(medicineSupply);
 			message = "Medicine is added to stock.";
 		}
-		return message;
+		}
+		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.OK);
 	}
 }

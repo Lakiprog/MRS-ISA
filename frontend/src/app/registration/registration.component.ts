@@ -34,7 +34,6 @@ export class RegistrationComponent implements OnInit {
   oldUserTypeValue : any;
   selectedPharmacyAdmin = false;
   pharmacies = [];
-  picture : any =  this.authService.getTokenData()?.role === 'ROLE_SYSTEM_ADMIN' ? 'registration-users-background' : 'registration-patient-background';
 
   ngOnInit(): void {
     this.registrationForm = this.fb.group(
@@ -97,11 +96,8 @@ export class RegistrationComponent implements OnInit {
             this.registrationForm.reset();
           },
           error => {
-            if (error.error.status !== undefined && error.error.status === 401) {
-              this.openSnackBar("You are not authorised to register system administrators!", this.RESPONSE_ERROR);
-            } else {
               this.openSnackBar(error.error, this.RESPONSE_ERROR);
-            }
+            
           }
         );
         this.registrationForm.addControl('pharmacy', new FormControl());
@@ -113,11 +109,7 @@ export class RegistrationComponent implements OnInit {
             this.registrationForm.reset();
           },
           error => {
-            if (error.error.status !== undefined && error.error.status === 401) {
-              this.openSnackBar("You are not authorised to register pharmacy administrators!", this.RESPONSE_ERROR);
-            } else {
-              this.openSnackBar(error.error, this.RESPONSE_ERROR);
-            }
+            this.openSnackBar(error.error, this.RESPONSE_ERROR);
             this.selectedPharmacyAdmin = true;
           }
         );
@@ -130,11 +122,7 @@ export class RegistrationComponent implements OnInit {
             this.registrationForm.reset();
           },
           error => {
-            if (error.error.status !== undefined && error.error.status === 401) {
-              this.openSnackBar("You are not authorised to register dermatologists!", this.RESPONSE_ERROR);
-            } else {
-              this.openSnackBar(error.error, this.RESPONSE_ERROR);
-            }
+            this.openSnackBar(error.error, this.RESPONSE_ERROR);
           }
         );
         this.registrationForm.addControl('pharmacy', new FormControl());
@@ -147,11 +135,7 @@ export class RegistrationComponent implements OnInit {
             this.registrationForm.reset();
           },
           error => {
-            if (error.error.status !== undefined && error.error.status === 401) {
-              this.openSnackBar("You are not authorised to register suppliers!", this.RESPONSE_ERROR);
-            } else {
-              this.openSnackBar(error.error, this.RESPONSE_ERROR);
-            }
+            this.openSnackBar(error.error, this.RESPONSE_ERROR);
           }
         );
         this.registrationForm.addControl('pharmacy', new FormControl());
@@ -186,5 +170,9 @@ export class RegistrationComponent implements OnInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

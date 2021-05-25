@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<body class = "appointment-creation-background">
+<div>
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
             <a mat-button (click) = "back()">Back</a>
@@ -21,4 +21,4 @@
         </form>
         <button (click) = "makeAppointment()" [disabled] = "appointmentForm.invalid" mat-raised-button color="primary">Create Appointment</button>
     </mat-card>
-</body>
+</div>

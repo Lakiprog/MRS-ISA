@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
 import { DiscountValidator } from './DiscountValidator';
 import { LoyaltyProgramService } from './loyalty-program.service';
 import { PointsValidator } from './PointsValidator';
@@ -24,7 +25,8 @@ export class LoyaltyProgramComponent implements OnInit {
   (
     private fb: FormBuilder, 
     private _snackBar: MatSnackBar,
-    private loyaltyProgramService: LoyaltyProgramService
+    private loyaltyProgramService: LoyaltyProgramService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -90,6 +92,9 @@ export class LoyaltyProgramComponent implements OnInit {
     this.loyaltyProgramService.defineCategories(this.defineCategoriesForm.value).subscribe(
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);
+      }, 
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     )
   }
@@ -98,6 +103,9 @@ export class LoyaltyProgramComponent implements OnInit {
     this.loyaltyProgramService.definePointsForAppointmentAndConsulation(this.appointmentAndConsultationForm.value).subscribe(
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);
+      }, 
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     )
   }
@@ -108,5 +116,9 @@ export class LoyaltyProgramComponent implements OnInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

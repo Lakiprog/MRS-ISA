@@ -25,7 +25,7 @@ public class AbsenceController {
 	
 	@PostMapping(path="/pharmacist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
-	public @ResponseBody ResponseEntity<String> createAbsencePharmacist(@RequestBody Absence absence) {
+	public @ResponseBody ResponseEntity<String> createAbsencePharmacist(@RequestBody Absence absence) throws InterruptedException {
 		String message = service.createAbsencePharmacist(absence);
 		Gson gson = new GsonBuilder().create();
 		if (message == "") {
@@ -36,7 +36,7 @@ public class AbsenceController {
 	
 	@PostMapping(path="/dermatologist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
-	public @ResponseBody ResponseEntity<String> createAbsenceDermatologist(@RequestBody Absence absence) {
+	public @ResponseBody ResponseEntity<String> createAbsenceDermatologist(@RequestBody Absence absence) throws InterruptedException {
 		String message = service.createAbsenceDermatologist(absence);
 		Gson gson = new GsonBuilder().create();
 		if (message == "") {

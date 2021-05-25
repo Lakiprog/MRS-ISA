@@ -8,6 +8,8 @@ import { PharmacyAdmin } from '../models/pharmacy-admin';
 import { catchError } from 'rxjs/operators';
 import { MedicinePharmacy } from '../models/medicine-pharmacy';
 import { Employment } from '../models/employment';
+import { Pharmacy } from '../user-complaint/user-complaint.component';
+import { PurchaseOrder } from '../models/purchase-order';
 
 @Injectable({
   providedIn: 'root',
@@ -65,6 +67,16 @@ export class PharmacyAdminService {
 
   public getAllMedicine(): Observable<Medicine[]> {
     return this.httpClient.get<Medicine[]>(this.medicineUrl);
+  }
+
+  public getMedicineFromPharmacy(pharmacy: Pharmacy): Observable<Medicine[]> {
+    console.log(pharmacy);
+    console.log(pharmacy.id);
+    return this.httpClient.get<Medicine[]>(
+      'http://localhost:8080/medicine/' +
+        pharmacy.id +
+        '/getMedicineFromPharmacy'
+    );
   }
 
   public createMedicine(medicine: Medicine) {
@@ -182,6 +194,14 @@ export class PharmacyAdminService {
       )
       .pipe(catchError(this.errorHander));
   }
+
+  public createPurchaseOrder(purchaseOrder: PurchaseOrder) {
+    return this.httpClient.post<PurchaseOrder>(
+      'http://localhost:8080/pharmacyAdmin/createPurchaseOrder',
+      purchaseOrder
+    );
+  }
+
   errorHander(error: HttpErrorResponse) {
     return throwError(error);
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
 import { RegisterPharmaciesService } from './register-pharmacies.service';
 
 @Component({
@@ -13,7 +14,13 @@ export class RegisterPharmaciesComponent implements OnInit {
   pharmacyRegistrationForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  constructor(private fb: FormBuilder, private _registerPharmaciesService: RegisterPharmaciesService, private _snackBar: MatSnackBar) { }
+  constructor
+  (
+    private fb: FormBuilder, 
+    private _registerPharmaciesService: RegisterPharmaciesService, 
+    private _snackBar: MatSnackBar,
+    private authService: AuthService
+  ) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   ngOnInit(): void {
@@ -52,4 +59,7 @@ export class RegisterPharmaciesComponent implements OnInit {
     });
   }
 
+  logout() {
+    this.authService.logout();
+  }
 }

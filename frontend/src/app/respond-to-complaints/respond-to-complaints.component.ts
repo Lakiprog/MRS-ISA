@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from '../login/auth.service';
 import { RespondToComplaintsService } from './respond-to-complaints.service';
 
 @Component({
@@ -27,14 +28,11 @@ export class RespondToComplaintsComponent implements OnInit, AfterViewInit {
   (
     private respondToCompaintsService: RespondToComplaintsService,
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private authService: AuthService
   ) { }
 
-  @ViewChild(MatPaginator)
-  paginatorComplaintsToRespond!: MatPaginator;
-
-  @ViewChild(MatPaginator)
-  paginatorResponses!: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   ngOnInit(): void {
     this.responseForm = this.fb.group(
@@ -48,8 +46,8 @@ export class RespondToComplaintsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.complaintsToRespondDataSource.paginator = this.paginatorComplaintsToRespond;
-    this.responsesDataSource.paginator = this.paginatorResponses;
+    this.complaintsToRespondDataSource.paginator = this.paginator.toArray()[0];
+    this.responsesDataSource.paginator = this.paginator.toArray()[1];
   }
 
   public hasError = (controlName: string, errorName: string) =>{
@@ -61,6 +59,7 @@ export class RespondToComplaintsComponent implements OnInit, AfterViewInit {
       data => {
         this.complaintsToRespond = data;
         this.complaintsToRespondDataSource = new MatTableDataSource<any>(this.complaintsToRespond);
+        this.complaintsToRespondDataSource.paginator = this.paginator.toArray()[0];
       }
     )
   }
@@ -70,6 +69,7 @@ export class RespondToComplaintsComponent implements OnInit, AfterViewInit {
       data => {
         this.responses = data;
         this.responsesDataSource = new MatTableDataSource<any>(this.responses);
+        this.responsesDataSource.paginator = this.paginator.toArray()[1];
       }
     )
   }
@@ -80,6 +80,9 @@ export class RespondToComplaintsComponent implements OnInit, AfterViewInit {
         this.openSnackBar(response, this.RESPONSE_OK);
         this.getComplaintsToRespond();
         this.getResponses();
+      }, 
+      error => {
+        this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     );
   }
@@ -90,5 +93,9 @@ export class RespondToComplaintsComponent implements OnInit, AfterViewInit {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

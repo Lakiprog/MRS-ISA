@@ -80,7 +80,11 @@ public class ComplaintService {
 		return complaintRepository.findBySystemAdmin(((SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
 	}
 	
-	public void sendResponse(Complaint response) {
+	public String sendResponse(Complaint response) {
+		SystemAdmin systemAdmin = (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (systemAdmin.getFirstLogin()) {
+			return "You are logging in for the first time, you must change password before you can use this functionality!";
+		}
 		Complaint complaint = complaintRepository.findById(response.getId()).get();
 		complaint.setResponse(response.getResponse());
 		complaint.setSystemAdmin(((SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
@@ -91,5 +95,6 @@ public class ComplaintService {
         mailMessage.setFrom(env.getProperty("spring.mail.username"));
         mailMessage.setText("Your complaint: " + complaint.getText() + "\n\nResponse: " + complaint.getResponse() + "\n\nBest regards,\n" + complaint.getSystemAdmin().getName());
         emailSenderService.sendEmail(mailMessage);
+        return "";
 	}
 }

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.MedicineForm;
 import com.MRSISA2021_T15.model.MedicineType;
 import com.MRSISA2021_T15.model.SubstituteMedicine;
+import com.MRSISA2021_T15.model.SystemAdmin;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
@@ -31,20 +33,26 @@ public class MedicineServiceImpl implements MedicineService {
 	@Override
 	public String addMedicine(Medicine medicine) {
 		String message = "";
-		if (medicineRepository.findByMedicineCode(medicine.getMedicineCode().toLowerCase()) != null) {
-			message = "A medicine with this code already exists!";
+		SystemAdmin systemAdmin = (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (systemAdmin.getFirstLogin()) {
+			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
 		} else {
-			medicine.setMedicineCode(medicine.getMedicineCode().toLowerCase());
-			medicineRepository.save(medicine);
-			List<Integer> substituteMedicineIds = medicine.getSubstituteMedicineIds();
-			if (substituteMedicineIds != null) {
-				for (Integer id : substituteMedicineIds) {
-					SubstituteMedicine substituteMedicine = new SubstituteMedicine();
-					substituteMedicine.setMedicine(medicine);
-					Medicine sm = medicineRepository.findById(id).get();
-					if (sm != null) {
-						substituteMedicine.setSubstituteMedicine(sm);
-						substituteMedicineRepository.save(substituteMedicine);
+			if (medicineRepository.findByMedicineCode(medicine.getMedicineCode().toLowerCase()) != null) {
+				message = "A medicine with this code already exists!";
+			} else {
+				medicine.setMedicineCode(medicine.getMedicineCode().toLowerCase());
+				medicine.setPoints(Math.abs(medicine.getPoints()));
+				medicineRepository.save(medicine);
+				List<Integer> substituteMedicineIds = medicine.getSubstituteMedicineIds();
+				if (substituteMedicineIds != null) {
+					for (Integer id : substituteMedicineIds) {
+						SubstituteMedicine substituteMedicine = new SubstituteMedicine();
+						substituteMedicine.setMedicine(medicine);
+						Medicine sm = medicineRepository.findById(id).get();
+						if (sm != null) {
+							substituteMedicine.setSubstituteMedicine(sm);
+							substituteMedicineRepository.save(substituteMedicine);
+						}
 					}
 				}
 			}
