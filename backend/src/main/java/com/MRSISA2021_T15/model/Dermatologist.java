@@ -34,7 +34,18 @@ public class Dermatologist extends User{
 
 	@Column(name = "rating")
 	private double rating;
+	
+	@Column
+	private int numOfRating;
 
+
+	public int getNumOfRating() {
+		return numOfRating;
+	}
+
+	public void setNumOfRating(int numOfRating) {
+		this.numOfRating = numOfRating;
+	}
 
 	public Set<AppointmentDermatologist> getAppointments() {
 		return appointments;

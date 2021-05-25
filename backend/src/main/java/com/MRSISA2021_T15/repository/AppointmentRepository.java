@@ -9,7 +9,10 @@ import org.springframework.stereotype.Repository;
 import com.MRSISA2021_T15.model.Appointment;
 import com.MRSISA2021_T15.model.AppointmentDermatologist;
 import com.MRSISA2021_T15.model.AppointmentPharmacist;
+import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.Pharmacist;
+import com.MRSISA2021_T15.model.Pharmacy;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer>{
@@ -72,5 +75,18 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	@Query("select a from Appointment a where a.id = ?1")
 	public AppointmentDermatologist findDerAppWithId(Integer id);
 	
+	
+	
+	
+	@Query("select distinct d from Appointment a join a.dermatologist d where a.patient.id = ?1 and APPOINTMENT_TYPE = 'APPOINTMENT_DERMATOLOGIST' and done=true")
+	public List<Dermatologist> findAllDoneDerAppOfPatient(Integer id);
+	
+	
+	@Query("select distinct p from Appointment a join a.pharmacist p where a.patient.id = ?1 and APPOINTMENT_TYPE = 'APPOINTMENT_PHARMACIST' and done=true")
+	public List<Pharmacist> findAllDonePharAppOfPatient(Integer id);
+	
+	
+	@Query("select distinct p from Appointment a join a.pharmacy p where a.patient.id = ?1 and done=true")
+	public List<Pharmacy> findAllPharmaciesThatPatientHadApp(Integer id);
 	
 }

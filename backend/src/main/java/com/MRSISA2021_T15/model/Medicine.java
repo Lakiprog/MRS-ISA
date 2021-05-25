@@ -45,33 +45,45 @@ public class Medicine {
 	@Column
 	private double points;
 
+	@Column
+	private int numOfRating;
+	
+	
+	public int getNumOfRating() {
+		return numOfRating;
+	}
+
+	public void setNumOfRating(int numOfRating) {
+		this.numOfRating = numOfRating;
+	}
+
 	@Transient
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SubstituteMedicine> substituteMedicine = new HashSet<SubstituteMedicine>();
 	
 	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Allergy> allergies = new HashSet<Allergy>();
 	
 	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<MedicinePharmacy> medicinePharmacy;
 	
 	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<MedicineSupply> medicineSupply;
 	
 	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<MedicineQuantity> medicineQuantity;
 	
 	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<MedicineNeeded> medicineNeeded;
 	
 	@Transient
