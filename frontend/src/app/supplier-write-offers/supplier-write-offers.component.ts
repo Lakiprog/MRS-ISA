@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from '../login/auth.service';
 import { DateValidator } from './DateValidator';
 import { PriceValidator } from './PriceValidator';
 import { SupplierWriteOffersService } from './supplier-write-offers.service';
@@ -18,14 +19,11 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   (
     private fb: FormBuilder, 
     private supplierWriteOffersService: SupplierWriteOffersService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private authService: AuthService,
   ) { }
 
-  @ViewChild(MatPaginator)
-  paginatorMedicineSupply!: MatPaginator;
-
-  @ViewChild(MatPaginator)
-  paginatorOrders!: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   verticalPosition: MatSnackBarVerticalPosition = "top";
   displayedColumnsMedicineSupply: string[] = ['medicineCode', 'name', 'quantity'];
@@ -35,7 +33,6 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   orders = [];
   medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
   orderDataSource = new MatTableDataSource<any>(this.orderData);
-  dataSource1 = new MatTableDataSource<any>()
   offerForm!: FormGroup;
   purchaseOrdersForm!: FormGroup;
   RESPONSE_OK : number = 0;
@@ -58,8 +55,8 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit(): void {
-    this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
-    this.orderDataSource.paginator = this.paginatorOrders
+    this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
+    this.orderDataSource.paginator = this.paginator.toArray()[1]
   }
 
   public hasError = (controlName: string, errorName: string) =>{
@@ -91,7 +88,7 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
       response => {
         this.medicineSupplyData = response;
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
-        this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
+        this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
       }
     )
   }
@@ -102,7 +99,7 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
         data => {
           this.orderData = data;
           this.orderDataSource = new MatTableDataSource<any>(this.orderData);
-          this.orderDataSource.paginator = this.paginatorOrders
+          this.orderDataSource.paginator = this.paginator.toArray()[1]
         }
       )
   }
@@ -124,6 +121,10 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

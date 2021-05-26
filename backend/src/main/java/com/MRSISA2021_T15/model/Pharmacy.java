@@ -24,6 +24,19 @@ public class Pharmacy {
 	@Column
 	double appointmentPrice;
 	
+	
+	@Column
+	private int numOfRating;
+	
+	
+	public int getNumOfRating() {
+		return numOfRating;
+	}
+
+	public void setNumOfRating(int numOfRating) {
+		this.numOfRating = numOfRating;
+	}
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Employment> employments;
@@ -37,11 +50,11 @@ public class Pharmacy {
 	private Set<ComplaintPharmacy> complaints;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<MedicinePharmacy> medicine;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<MedicineNeeded> medicineNeeded;
 	
 	@JsonIgnore
@@ -50,7 +63,7 @@ public class Pharmacy {
 
 	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Reservation> reservations;
 	
 	@Transient
@@ -61,7 +74,7 @@ public class Pharmacy {
 	private Set<Promotion> promotions;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<PurchaseOrder> purchaseOrder;
 	
 	

@@ -27,6 +27,7 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
   loggedOn = this.authService.getToken() != null ? true : false
   selectedMedicine: any;
   isPatientLoggedOn = this.authService.getTokenData()?.role === 'ROLE_PATIENT' ? true : false;
+  isSystemAdminLoggedOn = this.authService.getTokenData()?.role === 'ROLE_SYSTEM_ADMIN' ? true : false;
 
 
   minDate: any;
@@ -190,20 +191,25 @@ export class SearchFilterMedicineComponent implements OnInit, AfterViewInit{
         this.openSnackBar(error.error, this.RESPONSE_ERROR);
       }
     );
-}
-
-openSnackBar(msg: string, responseCode: number) {
-  this.snackBar.open(msg, "x", {
-    duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
-    verticalPosition: this.verticalPosition,
-    panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
-  });
-  if(responseCode === this.RESPONSE_OK){
-    this.back();
   }
-}
+
+  openSnackBar(msg: string, responseCode: number) {
+    this.snackBar.open(msg, "x", {
+      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      verticalPosition: this.verticalPosition,
+      panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
+    });
+    if(responseCode === this.RESPONSE_OK){
+      this.back();
+    }
+  }
+
   quit(){
     this.showMedicineCard = false;
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

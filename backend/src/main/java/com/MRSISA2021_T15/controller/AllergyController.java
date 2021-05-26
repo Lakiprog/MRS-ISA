@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,13 +50,13 @@ public class AllergyController {
 	UserRepository adminsrepo;
 	
 	@Autowired
-	EmailSenderService emailsending;
+	JavaMailSender emailsending;
 	@Autowired
 	Environment envi;
 	
 	@GetMapping(value = "/checkForAllergiesPharmacist/pharmacy={pharmacyId}medicine={medicineId}patient={patientId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
-	public List<MedicineQuantity> getMedicinePharmacist(@PathVariable("pharmacyId") Integer id, @PathVariable("medicineId") Integer medicineId, @PathVariable("patientId") Integer patientId) {
+	public List<MedicineQuantity> getMedicinePharmacist(@PathVariable("pharmacyId") Integer id, @PathVariable("medicineId") Integer medicineId, @PathVariable("patientId") Integer patientId) throws InterruptedException {
 		List<MedicinePharmacy> medps = service1.medcineInPharmacy(id);
 		for (MedicinePharmacy medicine : medps) {
 			if(medicine.getMedicine().getId() == medicineId) {
@@ -76,7 +78,7 @@ public class AllergyController {
 	
 	@GetMapping(value = "/checkForAllergiesDermatologist/pharmacy={pharmacyId}medicine={medicineId}patient={patientId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
-	public List<MedicineQuantity> getMedicineDermatologist(@PathVariable("pharmacyId") Integer id, @PathVariable("medicineId") Integer medicineId, @PathVariable("patientId") Integer patientId) {
+	public List<MedicineQuantity> getMedicineDermatologist(@PathVariable("pharmacyId") Integer id, @PathVariable("medicineId") Integer medicineId, @PathVariable("patientId") Integer patientId) throws InterruptedException {
 		List<MedicinePharmacy> medps = service1.medcineInPharmacy(id);
 		for (MedicinePharmacy medicine : medps) {
 			if(medicine.getMedicine().getId() == medicineId) {
@@ -129,13 +131,23 @@ public class AllergyController {
 		return subs;
 	}
 	
-	public void saveNeededs(Medicine medicine, Pharmacy pharmacy) {
+	
+	public void saveNeededs(Medicine medicine, Pharmacy pharmacy) throws InterruptedException {
 		MedicineNeeded med = new MedicineNeeded();
 		med.setMedicine(medicine);
 		med.setPharmacy(pharmacy);
 		med.setRequested(LocalDateTime.now());
 		repo.save(med);
 		
+		Thread thread = new Thread() {
+			public void run() {
+				mailing( pharmacy, medicine);
+			}
+		};
+		thread.start();
+	}
+	
+	public void mailing(Pharmacy pharmacy, Medicine medicine) {
 		for (PharmacyAdmin pharmacyAdmin : adminsrepo.findAllPharmacyAdmins()) {
 			if(pharmacyAdmin.getPharmacy().getId() == pharmacy.getId()) {
 				SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -144,9 +156,12 @@ public class AllergyController {
 				mailMessage.setFrom(envi.getProperty("spring.mail.username"));
 				mailMessage.setText("Medicine " + medicine.getName() + " was requested in pharmacy " + pharmacy.getName()
 				+ ". You should consider restocking this medicine.");
-				emailsending.sendEmail(mailMessage);
+				emailsending.send(mailMessage);
+				//Thread.sleep(3000);
 			}
 		}
 	}
 	
 }
+
+

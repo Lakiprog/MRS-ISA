@@ -1,9 +1,3 @@
-body {
-    background: url(../pictures/medicinePill.jpg);
-    background-size: cover;
-    background-attachment: fixed;
-}
-
 .card {
     width: 500px;
     width: 500px;
@@ -36,8 +30,16 @@ table {
     width: 100%;
 }
 
+.coloumnMedicineCode {
+    width: 10%;
+}
+
 .coloumnName {
     width: 20%;  
+}
+
+.coloumnQuantity {
+    width: 5%;
 }
 
 .coloumnAddress {

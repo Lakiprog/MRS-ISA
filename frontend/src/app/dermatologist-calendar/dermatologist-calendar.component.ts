@@ -43,7 +43,7 @@ export class DermatologistCalendarComponent implements OnInit {
     },
     dateClick: this.handleDateClick.bind(this),
     events: [],
-    eventClick: info => this.openDialog(info)
+    eventClick: info => this.openDialog(info),
   };
 
   handleDateClick(arg:any) {

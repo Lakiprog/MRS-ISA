@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<body class = "supplier-background">
+<div>
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
-            <span>Medicine stock</span>
+            <span>MEDICINE STOCK</span>
             <span style = "flex: 1 1 auto;"></span>
-            <a mat-button routerLink = "/supplierProfilePage">Back</a>
+            <a mat-button routerLink = "/supplierProfilePage">MY PROFILE</a>
+            <a mat-button routerLink = "/supplierWriteOffers">WRITE OFFERS FOR INCOMING PURCHASE ORDERS</a>
+            <a mat-button routerLink = "/supplierViewOffers">VIEW OFFERS</a>
+            <a mat-button (click) = "logout()">LOGOUT</a>
         </mat-toolbar-row>
     </mat-toolbar>
     <mat-card class = "table-card">
@@ -47,4 +50,4 @@
         </form>
         <button (click) = "updateMedicineStock()" [disabled] = "updateMedicineStockForm.invalid" mat-raised-button color="primary">Update</button>
     </mat-card>
-</body>
+</div>

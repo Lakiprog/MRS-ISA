@@ -4,8 +4,10 @@ public enum MedicineType {
 	ANTIBIOTIC("Antibiotic"),
 	ANALGESIC("Analgesic"),
 	ANTIHISTAMINE("Antihistamine"),
-	BENZODIAZEPINE("Benzodiazepine");
-
+	BENZODIAZEPINE("Benzodiazepine"),
+	ANTISEPTIC("Antiseptic"),
+	ANTIMIGRAINE("Antimigraine");
+	
 	String type;
 	
 	private MedicineType(String type) { this.type = type; }

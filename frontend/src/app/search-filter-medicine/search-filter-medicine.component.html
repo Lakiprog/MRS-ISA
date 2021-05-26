@@ -1,12 +1,20 @@
 <!DOCTYPE html>
-<body>
+<div>
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
-            <span *ngIf = "isPatientLoggedOn">Reserve medicine</span>
-            <span *ngIf = "!isPatientLoggedOn">View medicine</span>
+            <span *ngIf = "isPatientLoggedOn">RESERVE MEDICINE</span>
+            <span *ngIf = "!isPatientLoggedOn">VIEW MEDICINE</span>
             <span style = "flex: 1 1 auto;"></span>
-            <a *ngIf = "loggedOn" mat-button (click) = "back()">Back</a>
-            <a *ngIf = "!loggedOn" mat-button routerLink = "/login">Login</a>
+            <a *ngIf = "!loggedOn" mat-button routerLink = "/login">LOGIN</a>
+            <a *ngIf = "!loggedOn" mat-button routerLink = "/register">REGISTRATION</a>
+            <a *ngIf = "!loggedOn" mat-button routerLink = "/searchPharmacy">VIEW PHARMACIES</a>
+            <a *ngIf = "isSystemAdminLoggedOn" mat-button routerLink = "/systemAdminProfilePage">MY PROFILE</a>
+            <a *ngIf = "isSystemAdminLoggedOn" mat-button routerLink = "/register">REGISTER USERS</a>
+            <a *ngIf = "isSystemAdminLoggedOn" mat-button routerLink = "/registerPharmacies">REGISTER PHARMACIES</a>
+            <a *ngIf = "isSystemAdminLoggedOn" mat-button routerLink = "/addMedicine">ADD MEDICINE</a>
+            <a *ngIf = "isSystemAdminLoggedOn" mat-button routerLink = "/loyaltyProgram">LOYALTY PROGRAM</a>
+            <a *ngIf = "isSystemAdminLoggedOn" mat-button routerLink = "/respondToComplaints">RESPOND TO PATIENT COMPLAINTS</a>
+            <a *ngIf = "isSystemAdminLoggedOn" mat-button (click) = "logout()" >LOGOUT</a>
         </mat-toolbar-row>
     </mat-toolbar>
 
@@ -67,9 +75,9 @@
                 </ng-container>
 
                 <ng-container matColumnDef="schedule">
-                    <th mat-header-cell *matHeaderCellDef class = "buttonSchedule"> Schedule </th>
+                    <th mat-header-cell *matHeaderCellDef class = "buttonSchedule">Schedule</th>
                     <td mat-cell *matCellDef="let row"> 
-                        <button (click) = "schedule(row)" mat-raised-button color="primary">SCHEDULE</button>
+                        <button (click) = "schedule(row)" mat-raised-button color="primary" [disabled] = "!isPatientLoggedOn">Schedule</button>
                     </td>
                 </ng-container>
 
@@ -120,5 +128,4 @@
               </mat-card-actions>
         </mat-card>
     </div>
-    
-
+</div>

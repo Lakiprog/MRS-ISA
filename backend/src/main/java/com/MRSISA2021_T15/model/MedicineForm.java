@@ -7,7 +7,8 @@ public enum MedicineForm {
 	FAT("Fat"),
 	PASTE("Paste"),
 	GEL("Gel"),
-	SIRUP("Sirup");
+	SIRUP("Sirup"),
+	LIQUID("Liquid");
 	
 	String form;
 	

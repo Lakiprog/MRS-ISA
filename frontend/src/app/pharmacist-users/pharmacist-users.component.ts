@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import {PharmacistUsersService} from './pharmacist-users.service'
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';;
@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { AuthService } from '../login/auth.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-pharmacist-users',
@@ -14,10 +15,9 @@ import { AuthService } from '../login/auth.service';
 })
 export class PharmacistUsersComponent implements OnInit {
 
-  constructor(private service : PharmacistUsersService, private router: Router, private fb: FormBuilder, private _snackBar: MatSnackBar, private authService: AuthService) { }
+  constructor(private service : PharmacistUsersService, private router: Router, private fb: FormBuilder, private _snackBar: MatSnackBar, private authService: AuthService, public dialog : MatDialog) { }
 
-  @ViewChild(MatPaginator)
-  paginatorPatients!: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   firstLogin = this.authService.getTokenData()?.firstLogin;
   RESPONSE_OK : number = 0;
@@ -28,6 +28,10 @@ export class PharmacistUsersComponent implements OnInit {
   patientsData:any = [];
   patientsDataSource = new MatTableDataSource<any>(this.patientsData);
 
+  displayedColumnsAppointments: string[] = ['name', 'surname', 'startTime', 'endTime', 'start'];
+  appointmentsData:any = [];
+  appointmentsDataSource = new MatTableDataSource<any>(this.appointmentsData);
+
   ngOnInit(): void {
       this.patientsForm = this.fb.group(
       {
@@ -35,10 +39,12 @@ export class PharmacistUsersComponent implements OnInit {
         surnameSearch: ['']
       });
       this.getPatients("", "");
+      this.getAppointments("", "");
     }
 
   ngAfterViewInit(): void {
-    this.patientsDataSource.paginator = this.paginatorPatients;
+    this.patientsDataSource.paginator = this.paginator.toArray()[0];
+    this.appointmentsDataSource.paginator = this.paginator.toArray()[1];
   }
 
    getPatients(name:string, surname:string){
@@ -46,13 +52,39 @@ export class PharmacistUsersComponent implements OnInit {
       response =>{
         this.patientsData = response;
         this.patientsDataSource = new MatTableDataSource<any>(this.patientsData);
-        this.patientsDataSource.paginator = this.paginatorPatients;
+        this.patientsDataSource.paginator = this.paginator.toArray()[0];
+      }
+    );
+   }
+
+   getAppointments(name:string, surname:string){
+    this.service.getAppointments(name, surname).subscribe(
+      response =>{
+        this.appointmentsData = response;
+        this.appointmentsDataSource = new MatTableDataSource<any>(this.appointmentsData);
+        this.appointmentsDataSource.paginator = this.paginator.toArray()[1];
       }
     );
    }
 
   filter(){
     this.getPatients(this.patientsForm.get("nameSearch")?.value, this.patientsForm.get("surnameSearch")?.value);
+    this.getAppointments(this.patientsForm.get("nameSearch")?.value, this.patientsForm.get("surnameSearch")?.value);
+  }
+
+  start(app:any){
+    let dialogRef = this.dialog.open(DialogStartPharmacistPatients, {
+      data:  app
+     });
+
+     dialogRef.afterClosed().subscribe(result => {
+      if(result){
+          this.router.navigate(['/PharmacistAppointmentInfoComponent'], {state: {data: {appointment : app, information : {comment:"", medication:[]}}}});
+      }
+      else{
+        dialogRef.close()
+      }
+    })
   }
 
   homepage(){
@@ -134,4 +166,15 @@ export class PharmacistUsersComponent implements OnInit {
   back(){
     this.router.navigate(['/PharmacistHomePage']);
   }
+}
+
+@Component({
+  selector: 'start-dialog-patients',
+  templateUrl: 'start-dialog-patients.html',
+})
+export class DialogStartPharmacistPatients {
+  constructor(
+      public dialogRef: MatDialogRef<DialogStartPharmacistPatients>,
+      @Inject(MAT_DIALOG_DATA) public data:any
+ ) {}
 }
