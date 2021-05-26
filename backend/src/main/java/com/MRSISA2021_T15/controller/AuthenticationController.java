@@ -26,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -70,6 +72,7 @@ public class AuthenticationController {
 		}
 	}
 	
+	@Transactional
 	@PostMapping(value = "/createFirstSystemAdmin")
 	public void createFirstSystemAdmin() {
 		List<SystemAdmin> systemAdmins = (List<SystemAdmin>) systemAdminRepository.findAll();

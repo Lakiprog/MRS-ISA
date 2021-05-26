@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.SystemAdmin;
@@ -18,18 +20,20 @@ public class SystemAdminServiceImpl implements SystemAdminService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
 	public String updatePassword(ChangePassword passwords) {
 		String message = "";
 		SystemAdmin currentUser = (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (!passwordEncoder.matches(passwords.getOldPassword(), currentUser.getPassword())) {
+		SystemAdmin updatedSystemAdmin = (SystemAdmin) userRepository.findById(currentUser.getId()).get();
+		if (!passwordEncoder.matches(passwords.getOldPassword(), updatedSystemAdmin.getPassword())) {
 			message = "Wrong old password!";
 		} else {
-			if (currentUser.getFirstLogin()) {
-				currentUser.setFirstLogin(false);
+			if (updatedSystemAdmin.getFirstLogin()) {
+				updatedSystemAdmin.setFirstLogin(false);
 			}
-			currentUser.setPassword(passwordEncoder.encode(passwords.getPassword()));
-			userRepository.save(currentUser);
+			updatedSystemAdmin.setPassword(passwordEncoder.encode(passwords.getPassword()));
+			userRepository.save(updatedSystemAdmin);
 		}
 		return message;
 	}

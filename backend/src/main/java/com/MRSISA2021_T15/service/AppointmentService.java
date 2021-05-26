@@ -349,27 +349,39 @@ public class AppointmentService {
 						(medicineRepository.getPointsByMedicineCode(medicine.getMedicine().getMedicineCode()) * Math.abs(medicine.getQuantity())));
 			}
 			if (appointment instanceof AppointmentDermatologist) {
-				patient.setCollectedPoints(patient.getCollectedPoints() + Math.abs(appointmentConsultationPointsRepository.getPointsByType("APPOINTMENT")));
+				if (appointmentConsultationPointsRepository.getPointsByType("APPOINTMENT") != null) {
+					patient.setCollectedPoints(patient.getCollectedPoints() + Math.abs(appointmentConsultationPointsRepository.getPointsByType("APPOINTMENT")));
+				}
 			}
 			else if (appointment instanceof AppointmentPharmacist) {
-				patient.setCollectedPoints(patient.getCollectedPoints() + Math.abs(appointmentConsultationPointsRepository.getPointsByType("CONSULTATION")));
+				if (appointmentConsultationPointsRepository.getPointsByType("CONSULTATION") != null) {
+					patient.setCollectedPoints(patient.getCollectedPoints() + Math.abs(appointmentConsultationPointsRepository.getPointsByType("CONSULTATION")));
+				}
 			}
 			
 			if (patient.getCategoryName().equals(CategoryName.REGULAR)) {
 				Category c = categoryRepository.findByCategoryName(CategoryName.SILVER);
-				if (patient.getCollectedPoints() >= Math.abs(c.getRequiredNumberOfPoints())) {
-					patient.setCategoryName(CategoryName.SILVER);
+				if (c != null) {
+					if (patient.getCollectedPoints() >= Math.abs(c.getRequiredNumberOfPoints())) {
+						patient.setCategoryName(CategoryName.SILVER);
+					}
 				}
 			} else if (patient.getCategoryName().equals(CategoryName.SILVER)) {
 				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
 				Category c2 = categoryRepository.findByCategoryName(CategoryName.SILVER);
-				if (patient.getCollectedPoints() >= Math.abs(c1.getRequiredNumberOfPoints())) {
-					patient.setCategoryName(CategoryName.GOLD);
+				if (c1 != null) {
+					if (patient.getCollectedPoints() >= Math.abs(c1.getRequiredNumberOfPoints())) {
+						patient.setCategoryName(CategoryName.GOLD);
+					}
 				}
-				appointment.setDiscount((100.0 - Math.abs(c2.getDiscount())) / 100.0);
+				if (c2 != null) {
+					appointment.setDiscount((100.0 - Math.abs(c2.getDiscount())) / 100.0);
+				}
 			} else if (patient.getCategoryName().equals(CategoryName.GOLD)) {
 				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
-				appointment.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
+				if (c1 != null) {
+					appointment.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
+				}
 			}
 			
 			appointment.setPatient(patient);

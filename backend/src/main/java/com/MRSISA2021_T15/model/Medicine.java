@@ -43,7 +43,7 @@ public class Medicine {
 	private Integer averageRating;
 	
 	@Column
-	private double points;
+	private Integer points;
 
 	@Column
 	private int numOfRating;
@@ -210,11 +210,11 @@ public class Medicine {
 		this.averageRating = averageRating;
 	}
 
-	public double getPoints() {
+	public Integer getPoints() {
 		return points;
 	}
 
-	public void setPoints(double points) {
+	public void setPoints(Integer points) {
 		this.points = points;
 	}
 }

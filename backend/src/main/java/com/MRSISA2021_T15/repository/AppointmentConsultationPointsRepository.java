@@ -12,5 +12,5 @@ public interface AppointmentConsultationPointsRepository extends CrudRepository<
 	AppointmentConsultationPoints findByType(String type);
 	
 	@Query("select acp.points from AppointmentConsultationPoints acp where acp.type like ?1")
-	double getPointsByType(String type);
+	Integer getPointsByType(String type);
 }

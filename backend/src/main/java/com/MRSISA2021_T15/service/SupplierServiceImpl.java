@@ -5,6 +5,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,42 +49,46 @@ public class SupplierServiceImpl implements SupplierService {
 	@Autowired
 	private PurchaseOrderSupplierRepository purchaseOrderSupplierRepository;
 	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
 	public void updateSupplierData(Supplier supplier) {
 		Supplier currentUser = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Supplier updatedSupplier = (Supplier) userRepository.findById(currentUser.getId()).get();
 		if (!supplier.getName().equals("")) {
-			currentUser.setName(supplier.getName());
+			updatedSupplier.setName(supplier.getName());
 		}
 		if (!supplier.getSurname().equals("")) {
-			currentUser.setSurname(supplier.getSurname());
+			updatedSupplier.setSurname(supplier.getSurname());
 		}
 		if (!supplier.getAddress().equals("")) {
-			currentUser.setAddress(supplier.getAddress());
+			updatedSupplier.setAddress(supplier.getAddress());
 		}
 		if (!supplier.getCity().equals("")) {
-			currentUser.setCity(supplier.getCity());
+			updatedSupplier.setCity(supplier.getCity());
 		}
 		if (!supplier.getCountry().equals("")) {
-			currentUser.setCountry(supplier.getCountry());
+			updatedSupplier.setCountry(supplier.getCountry());
 		}
 		if (!supplier.getPhoneNumber().equals("")) {
-			currentUser.setPhoneNumber(supplier.getPhoneNumber());
+			updatedSupplier.setPhoneNumber(supplier.getPhoneNumber());
 		}
-		userRepository.save(currentUser);
+		userRepository.save(updatedSupplier);
 	}
 	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
 	public String updatePassword(ChangePassword passwords) {
 		String message = "";
 		Supplier currentUser = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (!passwordEncoder.matches(passwords.getOldPassword(), currentUser.getPassword())) {
+		Supplier updatedSupplier = (Supplier) userRepository.findById(currentUser.getId()).get();
+		if (!passwordEncoder.matches(passwords.getOldPassword(), updatedSupplier.getPassword())) {
 			message = "Wrong old password!";
 		} else {
-			if (currentUser.getFirstLogin()) {
-				currentUser.setFirstLogin(false);
+			if (updatedSupplier.getFirstLogin()) {
+				updatedSupplier.setFirstLogin(false);
 			}
-			currentUser.setPassword(passwordEncoder.encode(passwords.getPassword()));
-			userRepository.save(currentUser);
+			updatedSupplier.setPassword(passwordEncoder.encode(passwords.getPassword()));
+			userRepository.save(updatedSupplier);
 		}
 		return message;
 	}
@@ -92,12 +98,14 @@ public class SupplierServiceImpl implements SupplierService {
 		return (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public List<MedicineSupply> getMedicineSupply() {
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return medicineSupplyRepository.findAllBySupplierId(supplier.getId());
 	}
 	
+	@Transactional(readOnly = true)
 	@Override
 	public List<PurchaseOrder> getOrders() {
 		return purchaseOrderRepository.findOrdersByDueDateAfterCurrentDate(LocalDate.now());
@@ -107,7 +115,8 @@ public class SupplierServiceImpl implements SupplierService {
 	public String writeOffer(PurchaseOrderSupplier offer) {
 		String message = "";
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (supplier.getFirstLogin()) {
+		Supplier supplierDb = (Supplier) userRepository.findById(supplier.getId()).get();
+		if (supplierDb.getFirstLogin()) {
 			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
 		} else if (offer.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
 			message = "Due date must be before today's date!";
@@ -119,7 +128,7 @@ public class SupplierServiceImpl implements SupplierService {
 				List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStock(offer.getPurchaseOrder().getId(), supplier.getId());
 				if (ms.isEmpty()) {
 					offer.setOfferStatus(OfferStatus.PENDING);
-					offer.setSupplier(supplier);
+					offer.setSupplier(supplierDb);
 					offer.setPrice(Math.abs(offer.getPrice()));
 					purchaseOrderSupplierRepository.save(offer);
 				} else {
@@ -132,26 +141,31 @@ public class SupplierServiceImpl implements SupplierService {
 		return message;
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public List<PurchaseOrderMedicine> getPurchaseOrdersMedicine(PurchaseOrder purchaseOrder) {
 		return purchaseOrderMedicineRepository.findAllByPurchaseOrder(purchaseOrder);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public List<PurchaseOrderSupplier> getOffersBySupplier() {
 		return purchaseOrderSupplierRepository.findBySupplier((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public List<PurchaseOrderSupplier> getPendingOffersBySupplier() {
 		return purchaseOrderSupplierRepository.getPendingOffers(((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
 	}
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
 	public String updateOffer(PurchaseOrderSupplier offer) {
 		String message = "";
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (supplier.getFirstLogin()) {
+		Supplier supplierDb = (Supplier) userRepository.findById(supplier.getId()).get();
+		if (supplierDb.getFirstLogin()) {
 			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
 		} else if (LocalDate.now().isAfter(offer.getDeliveryDate())) {
 			message = "Delivery date must be after today's date!";
@@ -170,26 +184,28 @@ public class SupplierServiceImpl implements SupplierService {
 		return message;
 	}
 
+	@Transactional(isolation = Isolation.READ_COMMITTED) 
 	@Override
 	public ResponseEntity<String> updateMedicineStock(MedicineSupply medicineSupply) {
 		String message = "";
 		Gson gson = new GsonBuilder().create();
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (supplier.getFirstLogin()) {
+		Supplier supplierDb = (Supplier) userRepository.findById(supplier.getId()).get();
+		if (supplierDb.getFirstLogin()) {
 			message = "You are logging in for the first time, you must change password before you can use this functionality!";
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-		MedicineSupply ms = medicineSupplyRepository.getMedicineSupplyBySupplier(medicineSupply.getMedicine().getMedicineCode(), supplier.getId());
-		if (ms != null) {
-			ms.setQuantity(Math.abs(medicineSupply.getQuantity()));
-			medicineSupplyRepository.save(ms);
-			message = "Medicine stock updated.";
-		} else {
-			medicineSupply.setSupplier(supplier);
-			medicineSupply.setQuantity(Math.abs(medicineSupply.getQuantity()));
-			medicineSupplyRepository.save(medicineSupply);
-			message = "Medicine is added to stock.";
-		}
+			MedicineSupply ms = medicineSupplyRepository.getMedicineSupplyBySupplier(medicineSupply.getMedicine().getMedicineCode(), supplier.getId());
+			if (ms != null) {
+				ms.setQuantity(Math.abs(medicineSupply.getQuantity()));
+				medicineSupplyRepository.save(ms);
+				message = "Medicine stock updated.";
+			} else {
+				medicineSupply.setSupplier(supplier);
+				medicineSupply.setQuantity(Math.abs(medicineSupply.getQuantity()));
+				medicineSupplyRepository.save(medicineSupply);
+				message = "Medicine is added to stock.";
+			}
 		}
 		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.OK);
 	}
