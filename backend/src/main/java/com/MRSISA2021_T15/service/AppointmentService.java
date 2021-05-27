@@ -350,25 +350,25 @@ public class AppointmentService {
 			}
 			if (appointment instanceof AppointmentDermatologist) {
 				if (appointmentConsultationPointsRepository.getPointsByType("APPOINTMENT") != null) {
-					patient.setCollectedPoints(patient.getCollectedPoints() + Math.abs(appointmentConsultationPointsRepository.getPointsByType("APPOINTMENT")));
+					patient.setCollectedPoints(patient.getCollectedPoints() + Math.abs(appointmentConsultationPointsRepository.getPointsByTypePessimisticWrite("APPOINTMENT")));
 				}
 			}
 			else if (appointment instanceof AppointmentPharmacist) {
 				if (appointmentConsultationPointsRepository.getPointsByType("CONSULTATION") != null) {
-					patient.setCollectedPoints(patient.getCollectedPoints() + Math.abs(appointmentConsultationPointsRepository.getPointsByType("CONSULTATION")));
+					patient.setCollectedPoints(patient.getCollectedPoints() + Math.abs(appointmentConsultationPointsRepository.getPointsByTypePessimisticWrite("CONSULTATION")));
 				}
 			}
 			
 			if (patient.getCategoryName().equals(CategoryName.REGULAR)) {
-				Category c = categoryRepository.findByCategoryName(CategoryName.SILVER);
+				Category c = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.SILVER);
 				if (c != null) {
 					if (patient.getCollectedPoints() >= Math.abs(c.getRequiredNumberOfPoints())) {
 						patient.setCategoryName(CategoryName.SILVER);
 					}
 				}
 			} else if (patient.getCategoryName().equals(CategoryName.SILVER)) {
-				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
-				Category c2 = categoryRepository.findByCategoryName(CategoryName.SILVER);
+				Category c1 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.GOLD);
+				Category c2 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.SILVER);
 				if (c1 != null) {
 					if (patient.getCollectedPoints() >= Math.abs(c1.getRequiredNumberOfPoints())) {
 						patient.setCategoryName(CategoryName.GOLD);
@@ -378,7 +378,7 @@ public class AppointmentService {
 					appointment.setDiscount((100.0 - Math.abs(c2.getDiscount())) / 100.0);
 				}
 			} else if (patient.getCategoryName().equals(CategoryName.GOLD)) {
-				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
+				Category c1 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.GOLD);
 				if (c1 != null) {
 					appointment.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
 				}

@@ -3,6 +3,9 @@ import com.MRSISA2021_T15.model.MedicinePharmacy;
 
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -10,6 +13,10 @@ public interface MedicinePharmacyRepository extends CrudRepository<MedicinePharm
 	
 	@Query("select m from MedicinePharmacy m where pharmacy.id = ?1")
 	public List<MedicinePharmacy> findByPharmacyId(Integer id);
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select m from MedicinePharmacy m where pharmacy.id = ?1")
+	public List<MedicinePharmacy> findByPharmacyIdPessimisticWrite(Integer id);
 	
 	@Query("select m from MedicinePharmacy m where pharmacy.id = ?1 and medicine.id = ?1")
 	public MedicinePharmacy findByExact(Integer pharmacyId, Integer medicineId);
@@ -20,6 +27,9 @@ public interface MedicinePharmacyRepository extends CrudRepository<MedicinePharm
 
 	@Query("select mp from MedicinePharmacy mp where mp.pharmacy.id = ?1 AND mp.medicine.medicineCode like ?2 AND mp.amount >= ?3")
 	public MedicinePharmacy getPharmacyByIdAndMedicineCode(Integer pharmacyId, String medicineCode, Integer quantity);
-
 	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select mp from MedicinePharmacy mp where mp.pharmacy.id = ?1 AND mp.medicine.medicineCode like ?2 AND mp.amount >= ?3")
+	public MedicinePharmacy getPharmacyByIdAndMedicineCodePessimisticWrite(Integer pharmacyId, String medicineCode, Integer quantity);
+
 }

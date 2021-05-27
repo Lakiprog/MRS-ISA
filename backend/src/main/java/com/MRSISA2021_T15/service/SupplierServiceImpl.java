@@ -93,9 +93,10 @@ public class SupplierServiceImpl implements SupplierService {
 		return message;
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Supplier getSupplierData() {
-		return (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return (Supplier) userRepository.findById(((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()).get();
 	}
 
 	@Transactional(readOnly = true)
@@ -111,6 +112,7 @@ public class SupplierServiceImpl implements SupplierService {
 		return purchaseOrderRepository.findOrdersByDueDateAfterCurrentDate(LocalDate.now());
 	}
 	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
 	public String writeOffer(PurchaseOrderSupplier offer) {
 		String message = "";
@@ -125,7 +127,7 @@ public class SupplierServiceImpl implements SupplierService {
 		} else {
 			PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(offer.getPurchaseOrder().getId(), supplier.getId());
 			if (pos == null) {
-				List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStock(offer.getPurchaseOrder().getId(), supplier.getId());
+				List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStockPessimisticWrite(offer.getPurchaseOrder().getId(), supplier.getId());
 				if (ms.isEmpty()) {
 					offer.setOfferStatus(OfferStatus.PENDING);
 					offer.setSupplier(supplierDb);
@@ -165,14 +167,14 @@ public class SupplierServiceImpl implements SupplierService {
 		String message = "";
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Supplier supplierDb = (Supplier) userRepository.findById(supplier.getId()).get();
+		PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findByIdAndSupplierIdPessimisticWrite(offer.getId(), supplier.getId());
 		if (supplierDb.getFirstLogin()) {
 			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
-		} else if (LocalDate.now().isAfter(offer.getDeliveryDate())) {
+		} else if (LocalDate.now().isAfter(offerToUpdate.getDeliveryDate())) {
 			message = "Delivery date must be after today's date!";
-		} else if (offer.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
+		} else if (offerToUpdate.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
 			message = "Due date must be before today's date!";
 		} else {
-			PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findById(offer.getId()).get();
 			if (offer.getPrice() != null) {
 				offerToUpdate.setPrice(Math.abs(offer.getPrice()));
 			}
@@ -195,7 +197,7 @@ public class SupplierServiceImpl implements SupplierService {
 			message = "You are logging in for the first time, you must change password before you can use this functionality!";
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-			MedicineSupply ms = medicineSupplyRepository.getMedicineSupplyBySupplier(medicineSupply.getMedicine().getMedicineCode(), supplier.getId());
+			MedicineSupply ms = medicineSupplyRepository.getMedicineSupplyBySupplierPessimisticWrite(medicineSupply.getMedicine().getMedicineCode(), supplier.getId());
 			if (ms != null) {
 				ms.setQuantity(Math.abs(medicineSupply.getQuantity()));
 				medicineSupplyRepository.save(ms);

@@ -96,7 +96,7 @@ public class ComplaintService {
 		if (systemAdminDb.getFirstLogin()) {
 			message = "You are logging in for the first time, you must change password before you can use this functionality!";
 		} else {
-			Complaint complaint = complaintRepository.findById(response.getId()).get();
+			Complaint complaint = complaintRepository.findByIdPessimisticWrite(response.getId());
 			if (complaint.getSystemAdmin() == null) {
 				complaint.setResponse(response.getResponse());
 				complaint.setSystemAdmin(systemAdminDb);

@@ -134,7 +134,6 @@ public class PatientService {
 		return message;
 	}
 	
-	
 	public String updatePassword(ChangePassword passwords) {
 		String message = "";
 		Patient currentUser = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -150,7 +149,6 @@ public class PatientService {
 		}
 		return message;
 	}
-	
 	
 	public Patient getPatientData() {
 		return (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -203,7 +201,7 @@ public class PatientService {
 	}
 	
 	@Scheduled(fixedDelayString = "PT24H")
-	@Transactional(readOnly = true)
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 	public void sendPromotionMails() throws InterruptedException {
 		List<PatientSubPharmacy> subscribedPatients = patientSubPharmacyRepository.findBySubscribedTrue();
 		for (PatientSubPharmacy psp: subscribedPatients) {
@@ -220,8 +218,8 @@ public class PatientService {
 		}
 	}
 	
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 	@SuppressWarnings("unchecked")
-	@Transactional(readOnly = true)
 	public List<EReceiptSearch> sendQrCode(MultipartFile file) throws IOException, NotFoundException {
 		InputStream is = new ByteArrayInputStream(file.getBytes());
         BufferedImage newBi = ImageIO.read(is);
@@ -269,7 +267,7 @@ public class PatientService {
 			message = "You have not verified your account!";
 		} else {
 			for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
-				MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCode
+				MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCodePessimisticWrite
 				(
 						eReceiptSearch.getPharmacy().getId(), 
 						ermd.getMedicineCode(), 
@@ -295,14 +293,14 @@ public class PatientService {
 				eReceiptAndMedicineDetailsRepository.save(eramd);
 			}
 			if (patientDb.getCategoryName().equals(CategoryName.REGULAR)) {
-				Category c = categoryRepository.findByCategoryName(CategoryName.SILVER);
+				Category c = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.SILVER);
 				if (c != null) {
 					if (Math.abs(patientDb.getCollectedPoints()) >= Math.abs(c.getRequiredNumberOfPoints())) {
 						patientDb.setCategoryName(CategoryName.SILVER);
 					}
 				}
 			} else if (patientDb.getCategoryName().equals(CategoryName.SILVER)) {
-				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
+				Category c1 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.GOLD);
 				if (c1 != null) {
 					if (Math.abs(patientDb.getCollectedPoints()) >= Math.abs(c1.getRequiredNumberOfPoints())) {
 						patientDb.setCategoryName(CategoryName.GOLD);
@@ -310,7 +308,7 @@ public class PatientService {
 				}
 			}
 			repository.save(patientDb);
-			List<MedicinePharmacy> toUpdatePharmacyStock = medicinePharmacyRepository.findByPharmacyId(eReceiptSearch.getPharmacy().getId());
+			List<MedicinePharmacy> toUpdatePharmacyStock = medicinePharmacyRepository.findByPharmacyIdPessimisticWrite(eReceiptSearch.getPharmacy().getId());
 			for (MedicinePharmacy mp : toUpdatePharmacyStock) {
 				for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
 					if (mp.getMedicine().getMedicineCode().equals(ermd.getMedicineCode())) {
