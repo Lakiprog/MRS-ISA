@@ -13,7 +13,7 @@ import com.MRSISA2021_T15.model.Pharmacy;
 public interface PatientSubPharmacyRepository extends CrudRepository<PatientSubPharmacy, Integer> {
 	
 	@Query("select psp from PatientSubPharmacy psp where psp.pharmacy.id = ?1 AND psp.patient.id = ?2")
-	PatientSubPharmacy findByPharamcyByPharmacyIdAndPatientId(Integer pharmacyId, Integer patientId);
+	PatientSubPharmacy findByPharmacyIdAndPatientId(Integer pharmacyId, Integer patientId);
 	
 	List<PatientSubPharmacy> findBySubscribedTrue();
 	

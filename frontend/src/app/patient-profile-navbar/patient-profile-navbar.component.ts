@@ -18,9 +18,11 @@ export class PatientProfileNavbarComponent {
     );
 
     patient:any;
+    discount:any;
 
   constructor(private breakpointObserver: BreakpointObserver, private service:PatientProfileNavbarService) {
     this.service.getPatient().subscribe((data:any) => {this.patient = data; console.log(this.patient)})
+    this.service.getDiscountByPatientCategory().subscribe((data:any) => { this.discount = data; })
   }
 
 }

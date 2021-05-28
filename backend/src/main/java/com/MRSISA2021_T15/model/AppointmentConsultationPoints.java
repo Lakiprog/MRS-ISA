@@ -19,7 +19,7 @@ public class AppointmentConsultationPoints {
 	private String type;
 	
 	@Column
-	private double points;
+	private Integer points;
 
 	public Integer getId() {
 		return id;
@@ -37,11 +37,11 @@ public class AppointmentConsultationPoints {
 		this.type = type;
 	}
 
-	public double getPoints() {
+	public Integer getPoints() {
 		return points;
 	}
 
-	public void setPoints(double points) {
+	public void setPoints(Integer points) {
 		this.points = points;
 	}
 }
