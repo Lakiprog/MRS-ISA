@@ -170,18 +170,23 @@ public class SupplierServiceImpl implements SupplierService {
 		PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findByIdAndSupplierIdPessimisticWrite(offer.getId(), supplier.getId());
 		if (supplierDb.getFirstLogin()) {
 			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
-		} else if (LocalDate.now().isAfter(offerToUpdate.getDeliveryDate())) {
-			message = "Delivery date must be after today's date!";
-		} else if (offerToUpdate.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
-			message = "Due date must be before today's date!";
+		} 
+		if (offerToUpdate != null) {
+			if (LocalDate.now().isAfter(offerToUpdate.getDeliveryDate())) {
+				message = "Delivery date must be after today's date!";
+			} else if (offerToUpdate.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
+				message = "Due date must be before today's date!";
+			} else {
+				if (offer.getPrice() != null) {
+					offerToUpdate.setPrice(Math.abs(offer.getPrice()));
+				}
+				if (offer.getDeliveryDate() != null) {
+					offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
+				}
+				purchaseOrderSupplierRepository.save(offerToUpdate);
+			}
 		} else {
-			if (offer.getPrice() != null) {
-				offerToUpdate.setPrice(Math.abs(offer.getPrice()));
-			}
-			if (offer.getDeliveryDate() != null) {
-				offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
-			}
-			purchaseOrderSupplierRepository.save(offerToUpdate);
+			message = "This offer cannot be updated!";
 		}
 		return message;
 	}

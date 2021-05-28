@@ -46,14 +46,14 @@ public class Medicine {
 	private Integer points;
 
 	@Column
-	private int numOfRating;
+	private Integer numOfRating;
 	
 	
-	public int getNumOfRating() {
+	public Integer getNumOfRating() {
 		return numOfRating;
 	}
 
-	public void setNumOfRating(int numOfRating) {
+	public void setNumOfRating(Integer numOfRating) {
 		this.numOfRating = numOfRating;
 	}
 

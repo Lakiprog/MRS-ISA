@@ -103,5 +103,11 @@ public class PatientController {
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping(value = "/getDiscountByPatientCategory", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public Integer getDiscountByPatientCategory() {
+		return service.getDiscountByPatientCategory();
+	}
 }
 

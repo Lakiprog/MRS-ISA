@@ -88,6 +88,14 @@ insert into medicine (medicine_code, name, medicine_type, form, composition, man
 	values ('s127', 'bromazepam', 3, 2, 'kinda cool', 'actavis', true, null, 5, 20, 1);
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating, points, num_of_rating)
 	values ('s128', 'actasulid', 1, 2, 'noice', 'actavis', false, 'commentary channel', 1, 63, 1);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating, points)
+	values ('s129', 'Povidone-iodine', 4, 7, 'Contains from 9.0% to 12.0% available iodine', 'Pfizer', true, 'Side effects include skin irritation and sometimes swelling', 4, 35);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating, points)
+	values ('s130', 'Chlorhexidine', 4, 7, 'Contains 0.12% of the medicinal ingredient, \nchlorhexidine gluconate and the following non-medicinal ingredients: alcohol, FD&C Blue # 1, flavour, glycerin, PEG 40-sorbitan diisostearate,
+					\nsaccharin sodium and USP Purified water.', 'Basic Pharma Life Science Pvt. Ltd.', true, 'Used for cleaning wounds, preventing dental plaque, treating yeast infections of the mouth, and to keep urinary catheters from blocking', 3, 20);
+insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating, points)
+	values ('s131', 'Imitrex', 5, 2, 'Contains the inactive ingredients croscarmellose sodium, dibasic calcium phosphate, \nmagnesium stearate, microcrystalline cellulose, and sodium bicarbonate.', 'GlaxoSmithKline', true, 
+			'It used to treat migraine headaches in adults. Imitrex will only treat a headache', 5, 10);
 	
 
 insert into substitute_medicine (medicine_id, substitute_medicine_id) values (1, 2);
@@ -108,10 +116,16 @@ insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (10, 5000, 1, 4);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (1000, 50, 1, 5);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (100, 10, 1, 6);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (200, 25, 1, 7);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (150, 15, 1, 8);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (300, 30, 1, 9);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (500, 500, 2, 1);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (800, 800, 2, 2);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (400, 1000, 2, 3);
 insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (200, 3000, 2, 6);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (100, 10, 2, 7);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (250, 75, 2, 8);
+insert into medicine_pharmacy (cost, amount, pharmacy_id, medicine_id) values (400, 50, 2, 9);
 
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 1, 200);
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (10, 2, 100); 
@@ -144,6 +158,12 @@ insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_da
 
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Dermatologist has given me the wrong medicine!', 1, 6, null, null);
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Can you please fire dermatologist Peter? He is very unprofessional!', 1, 6, null, null);
+
+insert into category (category_name, required_number_of_points, discount) values (1, 2000, 5);
+insert into category (category_name, required_number_of_points, discount) values (2, 5000, 10);
+
+insert into appointment_consultation_points (type, points) values ('APPOINTMENT', 50);
+insert into appointment_consultation_points (type, points) values ('CONSULTATION', 30);
 
 insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-05-10', '2021-06-10', 'PROMOTION ON ANTIBIOTICS 30% off', 1);
 insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-05-20', '2021-06-20', 'PROMOTION ON ANALGESICS 10% off', 1);

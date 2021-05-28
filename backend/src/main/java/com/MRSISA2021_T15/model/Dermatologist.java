@@ -36,14 +36,14 @@ public class Dermatologist extends User{
 	private double rating;
 	
 	@Column
-	private int numOfRating;
+	private Integer numOfRating;
 
 
-	public int getNumOfRating() {
+	public Integer getNumOfRating() {
 		return numOfRating;
 	}
 
-	public void setNumOfRating(int numOfRating) {
+	public void setNumOfRating(Integer numOfRating) {
 		this.numOfRating = numOfRating;
 	}
 
