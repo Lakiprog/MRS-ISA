@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.MRSISA2021_T15.model.AppointmentConsultationPoints;
 import com.MRSISA2021_T15.model.Category;
@@ -12,6 +14,7 @@ import com.MRSISA2021_T15.model.CategoryName;
 import com.MRSISA2021_T15.model.SystemAdmin;
 import com.MRSISA2021_T15.repository.AppointmentConsultationPointsRepository;
 import com.MRSISA2021_T15.repository.CategoryRepository;
+import com.MRSISA2021_T15.repository.UserRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,12 +27,17 @@ public class LoyaltyProgramServiceImpl implements LoyaltyProgramService {
 	@Autowired
 	private AppointmentConsultationPointsRepository appointmentConsultationPointsRepository;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
 	public ResponseEntity<String> defineCategories(Category category) {
 		String message = "";
 		Gson gson = new GsonBuilder().create();
 		SystemAdmin systemAdmin = (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (systemAdmin.getFirstLogin()) {
+		SystemAdmin systemAdminDb = (SystemAdmin) userRepository.findById(systemAdmin.getId()).get();
+		if (systemAdminDb.getFirstLogin()) {
 			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
@@ -49,12 +57,14 @@ public class LoyaltyProgramServiceImpl implements LoyaltyProgramService {
 		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.OK);
 	}
 	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
 	public ResponseEntity<String> definePointsForAppointmentAndConsulation(AppointmentConsultationPoints appointmentConsultationPoints) {
 		String message = "";
 		Gson gson = new GsonBuilder().create();
 		SystemAdmin systemAdmin = (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (systemAdmin.getFirstLogin()) {
+		SystemAdmin systemAdminDb = (SystemAdmin) userRepository.findById(systemAdmin.getId()).get();
+		if (systemAdminDb.getFirstLogin()) {
 			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {

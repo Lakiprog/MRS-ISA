@@ -17,6 +17,7 @@ import com.MRSISA2021_T15.model.SystemAdmin;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
+import com.MRSISA2021_T15.repository.UserRepository;
 
 @Service
 public class MedicineServiceImpl implements MedicineService {
@@ -27,6 +28,9 @@ public class MedicineServiceImpl implements MedicineService {
 	@Autowired
 	private SubstituteMedicineRepository substituteMedicineRepository;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
 	private MedicinePharmacyRepository medicinePharmacyRepository;
 
 	@Transactional
@@ -34,7 +38,8 @@ public class MedicineServiceImpl implements MedicineService {
 	public String addMedicine(Medicine medicine) {
 		String message = "";
 		SystemAdmin systemAdmin = (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (systemAdmin.getFirstLogin()) {
+		SystemAdmin systemAdminDb = (SystemAdmin) userRepository.findById(systemAdmin.getId()).get();
+		if (systemAdminDb.getFirstLogin()) {
 			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
 		} else {
 			if (medicineRepository.findByMedicineCode(medicine.getMedicineCode().toLowerCase()) != null) {
@@ -60,6 +65,7 @@ public class MedicineServiceImpl implements MedicineService {
 		return message;
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public HashMap<Integer, String> getMedicineList() {
 		HashMap<Integer, String> medicineList = new HashMap<Integer, String>();

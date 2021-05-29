@@ -32,6 +32,8 @@ public class Reservation {
 	private Pharmacy pharmacy;
 	@Column
 	private double total;
+	@Column
+	private Double discount;
 	@Transient
 	@JsonIgnore
 	@OneToMany(mappedBy = "reservation", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -87,6 +89,10 @@ public class Reservation {
 	public void setTotal(double total) {
 		this.total = total;
 	}
-	
-	
+	public Double getDiscount() {
+		return discount;
+	}
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
 }

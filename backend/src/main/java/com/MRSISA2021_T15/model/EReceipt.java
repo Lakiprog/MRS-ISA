@@ -30,6 +30,12 @@ public class EReceipt {
 	
 	@Column
 	private LocalDate issueDate;
+	
+	@Column
+	private Double total;
+	
+	@Column
+	private Double discount;
 
 	@OneToMany(mappedBy = "eReceipt", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<EReceiptAndMedicineDetails> eReceiptAndMedicineDetails;
@@ -72,5 +78,21 @@ public class EReceipt {
 
 	public void seteReceiptAndMedicineDetails(Set<EReceiptAndMedicineDetails> eReceiptAndMedicineDetails) {
 		this.eReceiptAndMedicineDetails = eReceiptAndMedicineDetails;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
 	}
 }
