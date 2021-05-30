@@ -12,7 +12,7 @@ import com.MRSISA2021_T15.model.Promotion;
 @Repository
 public interface PromotionRepository extends CrudRepository<Promotion, Integer> {
 	
-	@Query("select p.description from Promotion p where p.pharmacy.id = ?1 AND p.endingDate > ?2")
-	List<String> getDescriptionByPharmacyId(Integer pharmacyId, LocalDate currentDate);
+	@Query("select p from Promotion p where p.pharmacy.id = ?1 AND p.endingDate > ?2")
+	List<Promotion> getPromotionByPharmacyId(Integer pharmacyId, LocalDate currentDate);
 
 }

@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @DiscriminatorValue(value = "PHARMACY_ADMIN")
 public class PharmacyAdmin extends User {
@@ -13,6 +15,7 @@ public class PharmacyAdmin extends User {
 
 	@ManyToOne
 	@JoinColumn(name = "pharmacy_id")
+	@NonNull
 	private Pharmacy pharmacy;
 	
 	public PharmacyAdmin() {

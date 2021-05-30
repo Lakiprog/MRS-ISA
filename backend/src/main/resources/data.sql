@@ -1,9 +1,9 @@
 insert into pharmacy (name, address, city, country, description, rating, appointment_price, num_of_rating) values ('Dinuteka', 'Promenada1', 'NS', 'RS', 'Apoteka koja razbija glavu', 5, 1000.0, 1);
 insert into pharmacy (name, address, city, country, description, rating, appointment_price, num_of_rating) values ('Drusoteka', 'Promenada3', 'BG', 'DE', 'Apoteka koja leci glavu', 2, 800.0, 1);
 
-insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, category_name, collected_points, enabled) values ('PATIENT', 'mrs_isa_2021_t15_3@hotmail.com', 'Marko', 'Marković', 'Negde69', 'NS', 'Srbija', '0606023113', 'laki', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, null, 0, 0, true);
-insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, category_name, collected_points, enabled) values ('PATIENT', 'mrs_isa_2021_t15_2@hotmail.com', 'Petar', 'Markuza', 'Negde420', 'NS', 'Srbija', '0606023132', 'kek', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, null, 0, 0, true);
-insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, category_name, collected_points, enabled) values ('PATIENT', 'mrs_isa_2021_t15_4@hotmail.com', 'Dinu', 'Dinu', 'Negde1', 'NS', 'Srbija', '0606223112', 'kul', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, null, 1, 2500, true);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, category_name, collected_points, enabled) values ('PATIENT', 'mrs_isa_2021_t15_7@hotmail.com', 'Marko', 'Marković', 'Negde69', 'NS', 'Srbija', '0606023113', 'laki', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, null, 0, 0, true);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, category_name, collected_points, enabled) values ('PATIENT', 'mrs_isa_2021_t15_8@hotmail.com', 'Petar', 'Markuza', 'Negde420', 'NS', 'Srbija', '0606023132', 'kek', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, null, 0, 0, true);
+insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, category_name, collected_points, enabled) values ('PATIENT', 'mrs_isa_2021_t15_5@hotmail.com', 'Dinu', 'Dinu', 'Negde1', 'NS', 'Srbija', '0606223112', 'kul', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, null, 1, 2500, true);
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, category_name, collected_points, enabled) values ('PATIENT', 'keter@gmail.com', 'Ikea', 'Velika', 'Negde42', 'BG', 'Srbija', '0616023113', 'Keter', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', null, null, 0, 0, true);
 
 insert into user (USER_TYPE, email, name, surname, address, city, country, phone_number, username, password, first_login, rating, enabled, num_of_rating) values ('PHARMACIST', 'farmaceut@gmail.com', 'Micko', 'Mica', 'Telep69', 'NS', 'Srbija', '0620602311', 'farmaceut', '$2y$12$qX83UfVgBd7NoAiuxEkHnOtloUpaSNvUq3OfFlS8fBetoqI91aRxO', false, 1, true, 1);
@@ -150,7 +150,7 @@ insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) 
 insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 1, 5);
 insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 3, 10);
 
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (3, 2, 20);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (3, 3, 20);
 
 insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (1, 10, '2021-06-10', 1000, 0);
 insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (2, 10, '2021-07-10', 900, 1);
@@ -159,16 +159,17 @@ insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_da
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Dermatologist has given me the wrong medicine!', 1, 6, null, null);
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Can you please fire dermatologist Peter? He is very unprofessional!', 1, 6, null, null);
 
+insert into category (category_name, required_number_of_points, discount) values (0, 0, 0);
 insert into category (category_name, required_number_of_points, discount) values (1, 2000, 5);
 insert into category (category_name, required_number_of_points, discount) values (2, 5000, 10);
 
 insert into appointment_consultation_points (type, points) values ('APPOINTMENT', 50);
 insert into appointment_consultation_points (type, points) values ('CONSULTATION', 30);
 
-insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-05-10', '2021-06-10', 'PROMOTION ON ANTIBIOTICS 30% off', 1);
-insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-05-20', '2021-06-20', 'PROMOTION ON ANALGESICS 10% off', 1);
+insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-05-10', '2021-07-10', 'PROMOTION ON ANTIBIOTICS 30% off', 1);
+insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-05-20', '2021-07-20', 'PROMOTION ON ANALGESICS 10% off', 1);
 insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-04-10', '2021-05-10', 'PROMOTION ON ALL MEDICINE 20% off', 2);
-insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-05-10', '2021-06-10', 'PROMOTION ON ANTIHISTAMINE 5% off', 2);
+insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-05-10', '2021-07-10', 'PROMOTION ON ANTIHISTAMINE 5% off', 2);
 
 --insert into patient_sub_pharmacy (patient_id, pharmacy_id, subscribed) values (1, 1, true);
 --insert into patient_sub_pharmacy (patient_id, pharmacy_id, subscribed) values (1, 2, true);

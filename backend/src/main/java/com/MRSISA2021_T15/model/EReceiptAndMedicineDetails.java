@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Table(name = "eReceipt_and_medicine_details")
 public class EReceiptAndMedicineDetails {
@@ -16,12 +18,15 @@ public class EReceiptAndMedicineDetails {
 	private Integer id;
 	
 	@ManyToOne
+	@NonNull
 	private EReceipt eReceipt;
 	
 	@ManyToOne
+	@NonNull
 	private EReceiptMedicineDetails eReceiptMedicineDetails;
 	
 	@ManyToOne
+	@NonNull
 	private Pharmacy pharmacy;
 
 	public Integer getId() {

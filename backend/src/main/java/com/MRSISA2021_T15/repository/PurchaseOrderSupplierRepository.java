@@ -23,6 +23,12 @@ public interface PurchaseOrderSupplierRepository extends CrudRepository<Purchase
 	@Query("select pos from PurchaseOrderSupplier pos where pos.offerStatus = 2 AND pos.supplier.id = ?1")
 	List<PurchaseOrderSupplier> getPendingOffers(Integer supplierId);
 	
+	@Query("select pos.purchaseOrder.id from PurchaseOrderSupplier pos where pos.offerStatus = 2 AND pos.supplier.id = ?1")
+	List<Integer> getPendingPurchaseOrderIdsBySupplierId(Integer supplierId);
+	
+	@Query("select sum(pom.quantity) from PurchaseOrderMedicine pom where pom.medicine.id = :medicineId AND pom.purchaseOrder.id in (:purchaseOrderIds)")
+	Integer getTotalMedicineQuantityFromPurchaseOrders(Integer medicineId, List<Integer> purchaseOrderIds);
+	
 	@Query("select pos from PurchaseOrderSupplier pos where pos.id = ?1 AND pos.supplier.id = ?2")
 	PurchaseOrderSupplier findByIdAndSupplierId(Integer id, Integer supplierId);
 	

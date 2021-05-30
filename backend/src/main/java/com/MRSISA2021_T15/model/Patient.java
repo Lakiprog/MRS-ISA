@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import org.springframework.lang.NonNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -41,12 +43,12 @@ public class Patient extends User{
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CanceledPharAppoinment> canceledAppointments;
 	
-	
-	
 	@Column
+	@NonNull
 	private Integer collectedPoints;
 	
 	@Column
+	@NonNull
 	private CategoryName categoryName;
 	
 

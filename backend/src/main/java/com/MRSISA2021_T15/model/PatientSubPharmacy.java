@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Table(name = "patient_sub_pharmacy")
 public class PatientSubPharmacy {
@@ -19,13 +21,16 @@ public class PatientSubPharmacy {
 	
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
+	@NonNull
 	private Patient patient;
 	
 	@ManyToOne
 	@JoinColumn(name = "pharmacy_id")
+	@NonNull
 	private Pharmacy pharmacy;
 	
 	@Column
+	@NonNull
 	private Boolean subscribed;
 
 	public Integer getId() {

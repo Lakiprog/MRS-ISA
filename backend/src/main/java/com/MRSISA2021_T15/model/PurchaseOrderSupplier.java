@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -22,12 +24,15 @@ public class PurchaseOrderSupplier {
 	private Integer id;
 	
 	@Column
+	@NonNull
 	private Double price;
 	
 	@Column
+	@NonNull
 	private LocalDate deliveryDate;
 	
 	@Column
+	@NonNull
 	private OfferStatus offerStatus;
 	
 	@ManyToOne

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Table(name = "promotion")
 public class Promotion {
@@ -19,12 +21,15 @@ public class Promotion {
 	private Integer id;
 	
 	@Column
+	@NonNull
 	private LocalDate startingDate, endingDate;
 	
 	@Column
+	@NonNull
 	private String description;
 	
 	@ManyToOne
+	@NonNull
 	private Pharmacy pharmacy;
 
 	public LocalDate getStartingDate() {
