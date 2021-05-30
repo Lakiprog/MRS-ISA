@@ -14,10 +14,10 @@ public interface AppointmentConsultationPointsRepository extends CrudRepository<
 	
 	AppointmentConsultationPoints findByType(String type);
 	
-	@Query("select acp.points from AppointmentConsultationPoints acp where acp.type like ?1")
+	@Query("select acp.points from AppointmentConsultationPoints acp where acp.type = ?1")
 	Integer getPointsByType(String type);
 	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	@Query("select acp.points from AppointmentConsultationPoints acp where acp.type like ?1")
+	@Query("select acp.points from AppointmentConsultationPoints acp where acp.type = ?1")
 	Integer getPointsByTypePessimisticWrite(String type);
 }

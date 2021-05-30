@@ -127,15 +127,28 @@ public class SupplierServiceImpl implements SupplierService {
 		} else {
 			PurchaseOrderSupplier pos = purchaseOrderSupplierRepository.findBySupplierIdAndPurchaseOrderId(offer.getPurchaseOrder().getId(), supplier.getId());
 			if (pos == null) {
-				List<MedicineSupply> ms = medicineSupplyRepository.hasNoMedicineInStockPessimisticWrite(offer.getPurchaseOrder().getId(), supplier.getId());
-				if (ms.isEmpty()) {
+				List<PurchaseOrderMedicine> medicine = purchaseOrderMedicineRepository.findAllByPurchaseOrder(offer.getPurchaseOrder());
+				List<Integer> pendingPurchaseOrderIds = purchaseOrderSupplierRepository.getPendingPurchaseOrderIdsBySupplierId(supplier.getId());
+				boolean offerOk = true;
+				for (PurchaseOrderMedicine pom : medicine) {
+					Integer sum = purchaseOrderSupplierRepository.getTotalMedicineQuantityFromPurchaseOrders(pom.getMedicine().getId(), pendingPurchaseOrderIds);
+					if (sum == null) {
+						sum = 0;
+					}
+					MedicineSupply ms = medicineSupplyRepository.getMedicineSupplyBySupplierPessimisticWrite(pom.getMedicine().getMedicineCode(), supplier.getId());
+					if (sum + pom.getQuantity() > ms.getQuantity()) {
+						offerOk = false;
+						break;
+					}
+				}
+				if (offerOk) {
 					offer.setOfferStatus(OfferStatus.PENDING);
 					offer.setSupplier(supplierDb);
 					offer.setPrice(Math.abs(offer.getPrice()));
 					purchaseOrderSupplierRepository.save(offer);
 				} else {
 					message = "You do not have enough of medicine in stock!";
-				}	
+				}
 			} else {
 				message = "Supplier has already given an offer for this order!";
 			}
@@ -167,26 +180,27 @@ public class SupplierServiceImpl implements SupplierService {
 		String message = "";
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Supplier supplierDb = (Supplier) userRepository.findById(supplier.getId()).get();
-		PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findByIdAndSupplierIdPessimisticWrite(offer.getId(), supplier.getId());
 		if (supplierDb.getFirstLogin()) {
 			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
-		} 
-		if (offerToUpdate != null) {
-			if (LocalDate.now().isAfter(offerToUpdate.getDeliveryDate())) {
-				message = "Delivery date must be after today's date!";
-			} else if (offerToUpdate.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
-				message = "Due date must be before today's date!";
-			} else {
-				if (offer.getPrice() != null) {
-					offerToUpdate.setPrice(Math.abs(offer.getPrice()));
-				}
-				if (offer.getDeliveryDate() != null) {
-					offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
-				}
-				purchaseOrderSupplierRepository.save(offerToUpdate);
-			}
 		} else {
-			message = "This offer cannot be updated!";
+			PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findByIdAndSupplierIdPessimisticWrite(offer.getId(), supplier.getId());
+			if (offerToUpdate != null) {
+				if (LocalDate.now().isAfter(offerToUpdate.getDeliveryDate())) {
+					message = "Delivery date must be after today's date!";
+				} else if (offerToUpdate.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
+					message = "Due date must be before today's date!";
+				} else {
+					if (offer.getPrice() != null) {
+						offerToUpdate.setPrice(Math.abs(offer.getPrice()));
+					}
+					if (offer.getDeliveryDate() != null) {
+						offerToUpdate.setDeliveryDate(offer.getDeliveryDate());
+					}
+					purchaseOrderSupplierRepository.save(offerToUpdate);
+				}
+			} else {
+				message = "This offer cannot be updated!";
+			}
 		}
 		return message;
 	}
@@ -204,9 +218,19 @@ public class SupplierServiceImpl implements SupplierService {
 		} else {
 			MedicineSupply ms = medicineSupplyRepository.getMedicineSupplyBySupplierPessimisticWrite(medicineSupply.getMedicine().getMedicineCode(), supplier.getId());
 			if (ms != null) {
-				ms.setQuantity(Math.abs(medicineSupply.getQuantity()));
-				medicineSupplyRepository.save(ms);
-				message = "Medicine stock updated.";
+				List<Integer> pendingPurchaseOrderIds = purchaseOrderSupplierRepository.getPendingPurchaseOrderIdsBySupplierId(supplier.getId());
+				Integer sum = purchaseOrderSupplierRepository.getTotalMedicineQuantityFromPurchaseOrders(ms.getMedicine().getId(), pendingPurchaseOrderIds);
+				if (sum == null) {
+					sum = 0;
+				}
+				if (sum > Math.abs(medicineSupply.getQuantity())) {
+					message = "This medicine has more pending offers than entered quantity!";
+					return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+				} else {
+					ms.setQuantity(Math.abs(medicineSupply.getQuantity()));
+					medicineSupplyRepository.save(ms);
+					message = "Medicine stock updated.";
+				}
 			} else {
 				medicineSupply.setSupplier(supplier);
 				medicineSupply.setQuantity(Math.abs(medicineSupply.getQuantity()));

@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Table(name = "medicine_supply")
 public class MedicineSupply {
@@ -17,12 +19,15 @@ public class MedicineSupply {
 	private Integer id;
 	
 	@Column
+	@NonNull
 	private Integer quantity;
 	
 	@ManyToOne
+	@NonNull
 	private Medicine medicine;
 	
 	@ManyToOne
+	@NonNull
 	private Supplier supplier;
 
 	public Integer getId() {

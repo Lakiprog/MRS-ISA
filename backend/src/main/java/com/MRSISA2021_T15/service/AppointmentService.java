@@ -365,35 +365,29 @@ public class AppointmentService {
 			
 			if (patient.getCategoryName().equals(CategoryName.REGULAR)) {
 				Category c = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.SILVER);
-				if (c != null) {
-					if (patient.getCollectedPoints() >= Math.abs(c.getRequiredNumberOfPoints())) {
-						patient.setCategoryName(CategoryName.SILVER);
-						appointment.setDiscount((100.0 - Math.abs(c.getDiscount())) / 100.0);
-						r.setDiscount((100.0 - Math.abs(c.getDiscount())) / 100.0);
-					} else {
-						appointment.setDiscount(0.0);
-						r.setDiscount(0.0);
-					}
+				if (patient.getCollectedPoints() >= Math.abs(c.getRequiredNumberOfPoints())) {
+					patient.setCategoryName(CategoryName.SILVER);
+					appointment.setDiscount((100.0 - Math.abs(c.getDiscount())) / 100.0);
+					r.setDiscount((100.0 - Math.abs(c.getDiscount())) / 100.0);
+				} else {
+					appointment.setDiscount(0.0);
+					r.setDiscount(0.0);
 				}
 			} else if (patient.getCategoryName().equals(CategoryName.SILVER)) {
 				Category c1 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.GOLD);
 				Category c2 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.SILVER);
-				if (c1 != null && c2 != null) {
-					if (patient.getCollectedPoints() >= Math.abs(c1.getRequiredNumberOfPoints())) {
-						patient.setCategoryName(CategoryName.GOLD);
-						appointment.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
-						r.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
-					} else {
-						appointment.setDiscount((100.0 - Math.abs(c2.getDiscount())) / 100.0);
-						r.setDiscount((100.0 - Math.abs(c2.getDiscount())) / 100.0);
-					}
+				if (patient.getCollectedPoints() >= Math.abs(c1.getRequiredNumberOfPoints())) {
+					patient.setCategoryName(CategoryName.GOLD);
+					appointment.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
+					r.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
+				} else {
+					appointment.setDiscount((100.0 - Math.abs(c2.getDiscount())) / 100.0);
+					r.setDiscount((100.0 - Math.abs(c2.getDiscount())) / 100.0);
 				}
 			} else if (patient.getCategoryName().equals(CategoryName.GOLD)) {
 				Category c1 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.GOLD);
-				if (c1 != null) {
-					appointment.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
-					r.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
-				}
+				appointment.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
+				r.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
 			}
 			
 			appointment.setPatient(patient);

@@ -1,6 +1,5 @@
 package com.MRSISA2021_T15.model;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,28 +13,36 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "medicine_pharmacy")
 public class MedicinePharmacy {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	@Column
-	private double cost;
-	@Column
-	private int amount;
 	
+	@Column
+	@NonNull
+	private Double cost;
+	
+	@Column
+	@NonNull
+	private Integer amount;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicinePharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<OrderedMedicine> orderedMedicines;
 	
-
 	@ManyToOne
+	@NonNull
 	private Pharmacy pharmacy;
+	
 	@ManyToOne
+	@NonNull
 	private Medicine medicine;
 	
 	public Integer getId() {
@@ -44,16 +51,16 @@ public class MedicinePharmacy {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public double getCost() {
+	public Double getCost() {
 		return cost;
 	}
-	public void setCost(double cost) {
+	public void setCost(Double cost) {
 		this.cost = cost;
 	}
-	public int getAmount() {
+	public Integer getAmount() {
 		return amount;
 	}
-	public void setAmount(int amount) {
+	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
 	public Pharmacy getPharmacy() {

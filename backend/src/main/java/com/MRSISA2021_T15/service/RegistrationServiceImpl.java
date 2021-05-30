@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.MRSISA2021_T15.dto.ConfirmationToken;
+import com.MRSISA2021_T15.model.CategoryName;
 import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.PharmacyAdmin;
@@ -60,6 +61,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 			patient.setPassword(passwordEncoder.encode(patient.getPassword()));
 			patient.setEnabled(false);
 			patient.setFirstLogin(false);
+			patient.setCategoryName(CategoryName.REGULAR);
+			patient.setCollectedPoints(0);
 			List<Role> roles = new ArrayList<Role>();
 			Role role = roleRepository.findById(Constants.ROLE_PATIENT).get();
 			roles.add(role);
