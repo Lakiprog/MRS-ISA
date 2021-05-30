@@ -11,7 +11,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.MRSISA2021_T15.model.Category;
+import com.MRSISA2021_T15.model.CategoryName;
 import com.MRSISA2021_T15.model.Employment;
 import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
@@ -20,11 +24,14 @@ import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.model.Reservation;
 import com.MRSISA2021_T15.model.ReservationItem;
+import com.MRSISA2021_T15.repository.CategoryRepository;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
 import com.MRSISA2021_T15.repository.MedicineQuantityRepository;
+import com.MRSISA2021_T15.repository.MedicineRepository;
 import com.MRSISA2021_T15.repository.OrderedMedicineRepository;
 import com.MRSISA2021_T15.repository.ReservationItemRepository;
 import com.MRSISA2021_T15.repository.ReservationRepository;
+import com.MRSISA2021_T15.repository.UserRepository;
 
 @Service
 public class ReservationService {
@@ -43,6 +50,12 @@ public class ReservationService {
 	MedicineQuantityRepository medicineQuantityRepo;
 	@Autowired
 	OrderedMedicineRepository orderMedRepo;
+	@Autowired
+	UserRepository userRepository;
+	@Autowired
+	private CategoryRepository categoryRepository;
+	@Autowired
+	private MedicineRepository medicineRepository;
 	
 	
 	
@@ -94,6 +107,7 @@ public class ReservationService {
 	}
 	
 	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveReservation(Patient patient, OrderedMedicine order) {
 		MedicineQuantity mq = new MedicineQuantity();
 		mq.setMedicine(order.getMedicinePharmacy().getMedicine());
@@ -119,10 +133,41 @@ public class ReservationService {
 		ri.setMedicine(mq);
 		ri.setReservation(r);
 		
+		Patient patientDb = (Patient) userRepository.findById(patient.getId()).get();
+		patient.setCollectedPoints(patient.getCollectedPoints() + 
+				medicineRepository.getPointsByMedicineCode(order.getMedicinePharmacy().getMedicine().getMedicineCode()) * order.getAmount());
+		if (patientDb.getCategoryName().equals(CategoryName.REGULAR)) {
+			Category c = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.SILVER);
+			if (c != null) {
+				if (Math.abs(patientDb.getCollectedPoints()) >= Math.abs(c.getRequiredNumberOfPoints())) {
+					patientDb.setCategoryName(CategoryName.SILVER);
+					r.setDiscount((100.0 - Math.abs(c.getDiscount())) / 100.0);
+				} else {
+					r.setDiscount(0.0);
+				}
+			}
+		} else if (patientDb.getCategoryName().equals(CategoryName.SILVER)) {
+			Category c1 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.GOLD);
+			Category c2 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.SILVER);
+			if (c1 != null && c2 != null) {
+				if (Math.abs(patientDb.getCollectedPoints()) >= Math.abs(c1.getRequiredNumberOfPoints())) {
+					patientDb.setCategoryName(CategoryName.GOLD);
+					r.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
+				} else {
+					r.setDiscount((100.0 - Math.abs(c2.getDiscount())) / 100.0);
+				}
+			}
+		} else if (patientDb.getCategoryName().equals(CategoryName.GOLD)) {
+			Category c1 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.GOLD);
+			if (c1 != null) {
+				r.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
+			}
+		}
+		
+		userRepository.save(patientDb);
 		resRepo.save(r);
 		resiRepo.save(ri);
 		orderMedRepo.save(order);
-		
 	}
 	
 	

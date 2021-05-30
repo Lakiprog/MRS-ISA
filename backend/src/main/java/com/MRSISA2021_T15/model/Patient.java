@@ -44,7 +44,7 @@ public class Patient extends User{
 	
 	
 	@Column
-	private double collectedPoints;
+	private Integer collectedPoints;
 	
 	@Column
 	private CategoryName categoryName;
@@ -79,11 +79,11 @@ public class Patient extends User{
 		this.allergies = allergies;
 	}*/
 
-	public double getCollectedPoints() {
+	public Integer getCollectedPoints() {
 		return collectedPoints;
 	}
 
-	public void setCollectedPoints(double collectedPoints) {
+	public void setCollectedPoints(Integer collectedPoints) {
 		this.collectedPoints = collectedPoints;
 	}
 

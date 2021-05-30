@@ -19,10 +19,10 @@ public class Category {
 	private CategoryName categoryName;
 	
 	@Column
-	private double requiredNumberOfPoints;
+	private Integer requiredNumberOfPoints;
 	
 	@Column
-	private double discount;
+	private Integer discount;
 
 	public Integer getId() {
 		return id;
@@ -40,19 +40,19 @@ public class Category {
 		this.categoryName = categoryName;
 	}
 
-	public double getRequiredNumberOfPoints() {
+	public Integer getRequiredNumberOfPoints() {
 		return requiredNumberOfPoints;
 	}
 
-	public void setRequiredNumberOfPoints(double requiredNumberOfPoints) {
+	public void setRequiredNumberOfPoints(Integer requiredNumberOfPoints) {
 		this.requiredNumberOfPoints = requiredNumberOfPoints;
 	}
 
-	public double getDiscount() {
+	public Integer getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(double discount) {
+	public void setDiscount(Integer discount) {
 		this.discount = discount;
 	}
 }
