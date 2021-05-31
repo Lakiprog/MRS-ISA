@@ -171,7 +171,7 @@ public class SupplierServiceImpl implements SupplierService {
 	@Transactional(readOnly = true)
 	@Override
 	public List<PurchaseOrderSupplier> getPendingOffersBySupplier() {
-		return purchaseOrderSupplierRepository.getPendingOffers(((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+		return purchaseOrderSupplierRepository.getPendingOffers(((Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId(), LocalDate.now());
 	}
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
@@ -185,7 +185,7 @@ public class SupplierServiceImpl implements SupplierService {
 		} else {
 			PurchaseOrderSupplier offerToUpdate = purchaseOrderSupplierRepository.findByIdAndSupplierIdPessimisticWrite(offer.getId(), supplier.getId());
 			if (offerToUpdate != null) {
-				if (LocalDate.now().isAfter(offerToUpdate.getDeliveryDate())) {
+				if (LocalDate.now().isAfter(offer.getDeliveryDate())) {
 					message = "Delivery date must be after today's date!";
 				} else if (offerToUpdate.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
 					message = "Due date for purchase order has passed!";

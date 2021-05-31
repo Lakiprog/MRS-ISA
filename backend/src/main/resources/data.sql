@@ -155,9 +155,9 @@ insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) v
 
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (3, 3, 20);
 
-insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (1, 10, '2021-06-10', 1000, 0);
-insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (2, 10, '2021-07-10', 900, 1);
-insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (3, 10, '2021-05-26', 700, 2);
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (1, 10, '2021-08-10', 1000, 0);
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (2, 10, '2021-08-10', 900, 1);
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (3, 10, '2021-08-26', 700, 2);
 
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Dermatologist has given me the wrong medicine!', 1, 6, null, null);
 insert into complaints (complaint_type, text, patient_id, dermatologist_id, pharmacist_id, pharmacy_id) values ('COMPLAINT_DERMATOLOGIST', 'Can you please fire dermatologist Peter? He is very unprofessional!', 1, 6, null, null);
