@@ -131,4 +131,12 @@ public class FarAppPatientController {
 	}
 	
 	
+	@GetMapping(value = "/getPastPatientPharApp", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<AppointmentPharmacist>getPastPatientDerApp(){
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return serviceApp.findAllPastPharAppWithPatientId(p.getId());
+	}
+	
+	
 }

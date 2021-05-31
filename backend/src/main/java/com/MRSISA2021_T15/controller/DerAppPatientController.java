@@ -74,6 +74,14 @@ public class DerAppPatientController {
 	}
 	
 	
+	@GetMapping(value = "/getPastPatientDerApp", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public List<AppointmentDermatologist>getPastPatientDerApp(){
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return AppService.findAllPastDerAppWithPatientId(p.getId());
+	}
+	
+	
 	
 	@PutMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")

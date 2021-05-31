@@ -124,6 +124,13 @@ import { MedicineReviewComponent } from './medicine-review/medicine-review.compo
 import { MedicinePurchaseOrderComponent } from './components/medicine-purchase-order/medicine-purchase-order.component';
 import { AddMedicineToCartPopupComponent } from './components/add-medicine-to-cart-popup/add-medicine-to-cart-popup.component';
 import { SubmitPurchaseOrderPopupComponent } from './components/submit-purchase-order-popup/submit-purchase-order-popup.component';
+
+import { PatientPastDermaAppComponent } from './patient-past-derma-app/patient-past-derma-app.component';
+import { PatientPastPharAppComponent } from './patient-past-phar-app/patient-past-phar-app.component';
+import { AllergiesComponent } from './allergies/allergies.component';
+import { PenaltiesComponent } from './penalties/penalties.component';
+
+
 import { ListOfPurchaseOrdersComponent } from './components/list-of-purchase-orders/list-of-purchase-orders.component';
 import { DisplayActivePurchaseOrdersComponent } from './components/display-active-purchase-orders/display-active-purchase-orders.component';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -131,6 +138,7 @@ import { PredefineDermatologistAppointmentComponent } from './components/predefi
 import { DermatologistAppointmentPopupComponent } from './components/dermatologist-appointment-popup/dermatologist-appointment-popup.component';
 import { PublicPharmacyProfilePageComponent } from './components/public-pharmacy-profile-page/public-pharmacy-profile-page.component';
 import { MedicineInquiriesComponent } from './components/medicine-inquiries/medicine-inquiries.component';
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -221,12 +229,20 @@ FullCalendarModule.registerPlugins([
     MedicinePurchaseOrderComponent,
     AddMedicineToCartPopupComponent,
     SubmitPurchaseOrderPopupComponent,
+
+    PatientPastDermaAppComponent,
+    PatientPastPharAppComponent,
+    AllergiesComponent,
+    PenaltiesComponent,
+
+
     ListOfPurchaseOrdersComponent,
     DisplayActivePurchaseOrdersComponent,
     PredefineDermatologistAppointmentComponent,
     DermatologistAppointmentPopupComponent,
     PublicPharmacyProfilePageComponent,
     MedicineInquiriesComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -566,11 +582,35 @@ FullCalendarModule.registerPlugins([
         component: MedicinePurchaseOrderComponent,
       },
       {
+        path: 'PatientPastDermaApp',
+        canActivate: [PatientRoutes],
+        component: PatientPastDermaAppComponent,
+      },
+      {
+        path: 'PatientPastPharApp',
+        canActivate: [PatientRoutes],
+        component: PatientPastPharAppComponent,
+      },
+      {
+        path: 'PatientPastPharApp',
+        canActivate: [PatientRoutes],
+        component: PatientPastPharAppComponent,
+      },
+      {
+        path: 'Allergies',
+        canActivate: [PatientRoutes],
+        component: AllergiesComponent,
+      },
+      {
+        path: 'Penalties',
+        canActivate: [PatientRoutes],
+        component: PenaltiesComponent,
+      },
+      {
         path: 'activePurchaseOrders',
         canActivate: [PharmacyAdminRoutes],
         component: ListOfPurchaseOrdersComponent,
       },
-
       {
         path: 'predefineDermatologistAppointment',
         canActivate: [PharmacyAdminRoutes],
@@ -587,6 +627,9 @@ FullCalendarModule.registerPlugins([
       },
     ]),
   ],
+
+  
+  
 
   providers: [
     {
