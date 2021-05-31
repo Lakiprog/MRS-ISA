@@ -205,7 +205,7 @@ public class PatientService {
 		return patientSubPharmacyRepository.getSubscribedPharmaciesForPatient(patient.getId());
 	}
 	
-	@Scheduled(fixedDelayString = "PT24H")
+	@Scheduled(fixedDelayString = "PT1M")
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 	public void sendPromotionMails() throws InterruptedException {
 		List<PatientSubPharmacy> subscribedPatients = patientSubPharmacyRepository.findBySubscribedTrue();
