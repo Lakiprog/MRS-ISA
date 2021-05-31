@@ -24,6 +24,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { AuthService } from 'src/app/login/auth.service';
 import { Location } from '@angular/common';
+import {
+  MatSnackBar,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 export interface DialogData {
   quantity: Number;
@@ -54,6 +58,9 @@ export class MedicinePurchaseOrderComponent implements OnInit {
   pharmacy!: Pharmacist;
   pharmacyAdmin!: PharmacyAdmin;
   data!: DummyModel;
+  RESPONSE_OK: number = 0;
+  RESPONSE_ERROR: number = -1;
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   purchaseOrderMedicine: PurchaseOrderMedicine = {
     quantity: 0,
     medicine: null as any,
@@ -67,12 +74,15 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     purchaseOrderMedicine: [],
     purchaseOrderSupplier: null as any,
   };
+  isValid = false;
   constructor(
     public dialog: MatDialog,
     private pharmacyAdminService: PharmacyAdminService,
     private router: Router,
     private authService: AuthService,
     private location: Location,
+    private _snackBar: MatSnackBar,
+
     private formBuilder: FormBuilder
   ) {
     this.purchaseOrderMedicineForm = this.formBuilder.group({
@@ -122,6 +132,7 @@ export class MedicinePurchaseOrderComponent implements OnInit {
       if (result != null) {
         this.purchaseOrder.purchaseOrderMedicine.push(purchaseOrderMedicine);
       }
+      this.isValid = true;
     });
   }
   createPurchaseOrder() {
@@ -145,11 +156,21 @@ export class MedicinePurchaseOrderComponent implements OnInit {
           .subscribe((res) => {
             localStorage.removeItem('pharmacist');
             this.router.navigate(['/pharmacyProfilePage']);
+            this.openSnackBar(
+              'Successfully created a purchase order!',
+              this.RESPONSE_OK
+            );
           });
       }
     });
   }
-
+  openSnackBar(msg: string, responseCode: number) {
+    this._snackBar.open(msg, 'x', {
+      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      verticalPosition: this.verticalPosition,
+      panelClass: responseCode === this.RESPONSE_OK ? 'back-green' : 'back-red',
+    });
+  }
   back(): void {
     this.location.back();
   }

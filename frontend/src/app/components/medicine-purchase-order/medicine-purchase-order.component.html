@@ -64,9 +64,11 @@
 
       </mat-card>
 
-      <mat-card>
-        <button mat-button color="primary" (click)="createPurchaseOrder()">Create purchase order</button>
-      </mat-card>
+      <mat-card class = "create-button">
+          
+        <button [disabled]="!isValid" mat-button color="primary" (click)="createPurchaseOrder()">Create purchase order</button>
+        
+    </mat-card>
 
 </div>
 

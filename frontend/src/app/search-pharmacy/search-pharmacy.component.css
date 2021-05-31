@@ -1,28 +1,34 @@
-
 table {
-    width: 100%;
-  }
-  
-  .mat-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  td, th {
-    width: 25%;
-  }
+  width: 100%;
+}
 
-  .card{
-    max-width: 1000px;
-   
-    margin-left: 15%;
-    
-  }
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
 
-  .example-full-width{
-    background-color: white;
-  }
+td,
+th {
+  width: 25%;
+}
 
-  .inputic{
-    background-color: white;
-  }
+.card {
+  max-width: 1000px;
+
+  margin-left: 15%;
+}
+
+.example-full-width {
+  background-color: white;
+}
+
+.inputic {
+  background-color: white;
+}
+
+.table-card {
+  width: 300px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #deede6;
+}

@@ -34,11 +34,13 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsDermatologistList;"></tr>
             </table>
         </div>
-        <button mat-button color="primary" class="btn btn-danger" (click)="openDialog()">Edit appointment data</button>
 
       </mat-card>
-      <mat-card>
-        <button mat-button color="primary" class="btn btn-danger" (click)="createAppointment()">Create appointment</button>
+      <mat-card class = "edit-button">
+        <button mat-button color="primary" class="btn btn-danger" (click)="openDialog()">Edit appointment data</button>
+      </mat-card>
+      <mat-card class = "create-button">
+        <button [disabled]="!isValid" mat-button color="primary" class="btn btn-danger" (click)="createAppointment()">Create appointment</button>
       </mat-card>
 
 

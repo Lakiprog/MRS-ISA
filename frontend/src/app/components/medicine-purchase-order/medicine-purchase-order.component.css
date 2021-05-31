@@ -32,3 +32,16 @@ table {
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+.table-card {
+  width: 1500px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #deede6;
+}
+
+.create-button {
+  width: 170px;
+  margin-top: 10px;
+  margin-left: 10px;
+}

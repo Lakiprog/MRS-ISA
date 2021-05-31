@@ -2,14 +2,56 @@
 <div>
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
-
-
-
+            <div [innerHTML]="pharmacy.name"></div>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <div [innerHTML]="pharmacy.address"></div>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
             <a mat-button (click) = "subscribeToPromotions()">Subscribe to promotions</a>
-
+            <span style = "flex: 1 1 auto;"></span>
             <a mat-button (click) = "back()">Back</a>
+            <a *ngIf = "!loggedOn" mat-button routerLink = "/login">Login</a>
+            <a *ngIf = "loggedOn" mat-button (click) = "logout()">Logout</a>
 
-            <a mat-button (click) = "logout()">Logout</a>
 
         </mat-toolbar-row>
+
     </mat-toolbar>
+    &nbsp;
+    &nbsp;
+            &nbsp;
+            &nbsp;
+    <mat-card class = "table-card">
+
+        <div class = "data-table">
+            <table mat-table [dataSource]="medicinePharmacyList">
+              <ng-container matColumnDef="medicine">
+                  <th mat-header-cell *matHeaderCellDef class = "coloumnName">Medicine</th>
+                  <td mat-cell *matCellDef="let element" class = "coloumnName" type="medicine"> {{element.medicine.name}} </td>
+              </ng-container>
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef class = "coloumnName">Available amount</th>
+                <td mat-cell *matCellDef="let element" class = "coloumnName" type="amount"> {{element.amount}} </td>
+            </ng-container>
+            <ng-container matColumnDef="cost">
+                <th mat-header-cell *matHeaderCellDef class = "coloumnName">Cost</th>
+                <td mat-cell *matCellDef="let element" class = "coloumnName" type="cost"> {{element.cost}} </td>
+            </ng-container>
+
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsMedicinePharmacyList"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsMedicinePharmacyList;"></tr>
+            </table>
+        </div>
+
+      </mat-card>
+      <mat-card class = "rating-card">
+        <span>Pharmacy rating: {{pharmacy.rating}}</span>
+      </mat-card>
+</div>
