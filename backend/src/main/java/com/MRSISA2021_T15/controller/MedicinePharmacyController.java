@@ -1,33 +1,21 @@
 package com.MRSISA2021_T15.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.service.MedicinePharmacyService;
+import com.MRSISA2021_T15.service.ReservationService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.MRSISA2021_T15.model.Medicine;
-import com.MRSISA2021_T15.model.MedicinePharmacy;
-import com.MRSISA2021_T15.model.MedicineQuantity;
-import com.MRSISA2021_T15.model.OrderedMedicine;
-import com.MRSISA2021_T15.model.Patient;
-import com.MRSISA2021_T15.model.ReservationItem;
-import com.MRSISA2021_T15.service.MedicinePharmacyService;
-import com.MRSISA2021_T15.service.ReservationService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/medicinePharmacy")
@@ -147,5 +135,10 @@ public class MedicinePharmacyController {
 			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
+	@GetMapping(value = "/getMedicineFromPharmacy/{pharmacyId}")
+	public List<MedicinePharmacy> getMedicineFromPharmacy(@PathVariable("pharmacyId") Integer id) {
+
+		return mService.medcineInPharmacy(id);
+	}
 }

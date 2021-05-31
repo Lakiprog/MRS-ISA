@@ -1,17 +1,26 @@
-
 table {
-    width: 100%;
-  }
-  
-  .mat-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  td, th {
-    width: 25%;
-  }
+  width: 100%;
+}
 
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 25%;
+}
+
+.card {
+  max-width: 1000px;
+
+  margin-left: 15%;
+}
+
+.example-full-width {
+  background-color: white;
+}
   .card{
     max-width: 1000px;
     margin-top: 10px;
@@ -26,9 +35,16 @@ table {
     background-color: #DEEDE6
   }
 
-  .example-full-width{
-    background-color: white;
-  }
+.inputic {
+  background-color: white;
+}
+
+.table-card {
+  width: 300px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #deede6;
+}
 
   .inputic{
     background-color: white;

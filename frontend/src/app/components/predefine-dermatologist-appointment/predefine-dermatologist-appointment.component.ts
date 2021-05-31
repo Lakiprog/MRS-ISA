@@ -11,6 +11,10 @@ import { Location } from '@angular/common';
 import { AuthService } from 'src/app/login/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import {
+  MatSnackBar,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-predefine-dermatologist-appointment',
@@ -24,7 +28,11 @@ export class PredefineDermatologistAppointmentComponent implements OnInit {
   dermatologistList!: Dermatologist[];
   dermatologistListSource = new MatTableDataSource<any>(this.dermatologistList);
   appointmentForm: FormGroup;
+  isValid = false;
 
+  RESPONSE_OK: number = 0;
+  RESPONSE_ERROR: number = -1;
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   appointment: Appointment = {
     start: '' as any,
     end: '' as any,
@@ -39,6 +47,7 @@ export class PredefineDermatologistAppointmentComponent implements OnInit {
     private pharmacyAdminService: PharmacyAdminService,
     private location: Location,
     private authService: AuthService,
+    private _snackBar: MatSnackBar,
     private formBuilder: FormBuilder
   ) {
     this.appointmentForm = this.formBuilder.group({
@@ -85,7 +94,6 @@ export class PredefineDermatologistAppointmentComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.appointment.start = result.value.date;
       let copy = new Date(+this.appointment.start);
-      //let copy = Object.assign({}, this.appointment.start);
       let time = result.value.time.split(':', 2).map(Number);
       let duration = result.value.duration.split(':', 2).map(Number);
 
@@ -107,21 +115,35 @@ export class PredefineDermatologistAppointmentComponent implements OnInit {
       }
 
       this.appointment.price = result.value.price;
-
-      //this.appointment = appointment;
+      if (this.appointment.dermatologist != null) {
+        this.isValid = true;
+      }
     });
   }
 
   addDermatologist(dermatologist: Dermatologist): void {
     this.appointment.dermatologist = dermatologist;
+    this.openSnackBar(
+      this.appointment.dermatologist.name + ' successfully added!',
+      this.RESPONSE_OK
+    );
+    if (this.appointment.price != null) {
+      this.isValid = true;
+    }
   }
 
   createAppointment(): void {
     this.pharmacyAdminService
       .createPredefinedDermatologistAppointment(this.appointment)
-      .subscribe();
+      .subscribe((response) => this.openSnackBar('Success!', this.RESPONSE_OK));
   }
-
+  openSnackBar(msg: string, responseCode: number) {
+    this._snackBar.open(msg, 'x', {
+      duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
+      verticalPosition: this.verticalPosition,
+      panelClass: responseCode === this.RESPONSE_OK ? 'back-green' : 'back-red',
+    });
+  }
   back(): void {
     this.location.back();
   }

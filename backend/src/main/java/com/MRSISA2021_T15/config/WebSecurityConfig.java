@@ -174,6 +174,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/make_farmaceut_appointment/getAllCanceledApp").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/medicinePharmacy/getAllPatientsMedicines").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/medicinePharmacy/cancelMedicine").hasAuthority("ROLE_PATIENT")
+				.antMatchers("/medicinePharmacy/getMedicineFromPharmacy/{pharmacyId}").permitAll()
 				.antMatchers("/rating/getDermatologistToRate").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/rating/getPharmacistsToRate").hasAuthority("ROLE_PATIENT")
 				.antMatchers("/rating/getPharmaciesToRate").hasAuthority("ROLE_PATIENT")
