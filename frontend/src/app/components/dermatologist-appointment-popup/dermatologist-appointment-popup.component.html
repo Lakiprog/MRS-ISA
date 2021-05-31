@@ -1,5 +1,4 @@
 <div [formGroup]="appointmentForm">
-    <h1 mat-dialog-title>Hi </h1>
     <div mat-dialog-actions>
         <mat-form-field appearance="fill">
             <mat-label>Choose a date</mat-label>
@@ -27,7 +26,7 @@
         </mat-form-field>
     </div>
     <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button [mat-dialog-close]="appointmentForm" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="appointmentForm" cdkFocusInitial>Confirm</button>
     </div>
 </div>
