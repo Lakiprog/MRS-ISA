@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.lang.NonNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -28,32 +30,40 @@ public class Medicine {
 	private Integer id;
 	
 	@Column
-	private String medicineCode, name, composition, manufacturer, additionalComments;
+	@NonNull
+	private String medicineCode, name, composition, manufacturer;
 	
 	@Column
+	private String additionalComments;
+	
+	@Column
+	@NonNull
 	private MedicineType medicineType;
 	
 	@Column
+	@NonNull
 	private MedicineForm form;
 	
 	@Column
-	private boolean prescription;
+	@NonNull
+	private Boolean prescription;
 	
 	@Column
 	private Integer averageRating;
 	
 	@Column
-	private double points;
+	@NonNull
+	private Integer points;
 
 	@Column
-	private int numOfRating;
+	private Integer numOfRating;
 	
 	
-	public int getNumOfRating() {
+	public Integer getNumOfRating() {
 		return numOfRating;
 	}
 
-	public void setNumOfRating(int numOfRating) {
+	public void setNumOfRating(Integer numOfRating) {
 		this.numOfRating = numOfRating;
 	}
 
@@ -170,11 +180,11 @@ public class Medicine {
 		this.additionalComments = addtionalComments;
 	}
 
-	public boolean isPrescription() {
+	public Boolean getPrescription() {
 		return prescription;
 	}
 
-	public void setPrescription(boolean prescription) {
+	public void setPrescription(Boolean prescription) {
 		this.prescription = prescription;
 	}
 
@@ -210,11 +220,11 @@ public class Medicine {
 		this.averageRating = averageRating;
 	}
 
-	public double getPoints() {
+	public Integer getPoints() {
 		return points;
 	}
 
-	public void setPoints(double points) {
+	public void setPoints(Integer points) {
 		this.points = points;
 	}
 }

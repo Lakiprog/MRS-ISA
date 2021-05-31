@@ -2,6 +2,9 @@ package com.MRSISA2021_T15.repository;
 
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -16,5 +19,9 @@ public interface ComplaintRepository extends CrudRepository<Complaint, Integer> 
 	List<Complaint> getComplaintsToRespond();
 	
 	List<Complaint> findBySystemAdmin(SystemAdmin systemAdmin);
+
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select c from Complaint c where c.id = ?1")
+	Complaint findByIdPessimisticWrite(Integer id);
 
 }

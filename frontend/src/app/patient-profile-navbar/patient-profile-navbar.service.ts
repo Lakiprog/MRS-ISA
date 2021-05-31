@@ -20,4 +20,8 @@ export class PatientProfileNavbarService {
    getPatient(){
      return this.http.get(this.URL);
    }
+
+   getDiscountByPatientCategory() {
+     return this.http.get("http://localhost:8080/patients/getDiscountByPatientCategory");
+   }
 }

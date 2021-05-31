@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Table(name = "category")
 public class Category {
@@ -16,13 +18,16 @@ public class Category {
 	private Integer id;
 	
 	@Column
+	@NonNull
 	private CategoryName categoryName;
 	
 	@Column
-	private double requiredNumberOfPoints;
+	@NonNull
+	private Integer requiredNumberOfPoints;
 	
 	@Column
-	private double discount;
+	@NonNull
+	private Integer discount;
 
 	public Integer getId() {
 		return id;
@@ -40,19 +45,19 @@ public class Category {
 		this.categoryName = categoryName;
 	}
 
-	public double getRequiredNumberOfPoints() {
+	public Integer getRequiredNumberOfPoints() {
 		return requiredNumberOfPoints;
 	}
 
-	public void setRequiredNumberOfPoints(double requiredNumberOfPoints) {
+	public void setRequiredNumberOfPoints(Integer requiredNumberOfPoints) {
 		this.requiredNumberOfPoints = requiredNumberOfPoints;
 	}
 
-	public double getDiscount() {
+	public Integer getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(double discount) {
+	public void setDiscount(Integer discount) {
 		this.discount = discount;
 	}
 }

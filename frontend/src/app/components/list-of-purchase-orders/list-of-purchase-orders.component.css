@@ -1,0 +1,8 @@
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  width: 96px;
+  padding: 8px 8px 8px 0;
+}

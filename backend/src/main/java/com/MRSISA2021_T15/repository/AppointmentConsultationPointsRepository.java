@@ -1,5 +1,8 @@
 package com.MRSISA2021_T15.repository;
 
+import javax.persistence.LockModeType;
+
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -11,6 +14,10 @@ public interface AppointmentConsultationPointsRepository extends CrudRepository<
 	
 	AppointmentConsultationPoints findByType(String type);
 	
-	@Query("select acp.points from AppointmentConsultationPoints acp where acp.type like ?1")
-	double getPointsByType(String type);
+	@Query("select acp.points from AppointmentConsultationPoints acp where acp.type = ?1")
+	Integer getPointsByType(String type);
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select acp.points from AppointmentConsultationPoints acp where acp.type = ?1")
+	Integer getPointsByTypePessimisticWrite(String type);
 }

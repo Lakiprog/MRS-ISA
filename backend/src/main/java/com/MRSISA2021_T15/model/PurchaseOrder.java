@@ -3,6 +3,9 @@ package com.MRSISA2021_T15.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+
+import org.springframework.lang.NonNull;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +20,7 @@ public class PurchaseOrder {
 	private Integer id;
 	
 	@Column
+	@NonNull
 	private String purchaseOrderName;
 	
 	@JsonIgnore
@@ -31,12 +35,14 @@ public class PurchaseOrder {
 
 	@ManyToOne
 	@JoinColumn(name="pharmacy_id")
+	@NonNull
 	private Pharmacy pharmacy;
 
 	@Transient
 	private ArrayList<Integer> substituteMedicineIds = new ArrayList<Integer>();
 
 	@Column
+	@NonNull
 	private LocalDate dueDateOffer;
 	
 	public Integer getId() {

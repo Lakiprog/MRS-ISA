@@ -13,8 +13,8 @@ public interface MedicineRepository extends CrudRepository<Medicine, Integer> {
 	
 	Medicine findByMedicineCode(String medicineCode);
 	
-	@Query("select m.points from Medicine m where m.medicineCode like ?1")
-	double getPointsByMedicineCode(String medicineCode);
+	@Query("select m.points from Medicine m where m.medicineCode = ?1")
+	Integer getPointsByMedicineCode(String medicineCode);
 
 	@Query("select m from Medicine m where m.id = ?1")
 	public Medicine findMedicineWithId(Integer id);

@@ -1,11 +1,15 @@
 package com.MRSISA2021_T15.service;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +22,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.MRSISA2021_T15.repository.CategoryRepository;
@@ -52,6 +57,7 @@ import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.PatientSubPharmacy;
 import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.model.Pharmacy;
+import com.MRSISA2021_T15.model.Promotion;
 
 @Service
 public class PatientService {
@@ -133,7 +139,6 @@ public class PatientService {
 		return message;
 	}
 	
-	
 	public String updatePassword(ChangePassword passwords) {
 		String message = "";
 		Patient currentUser = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -150,63 +155,91 @@ public class PatientService {
 		return message;
 	}
 	
-	
 	public Patient getPatientData() {
 		return (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 	
-	public void subscribeToPharamacy(@RequestBody Pharmacy pharmacy) {
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public String subscribeToPharamacy(Pharmacy pharmacy) {
+		String message = "";
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		PatientSubPharmacy patientSubPharmacy = patientSubPharmacyRepository.findByPharamcyByPharmacyIdAndPatientId(pharmacy.getId(), patient.getId());
-		if (patientSubPharmacy != null) {
-			patientSubPharmacy.setSubscribed(true);
-			patientSubPharmacyRepository.save(patientSubPharmacy);
+		Patient patientDb = (Patient) repository.findById(patient.getId()).get();
+		if (!patientDb.isEnabled()) {
+			message = "You have not verified your account!";
 		} else {
-			PatientSubPharmacy psp = new PatientSubPharmacy();
-			psp.setPatient(patient);
-			psp.setPharmacy(pharmacy);
-			psp.setSubscribed(true);
-			patientSubPharmacyRepository.save(psp);
+			PatientSubPharmacy patientSubPharmacy = patientSubPharmacyRepository.findByPharmacyIdAndPatientId(pharmacy.getId(), patient.getId());
+			if (patientSubPharmacy != null) {
+				patientSubPharmacy.setSubscribed(true);
+				patientSubPharmacyRepository.save(patientSubPharmacy);
+			} else {
+				PatientSubPharmacy psp = new PatientSubPharmacy();
+				psp.setPatient(patientDb);
+				psp.setPharmacy(pharmacy);
+				psp.setSubscribed(true);
+				patientSubPharmacyRepository.save(psp);
+			}
 		}
+		return message;
 	}
 	
-	public void unsubscribeToPharamacy(@RequestBody Pharmacy pharmacy) {
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public String unsubscribeToPharamacy(Pharmacy pharmacy) {
+		String message = "";
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		PatientSubPharmacy patientSubPharmacy = patientSubPharmacyRepository.findByPharamcyByPharmacyIdAndPatientId(pharmacy.getId(), patient.getId());
-		if (patientSubPharmacy != null) {
-			patientSubPharmacy.setSubscribed(false);
-			patientSubPharmacyRepository.save(patientSubPharmacy);
+		Patient patientDb = (Patient) repository.findById(patient.getId()).get();
+		if (!patientDb.isEnabled()) {
+			message = "You have not verified your account!";
+		} else {
+			PatientSubPharmacy patientSubPharmacy = patientSubPharmacyRepository.findByPharmacyIdAndPatientId(pharmacy.getId(), patient.getId());
+			if (patientSubPharmacy != null) {
+				patientSubPharmacy.setSubscribed(false);
+				patientSubPharmacyRepository.save(patientSubPharmacy);
+			}
 		}
+		return message;
 	}
 	
+	@Transactional(readOnly = true)
 	public List<Pharmacy> getSubscribedPharmacies() {
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return patientSubPharmacyRepository.getSubscribedPharmaciesForPatient(patient.getId());
 	}
 	
-	@Scheduled(fixedDelayString = "PT24H")
+	@Scheduled(fixedDelayString = "PT1M")
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 	public void sendPromotionMails() throws InterruptedException {
 		List<PatientSubPharmacy> subscribedPatients = patientSubPharmacyRepository.findBySubscribedTrue();
 		for (PatientSubPharmacy psp: subscribedPatients) {
-			List<String> descriptions = promotionRepository.getDescriptionByPharmacyId(psp.getPharmacy().getId(), LocalDate.now());
-			for (String description : descriptions) {
+			List<Promotion> promotions = promotionRepository.getPromotionByPharmacyId(psp.getPharmacy().getId(), LocalDate.now());
+			for (Promotion p : promotions) {
 				SimpleMailMessage mailMessage = new SimpleMailMessage();
 	            mailMessage.setTo(psp.getPatient().getEmail());
 	            mailMessage.setSubject("Pharmacy " + psp.getPharmacy().getName() + " PROMOTION!!!!");
 	            mailMessage.setFrom(env.getProperty("spring.mail.username"));
-	            mailMessage.setText(description);
+	            mailMessage.setText(p.getDescription() + ", \nPromotion lasts from " + p.getStartingDate() + " to " + p.getEndingDate());
 	            emailSenderService.sendEmail(mailMessage);
 	            Thread.sleep(3000);
 			}
 		}
 	}
 	
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 	@SuppressWarnings("unchecked")
 	public List<EReceiptSearch> sendQrCode(MultipartFile file) throws IOException, NotFoundException {
 		InputStream is = new ByteArrayInputStream(file.getBytes());
         BufferedImage newBi = ImageIO.read(is);
-		BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(newBi)));
+        Image img = newBi.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+        HybridBinarizer hb = new HybridBinarizer(new BufferedImageLuminanceSource(bimage));
+		BinaryBitmap binaryBitmap = new BinaryBitmap(hb);
 		Result result = new MultiFormatReader().decode(binaryBitmap);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(bimage, "png", bos);
+        String image = Base64.getEncoder().encodeToString(bos.toByteArray());
+        bos.close();
 		String jsonString = result.getText();
 		Gson gson = new Gson();
 		List<EReceiptMedicineDetails> requiredMedicine = 
@@ -226,6 +259,7 @@ public class PatientService {
 				EReceiptSearch ers = new EReceiptSearch();
 				ers.setPharmacy(p);
 				ers.seteReceiptMedicineDetails(requiredMedicine);
+				ers.setQrCode(image);
 				for (MedicinePharmacy mp : tempList) {
 					for (EReceiptMedicineDetails ermd: requiredMedicine) {
 						if (mp.getMedicine().getMedicineCode().equals(ermd.getMedicineCode())) {
@@ -240,68 +274,103 @@ public class PatientService {
 		return pharmaciesWithRequiredMedicine;
 	}
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public String issueEReceipt(EReceiptSearch eReceiptSearch) {
-		for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
-			MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCode
-			(
-					eReceiptSearch.getPharmacy().getId(), 
-					ermd.getMedicineCode(), 
-					Math.abs(ermd.getQuantity())
-			);
-			if (pharmacyWithRequiredMedicine == null) {
-				return "The pharmacy does not have the required medicine!";
-			}
-		}
+		String message = "";
+		List<String> medicineCodes = new ArrayList<String>();
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		EReceipt eReceipt = new EReceipt();
-		eReceipt.seteReceiptCode(UUID.randomUUID().toString());
-		eReceipt.setIssueDate(LocalDate.now());
-		eReceipt.setPatient(patient);
-		eReceipt = eReceiptRepository.save(eReceipt);
-		for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
-			patient.setCollectedPoints(Math.abs(patient.getCollectedPoints()) + 
-					(medicineRepository.getPointsByMedicineCode(ermd.getMedicineCode()) * (Math.abs(ermd.getQuantity()))));
-			if (patient.getCategoryName().equals(CategoryName.REGULAR)) {
-				Category c = categoryRepository.findByCategoryName(CategoryName.SILVER);
-				if (Math.abs(patient.getCollectedPoints()) >= Math.abs(c.getRequiredNumberOfPoints())) {
-					patient.setCategoryName(CategoryName.SILVER);
-				}
-			} else if (patient.getCategoryName().equals(CategoryName.SILVER)) {
-				Category c1 = categoryRepository.findByCategoryName(CategoryName.GOLD);
-				if (Math.abs(patient.getCollectedPoints()) >= Math.abs(c1.getRequiredNumberOfPoints())) {
-					patient.setCategoryName(CategoryName.GOLD);
-				}
-			}
-			ermd = eReceiptMedicineDetailsRepository.save(ermd);
-			EReceiptAndMedicineDetails eramd = new EReceiptAndMedicineDetails();
-			eramd.seteReceipt(eReceipt);
-			eramd.seteReceiptMedicineDetails(ermd);
-			eramd.setPharmacy(eReceiptSearch.getPharmacy());
-			eReceiptAndMedicineDetailsRepository.save(eramd);
-		}
-		repository.save(patient);
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(patient.getEmail());
-        mailMessage.setSubject("Medicine issue via EReceipt from pharmacy " + eReceiptSearch.getPharmacy().getName());
-        mailMessage.setFrom(env.getProperty("spring.mail.username"));
-        String mailText = "You have been issued the following medication: \n";
-        for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
-        	mailText += "\t" + ermd.getMedicineName() + ", Quantity: " + Math.abs(ermd.getQuantity()) + "\n";
-        }
-        mailText += "\tTotal price: " + Math.abs(eReceiptSearch.getTotal()) + "\n";
-        mailText += "\nBest regards,\nPharmacy " + eReceiptSearch.getPharmacy().getName();
-        mailMessage.setText(mailText);
-        emailSenderService.sendEmail(mailMessage);
-		List<MedicinePharmacy> toUpdatePharmacyStock = medicinePharmacyRepository.findByPharmacyId(eReceiptSearch.getPharmacy().getId());
-		for (MedicinePharmacy mp : toUpdatePharmacyStock) {
+		Patient patientDb = (Patient) repository.findById(patient.getId()).get();
+		if (!patientDb.isEnabled()) {
+			message = "You have not verified your account!";
+		} else {
 			for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
-				if (mp.getMedicine().getMedicineCode().equals(ermd.getMedicineCode())) {
-					mp.setAmount(Math.abs(mp.getAmount()) - Math.abs(ermd.getQuantity()));
-					break;
+				MedicinePharmacy pharmacyWithRequiredMedicine = medicinePharmacyRepository.getPharmacyByIdAndMedicineCodePessimisticRead
+				(
+						eReceiptSearch.getPharmacy().getId(), 
+						ermd.getMedicineCode(), 
+						Math.abs(ermd.getQuantity())
+				);
+				if (pharmacyWithRequiredMedicine == null) {
+					return "The pharmacy does not have the required medicine!";
 				}
+				medicineCodes.add(ermd.getMedicineCode());
+			}
+			EReceipt qrCodeUsed = eReceiptRepository.findByPatientIdAndQrCode(patientDb.getId(), eReceiptSearch.getQrCode());
+			if (qrCodeUsed != null) {
+				message = "This QR code has already been used!";
+			} else {
+				EReceipt eReceipt = new EReceipt();
+				eReceipt.seteReceiptCode(UUID.randomUUID().toString());
+				eReceipt.setIssueDate(LocalDate.now());
+				eReceipt.setPatient(patientDb);
+				eReceipt.setTotal(eReceiptSearch.getTotal());
+				eReceipt.setQrCode(eReceiptSearch.getQrCode());
+				eReceipt = eReceiptRepository.save(eReceipt);
+				for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
+					patientDb.setCollectedPoints(Math.abs(patientDb.getCollectedPoints()) + 
+							(medicineRepository.getPointsByMedicineCode(ermd.getMedicineCode()) * (Math.abs(ermd.getQuantity()))));
+					ermd = eReceiptMedicineDetailsRepository.save(ermd);
+					EReceiptAndMedicineDetails eramd = new EReceiptAndMedicineDetails();
+					eramd.seteReceipt(eReceipt);
+					eramd.seteReceiptMedicineDetails(ermd);
+					eramd.setPharmacy(eReceiptSearch.getPharmacy());
+					eReceiptAndMedicineDetailsRepository.save(eramd);
+				}
+				if (patientDb.getCategoryName().equals(CategoryName.REGULAR)) {
+					Category c = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.SILVER);
+					if (Math.abs(patientDb.getCollectedPoints()) >= Math.abs(c.getRequiredNumberOfPoints())) {
+						patientDb.setCategoryName(CategoryName.SILVER);
+						eReceipt.setDiscount((100.0 - Math.abs(c.getDiscount())) / 100.0);
+					} else {
+						eReceipt.setDiscount(0.0);
+					}
+				} else if (patientDb.getCategoryName().equals(CategoryName.SILVER)) {
+					Category c1 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.GOLD);
+					Category c2 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.SILVER);
+					if (Math.abs(patientDb.getCollectedPoints()) >= Math.abs(c1.getRequiredNumberOfPoints())) {
+						patientDb.setCategoryName(CategoryName.GOLD);
+						eReceipt.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
+					} else {
+						eReceipt.setDiscount((100.0 - Math.abs(c2.getDiscount())) / 100.0);
+					}
+				} else if (patientDb.getCategoryName().equals(CategoryName.GOLD)) {
+					Category c1 = categoryRepository.findByCategoryNamePessimisticWrite(CategoryName.GOLD);
+					eReceipt.setDiscount((100.0 - Math.abs(c1.getDiscount())) / 100.0);
+				}
+				eReceiptRepository.save(eReceipt);
+				repository.save(patientDb);
+				List<MedicinePharmacy> toUpdatePharmacyStock = medicinePharmacyRepository.findByPharmacyIdPessimisticWrite(eReceiptSearch.getPharmacy().getId(), medicineCodes);
+				for (MedicinePharmacy mp : toUpdatePharmacyStock) {
+					for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
+						if (mp.getMedicine().getMedicineCode().equals(ermd.getMedicineCode())) {
+							mp.setAmount(mp.getAmount() - Math.abs(ermd.getQuantity()));
+							break;
+						}
+					}
+				}
+				medicinePharmacyRepository.saveAll(toUpdatePharmacyStock);
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+		        mailMessage.setTo(patientDb.getEmail());
+		        mailMessage.setSubject("Medicine issue via EReceipt from pharmacy " + eReceiptSearch.getPharmacy().getName());
+		        mailMessage.setFrom(env.getProperty("spring.mail.username"));
+		        String mailText = "You have been issued the following medication: \n";
+		        for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
+		        	mailText += "\t" + ermd.getMedicineName() + ", Quantity: " + Math.abs(ermd.getQuantity()) + "\n";
+		        }
+		        mailText += "\tTotal price: " + Math.abs(eReceiptSearch.getTotal()) + "\n";
+		        mailText += "\nBest regards,\nPharmacy " + eReceiptSearch.getPharmacy().getName();
+		        mailMessage.setText(mailText);
+		        emailSenderService.sendEmail(mailMessage);
 			}
 		}
-		medicinePharmacyRepository.saveAll(toUpdatePharmacyStock);
-		return "";
+		return message;
+	}
+
+	@Transactional(readOnly = true)
+	public Integer getDiscountByPatientCategory() {
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Patient patientDb = (Patient) repository.findById(patient.getId()).get();
+		Category c = categoryRepository.findByCategoryName(patientDb.getCategoryName());
+		return c.getDiscount();
 	}
 }

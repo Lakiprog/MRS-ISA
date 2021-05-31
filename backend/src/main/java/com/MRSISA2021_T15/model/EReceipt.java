@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Table(name = "eReceipt")
 public class EReceipt {
@@ -23,13 +25,28 @@ public class EReceipt {
 	private Integer id;
 
 	@Column
+	@NonNull
 	private String eReceiptCode;
 	
 	@ManyToOne
+	@NonNull
 	private Patient patient;
 	
 	@Column
+	@NonNull
 	private LocalDate issueDate;
+	
+	@Column
+	@NonNull
+	private Double total;
+	
+	@Column
+	@NonNull
+	private Double discount;
+	
+	@Column(columnDefinition = "TEXT")
+	@NonNull
+	private String qrCode;
 
 	@OneToMany(mappedBy = "eReceipt", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<EReceiptAndMedicineDetails> eReceiptAndMedicineDetails;
@@ -72,5 +89,29 @@ public class EReceipt {
 
 	public void seteReceiptAndMedicineDetails(Set<EReceiptAndMedicineDetails> eReceiptAndMedicineDetails) {
 		this.eReceiptAndMedicineDetails = eReceiptAndMedicineDetails;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
+
+	public String getQrCode() {
+		return qrCode;
+	}
+
+	public void setQrCode(String qrCode) {
+		this.qrCode = qrCode;
 	}
 }

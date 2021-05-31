@@ -9,6 +9,8 @@ public class EReceiptSearch {
 	private double total;
 	
 	private List<EReceiptMedicineDetails> eReceiptMedicineDetails;
+	
+	private String qrCode;
 
 	public Pharmacy getPharmacy() {
 		return pharmacy;
@@ -32,5 +34,13 @@ public class EReceiptSearch {
 
 	public void seteReceiptMedicineDetails(List<EReceiptMedicineDetails> eReceiptMedicineDetails) {
 		this.eReceiptMedicineDetails = eReceiptMedicineDetails;
+	}
+
+	public String getQrCode() {
+		return qrCode;
+	}
+
+	public void setQrCode(String qrCode) {
+		this.qrCode = qrCode;
 	}
 }

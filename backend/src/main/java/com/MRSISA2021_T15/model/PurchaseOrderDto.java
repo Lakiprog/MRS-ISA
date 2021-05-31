@@ -8,7 +8,7 @@ public class PurchaseOrderDto {
     private ArrayList<PurchaseOrderMedicine> purchaseOrderMedicine;
     private Pharmacy pharmacy;
     private String purchaseOrderName;
-    private LocalDate dueDateOffer;
+    private LocalDate purchaseOrderDate;
 
     public PurchaseOrderDto() {
     }
@@ -37,11 +37,11 @@ public class PurchaseOrderDto {
         this.purchaseOrderName = purchaseOrderName;
     }
 
-    public LocalDate getDueDateOffer() {
-        return dueDateOffer;
+    public LocalDate getPurchaseOrderDate() {
+        return purchaseOrderDate;
     }
 
-    public void setDueDateOffer(LocalDate dueDateOffer) {
-        this.dueDateOffer = dueDateOffer;
+    public void setPurchaseOrderDate(LocalDate purchaseOrderDate) {
+        this.purchaseOrderDate = purchaseOrderDate;
     }
 }

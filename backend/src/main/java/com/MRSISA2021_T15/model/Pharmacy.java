@@ -3,6 +3,9 @@ package com.MRSISA2021_T15.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+
+import org.springframework.lang.NonNull;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,24 +19,23 @@ public class Pharmacy {
 	private Integer id;
 	
 	@Column
+	@NonNull
 	private String name, address, city, country, description;
 	
 	@Column
-	private double rating;
+	private Double rating;
 	
 	@Column
-	double appointmentPrice;
-	
+	private Double appointmentPrice;
 	
 	@Column
-	private int numOfRating;
+	private Integer numOfRating;
 	
-	
-	public int getNumOfRating() {
+	public Integer getNumOfRating() {
 		return numOfRating;
 	}
 
-	public void setNumOfRating(int numOfRating) {
+	public void setNumOfRating(Integer numOfRating) {
 		this.numOfRating = numOfRating;
 	}
 
@@ -77,12 +79,9 @@ public class Pharmacy {
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<PurchaseOrder> purchaseOrder;
 	
-	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CanceledPharAppoinment> canceledAppointments;
-	
-	
 	
 	public Integer getId() {
 		return id;
@@ -156,11 +155,11 @@ public class Pharmacy {
 		this.country = country;
 	}
 
-	public double getRating() {
+	public Double getRating() {
 		return rating;
 	}
 
-	public void setRating(double rating) {
+	public void setRating(Double rating) {
 		this.rating = rating;
 	}
 

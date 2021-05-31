@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Table(name = "appointment_consultation_points")
 public class AppointmentConsultationPoints {
@@ -16,10 +18,12 @@ public class AppointmentConsultationPoints {
 	private Integer id;
 	
 	@Column
+	@NonNull
 	private String type;
 	
 	@Column
-	private double points;
+	@NonNull
+	private Integer points;
 
 	public Integer getId() {
 		return id;
@@ -37,11 +41,11 @@ public class AppointmentConsultationPoints {
 		this.type = type;
 	}
 
-	public double getPoints() {
+	public Integer getPoints() {
 		return points;
 	}
 
-	public void setPoints(double points) {
+	public void setPoints(Integer points) {
 		this.points = points;
 	}
 }

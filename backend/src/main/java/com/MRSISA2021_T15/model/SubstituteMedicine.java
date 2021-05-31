@@ -2,6 +2,8 @@ package com.MRSISA2021_T15.model;
 
 import javax.persistence.*;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Table(name = "substitute_medicine")
 public class SubstituteMedicine {
@@ -12,10 +14,12 @@ public class SubstituteMedicine {
 
 	@ManyToOne
 	@JoinColumn(name = "medicine_id")
+	@NonNull
 	private Medicine medicine;
 	
 	@ManyToOne
 	@JoinColumn(name = "substitute_medicine_id")
+	@NonNull
 	private Medicine substituteMedicine;
 
 	public Medicine getMedicine() {

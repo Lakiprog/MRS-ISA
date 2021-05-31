@@ -3,6 +3,8 @@ package com.MRSISA2021_T15.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.MRSISA2021_T15.dto.ConfirmationToken;
+import com.MRSISA2021_T15.model.CategoryName;
 import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.PharmacyAdmin;
@@ -44,6 +47,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Autowired
     private EmailSenderService emailSenderService;
 
+	@Transactional
 	@Override
 	public String registerPatient(Patient patient) {
 		String message = "";
@@ -57,6 +61,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 			patient.setPassword(passwordEncoder.encode(patient.getPassword()));
 			patient.setEnabled(false);
 			patient.setFirstLogin(false);
+			patient.setCategoryName(CategoryName.REGULAR);
+			patient.setCollectedPoints(0);
 			List<Role> roles = new ArrayList<Role>();
 			Role role = roleRepository.findById(Constants.ROLE_PATIENT).get();
 			roles.add(role);
@@ -75,13 +81,14 @@ public class RegistrationServiceImpl implements RegistrationService {
 		return message;
 	}
 	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
 	public ModelAndView confirmAccount(ModelAndView modelAndView, String confirmationToken) {
 		ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
         if (token != null) {
             Patient patient = (Patient) registrationRepository.findByEmail(token.getUser().getEmail());
             patient.setEnabled(true);
-            registrationRepository.save(patient);
+            registrationRepository.save(patient); 
             modelAndView.setViewName("accountVerified");
         } else {
         	modelAndView.addObject("message","The link is invalid or broken!");
