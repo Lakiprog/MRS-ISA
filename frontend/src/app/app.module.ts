@@ -119,6 +119,10 @@ import { MedicineReviewComponent } from './medicine-review/medicine-review.compo
 import { MedicinePurchaseOrderComponent } from './components/medicine-purchase-order/medicine-purchase-order.component';
 import { AddMedicineToCartPopupComponent } from './components/add-medicine-to-cart-popup/add-medicine-to-cart-popup.component';
 import { SubmitPurchaseOrderPopupComponent } from './components/submit-purchase-order-popup/submit-purchase-order-popup.component';
+import { PatientPastDermaAppComponent } from './patient-past-derma-app/patient-past-derma-app.component';
+import { PatientPastPharAppComponent } from './patient-past-phar-app/patient-past-phar-app.component';
+import { AllergiesComponent } from './allergies/allergies.component';
+import { PenaltiesComponent } from './penalties/penalties.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -211,6 +215,10 @@ FullCalendarModule.registerPlugins([
     MedicinePurchaseOrderComponent,
     AddMedicineToCartPopupComponent,
     SubmitPurchaseOrderPopupComponent,
+    PatientPastDermaAppComponent,
+    PatientPastPharAppComponent,
+    AllergiesComponent,
+    PenaltiesComponent,
 
   ],
   imports: [
@@ -550,9 +558,36 @@ FullCalendarModule.registerPlugins([
         canActivate: [PharmacyAdminRoutes],
         component: MedicinePurchaseOrderComponent,
       },
-
+      {
+        path: 'PatientPastDermaApp',
+        canActivate: [PatientRoutes],
+        component: PatientPastDermaAppComponent,
+      },
+      {
+        path: 'PatientPastPharApp',
+        canActivate: [PatientRoutes],
+        component: PatientPastPharAppComponent,
+      },
+      {
+        path: 'PatientPastPharApp',
+        canActivate: [PatientRoutes],
+        component: PatientPastPharAppComponent,
+      },
+      {
+        path: 'Allergies',
+        canActivate: [PatientRoutes],
+        component: AllergiesComponent,
+      },
+      {
+        path: 'Penalties',
+        canActivate: [PatientRoutes],
+        component: PenaltiesComponent,
+      },
     ]),
   ],
+
+  
+  
 
   providers: [
     {

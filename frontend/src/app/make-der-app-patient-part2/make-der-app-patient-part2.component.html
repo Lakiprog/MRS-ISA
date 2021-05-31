@@ -1,28 +1,35 @@
 <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>My App</span>
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>favorite</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>share</mat-icon>
-    </button>
+    <mat-toolbar-row>
+        <span>SCHEDULE  APPOINTMENT  WITH  DERMATOLOGIST </span>
+        <span style = "flex: 1 1 auto;"></span>
+        <a mat-button routerLink = "/UserHomePage">HOMEPAGE</a>
+        <a mat-button routerLink = "/PatientProfile">MY PROFILE</a>
+        <a mat-button routerLink = "/MakeDermatologistAppointment">GO BACK</a>
+        <a mat-button routerLink = "/login">LOGOUT</a>
+      </mat-toolbar-row>
 </mat-toolbar>
 
 
 <div *ngIf="freeIsEmpty">
-    <mat-card>
-        <p><strong>THIS PHARMACY DOES NOT HAVE ANY AVAILABLE APPOINTMENT</strong></p>
+    <mat-card class="card">
+        <img mat-card-image class="imageFront" src="assets\dermatologists.jpg">
+
+        <h2 class="h22">THIS PHARMACY DOES NOT HAVE ANY AVAILABLE APPOINTMENT</h2>
+      
     </mat-card>
 </div>
 
 
 
 <div *ngIf="notEmpty">
-    <mat-card>
+    <mat-card class="card">
+    
+          <img mat-card-image class="imageFront" src="assets\dermatologists.jpg">
+
+          <br />
+    
+          <h2 class="h2">PLEASE PICK A DERMATOLOGIST YOU WANT TO MAKE AN APPOINTMENT WITH</h2>
+
             <mat-form-field>
                 <mat-label>FILTER</mat-label>
                 <input matInput (keyup)="applyFilter($event)" placeholder="Ex. 1000" #input>

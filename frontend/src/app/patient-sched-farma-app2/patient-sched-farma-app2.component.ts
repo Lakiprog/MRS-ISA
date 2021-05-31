@@ -147,6 +147,8 @@ ngAfterViewInit() {
       this.dataSource.data = this.pharmacies;
       if(!(this.pharmacies.length == 0)){
         this.notEmpty = true;
+      }else{
+        this.empty = true;
       }
 
     })
@@ -197,6 +199,7 @@ ngAfterViewInit() {
   showPharmaceuts:boolean = false;
 
   checkhere(row:any){
+    this.notEmpty = false;
     this.pharmaceuts = this.employment.filter((el: { pharmacy: any}) =>{
       return el.pharmacy.id == row.id;
     }) 
