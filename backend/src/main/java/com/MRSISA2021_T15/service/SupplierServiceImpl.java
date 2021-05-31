@@ -121,7 +121,7 @@ public class SupplierServiceImpl implements SupplierService {
 		if (supplierDb.getFirstLogin()) {
 			message =  "You are logging in for the first time, you must change password before you can use this functionality!";
 		} else if (offer.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
-			message = "Due date must be before today's date!";
+			message = "Due date for purchase order has passed!";
 		} else if (LocalDate.now().isAfter(offer.getDeliveryDate())) {
 			message = "Delivery date must be after today's date!";
 		} else {
@@ -188,7 +188,7 @@ public class SupplierServiceImpl implements SupplierService {
 				if (LocalDate.now().isAfter(offerToUpdate.getDeliveryDate())) {
 					message = "Delivery date must be after today's date!";
 				} else if (offerToUpdate.getPurchaseOrder().getDueDateOffer().isBefore(LocalDate.now())) {
-					message = "Due date must be before today's date!";
+					message = "Due date for purchase order has passed!";
 				} else {
 					if (offer.getPrice() != null) {
 						offerToUpdate.setPrice(Math.abs(offer.getPrice()));
