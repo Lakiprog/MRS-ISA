@@ -140,6 +140,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/pharmacist/get").hasAuthority("ROLE_PHARMACIST")
 				.antMatchers("/pharmacist/update").hasAuthority("ROLE_PHARMACIST")
 				.antMatchers("/pharmacist/updatePassword").hasAuthority("ROLE_PHARMACIST")
+				.antMatchers("/pharmacy/publicGetPharmacies").permitAll()
+				.antMatchers("/pharmacy/getPharmacy").permitAll()
 				.antMatchers("/pharmacyAdmin/{pharmacyAdminId}/findById").hasAuthority("ROLE_PHARMACY_ADMIN")
 				.antMatchers("/pharmacyAdmin/{pharmacyAdminId}/update").hasAuthority("ROLE_PHARMACY_ADMIN")
 				.antMatchers("/complaint/getAllDermatologists").hasAuthority("ROLE_PATIENT")

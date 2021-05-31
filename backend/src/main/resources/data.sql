@@ -171,5 +171,8 @@ insert into promotion (starting_date, ending_date, description, pharmacy_id) val
 insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-04-10', '2021-05-10', 'PROMOTION ON ALL MEDICINE 20% off', 2);
 insert into promotion (starting_date, ending_date, description, pharmacy_id) values ('2021-05-10', '2021-07-10', 'PROMOTION ON ANTIHISTAMINE 5% off', 2);
 
+insert into medicine_needed (requested, pharmacy_id, medicine_id) values ('2021-05-10', 1, 2);
+insert into medicine_needed (requested, pharmacy_id, medicine_id) values ('2021-05-10', 1, 3);
+
 --insert into patient_sub_pharmacy (patient_id, pharmacy_id, subscribed) values (1, 1, true);
 --insert into patient_sub_pharmacy (patient_id, pharmacy_id, subscribed) values (1, 2, true);

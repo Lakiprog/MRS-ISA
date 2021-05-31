@@ -1,11 +1,11 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DummyModel } from 'src/app/models/dummy-model';
 import { Medicine } from 'src/app/models/medicine';
@@ -17,6 +17,13 @@ import { Pharmacist } from 'src/app/user-complaint/user-complaint.component';
 import { AddMedicineToCartPopupComponent } from '../add-medicine-to-cart-popup/add-medicine-to-cart-popup.component';
 import { stringify } from '@angular/compiler/src/util';
 import { SubmitPurchaseOrderPopupComponent } from '../submit-purchase-order-popup/submit-purchase-order-popup.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { AuthService } from 'src/app/login/auth.service';
+import { Location } from '@angular/common';
 
 export interface DialogData {
   quantity: Number;
@@ -28,8 +35,21 @@ export interface DialogData {
   styleUrls: ['./medicine-purchase-order.component.css'],
 })
 export class MedicinePurchaseOrderComponent implements OnInit {
+  displayedColumnsMedicineList: string[] = [
+    'name',
+    'composition',
+    'form',
+    'manufacturer',
+    'medicineCode',
+    'medicineType',
+    'additionalComments',
+    'prescription',
+    'id',
+    'actions',
+  ];
   quantity!: Number;
   medicineList!: Medicine[];
+  medicineListSource = new MatTableDataSource<any>(this.medicineList);
   purchaseOrderMedicineForm: FormGroup;
   pharmacy!: Pharmacist;
   pharmacyAdmin!: PharmacyAdmin;
@@ -39,8 +59,11 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     medicine: null as any,
   };
   purchaseOrder: PurchaseOrder = {
+    id: null as any,
     pharmacy: null as any,
     purchaseOrderName: null as any,
+    purchaseOrderDate: '' as any,
+    dueDateOffer: '' as any,
     purchaseOrderMedicine: [],
     purchaseOrderSupplier: null as any,
   };
@@ -48,22 +71,34 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     public dialog: MatDialog,
     private pharmacyAdminService: PharmacyAdminService,
     private router: Router,
+    private authService: AuthService,
+    private location: Location,
     private formBuilder: FormBuilder
   ) {
     this.purchaseOrderMedicineForm = this.formBuilder.group({
       purchaseOrderName: [],
+      purchaseOrderDate: [],
     });
   }
+  @ViewChild(MatPaginator)
+  paginatorMedicine!: MatPaginator;
 
   ngOnInit(): void {
     this.purchaseOrderMedicineForm = this.formBuilder.group({
       purchaseOrderName: [],
+      purchaseOrderDate: [],
     });
     this.pharmacyAdminService.getPharmacyAdminData().subscribe((data) => {
       this.pharmacyAdmin = data;
       this.pharmacyAdminService
         .getMedicineFromPharmacy(this.pharmacyAdmin.pharmacy)
-        .subscribe((res) => (this.medicineList = res));
+        .subscribe((res) => {
+          this.medicineList = res;
+          this.medicineListSource = new MatTableDataSource<any>(
+            this.medicineList
+          );
+          this.medicineListSource.paginator = this.paginatorMedicine;
+        });
     });
   }
 
@@ -73,7 +108,6 @@ export class MedicinePurchaseOrderComponent implements OnInit {
       medicine: null as any,
     };
     purchaseOrderMedicine.medicine = medicine;
-
     const dialogRef = this.dialog.open(AddMedicineToCartPopupComponent, {
       width: '250px',
       data: {
@@ -94,15 +128,17 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     this.purchaseOrder.pharmacy = this.pharmacyAdmin.pharmacy;
 
     const dialogRef = this.dialog.open(SubmitPurchaseOrderPopupComponent, {
-      width: '250px',
+      width: '300px',
       data: {
-        purchaseOrderName: this.purchaseOrder.purchaseOrderName,
+        purchaseOrderName: '',
+        purchaseOrderDate: '',
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      this.purchaseOrder.purchaseOrderName = result;
+      this.purchaseOrder.purchaseOrderName = result.value.purchaseOrderName;
+      this.purchaseOrder.purchaseOrderDate = result.value.purchaseOrderDate;
       if (result != null) {
         this.pharmacyAdminService
           .createPurchaseOrder(this.purchaseOrder)
@@ -112,5 +148,13 @@ export class MedicinePurchaseOrderComponent implements OnInit {
           });
       }
     });
+  }
+
+  back(): void {
+    this.location.back();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
