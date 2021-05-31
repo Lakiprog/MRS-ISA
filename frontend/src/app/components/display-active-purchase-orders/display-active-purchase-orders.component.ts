@@ -26,8 +26,7 @@ export class DisplayActivePurchaseOrdersComponent implements OnInit {
     this.pharmacyAdminService
       .getPurchaseOrder(this.data.purchaseOrder.id)
       .subscribe((res) => {
-        (this.purchaseOrderMedicineList = res),
-          console.log(this.purchaseOrderMedicineList);
+        this.purchaseOrderMedicineList = res;
       });
   }
 }

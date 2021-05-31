@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Appointment } from 'src/app/models/appointment';
@@ -7,6 +7,10 @@ import { AppointmentDermatologist } from 'src/app/models/appointmentDermatologis
 import { PharmacyAdmin } from 'src/app/models/pharmacy-admin';
 import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
 import { DermatologistAppointmentPopupComponent } from '../dermatologist-appointment-popup/dermatologist-appointment-popup.component';
+import { Location } from '@angular/common';
+import { AuthService } from 'src/app/login/auth.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-predefine-dermatologist-appointment',
@@ -14,9 +18,11 @@ import { DermatologistAppointmentPopupComponent } from '../dermatologist-appoint
   styleUrls: ['./predefine-dermatologist-appointment.component.css'],
 })
 export class PredefineDermatologistAppointmentComponent implements OnInit {
+  displayedColumnsDermatologistList: string[] = ['name', 'surname', 'actions'];
   pharmacyAdmin!: PharmacyAdmin;
   dermatologist!: Dermatologist;
   dermatologistList!: Dermatologist[];
+  dermatologistListSource = new MatTableDataSource<any>(this.dermatologistList);
   appointmentForm: FormGroup;
 
   appointment: Appointment = {
@@ -31,6 +37,8 @@ export class PredefineDermatologistAppointmentComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private pharmacyAdminService: PharmacyAdminService,
+    private location: Location,
+    private authService: AuthService,
     private formBuilder: FormBuilder
   ) {
     this.appointmentForm = this.formBuilder.group({
@@ -38,6 +46,8 @@ export class PredefineDermatologistAppointmentComponent implements OnInit {
       duration: [],
     });
   }
+  @ViewChild(MatPaginator)
+  paginatorPurchaseOrder!: MatPaginator;
 
   ngOnInit(): void {
     this.appointmentForm = this.formBuilder.group({
@@ -48,9 +58,12 @@ export class PredefineDermatologistAppointmentComponent implements OnInit {
       this.pharmacyAdmin = data;
     });
 
-    this.pharmacyAdminService
-      .getAllDermatologists()
-      .subscribe((data) => (this.dermatologistList = data));
+    this.pharmacyAdminService.getAllDermatologists().subscribe((data) => {
+      this.dermatologistList = data;
+      this.dermatologistListSource = new MatTableDataSource<any>(
+        this.dermatologistList
+      );
+    });
   }
 
   openDialog(): void {
@@ -107,5 +120,13 @@ export class PredefineDermatologistAppointmentComponent implements OnInit {
     this.pharmacyAdminService
       .createPredefinedDermatologistAppointment(this.appointment)
       .subscribe();
+  }
+
+  back(): void {
+    this.location.back();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

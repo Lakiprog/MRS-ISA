@@ -104,8 +104,14 @@ import { AddMedicineToPharmacyComponent } from './components/add-medicine-to-pha
 import { AddPharmacistToPharmacyComponent } from './components/add-pharmacist-to-pharmacy/add-pharmacist-to-pharmacy.component';
 import { AddDermatologistToPharmacyComponent } from './components/add-dermatologist-to-pharmacy/add-dermatologist-to-pharmacy.component';
 
-import { DialogStartPharmacistPatients, PharmacistUsersComponent } from './pharmacist-users/pharmacist-users.component';
-import { DermatologistUsersComponent, DialogStartDermatologistPatients } from './dermatologist-users/dermatologist-users.component';
+import {
+  DialogStartPharmacistPatients,
+  PharmacistUsersComponent,
+} from './pharmacist-users/pharmacist-users.component';
+import {
+  DermatologistUsersComponent,
+  DialogStartDermatologistPatients,
+} from './dermatologist-users/dermatologist-users.component';
 import { MedicinePrescriptionComponent } from './medicine-prescription/medicine-prescription.component';
 import { PharmacyProfilePageComponent } from './components/pharmacy-profile-page/pharmacy-profile-page.component';
 
@@ -123,7 +129,8 @@ import { DisplayActivePurchaseOrdersComponent } from './components/display-activ
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PredefineDermatologistAppointmentComponent } from './components/predefine-dermatologist-appointment/predefine-dermatologist-appointment.component';
 import { DermatologistAppointmentPopupComponent } from './components/dermatologist-appointment-popup/dermatologist-appointment-popup.component';
-
+import { PublicPharmacyProfilePageComponent } from './components/public-pharmacy-profile-page/public-pharmacy-profile-page.component';
+import { MedicineInquiriesComponent } from './components/medicine-inquiries/medicine-inquiries.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -209,7 +216,6 @@ FullCalendarModule.registerPlugins([
     PharmacyReviewComponent,
     MedicineReviewComponent,
 
-
     DialogStartDermatologistPatients,
     DialogStartPharmacistPatients,
     MedicinePurchaseOrderComponent,
@@ -219,7 +225,8 @@ FullCalendarModule.registerPlugins([
     DisplayActivePurchaseOrdersComponent,
     PredefineDermatologistAppointmentComponent,
     DermatologistAppointmentPopupComponent,
-
+    PublicPharmacyProfilePageComponent,
+    MedicineInquiriesComponent,
   ],
   imports: [
     BrowserModule,
@@ -569,7 +576,15 @@ FullCalendarModule.registerPlugins([
         canActivate: [PharmacyAdminRoutes],
         component: PredefineDermatologistAppointmentComponent,
       },
-
+      {
+        path: 'publicPharmacyProfilePage',
+        component: PublicPharmacyProfilePageComponent,
+      },
+      {
+        path: 'medicineInquiries',
+        canActivate: [PharmacyAdminRoutes],
+        component: MedicineInquiriesComponent,
+      },
     ]),
   ],
 

@@ -3,14 +3,17 @@
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
 
-            <a mat-button routerLink="/pharmacyProfilePage">Pharmacy profile</a>
-
+            <span>Pharmacy profile page</span>
+            
             <a mat-button routerLink="/medicinePurchaseOrder">Create purchase order</a>
 
             <a mat-button routerLink="/activePurchaseOrders">Active purchase orders</a>
 
             <a mat-button routerLink="/predefineDermatologistAppointment">Define new dermatologist appointment</a>
 
+            <a mat-button routerLink="/medicineInquiries">Medicine inquiries</a>
+
+            <span style = "flex: 1 1 auto;"></span>
             <a mat-button (click) = "back()">Back</a>
 
             <a mat-button (click) = "logout()">Logout</a>

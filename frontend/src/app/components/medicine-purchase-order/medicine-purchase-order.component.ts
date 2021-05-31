@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -20,6 +20,10 @@ import { SubmitPurchaseOrderPopupComponent } from '../submit-purchase-order-popu
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { AuthService } from 'src/app/login/auth.service';
+import { Location } from '@angular/common';
 
 export interface DialogData {
   quantity: Number;
@@ -31,8 +35,21 @@ export interface DialogData {
   styleUrls: ['./medicine-purchase-order.component.css'],
 })
 export class MedicinePurchaseOrderComponent implements OnInit {
+  displayedColumnsMedicineList: string[] = [
+    'name',
+    'composition',
+    'form',
+    'manufacturer',
+    'medicineCode',
+    'medicineType',
+    'additionalComments',
+    'prescription',
+    'id',
+    'actions',
+  ];
   quantity!: Number;
   medicineList!: Medicine[];
+  medicineListSource = new MatTableDataSource<any>(this.medicineList);
   purchaseOrderMedicineForm: FormGroup;
   pharmacy!: Pharmacist;
   pharmacyAdmin!: PharmacyAdmin;
@@ -54,6 +71,8 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     public dialog: MatDialog,
     private pharmacyAdminService: PharmacyAdminService,
     private router: Router,
+    private authService: AuthService,
+    private location: Location,
     private formBuilder: FormBuilder
   ) {
     this.purchaseOrderMedicineForm = this.formBuilder.group({
@@ -61,6 +80,8 @@ export class MedicinePurchaseOrderComponent implements OnInit {
       purchaseOrderDate: [],
     });
   }
+  @ViewChild(MatPaginator)
+  paginatorMedicine!: MatPaginator;
 
   ngOnInit(): void {
     this.purchaseOrderMedicineForm = this.formBuilder.group({
@@ -71,7 +92,13 @@ export class MedicinePurchaseOrderComponent implements OnInit {
       this.pharmacyAdmin = data;
       this.pharmacyAdminService
         .getMedicineFromPharmacy(this.pharmacyAdmin.pharmacy)
-        .subscribe((res) => (this.medicineList = res));
+        .subscribe((res) => {
+          this.medicineList = res;
+          this.medicineListSource = new MatTableDataSource<any>(
+            this.medicineList
+          );
+          this.medicineListSource.paginator = this.paginatorMedicine;
+        });
     });
   }
 
@@ -101,7 +128,7 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     this.purchaseOrder.pharmacy = this.pharmacyAdmin.pharmacy;
 
     const dialogRef = this.dialog.open(SubmitPurchaseOrderPopupComponent, {
-      width: '250px',
+      width: '300px',
       data: {
         purchaseOrderName: '',
         purchaseOrderDate: '',
@@ -121,5 +148,13 @@ export class MedicinePurchaseOrderComponent implements OnInit {
           });
       }
     });
+  }
+
+  back(): void {
+    this.location.back();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

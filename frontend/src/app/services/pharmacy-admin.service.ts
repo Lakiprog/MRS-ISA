@@ -13,6 +13,7 @@ import { PurchaseOrder } from '../models/purchase-order';
 import { PurchaseOrderMedicine } from '../models/purchase-order-medicine';
 import { Appointment } from '../models/appointment';
 import { AppointmentDermatologist } from '../models/appointmentDermatologist';
+import { MedicineNeeded } from '../models/medicineNeeded';
 
 @Injectable({
   providedIn: 'root',
@@ -73,8 +74,6 @@ export class PharmacyAdminService {
   }
 
   public getMedicineFromPharmacy(pharmacy: Pharmacy): Observable<Medicine[]> {
-    console.log(pharmacy);
-    console.log(pharmacy.id);
     return this.httpClient.get<Medicine[]>(
       'http://localhost:8080/medicine/' +
         pharmacy.id +
@@ -223,6 +222,12 @@ export class PharmacyAdminService {
     return this.httpClient.post<AppointmentDermatologist>(
       'http://localhost:8080/appointment_creation/defineDermatologistAppointment',
       appointment
+    );
+  }
+
+  public getMedicineInquiries(): Observable<MedicineNeeded[]> {
+    return this.httpClient.get<MedicineNeeded[]>(
+      'http://localhost:8080/medicine/getMedicineInquiries'
     );
   }
 
