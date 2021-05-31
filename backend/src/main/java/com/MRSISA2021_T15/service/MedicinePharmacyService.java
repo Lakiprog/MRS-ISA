@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,10 +61,11 @@ public class MedicinePharmacyService {
 	}
 	
 	public List<ReservationItem>getAllReservationItem(Patient p){
+		LocalDateTime now = LocalDateTime.now();
 		List<ReservationItem> returnList = new ArrayList<ReservationItem>();
 		List<ReservationItem> list = (List<ReservationItem>) reservationRepo.findAll();
 		for(ReservationItem ri: list) {
-			if(p.getId() == ri.getReservation().getPatient().getId()) {
+			if(p.getId() == ri.getReservation().getPatient().getId() && now.compareTo(ri.getReservation().getEnd()) < 0 && ri.getReservation().getPickedUp() == null) {
 				returnList.add(ri);
 			}
 		}
@@ -72,8 +74,25 @@ public class MedicinePharmacyService {
 	
 	
 	public void deleteMedicine(ReservationItem item) {
+		Integer pharmacyId = item.getReservation().getPharmacy().getId();
+		Integer medicineId = item.getMedicine().getMedicine().getId();
+		
+		
+		
+		MedicinePharmacy mp = repo.findByExact(pharmacyId, medicineId);
+		System.out.println("123");
+		System.out.println(medicineId);
+		System.out.println(mp.getAmount() + item.getMedicine().getQuantity());
+		
+		mp.setAmount(mp.getAmount() + item.getMedicine().getQuantity());
+		
+		System.out.println(mp.getAmount());
+		repo.save(mp);
+		
 		reservationRepo.deleteById(item.getId());
 		mr.deleteById(item.getMedicine().getId());
 		rr.deleteById(item.getReservation().getId());
+		
+		
 	}
 }

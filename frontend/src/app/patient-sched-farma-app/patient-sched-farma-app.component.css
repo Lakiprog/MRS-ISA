@@ -8,12 +8,33 @@
     }
     
     mat-card-title{
-    color:green;
+    margin-left: 150px;
     font-size:40px
     }
+
+    .content{
+      margin-left: 125px;
+    }
+
+    .dugme{
+      margin-left: 200px;
+    }
+
+
+    .h4{
+      margin-left: 70px;
+    }
+
 
     .material-icons{
       margin-left: 5px;  
       margin-bottom: 10px;
+    }
+
+    .card{
+      width: 500px;
+      margin-left: 480px;
+      margin-top: 20px;
+      background-color: #DEEDE6
     }
     

@@ -18,5 +18,8 @@ public interface ReservationItemRepository extends CrudRepository<ReservationIte
 	
 	@Query("select distinct p from ReservationItem ri join ri.reservation.pharmacy p where ri.reservation.patient.id = ?1 and ri.reservation.pickedUp != null")
 	public List<Pharmacy> findAllPharmaciesThatPatientPicMrd(Integer id);
+	
+	
+	
 
 }

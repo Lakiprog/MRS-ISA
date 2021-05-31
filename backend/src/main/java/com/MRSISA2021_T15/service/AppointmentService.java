@@ -1,6 +1,7 @@
 package com.MRSISA2021_T15.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -299,7 +300,7 @@ public class AppointmentService {
 			return "This appointment is already assigned";
 		}
 		appointment.setPatient(patient);
-		repository.save(appointment); //prepravi da ga nadjes
+		repository.save(appointment); 
 		sendEmailAppointment(appointment);
 		return "";
 	}
@@ -450,7 +451,16 @@ public class AppointmentService {
 
 	
 	public List<AppointmentDermatologist>findAllFreeDermatologicalApp(){
-		return repository.findAllFreeDermatologicalApp();
+		LocalDateTime now = LocalDateTime.now();
+		List<AppointmentDermatologist> returnList = new ArrayList<AppointmentDermatologist>();
+		
+		for(AppointmentDermatologist a : repository.findAllFreeDermatologicalApp()) {
+			if(now.compareTo(a.getStart()) < 0) {
+				returnList.add(a);
+			}
+		}
+		return returnList;
+		
 	}
 	
 	
@@ -460,12 +470,61 @@ public class AppointmentService {
 	
 	
 	public List<AppointmentDermatologist> findAllDerAppWithPatientId(Integer id){
-		return repository.findAllDerAppWithPatientId(id);
+		LocalDateTime now = LocalDateTime.now();
+		List<AppointmentDermatologist> returnList = new ArrayList<AppointmentDermatologist>();
+		
+		for(AppointmentDermatologist a : repository.findAllDerAppWithPatientId(id)) {
+			if(now.compareTo(a.getStart()) < 0) {
+				returnList.add(a);
+			}
+		}
+		
+		return returnList;
 	}
 	
-	public List<AppointmentPharmacist> findAllPharAppWithPatientId(Integer id){
-		return repository.findAllPharAppWithPatientId(id);
+	
+	
+	public List<AppointmentDermatologist> findAllPastDerAppWithPatientId(Integer id){
+		LocalDateTime now = LocalDateTime.now();
+		List<AppointmentDermatologist> returnList = new ArrayList<AppointmentDermatologist>();
+		
+		for(AppointmentDermatologist a : repository.findAllDerAppWithPatientId(id)) {
+			if(now.compareTo(a.getStart()) > 0) {
+				returnList.add(a);
+			}
+		}
+		
+		return returnList;
 	}
+	
+	
+	
+	public List<AppointmentPharmacist> findAllPharAppWithPatientId(Integer id){
+		LocalDateTime now = LocalDateTime.now();
+		List<AppointmentPharmacist> returnList = new ArrayList<AppointmentPharmacist>();
+		
+		for(AppointmentPharmacist a : repository.findAllPharAppWithPatientId(id)) {
+			if(now.compareTo(a.getStart()) < 0) {
+				returnList.add(a);
+			}
+		}
+		return returnList;
+	}
+	
+	
+	
+	public List<AppointmentPharmacist> findAllPastPharAppWithPatientId(Integer id){
+		LocalDateTime now = LocalDateTime.now();
+		List<AppointmentPharmacist> returnList = new ArrayList<AppointmentPharmacist>();
+		
+		for(AppointmentPharmacist a : repository.findAllPharAppWithPatientId(id)) {
+			if(now.compareTo(a.getStart()) > 0) {
+				returnList.add(a);
+			}
+		}
+		return returnList;
+	}
+	
 
 	public void sendEmailAppointment(Appointment appointment) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -498,6 +557,7 @@ public class AppointmentService {
 	public void deleteDermatologicalApp(AppointmentDermatologist appointment) {
 		Appointment app = appointmentRepository.findDerAppWithId(appointment.getId());
 		app.setPatient(null);
+		appointmentRepository.save(app);
 	}
 	
 	

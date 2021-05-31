@@ -16,7 +16,7 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 export class PatientOrdersMedicineComponent implements OnInit {
 
   displayedColumnsMedicine: string[] = ['name', 'medicineType', 'averageRating', 
-    'viewMedicineDetails', 'pharmacy', 'price', 'quantity', 'schedule'];
+    'viewMedicineDetails', 'pharmacy', "quantity", 'price', 'schedule'];
   medicineTypes = [];
   grades = ['1', '2', '3', '4', '5'];
   medicineData = [];
@@ -68,7 +68,7 @@ export class PatientOrdersMedicineComponent implements OnInit {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     
-    this.minDate = new Date(currentYear, currentMonth, 1);
+    this.minDate = new Date();
     this.maxDate = new Date(currentYear, currentMonth+6);
     
   }
@@ -91,7 +91,13 @@ export class PatientOrdersMedicineComponent implements OnInit {
   getAllMedicinePharmacy() {
     this.searchFilterMedicineService.getAllMedicinePharmacy().subscribe(
       data => {
-        this.medicineData = data;
+        this.medicineData = data.filter((el:{amount:any}) => 
+                                                      { if(el.amount > 0){
+                                                        return el
+                                                      }else{
+                                                        return;
+                                                      }
+                                                        })
         this.medicineDataSource = new MatTableDataSource<any>(this.medicineData);
         this.medicineDataSource.paginator = this.paginatorMedicine;
         this.medicineDataSource.filterPredicate = (data1, filter: string)  => {
@@ -182,26 +188,44 @@ export class PatientOrdersMedicineComponent implements OnInit {
   
   addEvent(event: MatDatepickerInputEvent<Date>, medicine:any) {
     this.pickedDate = event.value;
+    this.pickedDate.setDate(this.pickedDate.getDate() + 1)
     //this.chosenMedicine.date = this.pickedDate.toISOString();
   }
 
   order(){
-    console.log(this.pickedDate.toISOString());
-    console.log(this.chosenMedicine);
-    let orderedAmount = this.amount.get('medicineAmount');
-    let medicineOrder = {"amount" : orderedAmount?.value, "until": this.pickedDate.toISOString(), "medicinePharmacy":this.chosenMedicine}
+    //console.log(this.pickedDate.toISOString());
+    console.log(this.pickedDate)
+    
+    if(this.pickedDate == undefined){
+      this.openSnackBar("You didn't picked the date. Please do that first.", this.RESPONSE_ERROR)
+    }else{
+      console.log(this.chosenMedicine);
+      let orderedAmount = this.amount.get('medicineAmount');
 
+      if(orderedAmount?.value > this.chosenMedicine.amount){
+        this.openSnackBar("Pharmacy doesn't have ordered amount on the stock.", this.RESPONSE_ERROR);
+        this.amount.removeControl('medicineAmount');
 
-    this.amount.removeControl('medicineAmount');
-    this.searchFilterMedicineService.orderMedicine(medicineOrder).subscribe(
-      response => {
-        this.openSnackBar(response, this.RESPONSE_OK);
-        
-      },
-      error => {
-        this.openSnackBar(error.error, this.RESPONSE_ERROR);
+      }else if(orderedAmount?.value == 0){
+        this.openSnackBar("You did't pick amount of medicine you want to reserve. Please, do that first.", this.RESPONSE_ERROR);
+        this.amount.removeControl('medicineAmount');
+      }else{
+        let medicineOrder = {"amount" : orderedAmount?.value, "until": this.pickedDate.toISOString(), "medicinePharmacy":this.chosenMedicine}
+
+          this.amount.removeControl('medicineAmount');
+          this.searchFilterMedicineService.orderMedicine(medicineOrder).subscribe(
+            response => {
+              this.openSnackBar(response, this.RESPONSE_OK);
+              
+            },
+            error => {
+              this.openSnackBar(error.error, this.RESPONSE_ERROR);
+            }
+          );
       }
-    );
+
+    }
+    
 }
 
 openSnackBar(msg: string, responseCode: number) {

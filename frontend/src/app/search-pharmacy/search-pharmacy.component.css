@@ -21,6 +21,19 @@ th {
 .example-full-width {
   background-color: white;
 }
+  .card{
+    max-width: 1000px;
+    margin-top: 10px;
+    margin-left: 15%;
+    background-color: #DEEDE6
+  }
+
+  .card1{
+    max-width: 1000px;
+    margin-top: -25px;
+    margin-left: 15%;
+    background-color: #DEEDE6
+  }
 
 .inputic {
   background-color: white;
@@ -32,3 +45,17 @@ th {
   margin-left: 10px;
   background-color: #deede6;
 }
+
+  .inputic{
+    background-color: white;
+  }
+
+
+  .imageFront{
+    height: 500px;
+  }
+
+
+  mat-card-title{
+    margin-left: 400px;
+  }

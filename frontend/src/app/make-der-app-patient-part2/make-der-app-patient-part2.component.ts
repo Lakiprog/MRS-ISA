@@ -35,13 +35,15 @@ export class MakeDerAppPatientPart2Component implements OnInit {
                el.patient == null;
       }) 
       this.dataSource = new MatTableDataSource(this.elems);
+
+      if(this.elems.length == 0){
+        this.freeIsEmpty = true;
+      }else{
+        this.notEmpty = true;
+      }
     })
 
-    if(this.dataSource == []){
-      this.freeIsEmpty = true;
-    }else{
-      this.notEmpty = true;
-    }
+   
 
 
   }

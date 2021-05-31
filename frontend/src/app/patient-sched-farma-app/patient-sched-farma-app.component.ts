@@ -37,8 +37,9 @@ export class PatientSchedFarmaAppComponent implements OnInit {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     
-    this.minDate = new Date(currentYear, currentMonth, 1);
-    this.maxDate = new Date(currentYear, currentMonth+12);
+    
+    this.minDate = new Date();
+    this.maxDate = new Date(currentYear, currentMonth+13, 0);
 
   }
 

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <div>
-    <mat-toolbar color = "primary">
+    <mat-toolbar color="primary">
         <mat-toolbar-row>
-            <span *ngIf = "isPatientLoggedOn">Reserve medicine</span>
-            <span *ngIf = "!isPatientLoggedOn">View medicine</span>
+            <span>RESERVE MEDICINE </span>
             <span style = "flex: 1 1 auto;"></span>
-            <a *ngIf = "loggedOn" mat-button (click) = "back()">Back</a>
-            <a *ngIf = "!loggedOn" mat-button routerLink = "/login">Login</a>
-        </mat-toolbar-row>
+            <a mat-button routerLink = "/UserHomePage">HOMEPAGE</a>
+            <a mat-button routerLink = "/PatientProfile">MY PROFILE</a>
+            <a mat-button routerLink = "/login">LOGOUT</a>
+          </mat-toolbar-row>
     </mat-toolbar>
 
     <mat-card class = "table-card">
@@ -19,6 +19,7 @@
             <div>
                 <button class = "search-button" (click) = "searchMedicineByName()" mat-raised-button color="primary" [value] = "search">Search</button>
             </div>
+            <br />
             <mat-form-field class = "field-width">
                 <mat-label>Filter by medicine type</mat-label>
                 <mat-select formControlName = "medicineType">
@@ -34,6 +35,8 @@
             <div>
                 <button class = "clear-button" (click) = "clearSearchAndFilter()" mat-raised-button color="primary">Clear</button>
             </div>
+            <br />
+            <br />
         </form>
         <div class = "data-table">
             <table mat-table [dataSource]="medicineDataSource">
@@ -87,20 +90,26 @@
             <mat-card-header>
                 <mat-card-title>Medicine</mat-card-title>
             </mat-card-header>
-            <img mat-card-image class="imageP" src="medicinePill.jpg">
+            <img mat-card-image class="imageP" src="assets\medicinePill.jpg">
               <mat-card-content>
-                
-                    NAME: {{chosenMedicine.medicine.name}}
-                    <br />
-                    MEDICINE TYPE: {{chosenMedicine.medicine.medicineType}}
-                    <br />
-                    AVERAGE RATING: {{chosenMedicine.medicine.averageRating}}
-                    <br />
-                    PHARMACY: {{chosenMedicine.pharmacy.name}}
-                     <br />
-                    PRICE: {{chosenMedicine.cost}}
-                    <br />
+                <div class="centriraj">
+                    <h3><strong>MEDICINE'S DATA</strong></h3>    
 
+                    <strong>NAME: </strong> {{chosenMedicine.medicine.name}}
+                    <br />
+                    <strong>MEDICINE TYPE: </strong> {{chosenMedicine.medicine.medicineType}}
+                    <br />
+                    <strong>AVERAGE RATING: </strong> {{chosenMedicine.medicine.averageRating}}
+                    <br />
+                    <strong>PHARMACY: </strong> {{chosenMedicine.pharmacy.name}}
+                     <br />
+                     <strong>PRICE: </strong> {{chosenMedicine.cost}}
+                    <br />
+                </div>
+
+                <br />
+
+                    Please pick an amount you want to reserve.
                     <form [formGroup]="amount">
                         <mat-form-field appearance="fill">
                             <mat-label>Input how many medicines you want to order</mat-label>
@@ -110,21 +119,25 @@
                         </mat-form-field>
                     </form>
                     <br />
-                    Please input the date until you want to pick your medicine up
-              
+                    
+                    Please input the date until you want to pick your medicine up.
 
-              <mat-form-field class="example-full-width" appearance="fill">
-                <mat-label>Choose a date</mat-label>
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker"
-                        (dateInput)="addEvent($event, chosenMedicine)">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker touchUi #picker></mat-datepicker>
-              </mat-form-field>
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker"
+                                (dateInput)="addEvent($event, chosenMedicine)">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker touchUi #picker></mat-datepicker>
+                    </mat-form-field>
+
+                
 
               </mat-card-content>
               <mat-card-actions>
-                <button class="orderButton" (click) = "order()" mat-button>ORDER</button>
-                <button class="quitButton" (click) = "quit()" mat-button>QUIT</button>
+                <div class="pomjeri_dugmice">
+                    <button class="orderButton" (click) = "order()" mat-button>ORDER</button>
+                    <button class="quitButton" (click) = "quit()" mat-button>QUIT</button>
+                </div>
               </mat-card-actions>
         </mat-card>
     </div>
