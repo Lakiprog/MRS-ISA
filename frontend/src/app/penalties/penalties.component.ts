@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PenaltiesService } from './penalties.service';
 
 @Component({
   selector: 'app-penalties',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PenaltiesComponent implements OnInit {
 
-  constructor() { }
+
+  patient:any;
+
+  constructor(public service:PenaltiesService) {
+    this.getPenalties();
+   }
 
   ngOnInit(): void {
+  }
+
+  
+  getPenalties():void{
+    this.service.getPenaltiesF().subscribe((data:any) =>{
+      this.patient = data;
+    })
   }
 
 }
