@@ -17,41 +17,39 @@
     }
   
    
-    .div2{
-      margin-top: 10px;
+    
+    .table-card1 {
+        background-color: rgb(188, 214, 247);
+        width: 1000px;
+    }
+      
+  
+    .div1{
       margin-left: 220px;
+      margin-top: 10px;
     }
   
-    .table-card2 {
-      background-color: rgb(188, 214, 247);
-      width: 1000px;
-  }
-    
   
-    .coloumnName {
-      width: 15%;  
+  
+  .coloumnName {
+      width: 20%;  
   }
   
   .coloumnComposition {
-      width: 30%; 
+      width: 40%; 
   }
   
   .coloumnComment{
-      width: 30%; 
-  }
-  
-  
-  .coloumnADD{
-    width: 15%;
-    margin-left: 3px;
+      width: 40%; 
   }
   
   
 
-  .title_card2{
-    margin-left: 160px;
+  .title_card1{
+    margin-left: 360px;
   }
   
+ 
   ng-container{
     margin-left: 5px;
   }

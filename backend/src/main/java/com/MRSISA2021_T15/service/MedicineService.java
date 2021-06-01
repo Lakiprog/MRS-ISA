@@ -2,6 +2,7 @@ package com.MRSISA2021_T15.service;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.MedicineForm;
@@ -16,6 +17,7 @@ public interface MedicineService {
 	HashSet<MedicineType> getMedicineTypes();
 	
 	HashSet<MedicineForm> getMedicineForms();
+	
 	
 	
 }
