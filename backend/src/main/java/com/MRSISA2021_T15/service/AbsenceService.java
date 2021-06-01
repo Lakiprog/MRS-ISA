@@ -7,9 +7,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.MRSISA2021_T15.model.Absence;
 import com.MRSISA2021_T15.model.Appointment;
@@ -18,7 +19,6 @@ import com.MRSISA2021_T15.model.Employment;
 import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.model.PharmacyAdmin;
 import com.MRSISA2021_T15.model.SystemAdmin;
-import com.MRSISA2021_T15.model.User;
 import com.MRSISA2021_T15.repository.AbsenceRepository;
 import com.MRSISA2021_T15.repository.AppointmentAbsenceRepository;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
@@ -40,6 +40,7 @@ public class AbsenceService {
 	@Autowired
 	Environment environment;
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public String createAbsencePharmacist(Absence absence) throws InterruptedException {
 		
 		if(absence.getStart().isAfter(absence.getEnd())) {
@@ -49,7 +50,7 @@ public class AbsenceService {
 		}
 		
 		Pharmacist p = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<Appointment> appointments = appoRepo.findAllPharmacistId(p.getId());
+		List<Appointment> appointments = appoRepo.findAllPharmacistIdPessimisticRead(p.getId());
 
 		for (Appointment appointment : appointments) {
 			if (absence.getStart().isBefore(appointment.getStart()) && absence.getEnd().isAfter(appointment.getEnd())) {
@@ -80,6 +81,7 @@ public class AbsenceService {
 		return "";
 	}
 	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public String createAbsenceDermatologist(Absence absence) throws InterruptedException {
 		
 		if(absence.getStart().isAfter(absence.getEnd())) {
@@ -89,7 +91,7 @@ public class AbsenceService {
 		}
 		
 		Dermatologist p = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<Appointment> appointments = appoRepo.findAllDermatologistId(p.getId());
+		List<Appointment> appointments = appoRepo.findAllDermatologistIdPessimisticRead(p.getId());
 
 		for (Appointment appointment : appointments) {
 			if(appointment.getPatient() != null) {
