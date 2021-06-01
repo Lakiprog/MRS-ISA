@@ -1,13 +1,12 @@
-import {
-  Dermatologist,
-  Pharmacy,
-} from '../user-complaint/user-complaint.component';
+import { Pharmacy } from '../user-complaint/user-complaint.component';
+import { Dermatologist } from './dermatologist';
 import { Medicine } from './medicine';
+import { Pharmacist } from './pharmacist';
 
 export class Employment {
   start!: Number;
   end!: Number;
-  pharmacist!: Medicine;
+  pharmacist!: Pharmacist;
   dermatologist!: Dermatologist;
   pharmacy!: Pharmacy;
 }

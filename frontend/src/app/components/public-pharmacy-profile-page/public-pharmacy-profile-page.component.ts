@@ -10,6 +10,10 @@ import {
 import { MedicinePharmacy } from 'src/app/models/medicine-pharmacy';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { Appointment } from 'src/app/models/appointment';
+import { Employment } from 'src/app/models/employment';
+import { Pharmacist } from 'src/app/models/pharmacist';
+import { Dermatologist } from 'src/app/models/dermatologist';
 
 @Component({
   selector: 'app-public-pharmacy-profile-page',
@@ -22,6 +26,26 @@ export class PublicPharmacyProfilePageComponent implements OnInit {
     'amount',
     'cost',
   ];
+  displayedColumnsDermatolgoistAppointmentList: string[] = [
+    'name',
+    'surname',
+    'price',
+    'start',
+  ];
+  displayedColumnsDermatolgoistList: string[] = [
+    'name',
+    'surname',
+    'email',
+    'phoneNumber',
+    'rating',
+  ];
+  displayedColumnsPharmacistList: string[] = [
+    'name',
+    'surname',
+    'email',
+    'phoneNumber',
+    'rating',
+  ];
   pharmacy!: Pharmacy;
   RESPONSE_OK: number = 0;
   RESPONSE_ERROR: number = -1;
@@ -29,6 +53,19 @@ export class PublicPharmacyProfilePageComponent implements OnInit {
   medicinePharmacyList!: MedicinePharmacy[];
   medicinePharmacyListSource = new MatTableDataSource<any>(
     this.medicinePharmacyList
+  );
+  dermatologistAppointmentList!: Appointment[];
+  dermatologistAppointmentListSource = new MatTableDataSource<any>(
+    this.dermatologistAppointmentList
+  );
+  employeeList!: Employment[];
+  pharmacistList!: Pharmacist[];
+  pharmacistListSource = new MatTableDataSource<any>(
+    this.dermatologistAppointmentList
+  );
+  dermatologistList!: Dermatologist[];
+  dermatologistListSource = new MatTableDataSource<any>(
+    this.dermatologistAppointmentList
   );
   loggedOn = this.authService.getToken() != null ? true : false;
 
@@ -41,7 +78,11 @@ export class PublicPharmacyProfilePageComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   paginatorMedicinePharmacy!: MatPaginator;
+  @ViewChild(MatPaginator)
+  paginatorDermatologistAppointment!: MatPaginator;
   ngOnInit(): void {
+    this.pharmacistList = [];
+    this.dermatologistList = [];
     this.pharmacy = JSON.parse(localStorage.getItem('pharmacy') || '{}');
     console.log(this.pharmacy);
     this.publicPharmacyProfilePageService
@@ -55,12 +96,35 @@ export class PublicPharmacyProfilePageComponent implements OnInit {
           this.paginatorMedicinePharmacy;
       });
     //   TODO
-    //   this.publicPharmacyProfilePageService.getDermatologistAppointments().subscribe(
-    //   result => {
-    //   this.dermatologistAppointmentList = result });
-    //   this.publicPharmacyProfilePageService.getPharmacyEmployees().subscribe(
-    //   result => {
-    //   this.employeeList = result });
+    this.publicPharmacyProfilePageService
+      .getDermatologistAppointments(this.pharmacy.id)
+      .subscribe((result) => {
+        this.dermatologistAppointmentList = result;
+        this.dermatologistAppointmentListSource = new MatTableDataSource<any>(
+          this.dermatologistAppointmentList
+        );
+        this.dermatologistAppointmentListSource.paginator =
+          this.paginatorDermatologistAppointment;
+
+        console.log(this.dermatologistAppointmentListSource);
+      });
+    this.publicPharmacyProfilePageService
+      .getPharmacyEmployees(this.pharmacy.id)
+      .subscribe((result) => {
+        this.employeeList = result;
+        this.employeeList.forEach((employee) => {
+          if (employee.dermatologist) {
+            this.dermatologistList.push(employee.dermatologist);
+          } else this.pharmacistList.push(employee.pharmacist);
+        });
+        this.dermatologistListSource = new MatTableDataSource<any>(
+          this.dermatologistList
+        );
+        this.pharmacistListSource = new MatTableDataSource<any>(
+          this.pharmacistList
+        );
+        console.log(this.pharmacistListSource);
+      });
   }
 
   subscribeToPromotions() {

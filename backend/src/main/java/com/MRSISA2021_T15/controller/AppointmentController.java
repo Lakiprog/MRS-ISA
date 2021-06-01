@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -129,6 +130,23 @@ public class AppointmentController {
 		if(isValid)
 			appointmentRepository.save(ad);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping(path="/getPredefinedDermatologistAppointments/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<AppointmentDermatologist> getPredefinedDermatologistAppointments(@PathVariable Integer pharmacyId) {
+		List<Appointment> appointmentList = appointmentRepository.findAll();
+		List<Appointment> appointmentPharmacyList = new ArrayList<>();
+		List returnList = new ArrayList<AppointmentDermatologist>();
+		for ( Appointment a : appointmentList) {
+			if (a.getPharmacy().getId() == pharmacyId) {
+				appointmentPharmacyList.add(a);
+			}
+		}
+		for (Appointment ap : appointmentPharmacyList){
+			if (ap.getPatient() == null )
+				returnList.add(ap);
+		}
+		return returnList;
 	}
 
 

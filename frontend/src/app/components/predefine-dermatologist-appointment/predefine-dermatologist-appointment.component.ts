@@ -135,7 +135,19 @@ export class PredefineDermatologistAppointmentComponent implements OnInit {
   createAppointment(): void {
     this.pharmacyAdminService
       .createPredefinedDermatologistAppointment(this.appointment)
-      .subscribe((response) => this.openSnackBar('Success!', this.RESPONSE_OK));
+      .subscribe((response) => {
+        this.openSnackBar('Success!', this.RESPONSE_OK);
+        this.appointment = {
+          start: '' as any,
+          end: '' as any,
+          price: null as any,
+          discount: null as any,
+          done: null as any,
+          pharmacy: null as any,
+          dermatologist: null as any,
+        };
+        this.isValid = false;
+      });
   }
   openSnackBar(msg: string, responseCode: number) {
     this._snackBar.open(msg, 'x', {
