@@ -15,7 +15,7 @@ import { SupplierViewOffersService } from './supplier-view-offers.service';
   styleUrls: ['./supplier-view-offers.component.css']
 })
 export class SupplierViewOffersComponent implements OnInit, AfterViewInit {
-  displayedColumnsOffers: string[] = ['id', 'orderName', 'deliveryDate', 'price', 'offerStatus'];
+  displayedColumnsOffers: string[] = ['id', 'orderName', 'dueDateOffer', 'deliveryDate', 'price', 'offerStatus'];
   filterOptions = ['ACCEPTED', 'REJECTED', 'PENDING'];
   offersData = [];
   offersDataSource = new MatTableDataSource<any>(this.offersData);

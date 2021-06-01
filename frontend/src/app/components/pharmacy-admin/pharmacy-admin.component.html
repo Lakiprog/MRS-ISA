@@ -9,16 +9,16 @@
 
             <a mat-button routerLink="/listOfMedicine">List of medicine</a>
 
-            <a mat-button routerLink="/addNewMedicine">Add new medicine</a>
 
             <a mat-button routerLink="/listOfDermatologists">List of dermatologists</a>
 
-            <a mat-button routerLink="/addNewDermatologist">Add new dermatologist</a>
 
             <a mat-button routerLink="/searchFilterMedicine">View medicine</a>
 
             <a mat-button routerLink="/pharmacyProfilePage">Pharmacy profile</a>
+            <span style = "flex: 1 1 auto;"></span>
 
+            <a mat-button (click) = "back()">Back</a>
             <a mat-button (click) = "logout()">Logout</a>
         </mat-toolbar-row>
     </mat-toolbar>

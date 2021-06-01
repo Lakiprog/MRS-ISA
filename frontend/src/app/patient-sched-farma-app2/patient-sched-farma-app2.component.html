@@ -1,25 +1,19 @@
-
-<p>
-    <mat-toolbar color="primary">
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>My App</span>
-      <span class="example-spacer"></span>
-      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>favorite</mat-icon>
-      </button>
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-        <mat-icon>share</mat-icon>
-      </button>
-    </mat-toolbar>
-</p>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>SCHEDULE  APPOINTMENT  WITH  PHARMACIST</span>
+    <span style = "flex: 1 1 auto;"></span>
+    <a mat-button routerLink = "/UserHomePage">HOMEPAGE</a>
+    <a mat-button routerLink = "/PatientProfile">MY PROFILE</a>
+    <a mat-button routerLink = "/PatientScheduleFarmaApp">GO BACK</a>
+    <a mat-button routerLink = "/login">LOGOUT</a>
+  </mat-toolbar-row>
+</mat-toolbar>
 
 <div *ngIf="empty">
-    <mat-card>
-        <p>
-            Nema nista
-        </p>
+    <mat-card class="card">
+      <img mat-card-image class="imageFront" src="assets\pharmacyForApp.jpg">
+      <br />
+      <h2 class="h2">THERE AREN'T AVAILABLE PHARMACIES FOR APPOINMENT.</h2>
     </mat-card>
 </div>
 
@@ -28,12 +22,15 @@
 
 <div *ngIf="notEmpty">
     <mat-card class="card">
-      <div class="inputic"> 
+      <img mat-card-image class="imageFront" src="assets\pharmacyForApp.jpg">
+        <br />
+        <h2 class="h2">THESE ARE AVAILABLE PHARMACIES FOR APPOINMENT.</h2>
+       
         <mat-form-field class="example-full-width">
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="NS" #input>
         </mat-form-field>
-      </div>
+      
       
       
       <div class="mat-elevation-z8">
@@ -100,12 +97,16 @@
   
   <div *ngIf="showPharmaceuts">
     <mat-card class="card">
-      <div class="inputic"> 
+
+      <img mat-card-image class="imageFront" src="assets\dermatologists.jpg">
+        <br />
+        <h2 class="h2">THESE ARE AVAILABLE PHARMACISTS FOR APPOINMENT.</h2>
+      
         <mat-form-field class="example-full-width">
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="applyFilter2($event)" placeholder="NS" #input>
         </mat-form-field>
-      </div>
+     
       
       
       <div class="mat-elevation-z8">

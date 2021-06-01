@@ -41,6 +41,10 @@ table {
     width: 20%;  
 }
 
+.coloumnDueDateOffer {
+    width: 10%; 
+}
+
 .coloumnDeliveryDate {
     width: 10%; 
 }

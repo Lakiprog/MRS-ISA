@@ -51,6 +51,19 @@ public class Patient extends User{
 	@NonNull
 	private CategoryName categoryName;
 	
+	@Column
+	private int penals;
+	
+
+	
+	
+	public int getPenals() {
+		return penals;
+	}
+
+	public void setPenals(int penals) {
+		this.penals = penals;
+	}
 
 	public Set<Complaint> getComplaints() {
 		return complaints;

@@ -1,10 +1,7 @@
 package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.model.*;
-import com.MRSISA2021_T15.repository.AllergyRepository;
-import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
-import com.MRSISA2021_T15.repository.MedicineRepository;
-import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
+import com.MRSISA2021_T15.repository.*;
 import com.MRSISA2021_T15.service.MedicineService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,6 +31,8 @@ public class MedicineController {
 	private AllergyRepository allergyRepository;
 	@Autowired
 	private MedicinePharmacyRepository medicinePharmacyRepository;
+	@Autowired
+	private MedicineNeededRepository medicineNeededRepository;
 
 
 
@@ -163,4 +162,11 @@ public class MedicineController {
 	public HashSet<MedicineForm> getMedicineForms() {
 		return medicineService.getMedicineForms();
 	}
+
+	@GetMapping(value = "/getMedicineInquiries", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public List<MedicineNeeded> getMedicineInquiries() {
+		return medicineNeededRepository.findAllMedicineNeeded();
+	}
+
 }

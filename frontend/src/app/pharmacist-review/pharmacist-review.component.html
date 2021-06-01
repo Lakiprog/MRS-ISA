@@ -1,18 +1,12 @@
 <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>REVIEW PHARMACIST</span>
-    <span class="example-spacer"></span>
-    <button mat-icon-button (click) = "backToReview()" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>done</mat-icon>
-    </button>
-    <button mat-icon-button (click) = "home()" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>home</mat-icon>
-    </button>
-    <button mat-icon-button (click) = "profile()"  class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>account_circle</mat-icon>
-    </button>
+    <mat-toolbar-row>
+        <span>PAST  APPOINTMENT  WITH  PHARMACISTS </span>
+        <span style = "flex: 1 1 auto;"></span>
+        <a mat-button routerLink = "/UserHomePage">HOMEPAGE</a>
+        <a mat-button routerLink = "/PatientProfile">MY PROFILE</a>
+        <a mat-button routerLink = "/Review">BACK</a>
+        <a mat-button routerLink = "/login">LOGOUT</a>
+      </mat-toolbar-row>
 </mat-toolbar>
 
 

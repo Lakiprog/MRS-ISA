@@ -1,27 +1,31 @@
 <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>My App</span>
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>favorite</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>share</mat-icon>
-    </button>
+  <mat-toolbar-row>
+    <span>SCHEDULE  APPOINTMENT  WITH  DERMATOLOGIST </span>
+    <span style = "flex: 1 1 auto;"></span>
+    <a mat-button routerLink = "/UserHomePage">HOMEPAGE</a>
+    <a mat-button routerLink = "/PatientProfile">MY PROFILE</a>
+    <a mat-button routerLink = "/login">LOGOUT</a>
+  </mat-toolbar-row>
 </mat-toolbar>
 
 
 <section class="sectionN">
     <mat-card class="card">
-        <div class="inputic"> 
-          <mat-form-field class="example-full-width">
-            <mat-label>Filter</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="NS" #input>
-          </mat-form-field>
-        </div>
+      <mat-card-header>
+        <span class="title_card1"><h2 class="h2">PLEASE PICK A PHARMACY IN WHICH YOU WANT TO MAKE APPOINMENT WITH DERMATOLOGIST</h2></span>
+      </mat-card-header>
+
+      <img mat-card-image class="imageFront" src="assets\pharmacyForApp.jpg">
+
+
+     
+      <mat-form-field>
+        <mat-label>Filter pharmacy by inputing pharmacy's data</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="NS" #input>
+      </mat-form-field>
         
+        
+        <br />
         
         <div class="mat-elevation-z8">
           <table mat-table [dataSource]="dataSource" matSort>
@@ -57,10 +61,10 @@
             </ng-container>
 
             <ng-container matColumnDef="homepage">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> HOMEPAGE </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> PHARMACY </th>
                 <td mat-cell *matCellDef="let row"> 
                     <button (click) = "makeHomePage(row)" mat-icon-button color="primary" aria-label="Example icon button with a home icon">
-                        <mat-icon>home</mat-icon>
+                        SHOW
                     </button>
                 </td>
             </ng-container>
@@ -83,27 +87,42 @@
     <div *ngIf="showHomePage" class="pharmacyDiv">
     <mat-card  class="pharmacyCard">
         <mat-card-header>
-            <mat-card-title>PHARMACY</mat-card-title>
+            <mat-card-title>CHOSEN PHARMACY</mat-card-title>
         </mat-card-header>
         <img mat-card-image src="pharmacyLogo.jpg">
           <mat-card-content>
-            <p class="info">
-            NAME: {{pharmacyData.name}}
+
+          <div class="centriraj">
+            <h2>PHARMACY'S DATA</h2>
+
+            <strong>PHARMACY: </strong> <span class="pomjeri">{{pharmacyData.name}}</span>
             <br />
-            ADRESS: {{pharmacyData['address']}}
             <br />
-            CITY: {{pharmacyData['city']}}
+            <strong>ADRESS: </strong> <span class="pomjeri">{{pharmacyData.address}}</span>
             <br />
-            COUNTRY: {{pharmacyData['country']}}
             <br />
-            RATE: {{pharmacyData['rating']}}
+            <strong>CITY: </strong> <span class="pomjeri">{{pharmacyData.city}} </span>
+             <br />
             <br />
-            DESCRIPTION:  {{pharmacyData['description']}}
+             <strong>COUNTRY: </strong> <span class="pomjeri">{{pharmacyData.country}}</span>
+             <br />
             <br />
-          </p>
+            <strong>PHARMACY'S RATE : </strong> <span class="pomjeri">{{pharmacyData.rating}}</span>
+            <br />
+            <br />
+            <strong>DESCRIPTION : </strong> <span class="pomjeri">{{pharmacyData.description}}</span>
+            <br />
+            <br />
+            <br />
+
+
+        </div>
+
           </mat-card-content>
           <mat-card-actions>
-            <button class="dermaButton" (click) = "dermaApp(pharmacyData)" mat-button>MAKE A DERMATOLOGICAL APPOINTMENT</button>
+            <div class="pomjeri_dugmice">
+              <button class="dermaButton" (click) = "dermaApp(pharmacyData)" mat-button>MAKE A DERMATOLOGICAL APPOINTMENT</button>
+            </div>
           </mat-card-actions>
     </mat-card>
   </div>

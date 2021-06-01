@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   AddMedicineToCartPopupComponent,
@@ -12,10 +13,14 @@ import {
 })
 export class SubmitPurchaseOrderPopupComponent {
   constructor(
+    private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<SubmitPurchaseOrderPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
-
+  purchaseOrderForm = this.formBuilder.group({
+    purchaseOrderName: '',
+    purchaseOrderDate: '',
+  });
   onNoClick(): void {
     this.dialogRef.close();
   }

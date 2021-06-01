@@ -1,8 +1,12 @@
 package com.MRSISA2021_T15.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.model.AppointmentDermatologist;
@@ -11,6 +15,7 @@ import com.MRSISA2021_T15.model.Dermatologist;
 import com.MRSISA2021_T15.model.EReceiptMedicineDetails;
 import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.Patient;
+import com.MRSISA2021_T15.model.PatientSubPharmacy;
 import com.MRSISA2021_T15.model.Pharmacist;
 import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.repository.AppointmentRepository;
@@ -128,6 +133,19 @@ public class RatingService {
 		}
 	}
 	
+	
+	
+	@Scheduled(fixedDelayString = "PT24H")
+	public void deletePenals() throws InterruptedException {
+		LocalDateTime now = LocalDateTime.now();
+		
+		if(now.getDayOfMonth() == 1) {
+			for(Patient p : userRepository.findAllPatients()) {
+				
+				p.setPenals(0);
+			}
+		}
+	}
 	
 	
 	

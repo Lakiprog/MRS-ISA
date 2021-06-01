@@ -14,6 +14,6 @@ public class PharmacySearchService {
 	PharmacySearchRepository repository;
 	
 	public List<Pharmacy>findAll(){
-		return repository.findAll();
+		return repository.findAllPhamracies();
 	}
 }

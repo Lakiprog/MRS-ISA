@@ -1,5 +1,6 @@
 package com.MRSISA2021_T15.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.LockModeType;
@@ -20,8 +21,8 @@ public interface PurchaseOrderSupplierRepository extends CrudRepository<Purchase
 	
 	List<PurchaseOrderSupplier> findBySupplier(Supplier supplier);
 	
-	@Query("select pos from PurchaseOrderSupplier pos where pos.offerStatus = 2 AND pos.supplier.id = ?1")
-	List<PurchaseOrderSupplier> getPendingOffers(Integer supplierId);
+	@Query("select pos from PurchaseOrderSupplier pos where pos.offerStatus = 2 AND pos.supplier.id = ?1 AND pos.purchaseOrder.dueDateOffer > ?2")
+	List<PurchaseOrderSupplier> getPendingOffers(Integer supplierId, LocalDate currentDate);
 	
 	@Query("select pos.purchaseOrder.id from PurchaseOrderSupplier pos where pos.offerStatus = 2 AND pos.supplier.id = ?1")
 	List<Integer> getPendingPurchaseOrderIdsBySupplierId(Integer supplierId);

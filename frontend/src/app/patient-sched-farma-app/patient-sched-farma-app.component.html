@@ -1,29 +1,25 @@
-<p>
-    <mat-toolbar color="primary">
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>My App</span>
-      <span class="example-spacer"></span>
-      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>favorite</mat-icon>
-      </button>
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-        <mat-icon>share</mat-icon>
-      </button>
-    </mat-toolbar>
-</p>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>SCHEDULE  APPOINTMENT  WITH  PHARMACIST</span>
+    <span style = "flex: 1 1 auto;"></span>
+    <a mat-button routerLink = "/UserHomePage">HOMEPAGE</a>
+    <a mat-button routerLink = "/PatientProfile">MY PROFILE</a>
+    <a mat-button routerLink = "/login">LOGOUT</a>
+  </mat-toolbar-row>
+</mat-toolbar>
 
 <div>
-    <mat-card>
+    <mat-card class="card">
         <mat-card-header>
-            <mat-card-title>TIME</mat-card-title>
-            <mat-card-subtitle>
-                Please pick a time range!
-            </mat-card-subtitle>
+            <mat-card-title>DATE AND TIME</mat-card-title>
         </mat-card-header>
 
+        <img mat-card-image class="imageFront" src="assets\dateTime.jpg">
+        
+
         <mat-card-content>
+          <h4 class="h4"><strong> PICK A DATE AND TIME FOR YOUR APPOINTMENT </strong></h4>
+          <div class="content">
             <form [formGroup] = "timeForm"  class="example-form">
                 <mat-form-field class="startDate" appearance="fill">
                     <mat-label>Choose a start date</mat-label>
@@ -32,10 +28,8 @@
                     <mat-datepicker touchUi #picker3></mat-datepicker>
                     <mat-error *ngIf = "hasError('start', 'required')">Start date is required!</mat-error>
                   </mat-form-field>
-
                   <br />
-
-
+                  <br />
                 <mat-form-field class="start">
                   <mat-label>Start time</mat-label>
                   <input time [ngxTimepicker]="picker" matInput placeholder="3:00 PM" formControlName = "start" required>
@@ -43,15 +37,19 @@
                   <mat-error *ngIf = "hasError('start', 'required')">Start time is required!</mat-error>
                 </mat-form-field>
                 <span class="material-icons">watch_later</span>
-          </form>
+            </form>
+          </div>
+          <br />
+          <br />
         </mat-card-content>
 
         <mat-card-actions>
+          <div class="dugme">
             <button mat-button style=
-                "background-color:blue; color:white" (click) = "schedule()" [disabled] = "timeForm.invalid">
+                "background-color:#3F51B5; color:white" (click) = "schedule()" [disabled] = "timeForm.invalid">
                 SCHEDULE
             </button>
-      
+          </div>
         </mat-card-actions>
     </mat-card>
 </div>

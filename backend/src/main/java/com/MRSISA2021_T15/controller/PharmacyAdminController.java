@@ -118,7 +118,7 @@ public class PharmacyAdminController {
     public ResponseEntity<String> createPurchaseOrder(@RequestBody PurchaseOrderDto pod){
         PurchaseOrder po = new PurchaseOrder();
         po.setPharmacy(pod.getPharmacy());
-        po.setDueDateOffer(pod.getDueDateOffer());
+        po.setDueDateOffer(pod.getPurchaseOrderDate().plusDays(1));
         po.setPurchaseOrderName(pod.getPurchaseOrderName());
         for (PurchaseOrderMedicine pom: pod.getPurchaseOrderMedicine())
         {
