@@ -89,15 +89,15 @@ public class AppointmentService {
 	private MedicineRepository medicineRepository;
 
 	public List<Appointment> findAllPharmacist(Integer id) {
-		return repository.findAllPharmacistId(id);
+		return repository.findAllPharmacistIdPessimisticWrite(id);
 	}
 
 	public List<Appointment> findAllDermatologist(Integer id) {
-		return repository.findAllDermatologistId(id);
+		return repository.findAllDermatologistIdPessimisticWrite(id);
 	}
 
 	public List<Appointment> findAllPatients(Integer id) {
-		return repository.findAllPatientsId(id);
+		return repository.findAllPatientsIdPessimisticWrite(id);
 	}
 
 	public List<Appointment> findAllAppointments() {
@@ -113,12 +113,13 @@ public class AppointmentService {
 		return repo2.findByDermatologistId(p.getId());
 	}
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void makeTrue(Appointment appointment) {
 		appointment.setDone(true);
-		System.out.println(appointment.isDone());
 		repository.save(appointment);
 	}
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public String makeAppointmentPharmacist(AppointmentPharmacist appointment) {
 		
 		if(appointment.getStart().isAfter(appointment.getEnd())) {
@@ -129,9 +130,9 @@ public class AppointmentService {
 		
 		List<Appointment> appointmentsPatient = findAllPatients(appointment.getPatient().getId());
 		List<Appointment> appointmentsPharmacist = findAllPharmacist(appointment.getPharmacist().getId());
-		List<Absence> absences = repo3.findAllApproved();
+		List<Absence> absences = repo3.findAll();
 		Pharmacist p = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		EmploymentPharmacist employment = repo2.findByPharmacistId(p.getId());
+		EmploymentPharmacist employment = repo2.findByPharmacistIdPessimisticRead(p.getId());
 
 		if (appointment.getStart().getHour() < employment.getStart()
 				|| appointment.getEnd().getHour() >= employment.getEnd()) {
@@ -201,6 +202,7 @@ public class AppointmentService {
 		return "";
 	}
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public String makeAppointmentDermatologist(AppointmentDermatologist appointment) {
 		
 		if(appointment.getStart().isAfter(appointment.getEnd())) {
@@ -211,9 +213,9 @@ public class AppointmentService {
 		
 		List<Appointment> appointmentsPatient = findAllPatients(appointment.getPatient().getId());
 		List<Appointment> appointmentsPharmacist = findAllDermatologist(appointment.getDermatologist().getId());
-		List<Absence> absences = repo3.findAllApproved();
+		List<Absence> absences = repo3.findAll();
 
-		for (EmploymentDermatologist employment : repo2.findByDermatologistId(appointment.getDermatologist().getId())) {
+		for (EmploymentDermatologist employment : repo2.findByDermatologistIdPessimisticRead(appointment.getDermatologist().getId())) {
 			if (employment.getPharmacy().getId().equals(appointment.getPharmacy().getId())) {
 				if (appointment.getStart().getHour() < employment.getStart()
 						|| appointment.getEnd().getHour() >= employment.getEnd()) {
@@ -286,6 +288,7 @@ public class AppointmentService {
 		return "";
 	}
 
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public String makeAppointmentDermatologistPredefined(Integer id, Patient patient) {
 		Appointment appointment = repository.findWithId(id);
 		
@@ -320,7 +323,8 @@ public class AppointmentService {
 	public String endAppointment(Appointment appointment, MedicineQuantity[] meds, String comments) {
 		String msg = "";
 		
-		List<Allergy> allergies =  allergyrepo.findAllPatients(appointment.getPatient().getId());
+		List<Allergy> allergies =  allergyrepo.findAllPatientsPessimisticRead(appointment.getPatient().getId());
+		List<MedicinePharmacy> medicines = repo4.findByPharmacyIdPessimisticW(appointment.getPharmacy().getId());
 		
 		for (MedicineQuantity medicine : meds) {
 			
@@ -331,7 +335,7 @@ public class AppointmentService {
 				}
 			}
 			
-			for (MedicinePharmacy medicinePharm : repo4.findByPharmacyId(appointment.getPharmacy().getId())) {
+			for (MedicinePharmacy medicinePharm : medicines) {
 
 				if (medicine.getMedicine().getId() == medicinePharm.getMedicine().getId()) {
 					if (medicine.getQuantity() > medicinePharm.getAmount()) {
@@ -347,6 +351,7 @@ public class AppointmentService {
 		if (msg.equals("")) {
 			AppointmentInfo ai = new AppointmentInfo();
 			Reservation r = new Reservation();
+			
 			Patient patient = (Patient) userRepository.findById(appointment.getPatient().getId()).get();
 			for (MedicineQuantity medicine : meds) {
 				patient.setCollectedPoints(Math.abs(patient.getCollectedPoints()) + 
@@ -421,7 +426,7 @@ public class AppointmentService {
 			}
 			
 			for (MedicineQuantity medicine : meds) {
-				for (MedicinePharmacy medicinePharm : repo4.findByPharmacyId(appointment.getPharmacy().getId())) {
+				for (MedicinePharmacy medicinePharm : medicines) {
 					if (medicine.getMedicine().getId() == medicinePharm.getMedicine().getId()) {
 						medicinePharm.setAmount(medicinePharm.getAmount() - medicine.getQuantity());
 						repo4.save(medicinePharm);

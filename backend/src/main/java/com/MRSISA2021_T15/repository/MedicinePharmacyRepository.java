@@ -14,6 +14,14 @@ public interface MedicinePharmacyRepository extends CrudRepository<MedicinePharm
 	@Query("select m from MedicinePharmacy m where pharmacy.id = ?1")
 	public List<MedicinePharmacy> findByPharmacyId(Integer id);
 	
+	@Lock(LockModeType.PESSIMISTIC_READ)
+	@Query("select m from MedicinePharmacy m where pharmacy.id = ?1")
+	public List<MedicinePharmacy> findByPharmacyIdPessimisticRead(Integer id);
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select m from MedicinePharmacy m where pharmacy.id = ?1")
+	public List<MedicinePharmacy> findByPharmacyIdPessimisticW(Integer id);
+	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	@Query("select m from MedicinePharmacy m where pharmacy.id = :id AND m.medicine.medicineCode in (:medicineCodes)")
 	public List<MedicinePharmacy> findByPharmacyIdPessimisticWrite(Integer id, List<String> medicineCodes);

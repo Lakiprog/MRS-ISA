@@ -2,7 +2,10 @@ package com.MRSISA2021_T15.repository;
 
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -62,11 +65,31 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	@Query("select a from Appointment a where a.pharmacist.id = ?1")
 	public List<Appointment> findAllPharmacistId(Integer id);
 	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select a from Appointment a where a.pharmacist.id = ?1")
+	public List<Appointment> findAllPharmacistIdPessimisticWrite(Integer id);
+	
+	@Lock(LockModeType.PESSIMISTIC_READ)
+	@Query("select a from Appointment a where a.pharmacist.id = ?1")
+	public List<Appointment> findAllPharmacistIdPessimisticRead(Integer id);
+	
 	@Query("select a from Appointment a where a.dermatologist.id = ?1")
 	public List<Appointment> findAllDermatologistId(Integer id);
 	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select a from Appointment a where a.dermatologist.id = ?1")
+	public List<Appointment> findAllDermatologistIdPessimisticWrite(Integer id);
+	
+	@Lock(LockModeType.PESSIMISTIC_READ)
+	@Query("select a from Appointment a where a.dermatologist.id = ?1")
+	public List<Appointment> findAllDermatologistIdPessimisticRead(Integer id);
+	
 	@Query("select a from Appointment a where a.patient.id = ?1")
 	public List<Appointment> findAllPatientsId(Integer id);
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select a from Appointment a where a.patient.id = ?1")
+	public List<Appointment> findAllPatientsIdPessimisticWrite(Integer id);
 	
 	@Query("select a from Appointment a where a.id = ?1")
 	public Appointment findWithId(Integer id);
