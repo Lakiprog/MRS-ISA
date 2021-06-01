@@ -84,7 +84,6 @@ export class PublicPharmacyProfilePageComponent implements OnInit {
     this.pharmacistList = [];
     this.dermatologistList = [];
     this.pharmacy = JSON.parse(localStorage.getItem('pharmacy') || '{}');
-    console.log(this.pharmacy);
     this.publicPharmacyProfilePageService
       .getMedicinePharmacy(this.pharmacy.id)
       .subscribe((result) => {
@@ -95,7 +94,6 @@ export class PublicPharmacyProfilePageComponent implements OnInit {
         this.medicinePharmacyListSource.paginator =
           this.paginatorMedicinePharmacy;
       });
-    //   TODO
     this.publicPharmacyProfilePageService
       .getDermatologistAppointments(this.pharmacy.id)
       .subscribe((result) => {
@@ -105,8 +103,6 @@ export class PublicPharmacyProfilePageComponent implements OnInit {
         );
         this.dermatologistAppointmentListSource.paginator =
           this.paginatorDermatologistAppointment;
-
-        console.log(this.dermatologistAppointmentListSource);
       });
     this.publicPharmacyProfilePageService
       .getPharmacyEmployees(this.pharmacy.id)
@@ -123,7 +119,6 @@ export class PublicPharmacyProfilePageComponent implements OnInit {
         this.pharmacistListSource = new MatTableDataSource<any>(
           this.pharmacistList
         );
-        console.log(this.pharmacistListSource);
       });
   }
 
