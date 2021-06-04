@@ -10,9 +10,9 @@
 
 ## Neophodni programi
 Da bi se aplikacija pokrenula potrebno je instalirati sledeće programe:
-* [MySQL] (https://dev.mysql.com/downloads/) baza podataka
-* [Eclipse IDE for Enterprise Java and Web Developers] (https://www.eclipse.org/downloads/packages/release/2021-03/r/eclipse-ide-enterprise-java-and-web-developers)
-* [Node.js] (https://nodejs.org/en/) za instalaciju Angular framework-a
+* [MySQL](https://dev.mysql.com/downloads/) baza podataka
+* [Eclipse IDE for Enterprise Java and Web Developers](https://www.eclipse.org/downloads/packages/release/2021-03/r/eclipse-ide-enterprise-java-and-web-developers)
+* [Node.js](https://nodejs.org/en/) za instalaciju Angular framework-a
 
 ### Pokretanje frontend-a
 Prvo treba instalirati Angular framework korišćenjem sledeće komande:
@@ -32,10 +32,10 @@ ng serve
 ```
 ### Pokretanje SUBP-a
 
-Nakon instaliranja i pokretanja MySQL baze podataka, izvršite skriptu [database.sql] (./backend/src/main/resources/database.sql).
+Nakon instaliranja i pokretanja MySQL baze podataka, izvršite skriptu [database.sql](./backend/src/main/resources/database.sql).
 Ovom akcijom kreiraće se baza podataka.
 
 ### Pokretanje backend aplikacije
 Importovati projekat u Eclipse IDE koji se nalazi u folderu ```backend```.
 
-Odabrati opciju ```File -> Import -> Maven -> Existing Maven projects``.
+Odabrati opciju ```File -> Import -> Maven -> Existing Maven projects```.
