@@ -77,6 +77,7 @@ export class MedicinePrescriptionComponent implements OnInit, AfterViewInit {
           }
           if (response.length == 0) {
             this.openSnackBar("No pharmacy has the required medicine!", this.RESPONSE_ERROR);
+            this.medicineData = [];
           }
           this.pharmaciesDataSource = new MatTableDataSource<any>(this.pharmacyData);
           this.pharmaciesDataSource.paginator = this.paginator.toArray()[1];
