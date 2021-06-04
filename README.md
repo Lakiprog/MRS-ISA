@@ -17,7 +17,7 @@ Da bi se aplikacija pokrenula potrebno je instalirati sledeće programe:
 ### Pokretanje frontend aplikacije
 Prvo treba instalirati Angular framework korišćenjem sledeće komande:
 ```
-npm install @angular/cli
+npm install -g @angular/cli
 ```
 
 Premestiti se u folder frontend aplikacije i instalirati dodatne plugine:
