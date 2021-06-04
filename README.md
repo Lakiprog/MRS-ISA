@@ -14,7 +14,7 @@ Da bi se aplikacija pokrenula potrebno je instalirati sledeće programe:
 * [Eclipse IDE for Enterprise Java and Web Developers](https://www.eclipse.org/downloads/packages/release/2021-03/r/eclipse-ide-enterprise-java-and-web-developers)
 * [Node.js](https://nodejs.org/en/) za instalaciju Angular framework-a
 
-### Pokretanje frontend-a
+### Pokretanje frontend aplikacije
 Prvo treba instalirati Angular framework korišćenjem sledeće komande:
 ```
 npm install @angular/cli
