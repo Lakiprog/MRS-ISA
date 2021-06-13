@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.MRSISA2021_T15.model.Allergy;
+import com.MRSISA2021_T15.model.EReceiptAndMedicineDetails;
 import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.repository.AllergyRepository;
+import com.MRSISA2021_T15.repository.EReceiptAndMedicineDetailsRepository;
 import com.MRSISA2021_T15.repository.MedicineRepository;
 
 @Service
@@ -19,6 +21,11 @@ public class AllergyService {
 	
 	@Autowired
 	MedicineRepository medicineRepository;
+	
+	@Autowired
+	EReceiptAndMedicineDetailsRepository ereceptRep;
+	
+	
 	
 	public List<Allergy> getForPatient(Integer id){
 		return repository.findAllPatients(id);
@@ -35,6 +42,12 @@ public class AllergyService {
 		a.setMedicine(medicine);
 		a.setPatient(patient);
 		repository.save(a);
+	}
+	
+	
+	
+	public List<EReceiptAndMedicineDetails> findAllEROfPatient(Integer id){
+		return ereceptRep.findAllEROfPatient(id);
 	}
 	
 }

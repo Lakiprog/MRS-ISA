@@ -139,6 +139,7 @@ import { DermatologistAppointmentPopupComponent } from './components/dermatologi
 import { PublicPharmacyProfilePageComponent } from './components/public-pharmacy-profile-page/public-pharmacy-profile-page.component';
 import { MedicineInquiriesComponent } from './components/medicine-inquiries/medicine-inquiries.component';
 import { AllergiesOfPatientComponent } from './allergies-of-patient/allergies-of-patient.component';
+import { PatientsEreceptsComponent } from './patients-erecepts/patients-erecepts.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -244,6 +245,7 @@ FullCalendarModule.registerPlugins([
     PublicPharmacyProfilePageComponent,
     MedicineInquiriesComponent,
     AllergiesOfPatientComponent,
+    PatientsEreceptsComponent,
 
   ],
   imports: [
@@ -631,6 +633,11 @@ FullCalendarModule.registerPlugins([
         path: 'AllergiesOfPatient',
         canActivate: [PatientRoutes],
         component: AllergiesOfPatientComponent,
+      },
+      {
+        path: 'PatientsERecepts',
+        canActivate: [PatientRoutes],
+        component: PatientsEreceptsComponent,
       },
     ]),
   ],

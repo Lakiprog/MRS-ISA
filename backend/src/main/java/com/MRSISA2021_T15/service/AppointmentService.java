@@ -435,8 +435,11 @@ public class AppointmentService {
 	}
 	
 	
+	
+	//@Transactional(isolation = Isolation.READ_COMMITTED)
 	public void saveDerApp(AppointmentDermatologist app) {
 		repository.save(app);
+		sendEmailAppointment(app);
 	}
 	
 	
@@ -521,6 +524,7 @@ public class AppointmentService {
 	public void newPharmaciesApp(AppointmentPharmacist appoinment) {
 		appoinment.setPrice(1000);
 		appointmentRepository.save(appoinment);
+		sendEmailAppointment(appoinment);
 		
 	}
 	

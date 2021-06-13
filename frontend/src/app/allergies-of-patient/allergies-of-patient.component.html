@@ -17,10 +17,6 @@
         </mat-card-header>
         <img mat-card-image class="imageFront" src="assets\allergieWoman.jpg">
 
-        <mat-form-field class="example-full-width">
-            <mat-label>Filter allergy by entering it's data.</mat-label>
-            <input matInput (keyup)="applyFilterAllergy($event)" placeholder="bensedin" #input>
-        </mat-form-field>
 
         <div class = "data-table">
             <table mat-table [dataSource]="dataSource">

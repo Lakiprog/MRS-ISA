@@ -125,7 +125,11 @@ public class MedicinePharmacyController {
 		
 		if(message.equals("")) {
 			mService.deleteMedicine(reservationItem);
+		}else {
+			int penal = patient.getPenals();
+			patient.setPenals(penal + 1);
 		}
+		
 		
 		
 		Gson gson = new GsonBuilder().create();
