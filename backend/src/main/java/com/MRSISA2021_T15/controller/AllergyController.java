@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.MRSISA2021_T15.model.Allergy;
 import com.MRSISA2021_T15.model.Dermatologist;
+import com.MRSISA2021_T15.model.EReceiptAndMedicineDetails;
 import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.MedicineNeeded;
 import com.MRSISA2021_T15.model.MedicinePharmacy;
@@ -30,6 +31,7 @@ import com.MRSISA2021_T15.model.MedicineQuantity;
 import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.model.PharmacyAdmin;
+import com.MRSISA2021_T15.repository.EReceiptAndMedicineDetailsRepository;
 import com.MRSISA2021_T15.repository.MedicineNeededRepository;
 import com.MRSISA2021_T15.repository.UserRepository;
 import com.MRSISA2021_T15.service.AllergyService;
@@ -230,6 +232,18 @@ public class AllergyController {
 		return new ResponseEntity<String>(gson.toJson("You added new allergy."), HttpStatus.OK);
 		
 	}
+	
+	
+	
+	
+	@GetMapping(value = "/getAllErecepts", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	List<EReceiptAndMedicineDetails> getAllErecepts(){
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return service.findAllEROfPatient(p.getId());
+	}
+	
+	
 }
 
 

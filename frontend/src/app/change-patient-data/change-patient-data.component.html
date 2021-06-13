@@ -7,11 +7,6 @@
       <mat-toolbar></mat-toolbar>
       <hr>
       <span class='header'>
-        <mat-nav-list>
-          <a mat-list-item routerLink="/UserHomePage"><strong class='list_item'>HOMEPAGE</strong></a>
-          <br />
-          <a mat-list-item routerLink="/PatientProfile"><strong class='list_item'>MY PROFILE</strong></a>
-        </mat-nav-list>
       </span>
     </mat-sidenav>
   </mat-sidenav-container>
@@ -26,9 +21,10 @@
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
     <span>Change data</span>
-    <span class='header'><nav>
-      <span class='data'><a  routerLink=""> <strong>LOGOUT</strong> </a></span>
-    </nav></span>
+    <span style = "flex: 1 1 auto;"></span>
+    <a mat-button routerLink = "/UserHomePage">HOMEPAGE</a>
+    <a mat-button routerLink = "/PatientProfile">MY PROFILE</a>
+    <a mat-button routerLink = "/login">LOGOUT</a>
   </mat-toolbar>
 
   

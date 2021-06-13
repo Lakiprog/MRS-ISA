@@ -14,5 +14,8 @@ public interface EReceiptAndMedicineDetailsRepository extends CrudRepository<ERe
 	@Query("select distinct m from EReceiptAndMedicineDetails er join er.eReceiptMedicineDetails m where er.eReceipt.patient.id = ?1")
 	public List<EReceiptMedicineDetails> findAllMedicinesByERecept(Integer id);
 	
+	
+	@Query("select distinct er from EReceiptAndMedicineDetails er join er.eReceiptMedicineDetails m where er.eReceipt.patient.id = ?1")
+	public List<EReceiptAndMedicineDetails> findAllEROfPatient(Integer id);
 
 }

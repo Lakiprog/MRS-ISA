@@ -1,24 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { AllergiesOfPatientService } from './allergies-of-patient.service';
+import { PatientsEreceptsService } from './patients-erecepts.service';
 
 @Component({
-  selector: 'app-allergies-of-patient',
-  templateUrl: './allergies-of-patient.component.html',
-  styleUrls: ['./allergies-of-patient.component.css']
+  selector: 'app-patients-erecepts',
+  templateUrl: './patients-erecepts.component.html',
+  styleUrls: ['./patients-erecepts.component.css']
 })
-export class AllergiesOfPatientComponent implements OnInit {
+export class PatientsEreceptsComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   paginator1!: MatPaginator;
 
 
-  showTableOfAllergies:boolean = true;
+  showTableOfERecept:boolean = true;
+  showEmpty:boolean = false;
 
-  displayedColumns: string[] = ["NAME", "COMPOSITION", "ADDITIONAL COMMENT"];
+  displayedColumns: string[] = ["NAME", "DATE", "PHARMACY", "QUANTITY", "TOTAL"];
   
   
   elemsOfAllergies = []
@@ -27,7 +27,7 @@ export class AllergiesOfPatientComponent implements OnInit {
   dataSource = new MatTableDataSource<any>(this.elemsOfAllergies);
   
   
-  constructor(public service:AllergiesOfPatientService,  private router:Router) { 
+  constructor(public service:PatientsEreceptsService,  private router:Router) { 
     this.getAllergies();
   }
 
@@ -43,22 +43,19 @@ export class AllergiesOfPatientComponent implements OnInit {
 
 
   getAllergies():void{
-    this.service.getAllAllergies().subscribe((data:any) =>{
+    this.service.getAllrecepts().subscribe((data:any) =>{
       this.elemsOfAllergies = data;
+
+      if(data.length == 0){
+        this.showEmpty = true;
+        this.showTableOfERecept = false;
+      }
       this.dataSource = new MatTableDataSource<any>(this.elemsOfAllergies);
       this.dataSource.paginator = this.paginator1;
 
      
     })
+
   }
-
-  
-
-
-
-  
-
-
-  
 
 }
