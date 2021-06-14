@@ -3,19 +3,19 @@
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
 
-            <a mat-button routerLink="/listOfPharmacists">List of pharmacists</a>
+            <a mat-button routerLink="/listOfPharmacists" [class.disabled]="firstLogin">List of pharmacists</a>
 
-            <a mat-button routerLink="/addNewPharmacist">Add new pharmacist</a>
+            <a mat-button routerLink="/addNewPharmacist" [class.disabled]="firstLogin">Add new pharmacist</a>
 
-            <a mat-button routerLink="/listOfMedicine">List of medicine</a>
-
-
-            <a mat-button routerLink="/listOfDermatologists">List of dermatologists</a>
+            <a mat-button routerLink="/listOfMedicine" [class.disabled]="firstLogin">List of medicine</a>
 
 
-            <a mat-button routerLink="/searchFilterMedicine">View medicine</a>
+            <a mat-button routerLink="/listOfDermatologists" [class.disabled]="firstLogin">List of dermatologists</a>
 
-            <a mat-button routerLink="/pharmacyProfilePage">Pharmacy profile</a>
+
+            <a mat-button routerLink="/searchFilterMedicine" [class.disabled]="firstLogin">View medicine</a>
+
+            <a mat-button routerLink="/pharmacyProfilePage" [class.disabled]="firstLogin">Pharmacy profile</a>
             <span style = "flex: 1 1 auto;"></span>
 
             <a mat-button (click) = "back()">Back</a>

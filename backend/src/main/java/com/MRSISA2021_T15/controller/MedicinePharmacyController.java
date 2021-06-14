@@ -2,6 +2,7 @@ package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.model.*;
 import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
+import com.MRSISA2021_T15.repository.ReservationItemRepository;
 import com.MRSISA2021_T15.service.MedicinePharmacyService;
 import com.MRSISA2021_T15.service.ReservationService;
 import com.google.gson.Gson;
@@ -29,6 +30,9 @@ public class MedicinePharmacyController {
 
 	@Autowired
 	MedicinePharmacyRepository medicinePharmacyRepository;
+
+	@Autowired
+	ReservationItemRepository reservationItemRepository;
 
 	@GetMapping(value = "/getMedicinePharmacist/pharmacy={pharmacyId}start={start}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -154,6 +158,17 @@ public class MedicinePharmacyController {
 	public ResponseEntity<String> deleteMedicineFromPharmacy(@RequestBody Medicine m, @PathVariable Integer pharmacyId){
 		List<MedicinePharmacy> allMedicinePharmacy = medicinePharmacyRepository.findAllByMedicine(m);
 		MedicinePharmacy mp = new MedicinePharmacy();
+		Iterable<ReservationItem> reservationItems = reservationItemRepository.findAll();
+
+		for(ReservationItem ri : reservationItems)
+		{
+			if(ri.getMedicine().getId() == m.getId()){
+				if(ri.getReservation().getPickedUp() != null && ri.getReservation().getPickedUp().isAfter(LocalDateTime.now()) ){
+					return ResponseEntity.ok().build();
+				}
+			}
+		}
+
 		for (MedicinePharmacy mePh: allMedicinePharmacy) {
 			if(mePh.getPharmacy().getId() == pharmacyId){
 				mp=mePh;

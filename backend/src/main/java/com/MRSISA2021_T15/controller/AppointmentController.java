@@ -4,6 +4,7 @@ import com.MRSISA2021_T15.dto.AppointmentEnd;
 import com.MRSISA2021_T15.dto.AppointmentEndDermatologist;
 import com.MRSISA2021_T15.model.*;
 import com.MRSISA2021_T15.repository.AppointmentRepository;
+import com.MRSISA2021_T15.repository.EmploymentDermatologistRepository;
 import com.MRSISA2021_T15.service.AppointmentService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,6 +28,8 @@ public class AppointmentController {
 	private AppointmentService service;
 	@Autowired
 	private AppointmentRepository appointmentRepository;
+	@Autowired
+	private EmploymentDermatologistRepository employmentDermatologistRepository;
 	
 	@PostMapping(path="/pharmacist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -119,8 +122,21 @@ public class AppointmentController {
 	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public ResponseEntity<String> defineDermatologistAppointment(@RequestBody AppointmentDermatologist ad) {
 		List<Appointment> allAppointments = appointmentRepository.findAllDermatologistId(ad.getDermatologist().getId());
+		List<EmploymentDermatologist> employmentDermatologists = employmentDermatologistRepository.findAllByDermatologist(ad.getDermatologist());
+
 		boolean isValid = true;
 
+		//da li se pregled nalazi u radnom vremenu dermatologa
+		for(EmploymentDermatologist ed : employmentDermatologists){
+			if(ad.getStart().getHour()<ed.getStart()){
+				isValid = false;
+			}
+			else if(ad.getEnd().getHour()>ed.getEnd()){
+				isValid = false;
+			}
+		}
+
+		//da li se poklapa sa drugim pregledima
 		for (Appointment a : allAppointments){
 			if(ad.getEnd().isAfter(a.getStart()) && ad.getStart().isBefore(a.getEnd()))
 				isValid = false;

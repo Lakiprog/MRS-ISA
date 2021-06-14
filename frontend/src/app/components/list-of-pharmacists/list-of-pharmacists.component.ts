@@ -26,18 +26,14 @@ export class ListOfPharmacistsComponent implements OnInit {
   displayedColumnsPharmacistList: string[] = [
     'name',
     'surname',
-    'email',
-    'phoneNumber',
-    'city',
+    'pharmacy',
     'rating',
     'remove',
   ];
   displayedColumnsAllOtherPharmacistsList: string[] = [
     'name',
     'surname',
-    'email',
-    'phoneNumber',
-    'city',
+    'pharmacy',
     'rating',
     'add',
   ];
@@ -83,8 +79,12 @@ export class ListOfPharmacistsComponent implements OnInit {
   ngOnInit(): void {
     this.pharmacyAdminService.getUnemployedPharmacists().subscribe((res) => {
       this.allOtherPharmacists = res;
+
       this.pharmacyAdminService.getPharmacyAdminData().subscribe((data) => {
         this.pharmacyAdmin = data;
+        for (let p of this.allOtherPharmacists) {
+          p.pharmacy = this.pharmacyAdmin.pharmacy;
+        }
         this.updateLists();
       });
     });
@@ -94,6 +94,9 @@ export class ListOfPharmacistsComponent implements OnInit {
       .getPharmacistsFromPharmacy(this.pharmacyAdmin.pharmacy)
       .subscribe((res) => {
         this.pharmacistList = res;
+        for (let p of this.pharmacistList) {
+          p.pharmacy = this.pharmacyAdmin.pharmacy;
+        }
         this.pharmacistListSource = new MatTableDataSource<any>(
           this.pharmacistList
         );
