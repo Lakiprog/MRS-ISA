@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.MRSISA2021_T15.repository.AllergyRepository;
 import com.MRSISA2021_T15.repository.CategoryRepository;
 import com.MRSISA2021_T15.repository.EReceiptAndMedicineDetailsRepository;
 import com.MRSISA2021_T15.repository.EReceiptMedicineDetailsRepository;
@@ -45,6 +46,7 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.MRSISA2021_T15.dto.ChangePassword;
+import com.MRSISA2021_T15.model.Allergy;
 import com.MRSISA2021_T15.model.Category;
 import com.MRSISA2021_T15.model.CategoryName;
 import com.MRSISA2021_T15.model.Dermatologist;
@@ -100,6 +102,9 @@ public class PatientService {
 	
 	@Autowired
 	private MedicineRepository medicineRepository;
+	
+	@Autowired
+	private AllergyRepository allergyRepository;
 	
 	public List<Patient> findAllPatients(){
 		return repository.findAllPatients();
@@ -194,6 +199,8 @@ public class PatientService {
 			if (patientSubPharmacy != null) {
 				patientSubPharmacy.setSubscribed(false);
 				patientSubPharmacyRepository.save(patientSubPharmacy);
+			} else {
+				message = "Patient can not unsubscribe from a pharmacy he did not subscribe to!";
 			}
 		}
 		return message;
@@ -294,6 +301,14 @@ public class PatientService {
 					return "The pharmacy does not have the required medicine!";
 				}
 				medicineCodes.add(ermd.getMedicineCode());
+			}
+			List<Allergy> patientAllergies = allergyRepository.findAllPatients(patient.getId());
+			for (Allergy a : patientAllergies) {
+				for (EReceiptMedicineDetails ermd : eReceiptSearch.geteReceiptMedicineDetails()) {
+					if (ermd.getMedicineCode().equals(a.getMedicine().getMedicineCode())) {
+						return "The medicine can not be issued due to allergies!";
+					}
+				}
 			}
 			EReceipt qrCodeUsed = eReceiptRepository.findByPatientIdAndQrCode(patientDb.getId(), eReceiptSearch.getQrCode());
 			if (qrCodeUsed != null) {

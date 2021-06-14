@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.config.authentication.AuthenticationManagerBeanDefinitionParser;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +93,21 @@ public class MedicinePharmacyService {
 		reservationRepo.deleteById(item.getId());
 		mr.deleteById(item.getMedicine().getId());
 		rr.deleteById(item.getReservation().getId());
+			
+	}
+	
+	
+	
+	@Scheduled(fixedDelayString = "PT24H")
+	public void givePenals() throws InterruptedException {
+		LocalDateTime now = LocalDateTime.now();
 		
-		
+		List<ReservationItem> list = (List<ReservationItem>) reservationRepo.findAll();
+		for(ReservationItem ri: list) {
+			if(now.isAfter(ri.getReservation().getEnd()) && ri.getReservation().getPickedUp() == null) {
+				int penal = ri.getReservation().getPatient().getPenals();
+				ri.getReservation().getPatient().setPenals(penal+1);
+			}
+		}
 	}
 }

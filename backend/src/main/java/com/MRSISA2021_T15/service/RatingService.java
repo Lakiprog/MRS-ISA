@@ -140,12 +140,12 @@ public class RatingService {
 		LocalDateTime now = LocalDateTime.now();
 		
 		if(now.getDayOfMonth() == 1) {
-			for(Patient p : userRepository.findAllPatients()) {
-				
+			for(Patient p : userRepository.findAllPatients()) {		
 				p.setPenals(0);
 			}
 		}
 	}
+	
 	
 	
 	

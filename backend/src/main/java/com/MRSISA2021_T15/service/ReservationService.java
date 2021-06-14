@@ -55,7 +55,10 @@ public class ReservationService {
 	@Autowired
 	private MedicineRepository medicineRepository;
 	
-	
+	@Autowired
+	Environment en;
+	@Autowired
+	EmailSenderService emailsend;
 	
 
 	public ArrayList<List<Object>> getReservations(Integer id){
@@ -160,6 +163,14 @@ public class ReservationService {
 		resRepo.save(r);
 		resiRepo.save(ri);
 		orderMedRepo.save(order);
+		
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(patient.getEmail());
+		mailMessage.setSubject("Medication reservation");
+		mailMessage.setFrom(en.getProperty("spring.mail.username"));
+		mailMessage.setText("Medication has been reserved for you in pharmacy " + order.getMedicinePharmacy().getPharmacy().getName() +  ". You can pick it up till one day before " 
+		+ r.getEnd() + ". When you come pick it up, you will have to give the pharmacist this identifier " + r.getReservationId() + ". Have a nice day!");
+		emailsend.sendEmail(mailMessage);
 	}
 	
 	

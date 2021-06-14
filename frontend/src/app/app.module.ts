@@ -136,6 +136,11 @@ import { PredefineDermatologistAppointmentComponent } from './components/predefi
 import { DermatologistAppointmentPopupComponent } from './components/dermatologist-appointment-popup/dermatologist-appointment-popup.component';
 import { PublicPharmacyProfilePageComponent } from './components/public-pharmacy-profile-page/public-pharmacy-profile-page.component';
 import { MedicineInquiriesComponent } from './components/medicine-inquiries/medicine-inquiries.component';
+
+import { AllergiesOfPatientComponent } from './allergies-of-patient/allergies-of-patient.component';
+import { PatientsEreceptsComponent } from './patients-erecepts/patients-erecepts.component';
+
+
 import { AbsenceRequestsComponent } from './components/absence-requests/absence-requests.component';
 import { DeclineAbsenceRequestComponent } from './components/decline-absence-request/decline-absence-request.component';
 import { CreateActionComponent } from './components/create-action/create-action.component';
@@ -146,6 +151,7 @@ import { UpdateMedicineCommentPopupComponent } from './components/update-medicin
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddDermatologistToPharmacyPopupComponent } from './components/add-dermatologist-to-pharmacy-popup/add-dermatologist-to-pharmacy-popup.component';
 import { AddPharmacistToPharmacyPopupComponent } from './components/add-pharmacist-to-pharmacy-popup/add-pharmacist-to-pharmacy-popup.component';
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -247,6 +253,11 @@ FullCalendarModule.registerPlugins([
     DermatologistAppointmentPopupComponent,
     PublicPharmacyProfilePageComponent,
     MedicineInquiriesComponent,
+
+    AllergiesOfPatientComponent,
+    PatientsEreceptsComponent,
+
+
     AbsenceRequestsComponent,
     DeclineAbsenceRequestComponent,
     CreateActionComponent,
@@ -256,6 +267,7 @@ FullCalendarModule.registerPlugins([
     UpdateMedicineCommentPopupComponent,
     AddDermatologistToPharmacyPopupComponent,
     AddPharmacistToPharmacyPopupComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -633,6 +645,17 @@ FullCalendarModule.registerPlugins([
         path: 'medicineInquiries',
         canActivate: [PharmacyAdminRoutes],
         component: MedicineInquiriesComponent,
+      },
+      {
+
+        path: 'AllergiesOfPatient',
+        canActivate: [PatientRoutes],
+        component: AllergiesOfPatientComponent,
+      },
+      {
+        path: 'PatientsERecepts',
+        canActivate: [PatientRoutes],
+        component: PatientsEreceptsComponent,
       },
       {
         path: 'absenceRequests',

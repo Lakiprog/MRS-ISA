@@ -62,6 +62,13 @@ public class RatingController {
 	
 	
 	
+	@GetMapping(value = "/getPenalties", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	Patient getPenalties(){
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return p;
+	}
+	
 	
 	
 	@PutMapping(value = "/rateDermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

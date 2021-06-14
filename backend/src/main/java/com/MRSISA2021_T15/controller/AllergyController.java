@@ -6,29 +6,41 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MRSISA2021_T15.model.Allergy;
+import com.MRSISA2021_T15.model.Dermatologist;
+import com.MRSISA2021_T15.model.EReceiptAndMedicineDetails;
 import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.MedicineNeeded;
 import com.MRSISA2021_T15.model.MedicinePharmacy;
 import com.MRSISA2021_T15.model.MedicineQuantity;
+import com.MRSISA2021_T15.model.Patient;
 import com.MRSISA2021_T15.model.Pharmacy;
 import com.MRSISA2021_T15.model.PharmacyAdmin;
+import com.MRSISA2021_T15.repository.EReceiptAndMedicineDetailsRepository;
 import com.MRSISA2021_T15.repository.MedicineNeededRepository;
 import com.MRSISA2021_T15.repository.UserRepository;
 import com.MRSISA2021_T15.service.AllergyService;
 import com.MRSISA2021_T15.service.EmailSenderService;
 import com.MRSISA2021_T15.service.MedicinePharmacyService;
+import com.MRSISA2021_T15.service.MedicineService;
 import com.MRSISA2021_T15.service.SubstituteMedicineService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @RestController
 @RequestMapping("/allergies")
@@ -53,6 +65,11 @@ public class AllergyController {
 	JavaMailSender emailsending;
 	@Autowired
 	Environment envi;
+	
+	
+	
+	
+	
 	
 	@GetMapping(value = "/checkForAllergiesPharmacist/pharmacy={pharmacyId}medicine={medicineId}patient={patientId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -161,6 +178,71 @@ public class AllergyController {
 			}
 		}
 	}
+	
+	
+	
+	
+	
+	@GetMapping(value = "/getAllMedicines", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	List<Medicine> getAllMedicines(){
+		
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Medicine> medicines = service.findAllMedicines();
+		List<Allergy> allergies = service.getForPatient(p.getId());
+		
+		List<Medicine> returnMedicine = new ArrayList<Medicine>();
+		
+		boolean flag = false;
+		
+		for(Medicine m: medicines){
+			for(Allergy a : allergies) {
+				if(a.getMedicine().getId() == m.getId()) {
+					flag = true;
+				}
+			}
+			if(flag == false) {
+				returnMedicine.add(m);
+			}
+			flag = false;
+		}
+		return returnMedicine;
+		
+	}
+	
+	
+	
+	
+	@GetMapping(value = "/getAllAllergies", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	List<Allergy> getAllAllergies(){
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return service.getForPatient(p.getId());
+	}
+	
+	
+	
+	
+	@PutMapping(value = "/addAllergy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	public ResponseEntity<String>addAllergy(@RequestBody Medicine medicine){
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		service.addAllergy(medicine, p);
+		Gson gson = new GsonBuilder().create();
+		return new ResponseEntity<String>(gson.toJson("You added new allergy."), HttpStatus.OK);
+		
+	}
+	
+	
+	
+	
+	@GetMapping(value = "/getAllErecepts", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
+	List<EReceiptAndMedicineDetails> getAllErecepts(){
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return service.findAllEROfPatient(p.getId());
+	}
+	
 	
 }
 
