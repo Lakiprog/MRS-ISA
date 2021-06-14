@@ -24,7 +24,7 @@ export class AbsenceRequestsComponent implements OnInit {
     'description',
     'start',
     'end',
-    'doctorId',
+    'doctor',
     'approve',
     'decline',
   ];

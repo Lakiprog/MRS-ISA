@@ -26,9 +26,9 @@
                   <th mat-header-cell *matHeaderCellDef class = "coloumnName">Absence end</th>
                   <td mat-cell *matCellDef="let element" class = "coloumnName" type="end"> {{element.end[0]}}/{{element.end[1]}}/{{element.end[2]}} {{element.end[3]}}:{{element.end[4]}}/ </td>
               </ng-container>
-              <ng-container matColumnDef="doctorId">
-                  <th mat-header-cell *matHeaderCellDef class = "coloumnName">Doctor id</th>
-                  <td mat-cell *matCellDef="let element" class = "coloumnName" type="doctorId"> {{element.doctorId}} </td>
+              <ng-container matColumnDef="doctor">
+                  <th mat-header-cell *matHeaderCellDef class = "coloumnName">Doctor username</th>
+                  <td mat-cell *matCellDef="let element" class = "coloumnName" type="doctor"> {{element.doctor.username}} </td>
               </ng-container>
               <ng-container matColumnDef="approve">
                 <mat-header-cell  *matHeaderCellDef >  </mat-header-cell>
