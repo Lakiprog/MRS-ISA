@@ -1,10 +1,12 @@
 package com.MRSISA2021_T15.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.core.env.Environment;
+import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.repository.AbsenceRepository;
+import com.MRSISA2021_T15.repository.AppointmentAbsenceRepository;
+import com.MRSISA2021_T15.repository.EmploymentRepository;
+import com.MRSISA2021_T15.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,8 @@ import com.MRSISA2021_T15.repository.AbsenceRepository;
 import com.MRSISA2021_T15.repository.AppointmentAbsenceRepository;
 import com.MRSISA2021_T15.repository.EmploymentRepository;
 import com.MRSISA2021_T15.repository.UserRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -156,4 +160,17 @@ public class AbsenceService {
 			//Thread.sleep(3000);
 		}
 	}
+
+	public void declineAbsenceRequest(UserDto u, AbsenceDto absence) {
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(u.getEmail());
+		mailMessage.setSubject("Absence request denied");
+		mailMessage.setFrom(environment.getProperty("spring.mail.username"));
+		mailMessage.setText("Absence request from " + u.getName() + " " + u.getSurname()
+				+ " is declined."
+				+ ". The reason is:\n" + absence.getDescription());
+		emails.send(mailMessage);
+
+	}
+
 }

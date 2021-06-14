@@ -1,14 +1,7 @@
 package com.MRSISA2021_T15.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "absence")
@@ -65,7 +58,7 @@ public class Absence {
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
-	
+
 	@Column
 	private LocalDateTime start, end;
 	

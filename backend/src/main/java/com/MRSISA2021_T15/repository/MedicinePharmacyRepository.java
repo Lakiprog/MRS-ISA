@@ -1,13 +1,12 @@
 package com.MRSISA2021_T15.repository;
+import com.MRSISA2021_T15.model.Medicine;
 import com.MRSISA2021_T15.model.MedicinePharmacy;
-
-import java.util.List;
-
-import javax.persistence.LockModeType;
-
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import javax.persistence.LockModeType;
+import java.util.List;
 
 public interface MedicinePharmacyRepository extends CrudRepository<MedicinePharmacy, Integer> {
 	
@@ -42,6 +41,8 @@ public interface MedicinePharmacyRepository extends CrudRepository<MedicinePharm
 	@Lock(LockModeType.PESSIMISTIC_READ)
 	@Query("select mp from MedicinePharmacy mp where mp.pharmacy.id = ?1 AND mp.medicine.medicineCode = ?2 AND mp.amount >= ?3")
 	public MedicinePharmacy getPharmacyByIdAndMedicineCodePessimisticRead(Integer pharmacyId, String medicineCode, Integer quantity);
+
+	public List<MedicinePharmacy> findAllByMedicine(Medicine medicine);
 
 
 }

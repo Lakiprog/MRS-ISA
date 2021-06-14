@@ -78,6 +78,9 @@ insert into absence (description, start, end, approved, doctor_id) values ("Ocu 
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-15 9:30:00', '2021-06-20 19:30:00', false, 5);
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-15 9:30:00', '2021-06-19 19:30:00', true, 5);
 insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-15 9:30:00', '2021-06-20 19:30:00', true, 6);
+insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-15 16:30:00', '2021-06-15 20:30:00', false, 5);
+insert into absence (description, start, end, approved, doctor_id) values ("Ocu kuci!", '2021-06-16 16:30:00', '2021-06-17 19:30:00', false, 6);
+
 
 insert into medicine (medicine_code, name, medicine_type, form, composition, manufacturer, prescription, additional_comments, average_rating, points, num_of_rating)
 	values ('s123', 'medicine1', 0, 1, 'Paracetamol 500 mg, Maize starch, potassium sorbate (E 202), purified talc, stearic acid, povidone\nstarch pregelatinised, hypromellose, triacetin', 'GE Healthcare', true, 'Not for every day usage.', 4, 42, 1);
