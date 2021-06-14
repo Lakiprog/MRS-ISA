@@ -17,6 +17,8 @@ import { Location } from '@angular/common';
   styleUrls: ['./pharmacy-admin.component.css'],
 })
 export class PharmacyAdminComponent implements OnInit {
+  firstLogin = this.authService.getTokenData()?.firstLogin;
+
   updateForm!: FormGroup;
   updatePasswordForm!: FormGroup;
   pharmacyAdmin!: PharmacyAdmin;
@@ -34,6 +36,7 @@ export class PharmacyAdminComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   ngOnInit(): void {
+    console.log(this.firstLogin);
     this.updateForm = this.formBuilder.group({
       username: [''],
       email: [''],
