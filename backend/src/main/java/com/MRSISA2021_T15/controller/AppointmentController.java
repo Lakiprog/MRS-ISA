@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -143,7 +144,7 @@ public class AppointmentController {
 			}
 		}
 		for (Appointment ap : appointmentPharmacyList){
-			if (ap.getPatient() == null )
+			if (ap.getPatient() == null && ap.getStart().isAfter(LocalDateTime.now()))
 				returnList.add(ap);
 		}
 		return returnList;

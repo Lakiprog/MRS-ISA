@@ -1,11 +1,9 @@
 package com.MRSISA2021_T15.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-
 import org.springframework.lang.NonNull;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,7 +38,7 @@ public class Pharmacy {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	private Set<Employment> employments;
 	
 	@JsonIgnore
@@ -52,7 +50,7 @@ public class Pharmacy {
 	private Set<ComplaintPharmacy> complaints;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	private Set<MedicinePharmacy> medicine;
 	
 	@JsonIgnore
@@ -74,6 +72,10 @@ public class Pharmacy {
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Promotion> promotions;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Action> actions;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

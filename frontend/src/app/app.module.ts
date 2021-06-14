@@ -54,7 +54,6 @@ import { AddNewMedicineComponent } from './components/add-new-medicine/add-new-m
 import { ListOfMedicineComponent } from './components/list-of-medicine/list-of-medicine.component';
 import { AddNewDermatologistComponent } from './components/add-new-dermatologist/add-new-dermatologist.component';
 import { ListOfDermatologistsComponent } from './components/list-of-dermatologists/list-of-dermatologists.component';
-import { UpdateMedicineComponent } from './components/update-medicine/update-medicine.component';
 import { PharmacistProfilePageComponent } from './pharmacist-profile-page/pharmacist-profile-page.component';
 import { DermatologistProfilePageComponent } from './dermatologist-profile-page/dermatologist-profile-page.component';
 import { AuthService } from './login/auth.service';
@@ -130,7 +129,6 @@ import { PatientPastPharAppComponent } from './patient-past-phar-app/patient-pas
 import { AllergiesComponent } from './allergies/allergies.component';
 import { PenaltiesComponent } from './penalties/penalties.component';
 
-
 import { ListOfPurchaseOrdersComponent } from './components/list-of-purchase-orders/list-of-purchase-orders.component';
 import { DisplayActivePurchaseOrdersComponent } from './components/display-active-purchase-orders/display-active-purchase-orders.component';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -138,7 +136,16 @@ import { PredefineDermatologistAppointmentComponent } from './components/predefi
 import { DermatologistAppointmentPopupComponent } from './components/dermatologist-appointment-popup/dermatologist-appointment-popup.component';
 import { PublicPharmacyProfilePageComponent } from './components/public-pharmacy-profile-page/public-pharmacy-profile-page.component';
 import { MedicineInquiriesComponent } from './components/medicine-inquiries/medicine-inquiries.component';
-
+import { AbsenceRequestsComponent } from './components/absence-requests/absence-requests.component';
+import { DeclineAbsenceRequestComponent } from './components/decline-absence-request/decline-absence-request.component';
+import { CreateActionComponent } from './components/create-action/create-action.component';
+import { CreatePromotionComponent } from './components/create-promotion/create-promotion.component';
+import { ActionPromotionPopupComponent } from './components/action-promotion-popup/action-promotion-popup.component';
+import { AddMedicineToPharmacyPopupComponent } from './components/add-medicine-to-pharmacy-popup/add-medicine-to-pharmacy-popup.component';
+import { UpdateMedicineCommentPopupComponent } from './components/update-medicine-comment-popup/update-medicine-comment-popup.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { AddDermatologistToPharmacyPopupComponent } from './components/add-dermatologist-to-pharmacy-popup/add-dermatologist-to-pharmacy-popup.component';
+import { AddPharmacistToPharmacyPopupComponent } from './components/add-pharmacist-to-pharmacy-popup/add-pharmacist-to-pharmacy-popup.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -176,7 +183,6 @@ FullCalendarModule.registerPlugins([
     DermatologistChoosePredefinedComponent,
     SearchPharmacyComponent,
     RegisterPharmaciesComponent,
-    UpdateMedicineComponent,
     PharmacistProfilePageComponent,
     DermatologistProfilePageComponent,
     UserComplaintComponent,
@@ -235,14 +241,21 @@ FullCalendarModule.registerPlugins([
     AllergiesComponent,
     PenaltiesComponent,
 
-
     ListOfPurchaseOrdersComponent,
     DisplayActivePurchaseOrdersComponent,
     PredefineDermatologistAppointmentComponent,
     DermatologistAppointmentPopupComponent,
     PublicPharmacyProfilePageComponent,
     MedicineInquiriesComponent,
-
+    AbsenceRequestsComponent,
+    DeclineAbsenceRequestComponent,
+    CreateActionComponent,
+    CreatePromotionComponent,
+    ActionPromotionPopupComponent,
+    AddMedicineToPharmacyPopupComponent,
+    UpdateMedicineCommentPopupComponent,
+    AddDermatologistToPharmacyPopupComponent,
+    AddPharmacistToPharmacyPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -255,6 +268,7 @@ FullCalendarModule.registerPlugins([
     ReactiveFormsModule,
     MatSortModule,
     LayoutModule,
+    FlexLayoutModule,
 
     NgxMaterialTimepickerModule,
 
@@ -407,11 +421,6 @@ FullCalendarModule.registerPlugins([
         path: 'registerPharmacies',
         canActivate: [SystemAdminRoutes],
         component: RegisterPharmaciesComponent,
-      },
-      {
-        path: 'updateMedicine',
-        canActivate: [PharmacyAdminRoutes],
-        component: UpdateMedicineComponent,
       },
       {
         path: 'PharmacistProfilePageComponent',
@@ -625,11 +634,23 @@ FullCalendarModule.registerPlugins([
         canActivate: [PharmacyAdminRoutes],
         component: MedicineInquiriesComponent,
       },
+      {
+        path: 'absenceRequests',
+        canActivate: [PharmacyAdminRoutes],
+        component: AbsenceRequestsComponent,
+      },
+      {
+        path: 'createAction',
+        canActivate: [PharmacyAdminRoutes],
+        component: CreateActionComponent,
+      },
+      {
+        path: 'createPromotion',
+        canActivate: [PharmacyAdminRoutes],
+        component: CreatePromotionComponent,
+      },
     ]),
   ],
-
-  
-  
 
   providers: [
     {

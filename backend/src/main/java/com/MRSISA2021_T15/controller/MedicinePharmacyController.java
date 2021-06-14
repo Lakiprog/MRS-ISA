@@ -1,6 +1,7 @@
 package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.repository.MedicinePharmacyRepository;
 import com.MRSISA2021_T15.service.MedicinePharmacyService;
 import com.MRSISA2021_T15.service.ReservationService;
 import com.google.gson.Gson;
@@ -25,6 +26,9 @@ public class MedicinePharmacyController {
 	
 	@Autowired
 	ReservationService reservationService;
+
+	@Autowired
+	MedicinePharmacyRepository medicinePharmacyRepository;
 
 	@GetMapping(value = "/getMedicinePharmacist/pharmacy={pharmacyId}start={start}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -140,5 +144,20 @@ public class MedicinePharmacyController {
 	public List<MedicinePharmacy> getMedicineFromPharmacy(@PathVariable("pharmacyId") Integer id) {
 
 		return mService.medcineInPharmacy(id);
+	}
+
+	@DeleteMapping(value = "/deleteMedicineFromPharmacy/{pharmacyId}")
+	public ResponseEntity<String> deleteMedicineFromPharmacy(@RequestBody Medicine m, @PathVariable Integer pharmacyId){
+		List<MedicinePharmacy> allMedicinePharmacy = medicinePharmacyRepository.findAllByMedicine(m);
+		MedicinePharmacy mp = new MedicinePharmacy();
+		for (MedicinePharmacy mePh: allMedicinePharmacy) {
+			if(mePh.getPharmacy().getId() == pharmacyId){
+				mp=mePh;
+			}
+		}
+		medicinePharmacyRepository.deleteById(mp.getId());
+
+		return ResponseEntity.ok().build();
+
 	}
 }

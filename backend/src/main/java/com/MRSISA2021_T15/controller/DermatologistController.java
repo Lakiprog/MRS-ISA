@@ -3,10 +3,11 @@ package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
 import com.MRSISA2021_T15.model.Dermatologist;
+import com.MRSISA2021_T15.model.EmploymentDermatologist;
 import com.MRSISA2021_T15.repository.DermatologistRepository;
+import com.MRSISA2021_T15.repository.EmploymentDermatologistRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,7 +27,8 @@ import java.util.Optional;
 public class DermatologistController {
     @Autowired
     private DermatologistRepository dermatologistRepository;
-    
+    @Autowired
+    private EmploymentDermatologistRepository employmentDermatologistRepository;
     @Autowired
 	private PasswordEncoder encod;
 /*
@@ -126,4 +129,15 @@ public class DermatologistController {
     	Dermatologist d = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return dermatologistRepository.findById(d.getId());
 	}
+
+    @RequestMapping(path="/{pharmacyId}/getDermatologistsFromPharmacy")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ArrayList<Dermatologist> getDermatologistsFromPharmacy(@PathVariable Integer pharmacyId){
+        List<EmploymentDermatologist> employmentDermatologists = employmentDermatologistRepository.findByPharmacyId(pharmacyId);
+        ArrayList<Dermatologist> returnList = new ArrayList<>();
+        for (EmploymentDermatologist ed : employmentDermatologists)
+            returnList.add(ed.getDermatologist());
+        return returnList;
+    }
+
 }

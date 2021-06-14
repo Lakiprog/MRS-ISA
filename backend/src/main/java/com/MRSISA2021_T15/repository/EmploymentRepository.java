@@ -1,12 +1,11 @@
 package com.MRSISA2021_T15.repository;
 
-import com.MRSISA2021_T15.model.Employment;
-import com.MRSISA2021_T15.model.EmploymentDermatologist;
-import com.MRSISA2021_T15.model.EmploymentPharmacist;
+import com.MRSISA2021_T15.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmploymentRepository extends JpaRepository<Employment, Integer>{
 
@@ -20,6 +19,14 @@ public interface EmploymentRepository extends JpaRepository<Employment, Integer>
 	public List<EmploymentPharmacist> findAllPharmacist();
 
 	public List<Employment> findAll();
+
+	public List<Employment> findAllByPharmacy(Optional<Pharmacy> pharmacy);
+
+	public List<EmploymentDermatologist> findAllByDermatologist(Dermatologist dermatologist);
+
+	public List<EmploymentPharmacist> findAllByPharmacist(Pharmacist pharmacist);
+
+
 
 
 

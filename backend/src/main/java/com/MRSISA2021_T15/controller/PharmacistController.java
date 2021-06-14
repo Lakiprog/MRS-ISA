@@ -1,14 +1,12 @@
 package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
+import com.MRSISA2021_T15.model.EmploymentPharmacist;
 import com.MRSISA2021_T15.model.Pharmacist;
+import com.MRSISA2021_T15.repository.EmploymentPharmacistsRepository;
 import com.MRSISA2021_T15.repository.PharmacistRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +15,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -30,6 +32,9 @@ public class PharmacistController {
 
 	@Autowired
 	private PasswordEncoder encod;
+
+	@Autowired
+	private EmploymentPharmacistsRepository employmentPharmacistsRepository;
 
 	@RequestMapping(path = "/add", method = RequestMethod.POST)
 	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
@@ -50,6 +55,20 @@ public class PharmacistController {
 	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public @ResponseBody Iterable<Pharmacist> getAllPharmacists() {
 		return pharmacistRepository.findAll();
+	}
+
+	@RequestMapping(path = "/getUnemployedPharmacists")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public @ResponseBody Iterable<Pharmacist> getUnemployedPharmacists() {
+		Iterable<Pharmacist> allPharmacists = pharmacistRepository.findAll();
+		List<Pharmacist> returnList = new ArrayList<Pharmacist>();
+		for(Pharmacist p : allPharmacists){
+			if (employmentPharmacistsRepository.findByPharmacistId(p.getId()) == null ){
+				returnList.add(p);
+			}
+		}
+
+		return returnList;
 	}
 
 	@RequestMapping(path = "/{pharmacistId}/findArrayById")
@@ -126,5 +145,16 @@ public class PharmacistController {
 			return new ResponseEntity<String>(gson.toJson("Password update unsuccessfull!"),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+
+	@RequestMapping(path="/{pharmacyId}/getPharmacistsFromPharmacy")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ArrayList<Pharmacist> getPharmacistsFromPharmacy(@PathVariable Integer pharmacyId){
+		List<EmploymentPharmacist> employmentPharmacists = employmentPharmacistsRepository.findByPharmacyId(pharmacyId);
+		ArrayList<Pharmacist> returnList = new ArrayList<>();
+		for (EmploymentPharmacist ep : employmentPharmacists)
+			returnList.add(ep.getPharmacist());
+		return returnList;
 	}
 }

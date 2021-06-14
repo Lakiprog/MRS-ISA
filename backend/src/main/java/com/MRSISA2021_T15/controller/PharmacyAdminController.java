@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -109,7 +110,21 @@ public class PharmacyAdminController {
     @PostMapping(value = "/addDermatologistToPharmacy")
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ResponseEntity<String> addDermatologistToPharmacy(@RequestBody EmploymentDermatologist ed) {
-        employmentDermatologistRepository.save(ed);
+        List<EmploymentDermatologist> allEmployments = employmentDermatologistRepository.findAllByDermatologist(ed.getDermatologist());
+        if(allEmployments.isEmpty()){
+            employmentDermatologistRepository.save(ed);
+        }
+        else{
+            for(EmploymentDermatologist emp : allEmployments){
+                if(ed.getStart()>emp.getEnd()){
+                    employmentDermatologistRepository.save(ed);
+                }
+                else if(ed.getEnd()<emp.getStart()){
+                    employmentDermatologistRepository.save(ed);
+                }
+
+            }
+        }
         return ResponseEntity.ok().build();
     }
 
