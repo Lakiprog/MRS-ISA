@@ -63,7 +63,7 @@
             </mat-form-field>
             <mat-form-field class = "field">
                 <mat-label>Rating</mat-label>
-                <input type = "text" matInput placeholder = "Rating" formControlName = "rating" required>
+                <input type = "text" matInput placeholder = "Rating" formControlName = "rating" readonly>
                 <mat-error *ngIf = "hasError('rating', 'required', updateForm)">Rating is required!</mat-error>
             </mat-form-field>
         </form>
