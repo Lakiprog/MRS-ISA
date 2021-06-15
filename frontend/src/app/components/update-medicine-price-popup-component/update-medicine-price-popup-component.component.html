@@ -1,0 +1,13 @@
+<div [formGroup]="medicineCostForm">
+    <div mat-dialog-content>
+        <p>New medicine price:</p>
+        <mat-form-field>
+          <mat-label></mat-label>
+          <input matInput formControlName="cost">
+        </mat-form-field>
+      </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Cancel</button>
+      <button mat-button [mat-dialog-close]="medicineCostForm" cdkFocusInitial>Submit</button>
+    </div>
+  </div>

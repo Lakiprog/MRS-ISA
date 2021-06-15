@@ -1,11 +1,9 @@
 package com.MRSISA2021_T15.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-
 import org.springframework.lang.NonNull;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,6 +35,10 @@ public class PurchaseOrder {
 	@JoinColumn(name="pharmacy_id")
 	@NonNull
 	private Pharmacy pharmacy;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "pharmacy_admin_id")
+	private PharmacyAdmin pharmacyAdmin;
 
 	@Transient
 	private ArrayList<Integer> substituteMedicineIds = new ArrayList<Integer>();
@@ -91,5 +93,21 @@ public class PurchaseOrder {
 
 	public void setPharmacy(Pharmacy pharmacy) {
 		this.pharmacy = pharmacy;
+	}
+
+	public PharmacyAdmin getPharmacyAdmin() {
+		return pharmacyAdmin;
+	}
+
+	public void setPharmacyAdmin(PharmacyAdmin pharmacyAdmin) {
+		this.pharmacyAdmin = pharmacyAdmin;
+	}
+
+	public ArrayList<Integer> getSubstituteMedicineIds() {
+		return substituteMedicineIds;
+	}
+
+	public void setSubstituteMedicineIds(ArrayList<Integer> substituteMedicineIds) {
+		this.substituteMedicineIds = substituteMedicineIds;
 	}
 }

@@ -140,7 +140,6 @@ import { MedicineInquiriesComponent } from './components/medicine-inquiries/medi
 import { AllergiesOfPatientComponent } from './allergies-of-patient/allergies-of-patient.component';
 import { PatientsEreceptsComponent } from './patients-erecepts/patients-erecepts.component';
 
-
 import { AbsenceRequestsComponent } from './components/absence-requests/absence-requests.component';
 import { DeclineAbsenceRequestComponent } from './components/decline-absence-request/decline-absence-request.component';
 import { CreateActionComponent } from './components/create-action/create-action.component';
@@ -151,7 +150,10 @@ import { UpdateMedicineCommentPopupComponent } from './components/update-medicin
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddDermatologistToPharmacyPopupComponent } from './components/add-dermatologist-to-pharmacy-popup/add-dermatologist-to-pharmacy-popup.component';
 import { AddPharmacistToPharmacyPopupComponent } from './components/add-pharmacist-to-pharmacy-popup/add-pharmacist-to-pharmacy-popup.component';
-
+import { PurchaseOrderSupplierOffersComponent } from './components/purchase-order-supplier-offers/purchase-order-supplier-offers.component';
+import { AllPurchaseOrderSuplierOffersComponent } from './components/all-purchase-order-suplier-offers/all-purchase-order-suplier-offers.component';
+import { EditMedicinePharmacyPriceComponent } from './components/edit-medicine-pharmacy-price/edit-medicine-pharmacy-price.component';
+import { UpdateMedicinePricePopupComponentComponent } from './components/update-medicine-price-popup-component/update-medicine-price-popup-component.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -257,7 +259,6 @@ FullCalendarModule.registerPlugins([
     AllergiesOfPatientComponent,
     PatientsEreceptsComponent,
 
-
     AbsenceRequestsComponent,
     DeclineAbsenceRequestComponent,
     CreateActionComponent,
@@ -267,7 +268,10 @@ FullCalendarModule.registerPlugins([
     UpdateMedicineCommentPopupComponent,
     AddDermatologistToPharmacyPopupComponent,
     AddPharmacistToPharmacyPopupComponent,
-
+    PurchaseOrderSupplierOffersComponent,
+    AllPurchaseOrderSuplierOffersComponent,
+    EditMedicinePharmacyPriceComponent,
+    UpdateMedicinePricePopupComponentComponent,
   ],
   imports: [
     BrowserModule,
@@ -647,7 +651,6 @@ FullCalendarModule.registerPlugins([
         component: MedicineInquiriesComponent,
       },
       {
-
         path: 'AllergiesOfPatient',
         canActivate: [PatientRoutes],
         component: AllergiesOfPatientComponent,
@@ -671,6 +674,21 @@ FullCalendarModule.registerPlugins([
         path: 'createPromotion',
         canActivate: [PharmacyAdminRoutes],
         component: CreatePromotionComponent,
+      },
+      {
+        path: 'purchaseOrderSupplierOffers',
+        canActivate: [PharmacyAdminRoutes],
+        component: PurchaseOrderSupplierOffersComponent,
+      },
+      {
+        path: 'allPurchaseOrderSupplierOffers',
+        canActivate: [PharmacyAdminRoutes],
+        component: AllPurchaseOrderSuplierOffersComponent,
+      },
+      {
+        path: 'editMedicinePharmacyPrice',
+        canActivate: [PharmacyAdminRoutes],
+        component: EditMedicinePharmacyPriceComponent,
       },
     ]),
   ],

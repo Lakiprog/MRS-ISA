@@ -145,9 +145,9 @@ insert into medicine_supply (supplier_id, medicine_id, quantity) values (12, 1, 
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (12, 2, 600); 
 insert into medicine_supply (supplier_id, medicine_id, quantity) values (12, 3, 100);
 
-insert into purchase_order (purchase_order_name, due_date_offer) values ('order1', '2021-07-05');
-insert into purchase_order (purchase_order_name, due_date_offer) values ('order2', '2021-07-01');
-insert into purchase_order (purchase_order_name, due_date_offer) values ('order3','2021-07-10');
+insert into purchase_order (purchase_order_name, due_date_offer, pharmacy_id, pharmacy_admin_id) values ('order1', '2021-05-05', 1, 7);
+insert into purchase_order (purchase_order_name, due_date_offer, pharmacy_id, pharmacy_admin_id) values ('order2', '2021-07-01', 1, 8);
+insert into purchase_order (purchase_order_name, due_date_offer, pharmacy_id, pharmacy_admin_id) values ('order3', '2021-07-10', 1, 7);
 
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 1, 20);
 insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (1, 2, 30);
@@ -156,9 +156,9 @@ insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) 
 insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 1, 5);
 insert into purchase_order_medicine (purchase_order_id, medicine_id, quantity) values (2, 3, 10);
 
-insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (3, 3, 20);
+insert into purchase_order_medicine (purchase_order_id,  medicine_id, quantity) values (3, 1, 1);
 
-insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (1, 10, '2021-08-10', 1000, 0);
+insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (1, 10, '2021-08-10', 1000, 2);
 insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (2, 10, '2021-08-10', 900, 1);
 insert into purchase_order_supplier (purchase_order_id, supplier_id, delivery_date, price, offer_status) values (3, 10, '2021-08-26', 700, 2);
 

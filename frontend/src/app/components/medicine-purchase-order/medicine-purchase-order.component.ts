@@ -73,6 +73,7 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     dueDateOffer: '' as any,
     purchaseOrderMedicine: [],
     purchaseOrderSupplier: null as any,
+    pharmacyAdmin: null as any,
   };
   isValid = false;
   constructor(
@@ -100,15 +101,13 @@ export class MedicinePurchaseOrderComponent implements OnInit {
     });
     this.pharmacyAdminService.getPharmacyAdminData().subscribe((data) => {
       this.pharmacyAdmin = data;
-      this.pharmacyAdminService
-        .getMedicineFromPharmacy(this.pharmacyAdmin.pharmacy)
-        .subscribe((res) => {
-          this.medicineList = res;
-          this.medicineListSource = new MatTableDataSource<any>(
-            this.medicineList
-          );
-          this.medicineListSource.paginator = this.paginatorMedicine;
-        });
+      this.pharmacyAdminService.getAllMedicine().subscribe((res) => {
+        this.medicineList = res;
+        this.medicineListSource = new MatTableDataSource<any>(
+          this.medicineList
+        );
+        this.medicineListSource.paginator = this.paginatorMedicine;
+      });
     });
   }
 
@@ -137,7 +136,7 @@ export class MedicinePurchaseOrderComponent implements OnInit {
   }
   createPurchaseOrder() {
     this.purchaseOrder.pharmacy = this.pharmacyAdmin.pharmacy;
-
+    this.purchaseOrder.pharmacyAdmin = this.pharmacyAdmin;
     const dialogRef = this.dialog.open(SubmitPurchaseOrderPopupComponent, {
       width: '300px',
       data: {
@@ -155,6 +154,7 @@ export class MedicinePurchaseOrderComponent implements OnInit {
           .createPurchaseOrder(this.purchaseOrder)
           .subscribe((res) => {
             localStorage.removeItem('pharmacist');
+            console.log(this.purchaseOrder);
             this.router.navigate(['/pharmacyProfilePage']);
             this.openSnackBar(
               'Successfully created a purchase order!',

@@ -12,7 +12,12 @@
             &nbsp;
             &nbsp;
             &nbsp;
-            <a mat-button (click) = "subscribeToPromotions()">Subscribe to promotions</a>
+            <a mat-button *ngIf="loggedOn" (click) = "subscribeToPromotions()">Subscribe to promotions</a>
+            <a mat-button *ngIf="loggedOn" routerLink="/PatientScheduleFarmaApp"> MAKE A PHARMACISTS APPOINTMENT </a>
+            <a mat-button *ngIf="loggedOn" routerLink="/MakeDermatologistAppointment"> MAKE A DERMATOLOGICAL APPOINTMENT</a>
+            <a mat-button *ngIf="loggedOn" routerLink="/PatientOrdersMedicine">RESERVE MEDICINE</a>
+            <a mat-button *ngIf="loggedOn" routerLink="/medicinePrescription">ISSUE MEDICINE VIA ERECEIPT</a>
+            
             <span style = "flex: 1 1 auto;"></span>
             <a mat-button (click) = "back()">Back</a>
             <a *ngIf = "!loggedOn" mat-button routerLink = "/login">Login</a>

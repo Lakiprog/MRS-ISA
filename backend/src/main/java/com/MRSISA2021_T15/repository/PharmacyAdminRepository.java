@@ -7,5 +7,6 @@ import com.MRSISA2021_T15.model.PharmacyAdmin;
 
 @Repository
 public interface PharmacyAdminRepository extends CrudRepository<PharmacyAdmin, Integer> {
+    public PharmacyAdmin findByEmail(String string);
 
 }

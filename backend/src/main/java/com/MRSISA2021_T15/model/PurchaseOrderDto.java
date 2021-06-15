@@ -9,6 +9,7 @@ public class PurchaseOrderDto {
     private Pharmacy pharmacy;
     private String purchaseOrderName;
     private LocalDate purchaseOrderDate;
+    private PharmacyAdmin pharmacyAdmin;
 
     public PurchaseOrderDto() {
     }
@@ -43,5 +44,13 @@ public class PurchaseOrderDto {
 
     public void setPurchaseOrderDate(LocalDate purchaseOrderDate) {
         this.purchaseOrderDate = purchaseOrderDate;
+    }
+
+    public PharmacyAdmin getPharmacyAdmin() {
+        return pharmacyAdmin;
+    }
+
+    public void setPharmacyAdmin(PharmacyAdmin pharmacyAdmin) {
+        this.pharmacyAdmin = pharmacyAdmin;
     }
 }
