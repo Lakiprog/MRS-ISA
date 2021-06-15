@@ -2,6 +2,11 @@
 <div>
     <mat-toolbar color = "primary">
         <span>Active purchase orders</span>
+
+        <a mat-button routerLink="/purchaseOrderSupplierOffers">Pending supplier offers</a>
+ 
+        <a mat-button routerLink="/allPurchaseOrderSupplierOffers">All supplier offers</a>
+
         <span style = "flex: 1 1 auto;"></span>
 
         <a mat-button (click) = "back()">Back</a>

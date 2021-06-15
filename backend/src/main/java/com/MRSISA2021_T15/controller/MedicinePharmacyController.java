@@ -154,6 +154,16 @@ public class MedicinePharmacyController {
 		return mService.medcineInPharmacy(id);
 	}
 
+	@PutMapping(value = "/editMedicinePharmacyPrice")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ResponseEntity editMedicinePharmacyPrice(@RequestBody MedicinePharmacy medicinePharmacy){
+		MedicinePharmacy mp = medicinePharmacyRepository.findByExact(medicinePharmacy.getPharmacy().getId(), medicinePharmacy.getMedicine().getId());
+		mp.setCost(medicinePharmacy.getCost());
+		medicinePharmacyRepository.save(mp);
+		return ResponseEntity.ok().build();
+	}
+
+
 	@DeleteMapping(value = "/deleteMedicineFromPharmacy/{pharmacyId}")
 	public ResponseEntity<String> deleteMedicineFromPharmacy(@RequestBody Medicine m, @PathVariable Integer pharmacyId){
 		List<MedicinePharmacy> allMedicinePharmacy = medicinePharmacyRepository.findAllByMedicine(m);

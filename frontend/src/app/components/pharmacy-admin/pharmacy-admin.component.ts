@@ -36,7 +36,6 @@ export class PharmacyAdminComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   ngOnInit(): void {
-    console.log(this.firstLogin);
     this.updateForm = this.formBuilder.group({
       username: [''],
       email: [''],

@@ -17,6 +17,7 @@ import { MedicineNeeded } from '../models/medicineNeeded';
 import { Absence } from '../models/absence';
 import { Action } from '../models/action';
 import { Promotion } from '../models/promotion';
+import { PurchaseOrderSupplier } from '../models/purchase-order-supplier';
 
 @Injectable({
   providedIn: 'root',
@@ -172,6 +173,20 @@ export class PharmacyAdminService {
     );
   }
 
+  public getMedicinePharmacyFromPharmacy(pharmacy: Pharmacy) {
+    return this.httpClient.get<MedicinePharmacy[]>(
+      'http://localhost:8080/medicinePharmacy/getMedicineFromPharmacy/' +
+        pharmacy.id
+    );
+  }
+
+  public editMedicinePharmacyPrice(medicinePharmacy: MedicinePharmacy) {
+    return this.httpClient.put<PurchaseOrderSupplier>(
+      'http://localhost:8080/medicinePharmacy/editMedicinePharmacyPrice/',
+      medicinePharmacy
+    );
+  }
+
   public addPharmacistToPharmacy(employment: Employment) {
     return this.httpClient.post<Employment>(
       'http://localhost:8080/pharmacyAdmin/addPharmacistToPharmacy',
@@ -243,9 +258,29 @@ export class PharmacyAdminService {
     );
   }
 
-  public getActivePurchaseOrders(): Observable<PurchaseOrder[]> {
+  public getActivePurchaseOrders(
+    pharmacy: Pharmacy
+  ): Observable<PurchaseOrder[]> {
     return this.httpClient.get<PurchaseOrder[]>(
-      'http://localhost:8080/purchaseOrder/activePurchaseOrders'
+      'http://localhost:8080/purchaseOrder/activePurchaseOrders/' + pharmacy.id
+    );
+  }
+
+  public getPendingPurchaseOrderSupplier(
+    pharmacy: Pharmacy
+  ): Observable<PurchaseOrderSupplier[]> {
+    return this.httpClient.get<PurchaseOrderSupplier[]>(
+      'http://localhost:8080/purchaseOrder/getPendingPurchaseOrderSupplier/' +
+        pharmacy.id
+    );
+  }
+
+  public getAllPurchaseOrderSupplier(
+    pharmacy: Pharmacy
+  ): Observable<PurchaseOrderSupplier[]> {
+    return this.httpClient.get<PurchaseOrderSupplier[]>(
+      'http://localhost:8080/purchaseOrder/getAllPurchaseOrderSupplier/' +
+        pharmacy.id
     );
   }
 
@@ -302,6 +337,28 @@ export class PharmacyAdminService {
     return this.httpClient.post<Promotion>(
       'http://localhost:8080/promotion/createPromotion',
       promotion
+    );
+  }
+
+  public acceptPurchaseOrderSupplier(
+    purchaseOrderSupplier: PurchaseOrderSupplier,
+    pharmacyAdmin: PharmacyAdmin
+  ) {
+    return this.httpClient.put<PurchaseOrderSupplier>(
+      'http://localhost:8080/purchaseOrder/acceptPurchaseOrderSupplier/' +
+        pharmacyAdmin.id,
+      purchaseOrderSupplier
+    );
+  }
+
+  public rejectPurchaseOrderSupplier(
+    purchaseOrderSupplier: PurchaseOrderSupplier,
+    pharmacyAdmin: PharmacyAdmin
+  ) {
+    return this.httpClient.put<PurchaseOrderSupplier>(
+      'http://localhost:8080/purchaseOrder/rejectPurchaseOrderSupplier/' +
+        pharmacyAdmin.id,
+      purchaseOrderSupplier
     );
   }
 

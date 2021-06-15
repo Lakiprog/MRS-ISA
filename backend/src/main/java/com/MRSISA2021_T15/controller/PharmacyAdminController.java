@@ -132,9 +132,31 @@ public class PharmacyAdminController {
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ResponseEntity<String> createPurchaseOrder(@RequestBody PurchaseOrderDto pod){
         PurchaseOrder po = new PurchaseOrder();
+        List<MedicinePharmacy> medicinePharmacyList = medicinePharmacyRepository.findByPharmacyId(pod.getPharmacy().getId());
+        boolean isInPharmacy = false;
+
+        for (PurchaseOrderMedicine pom : pod.getPurchaseOrderMedicine()) {
+            for(MedicinePharmacy mp : medicinePharmacyList){
+                if(pom.getMedicine().getId() == mp.getMedicine().getId()){
+                    isInPharmacy = true;
+                }
+            }
+            if(!isInPharmacy){
+                MedicinePharmacy mp = new MedicinePharmacy();
+                mp.setAmount(0);
+                mp.setMedicine(pom.getMedicine());
+                mp.setPharmacy(pod.getPharmacy());
+                mp.setCost(0.0);
+                addMedicineToPharmacy(mp);
+            }
+        }
+
+
+        po.setPharmacyAdmin(pod.getPharmacyAdmin());
         po.setPharmacy(pod.getPharmacy());
         po.setDueDateOffer(pod.getPurchaseOrderDate().plusDays(1));
         po.setPurchaseOrderName(pod.getPurchaseOrderName());
+
         for (PurchaseOrderMedicine pom: pod.getPurchaseOrderMedicine())
         {
             po.getPurchaseOrderMedicine().add(pom);

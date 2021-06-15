@@ -16,6 +16,7 @@ import { Location } from '@angular/common';
 import { AuthService } from 'src/app/login/auth.service';
 import { Employment } from 'src/app/models/employment';
 import { AddDermatologistToPharmacyPopupComponent } from '../add-dermatologist-to-pharmacy-popup/add-dermatologist-to-pharmacy-popup.component';
+import { Pharmacy } from 'src/app/user-complaint/user-complaint.component';
 
 @Component({
   selector: 'app-list-of-dermatologists',
@@ -84,6 +85,7 @@ export class ListOfDermatologistsComponent implements OnInit {
   ngOnInit(): void {
     this.pharmacyAdminService.getAllDermatologists().subscribe((res) => {
       this.allOtherDermatologists = res;
+
       this.pharmacyAdminService.getPharmacyAdminData().subscribe((data) => {
         this.pharmacyAdmin = data;
         this.updateLists();

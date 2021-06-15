@@ -60,8 +60,6 @@ export class AbsenceRequestsComponent implements OnInit {
   }
 
   openDialog(absence: Absence): void {
-    console.log(absence);
-    //purchaseOrderMedicine.medicine = medicine;
     const dialogRef = this.dialog.open(DeclineAbsenceRequestComponent, {
       width: '450px',
       data: {
@@ -87,7 +85,6 @@ export class AbsenceRequestsComponent implements OnInit {
   }
 
   approve(absence: Absence): void {
-    console.log(absence);
     this.pharmacyAdminService
       .approveAbsenceRequest(absence)
       .subscribe((res) => {

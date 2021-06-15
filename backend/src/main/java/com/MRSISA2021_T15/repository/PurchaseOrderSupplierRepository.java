@@ -1,17 +1,15 @@
 package com.MRSISA2021_T15.repository;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import javax.persistence.LockModeType;
-
+import com.MRSISA2021_T15.model.PurchaseOrderSupplier;
+import com.MRSISA2021_T15.model.Supplier;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.MRSISA2021_T15.model.PurchaseOrderSupplier;
-import com.MRSISA2021_T15.model.Supplier;
+import javax.persistence.LockModeType;
+import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface PurchaseOrderSupplierRepository extends CrudRepository<PurchaseOrderSupplier, Integer> {
@@ -20,7 +18,7 @@ public interface PurchaseOrderSupplierRepository extends CrudRepository<Purchase
 	PurchaseOrderSupplier findBySupplierIdAndPurchaseOrderId(Integer purchaseOrderId, Integer supplierId);
 	
 	List<PurchaseOrderSupplier> findBySupplier(Supplier supplier);
-	
+
 	@Query("select pos from PurchaseOrderSupplier pos where pos.offerStatus = 2 AND pos.supplier.id = ?1 AND pos.purchaseOrder.dueDateOffer > ?2")
 	List<PurchaseOrderSupplier> getPendingOffers(Integer supplierId, LocalDate currentDate);
 	

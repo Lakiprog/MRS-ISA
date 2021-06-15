@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 import { AuthService } from 'src/app/login/auth.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { PharmacyAdmin } from 'src/app/models/pharmacy-admin';
 
 @Component({
   selector: 'app-list-of-purchase-orders',
@@ -24,6 +25,7 @@ export class ListOfPurchaseOrdersComponent implements OnInit {
     'actions',
   ];
   purchaseOrderList!: PurchaseOrder[];
+  pharmacyAdmin!: PharmacyAdmin;
   purchaseOrderListListSource = new MatTableDataSource<any>(
     this.purchaseOrderList
   );
@@ -41,12 +43,18 @@ export class ListOfPurchaseOrdersComponent implements OnInit {
   paginatorPurchaseOrder!: MatPaginator;
 
   ngOnInit(): void {
-    this.pharmacyAdminService.getActivePurchaseOrders().subscribe((res) => {
-      this.purchaseOrderList = res;
-      this.purchaseOrderListListSource = new MatTableDataSource<any>(
-        this.purchaseOrderList
-      );
-      this.purchaseOrderListListSource.paginator = this.paginatorPurchaseOrder;
+    this.pharmacyAdminService.getPharmacyAdminData().subscribe((data) => {
+      this.pharmacyAdmin = data;
+      this.pharmacyAdminService
+        .getActivePurchaseOrders(this.pharmacyAdmin.pharmacy)
+        .subscribe((res) => {
+          this.purchaseOrderList = res;
+          this.purchaseOrderListListSource = new MatTableDataSource<any>(
+            this.purchaseOrderList
+          );
+          this.purchaseOrderListListSource.paginator =
+            this.paginatorPurchaseOrder;
+        });
     });
   }
 
