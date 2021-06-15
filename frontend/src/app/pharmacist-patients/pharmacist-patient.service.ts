@@ -8,8 +8,8 @@ export class PharmacistPatientService {
 
   constructor(private _http: HttpClient) { }
 
-    public getPatientsPharmacist(){
+    public getPatientsPharmacist(start:string){
 
-        return this._http.get("http://localhost:8080/patient-search/searchPatientsPharmacist")
+        return this._http.get("http://localhost:8080/patient-search/searchPatientsPharmacist/start="+start)
     }
 }

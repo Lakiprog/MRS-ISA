@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { AuthService } from '../login/auth.service';
 import { RegisterPharmaciesService } from './register-pharmacies.service';
 
 @Component({
@@ -13,8 +14,13 @@ export class RegisterPharmaciesComponent implements OnInit {
   pharmacyRegistrationForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  serverPharmacyAdmins : { id: string, username: string }[] = [];
-  constructor(private fb: FormBuilder, private _registerPharmaciesService: RegisterPharmaciesService, private _snackBar: MatSnackBar) { }
+  constructor
+  (
+    private fb: FormBuilder, 
+    private _registerPharmaciesService: RegisterPharmaciesService, 
+    private _snackBar: MatSnackBar,
+    private authService: AuthService
+  ) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   ngOnInit(): void {
@@ -25,17 +31,6 @@ export class RegisterPharmaciesComponent implements OnInit {
         city: ['', Validators.required],
         country: ['', Validators.required],
         description: [''],
-        pharmacyAdminsIds: [[], Validators.required]
-      }
-    );
-    this._registerPharmaciesService.getPharmacyAdminsWithNoPharmacy().subscribe(
-      data => {
-        let list : { id: string, username: string }[] = [];
-        Object.keys(data).forEach((key : string) => {
-          const v = data[key];
-          list.push({id: key, username: v});
-        });
-        this.serverPharmacyAdmins = list;
       }
     );
   }
@@ -49,16 +44,6 @@ export class RegisterPharmaciesComponent implements OnInit {
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);
         this.pharmacyRegistrationForm.reset();
-        this._registerPharmaciesService.getPharmacyAdminsWithNoPharmacy().subscribe(
-          data => {
-            let list : { id: string, username: string }[] = [];
-            Object.keys(data).forEach((key : string) => {
-              const v = data[key];
-              list.push({id: key, username: v});
-            });
-            this.serverPharmacyAdmins = list;
-          }
-        )
       },
       error => {
         this.openSnackBar(error.error, this.RESPONSE_ERROR);
@@ -74,4 +59,7 @@ export class RegisterPharmaciesComponent implements OnInit {
     });
   }
 
+  logout() {
+    this.authService.logout();
+  }
 }

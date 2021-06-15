@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,11 +27,17 @@ public abstract class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
 	@Column
+	@NonNull
 	private String email, name, surname, address, city, country, phoneNumber, username, password;
 	
 	@Column
+	@NonNull
     private boolean enabled;
+	
+	@Column
+	private Boolean firstLogin;
 
     @Column
     private Timestamp lastPasswordResetDate;
@@ -174,6 +181,12 @@ public abstract class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;
     }
-	
-	
+
+	public Boolean getFirstLogin() {
+		return firstLogin;
+	}
+
+	public void setFirstLogin(Boolean firstLogin) {
+		this.firstLogin = firstLogin;
+	}
 }

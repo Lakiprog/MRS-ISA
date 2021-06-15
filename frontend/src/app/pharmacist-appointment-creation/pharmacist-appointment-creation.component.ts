@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { PharmacistAppointmentCreationService } from './pharmacist-appointment-creation.service';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pharmacist-appointment-creation',
@@ -10,20 +11,22 @@ import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snac
 })
 
 export class PharmacistAppointmentCreationComponent implements OnInit{
-    constructor(private fb: FormBuilder, private _pharmacistAppointmentCreationService: PharmacistAppointmentCreationService, private _snackBar: MatSnackBar) { }
+    constructor(private fb: FormBuilder, private _pharmacistAppointmentCreationService: PharmacistAppointmentCreationService, private _snackBar: MatSnackBar, private router: Router) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   appointmentForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
   pharmacist = {};
-  pharmacy = {};
+  app = {price:0};
+  pharmacy = {appointmentPrice:0};
 
     ngOnInit(): void {
         this.appointmentForm = this.fb.group({
             meetingTime: ['', Validators.required],
             endingTime: ['', Validators.required],
         });
+        this.app = history.state.data.appointment;
         this._pharmacistAppointmentCreationService.getPharmacistData().subscribe((data:any) => {this.pharmacist = data;})
         this._pharmacistAppointmentCreationService.getPharmacyData().subscribe((data:any) => {this.pharmacy = data;})
     }
@@ -47,26 +50,14 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
         }
         start.setHours(start.getHours() + 2);
         end.setHours(end.getHours() + 2);
-        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : {}, "pharmacist" : this.pharmacist, 
-        "pharmacy" : this.pharmacy, "price" : 0};
+        console.log(this.pharmacy);
+        return {"start" : start.toISOString(), "end" : end.toISOString(), "patient" : history.state.data.appointment.patient, "pharmacist" : this.pharmacist, 
+        "pharmacy" : this.pharmacy, "price" : this.app.price};
     }
 
     public makeAppointment(){
         let appointment = this.checkTime();
         if(appointment){
-            const patient = {"id" : 1,
-            "email" : "kaki@gmail.com",
-            "name" : "Marko",
-            "surname" : "Markuza",
-            "address" : "Negde69",
-            "city" : "NS",
-            "country" : "Srbija",
-            "phone_number" : "060602311",
-            "username" : "kaki",
-            "password" : "kaki"}
-
-            appointment["patient"] = patient;
-            console.log(appointment);
             this._pharmacistAppointmentCreationService.makeAppointment(appointment).subscribe(
                 response => {
                   this.openSnackBar(response, this.RESPONSE_OK);
@@ -85,6 +76,13 @@ export class PharmacistAppointmentCreationComponent implements OnInit{
           verticalPosition: this.verticalPosition,
           panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
         });
+        if(responseCode === this.RESPONSE_OK){
+          this.back();
+        }
+      }
+
+      back(){
+        this.router.navigate(['/PharmacistAppointmentInfoComponent'], {state: {data: {appointment : this.app, information : {comment: history.state.data.information.comment, medication:history.state.data.information.medication}}}});
       }
     
 }

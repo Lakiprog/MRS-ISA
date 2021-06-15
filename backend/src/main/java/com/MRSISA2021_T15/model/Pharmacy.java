@@ -1,37 +1,46 @@
 package com.MRSISA2021_T15.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.lang.NonNull;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "pharmacy")
 public class Pharmacy {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
 	@Column
+	@NonNull
 	private String name, address, city, country, description;
+	
 	@Column
-	private double rating;
+	private Double rating;
+	
 	@Column
-	double appointmentPrice;
+	private Double appointmentPrice;
+	
+	@Column
+	private Integer numOfRating;
+	
+	public Integer getNumOfRating() {
+		return numOfRating;
+	}
+
+	public void setNumOfRating(Integer numOfRating) {
+		this.numOfRating = numOfRating;
+	}
+
 	@JsonIgnore
-	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	private Set<Employment> employments;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Appointment> appointments;
@@ -41,14 +50,40 @@ public class Pharmacy {
 	private Set<ComplaintPharmacy> complaints;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	private Set<MedicinePharmacy> medicine;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<MedicineNeeded> medicineNeeded;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<PharmacyAdmin> pharmacyAdmins = new HashSet<PharmacyAdmin>();;
+
+	@Transient
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Reservation> reservations;
 	
 	@Transient
 	private ArrayList<Integer> pharmacyAdminsIds = new ArrayList<Integer>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Promotion> promotions;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Action> actions;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<PurchaseOrder> purchaseOrder;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CanceledPharAppoinment> canceledAppointments;
 	
 	public Integer getId() {
 		return id;
@@ -122,11 +157,11 @@ public class Pharmacy {
 		this.country = country;
 	}
 
-	public double getRating() {
+	public Double getRating() {
 		return rating;
 	}
 
-	public void setRating(double rating) {
+	public void setRating(Double rating) {
 		this.rating = rating;
 	}
 
@@ -138,11 +173,27 @@ public class Pharmacy {
 		this.pharmacyAdmins = pharmacyAdmins;
 	}
 
-	public ArrayList<Integer> getPharmacyAdminsIds() {
-		return pharmacyAdminsIds;
+	public Set<Promotion> getPromotions() {
+		return promotions;
 	}
 
-	public void setPharmacyAdminsIds(ArrayList<Integer> pharmacyAdminsIds) {
-		this.pharmacyAdminsIds = pharmacyAdminsIds;
+	public void setPromotions(Set<Promotion> promotions) {
+		this.promotions = promotions;
+	}
+
+	public Set<PurchaseOrder> getPurchaseOrder() {
+		return purchaseOrder;
+	}
+
+	public void setPurchaseOrderMedicines(Set<PurchaseOrder> purchaseOrder) {
+		this.purchaseOrder = purchaseOrder;
+	}
+
+	public double getAppointmentPrice() {
+		return appointmentPrice;
+	}
+
+	public void setAppointmentPrice(double appointmentPrice) {
+		this.appointmentPrice = appointmentPrice;
 	}
 }

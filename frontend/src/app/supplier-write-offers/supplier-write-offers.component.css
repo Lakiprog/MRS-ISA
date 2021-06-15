@@ -1,9 +1,3 @@
-.supplier-background {
-    background: url(../pictures/supplier-profile-page.jpg);
-    background-size: cover;
-    background-attachment: fixed;
-}
-
 .offer-form{
     max-width: 500px;
     width: 100%;
@@ -21,7 +15,7 @@
 }
 
 .table-card {
-    width: 700px;
+    width: 1000px;
     margin-top: 10px;
     margin-left: 10px;
     background-color: #DEEDE6
@@ -35,8 +29,12 @@ table {
     width: 100%;
 }
 
-.coloumnOrderName {
+.coloumnId {
     width: 10%;  
+}
+
+.coloumnOrderName {
+    width: 15%;  
 }
 
 .coloumnMedicineCode {
@@ -44,9 +42,13 @@ table {
 }
 
 .coloumnName {
-    width: 20%; 
+    width: 15%; 
 }
 
 .coloumnQuantity {
-    width: 5%; 
+    width: 10%; 
+}
+
+.coloumnDueDateOffer {
+    width: 15%;
 }

@@ -1,9 +1,10 @@
 package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.dto.ChangePassword;
-import com.MRSISA2021_T15.model.PharmacyAdmin;
-import com.MRSISA2021_T15.repository.PharmacyAdminRepository;
+import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.repository.*;
 import com.MRSISA2021_T15.service.PharmacyAdminService;
+import com.MRSISA2021_T15.service.PharmacyService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,33 +26,41 @@ public class PharmacyAdminController {
     private PharmacyAdminRepository pharmacyAdminRepository;
     @Autowired
     private PharmacyAdminService pharmacyAdminService;
+    @Autowired
+    private MedicinePharmacyRepository medicinePharmacyRepository;
+    @Autowired
+    private EmploymentPharmacistsRepository employmentPharmacistsRepository;
+    @Autowired
+    private EmploymentDermatologistRepository employmentDermatologistRepository;
+    @Autowired
+    private PharmacyService pharmacyService;
+    @Autowired
+    private PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    private PurchaseOrderMedicineRepository purchaseOrderMedicineRepository;
 
     @RequestMapping(path="/{pharmacyAdminId}/findById")
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public Optional<PharmacyAdmin> getPharmacyAdminById(@PathVariable Integer pharmacyAdminId){
         return pharmacyAdminRepository.findById(pharmacyAdminId);
     }
-/*
-    @PutMapping(path="/{pharmacyAdminId}/update")
-    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
-    public ResponseEntity edit(@PathVariable Integer pharmacyAdminId, @RequestBody PharmacyAdmin pa) throws NotFoundException {
-        PharmacyAdmin pharmacyAdmin = pharmacyAdminRepository.findById(pharmacyAdminId).orElseThrow(() -> new NotFoundException("Ne postoji id"));
-        pharmacyAdmin.setName(pa.getName());
-        pharmacyAdmin.setSurname(pa.getSurname());
-        pharmacyAdmin.setUsername(pa.getUsername());
-        pharmacyAdmin.setAdress(pa.getAdress());
-        pharmacyAdmin.setCity(pa.getCity());
-        pharmacyAdmin.setCountry(pa.getCountry());
-        pharmacyAdmin.setEmail(pa.getEmail());
-        pharmacyAdmin.setPhoneNumber(pa.getPhoneNumber());
-        pharmacyAdmin.setPassword(pa.getPassword());
-        pharmacyAdminRepository.save(pharmacyAdmin);
-        return ResponseEntity.ok().build();
-    }*/
+
     @PutMapping(value = "/updatePharmacyAdminData", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
     public ResponseEntity<String> updatePharmacyAdminData(@RequestBody PharmacyAdmin pharmacyAdmin) {
         String message = pharmacyAdminService.updatePharmacyAdminData(pharmacyAdmin);
+        Gson gson = new GsonBuilder().create();
+        if (message.equals("")) {
+            return new ResponseEntity<String>(gson.toJson("Update successfull."), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(value = "/updatePharmacyData", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> updatePharmacyData(@RequestBody Pharmacy pharmacy) {
+        String message = pharmacyService.updatePharmacyData(pharmacy);
         Gson gson = new GsonBuilder().create();
         if (message.equals("")) {
             return new ResponseEntity<String>(gson.toJson("Update successfull."), HttpStatus.OK);
@@ -76,4 +86,88 @@ public class PharmacyAdminController {
         return pharmacyAdminService.getPharmacyAdminData();
     }
 
+    @GetMapping(value = "/getPharmacyData", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public Pharmacy getPharmacyData() {
+        return pharmacyService.getPharmacyData();
+    }
+
+
+    @PostMapping(value = "/addMedicineToPharmacy")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> addMedicineToPharmacy(@RequestBody MedicinePharmacy mp) {
+        medicinePharmacyRepository.save(mp);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/addPharmacistToPharmacy")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> addPharmacistToPharmacy(@RequestBody EmploymentPharmacist ep) {
+        employmentPharmacistsRepository.save(ep);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/addDermatologistToPharmacy")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> addDermatologistToPharmacy(@RequestBody EmploymentDermatologist ed) {
+        List<EmploymentDermatologist> allEmployments = employmentDermatologistRepository.findAllByDermatologist(ed.getDermatologist());
+        if(allEmployments.isEmpty()){
+            employmentDermatologistRepository.save(ed);
+        }
+        else{
+            for(EmploymentDermatologist emp : allEmployments){
+                if(ed.getStart()>emp.getEnd()){
+                    employmentDermatologistRepository.save(ed);
+                }
+                else if(ed.getEnd()<emp.getStart()){
+                    employmentDermatologistRepository.save(ed);
+                }
+
+            }
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/createPurchaseOrder")
+    @PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+    public ResponseEntity<String> createPurchaseOrder(@RequestBody PurchaseOrderDto pod){
+        PurchaseOrder po = new PurchaseOrder();
+        List<MedicinePharmacy> medicinePharmacyList = medicinePharmacyRepository.findByPharmacyId(pod.getPharmacy().getId());
+        boolean isInPharmacy = false;
+
+        for (PurchaseOrderMedicine pom : pod.getPurchaseOrderMedicine()) {
+            for(MedicinePharmacy mp : medicinePharmacyList){
+                if(pom.getMedicine().getId() == mp.getMedicine().getId()){
+                    isInPharmacy = true;
+                }
+            }
+            if(!isInPharmacy){
+                MedicinePharmacy mp = new MedicinePharmacy();
+                mp.setAmount(0);
+                mp.setMedicine(pom.getMedicine());
+                mp.setPharmacy(pod.getPharmacy());
+                mp.setCost(0.0);
+                addMedicineToPharmacy(mp);
+            }
+        }
+
+
+        po.setPharmacyAdmin(pod.getPharmacyAdmin());
+        po.setPharmacy(pod.getPharmacy());
+        po.setDueDateOffer(pod.getPurchaseOrderDate().plusDays(1));
+        po.setPurchaseOrderName(pod.getPurchaseOrderName());
+
+        for (PurchaseOrderMedicine pom: pod.getPurchaseOrderMedicine())
+        {
+            po.getPurchaseOrderMedicine().add(pom);
+            purchaseOrderMedicineRepository.save(pom);
+        }
+        purchaseOrderRepository.save(po);
+        for (PurchaseOrderMedicine pom: po.getPurchaseOrderMedicine()) {
+            pom.setPurchaseOrder(po);
+            purchaseOrderMedicineRepository.save(pom);
+        }
+
+        return ResponseEntity.ok().build();
+    }
 }

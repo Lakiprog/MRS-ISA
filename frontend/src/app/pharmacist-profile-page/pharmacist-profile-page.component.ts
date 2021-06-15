@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { AuthService } from '../login/auth.service';
 import { PasswordValidator } from '../registration/validators/passwordValidator';
 import { PharmacistUpdateService } from './pharmacist-update.service';
@@ -12,11 +13,13 @@ import { PharmacistUpdateService } from './pharmacist-update.service';
 })
 export class PharmacistProfilePageComponent implements OnInit {
 
+  firstLogin = this.authService.getTokenData()?.firstLogin;
+
   updateForm! : FormGroup;
   updatePasswordForm! : FormGroup;
   RESPONSE_OK : number = 0;
   RESPONSE_ERROR : number = -1;
-  constructor(private fb: FormBuilder, private _pharmacistUpdateService: PharmacistUpdateService, private _snackBar: MatSnackBar, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private _pharmacistUpdateService: PharmacistUpdateService, private _snackBar: MatSnackBar, private authService: AuthService, public router: Router) { }
   verticalPosition: MatSnackBarVerticalPosition = "top";
 
   ngOnInit(): void {
@@ -74,7 +77,6 @@ export class PharmacistProfilePageComponent implements OnInit {
   }
 
   update() {
-    console.log(this.updateForm.value);
     this._pharmacistUpdateService.updatePharmacistData(this.updateForm.value).subscribe(
       response => {
         this.openSnackBar(response, this.RESPONSE_OK);
@@ -100,12 +102,84 @@ export class PharmacistProfilePageComponent implements OnInit {
     )
   }
 
+  homepage(){
+    this.router.navigate(['/PharmacistHomePage']);
+  }
+
+  profile(){
+    this.router.navigate(["/PharmacistProfilePageComponent"]);
+  }
+  
+  allPatients(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistUsersComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  calendar(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistCalendarComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  absence(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistAbsenceComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  appointments(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistAppointmentsComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+
+  patients(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistPatientComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  reservations(){
+    if(!this.firstLogin){
+      this.router.navigate(["/PharmacistReservationsComponent"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+  
+  medicine(){
+    if(!this.firstLogin){
+      this.router.navigate(["/searchFilterMedicine"]);
+    }else{
+      this.openSnackBar("You must change password before using the application.", this.RESPONSE_OK);
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
   openSnackBar(msg: string, responseCode: number) {
     this._snackBar.open(msg, "x", {
       duration: responseCode === this.RESPONSE_OK ? 3000 : 20000,
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  back(){
+    this.router.navigate(['/PharmacistHomePage']);
   }
 
 }

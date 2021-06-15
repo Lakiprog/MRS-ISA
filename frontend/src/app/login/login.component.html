@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<body class = "login-background">
+<div>
   <mat-toolbar color = "primary">
       <mat-toolbar-row>
-          <span>Login</span>
+          <span>LOGIN</span>
           <span style = "flex: 1 1 auto;"></span>
-          <a mat-button routerLink = "/register">Registration</a>
+          <a mat-button routerLink = "/register">REGISTRATION</a>
+          <a mat-button routerLink = "/searchFilterMedicine">VIEW MEDICINE</a>
+          <a mat-button routerLink = "/searchPharmacy">VIEW PHARMACIES</a>
         </mat-toolbar-row>
   </mat-toolbar>
   <div class = "main-div">
@@ -24,5 +26,4 @@
       <button (click) = "login()" [disabled] = "loginForm.invalid" mat-raised-button color="primary">Login</button>
   </mat-card>
   </div>
-</body>
- 
+</div>

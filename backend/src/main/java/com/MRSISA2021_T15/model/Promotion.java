@@ -1,25 +1,50 @@
 package com.MRSISA2021_T15.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.springframework.lang.NonNull;
+
+@Entity
+@Table(name = "promotion")
 public class Promotion {
-	Date startingDate;
-	Date endingDate;
-	String description;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+	
+	@Column
+	@NonNull
+	private LocalDate startingDate, endingDate;
+	
+	@Column
+	@NonNull
+	private String description;
+	
+	@ManyToOne
+	@NonNull
+	private Pharmacy pharmacy;
 
-	public Date getStartingDate() {
+	public LocalDate getStartingDate() {
 		return startingDate;
 	}
 
-	public void setStartingDate(Date startingDate) {
+	public void setStartingDate(LocalDate startingDate) {
 		this.startingDate = startingDate;
 	}
 
-	public Date getEndingDate() {
+	public LocalDate getEndingDate() {
 		return endingDate;
 	}
 
-	public void setEndingDate(Date endingDate) {
+	public void setEndingDate(LocalDate endingDate) {
 		this.endingDate = endingDate;
 	}
 
@@ -31,10 +56,19 @@ public class Promotion {
 		this.description = description;
 	}
 
-	public Promotion(Date startingDate, Date endingDate, String description) {
-		super();
-		this.startingDate = startingDate;
-		this.endingDate = endingDate;
-		this.description = description;
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
 	}
 }

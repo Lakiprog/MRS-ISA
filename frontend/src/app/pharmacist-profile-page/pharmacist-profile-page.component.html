@@ -1,5 +1,18 @@
 <!DOCTYPE html>
-<body class = "supplier-profile-page-background">
+<div>
+    <mat-toolbar color = "primary">
+        <mat-toolbar-row>
+            <a mat-button (click) = "back()">HOMEPAGE</a>
+            <a mat-button (click) = "patients()" [disabled] = "firstLogin"> VIEW EXAMINED PATIENTS</a>
+            <a mat-button (click) = "allPatients()" [disabled] = "firstLogin"> VIEW ALL PATIENTS</a>
+            <a mat-button (click) = "calendar()" [disabled] = "firstLogin"> WORK CALENDAR</a>
+            <a mat-button (click) = "absence()" [disabled] = "firstLogin"> ABSENCE FORM </a>
+            <a mat-button (click) = "appointments()" [disabled] = "firstLogin"> APPOINTMENTS </a>
+            <a mat-button (click) = "reservations()" [disabled] = "firstLogin">GIVE OUT MEDICATION</a>
+            <a mat-button (click) = "medicine()" [disabled] = "firstLogin">VIEW MEDICINE</a>
+            <a mat-button (click) = "logout()">LOGOUT</a>
+        </mat-toolbar-row>
+    </mat-toolbar>
     <mat-card class = "card">
         <mat-card-title class = "card-title">Account information</mat-card-title>
         <form [formGroup] = "updateForm" class = "update-form">
@@ -73,4 +86,4 @@
         </form>
         <button (click) = "updatePassword()" [disabled] = "updatePasswordForm.invalid" mat-raised-button color="primary">Update password</button>
     </mat-card>
-</body>
+</div>

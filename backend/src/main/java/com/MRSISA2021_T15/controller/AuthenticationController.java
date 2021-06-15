@@ -54,7 +54,7 @@ public class AuthenticationController {
 	public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) {
 		try {
 			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+					authenticationRequest.getUsername().toLowerCase(), authenticationRequest.getPassword()));
 
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -62,7 +62,7 @@ public class AuthenticationController {
 			String jwt = tokenUtils.generateToken(user.getUsername());
 			int expiresIn = tokenUtils.getExpiredIn();
 
-			return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getId(), user.getUsername(), user.getRoles().get(0).getName()));
+			return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getId(), user.getUsername(), user.getRoles().get(0).getName(), user.getFirstLogin()));
 		} catch (DisabledException de) {
 			return new ResponseEntity<UserTokenState>(HttpStatus.FORBIDDEN);
 		} catch (BadCredentialsException bdc) {
@@ -75,7 +75,7 @@ public class AuthenticationController {
 		List<SystemAdmin> systemAdmins = (List<SystemAdmin>) systemAdminRepository.findAll();
 		if (systemAdmins.isEmpty()) {
 			SystemAdmin systemAdmin = new SystemAdmin();
-			systemAdmin.setUsername("ADMIN");
+			systemAdmin.setUsername("admin");
 			systemAdmin.setPassword(passwordEncoder.encode("ADMIN"));
 			List<Role> roles = new ArrayList<Role>();
 			Role role = roleRepository.findById(Constants.ROLE_SYSTEM_ADMIN).get();

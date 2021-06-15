@@ -1,9 +1,11 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from '../login/auth.service';
 import { DateValidator } from './DateValidator';
+import { PriceValidator } from './PriceValidator';
 import { SupplierWriteOffersService } from './supplier-write-offers.service';
 
 @Component({
@@ -17,24 +19,20 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   (
     private fb: FormBuilder, 
     private supplierWriteOffersService: SupplierWriteOffersService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private authService: AuthService,
   ) { }
 
-  @ViewChild(MatPaginator)
-  paginatorMedicineSupply!: MatPaginator;
-
-  @ViewChild(MatPaginator)
-  paginatorOrders!: MatPaginator;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
   verticalPosition: MatSnackBarVerticalPosition = "top";
   displayedColumnsMedicineSupply: string[] = ['medicineCode', 'name', 'quantity'];
-  displayedColumnsOrders: string[] = ['orderName', 'medicineCode', 'name', 'quantity'];
+  displayedColumnsOrders: string[] = ['id', 'orderName', 'medicineCode', 'name', 'quantity', 'dueDateOffer'];
   medicineSupplyData = [];
   orderData = [];
   orders = [];
   medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
   orderDataSource = new MatTableDataSource<any>(this.orderData);
-  dataSource1 = new MatTableDataSource<any>()
   offerForm!: FormGroup;
   purchaseOrdersForm!: FormGroup;
   RESPONSE_OK : number = 0;
@@ -43,10 +41,10 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   ngOnInit(): void {
     this.offerForm = this.fb.group(
       {
-        orderName: ['', Validators.required],
-        deliveryTime: ['', Validators.required],
+        purchaseOrder: ['', Validators.required],
+        deliveryDate: ['', Validators.required],
         price: [0, Validators.required]
-      }, {validator: DateValidator}
+      }, {validator: [DateValidator, PriceValidator]}
     );
     this.supplierWriteOffersService.getOrders().subscribe(
       data => {
@@ -57,21 +55,31 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit(): void {
-    this.medicineSupplyDataSource.paginator = this.paginatorMedicineSupply;
-    this.orderDataSource.paginator = this.paginatorOrders
+    this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
+    this.orderDataSource.paginator = this.paginator.toArray()[1]
   }
 
   public hasError = (controlName: string, errorName: string) =>{
     return this.offerForm.controls[controlName].hasError(errorName);
   }
 
-  get deliveryTime() {
-    return this.offerForm.get('deliveryTime');
+  get deliveryDate() {
+    return this.offerForm.get('deliveryDate');
+  }
+
+  get price() {
+    return this.offerForm.get('price');
   }
 
   checkDate() {
     if (this.offerForm.hasError('dateInvalid')) {
-      this.offerForm.get('deliveryTime')?.setErrors([{'dateInvalid': true}]);
+      this.offerForm.get('deliveryDate')?.setErrors([{'dateInvalid': true}]);
+    }
+  }
+
+  checkPrice() {
+    if (this.offerForm.hasError('priceInvalid')) {
+      this.offerForm.get('price')?.setErrors([{'priceInvalid': true}]);
     }
   }
 
@@ -80,16 +88,18 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
       response => {
         this.medicineSupplyData = response;
         this.medicineSupplyDataSource = new MatTableDataSource<any>(this.medicineSupplyData);
+        this.medicineSupplyDataSource.paginator = this.paginator.toArray()[0];
       }
     )
   }
 
-  getPurchaseOrders() {
-    this.supplierWriteOffersService.getOrderByName(this.offerForm.get('orderName')?.value).
+  getPurchaseOrdersMedicine() {
+    this.supplierWriteOffersService.getPurchaseOrdersMedicine(this.offerForm.get('purchaseOrder')?.value['id']).
       subscribe(
         data => {
           this.orderData = data;
           this.orderDataSource = new MatTableDataSource<any>(this.orderData);
+          this.orderDataSource.paginator = this.paginator.toArray()[1]
         }
       )
   }
@@ -111,6 +121,10 @@ export class SupplierWriteOffersComponent implements OnInit, AfterViewInit  {
       verticalPosition: this.verticalPosition,
       panelClass: responseCode === this.RESPONSE_OK ? "back-green" : "back-red"
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

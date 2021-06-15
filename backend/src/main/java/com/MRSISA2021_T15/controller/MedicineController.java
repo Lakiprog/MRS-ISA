@@ -1,14 +1,10 @@
 package com.MRSISA2021_T15.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
-
-import com.MRSISA2021_T15.model.SubstituteMedicine;
-import com.MRSISA2021_T15.repository.MedicineRepository;
-import com.MRSISA2021_T15.repository.SubstituteMedicineRepository;
 import com.MRSISA2021_T15.model.*;
 import com.MRSISA2021_T15.repository.*;
+import com.MRSISA2021_T15.service.MedicineService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.MRSISA2021_T15.service.MedicineService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -37,6 +31,8 @@ public class MedicineController {
 	private AllergyRepository allergyRepository;
 	@Autowired
 	private MedicinePharmacyRepository medicinePharmacyRepository;
+	@Autowired
+	private MedicineNeededRepository medicineNeededRepository;
 
 
 
@@ -89,11 +85,22 @@ public class MedicineController {
 	public HashMap<Integer, String> getMedicineList() {
 		return medicineService.getMedicineList();
 	}
+	
 
 	@RequestMapping(path="/all")
 	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
 	public @ResponseBody Iterable<Medicine> getAllMedicine() {
 		return medicineRepository.findAll();
+	}
+
+	@RequestMapping(path="/{pharmacyId}/getMedicineFromPharmacy")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ArrayList<Medicine> getMedicineFromPharmacy(@PathVariable Integer pharmacyId){
+		List<MedicinePharmacy> medicinePharmacies = medicinePharmacyRepository.findByPharmacyId(pharmacyId);
+		ArrayList<Medicine> returnList = new ArrayList<>();
+		for (MedicinePharmacy mp : medicinePharmacies)
+			returnList.add(mp.getMedicine());
+		return returnList;
 	}
 
 	@RequestMapping(path="/{medicineId}/findArrayById")
@@ -113,10 +120,10 @@ public class MedicineController {
 			if((medicine.getName() != null && medicine.getName().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getMedicineCode() != null && medicine.getMedicineCode().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getManufacturer() != null && medicine.getManufacturer().toLowerCase().contains(string.toLowerCase()))||
-					(medicine.getMedicineType() != null && medicine.getMedicineType().toLowerCase().contains(string.toLowerCase()))||
+					(medicine.getMedicineType() != null && medicine.getMedicineType().toString().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getAdditionalComments() != null && medicine.getAdditionalComments().toLowerCase().contains(string.toLowerCase()))||
 					(medicine.getComposition() != null && medicine.getComposition().toLowerCase().contains(string.toLowerCase()))||
-					(medicine.getForm() != null && medicine.getForm().contains(string.toLowerCase())))
+					(medicine.getForm() != null && medicine.getForm().toString().contains(string.toLowerCase())))
 				returnList.add(medicine);
 		}
 		return returnList;
@@ -145,4 +152,21 @@ public class MedicineController {
 		medicineRepository.save(med);
 		return ResponseEntity.ok().build();
 	}
+	
+	@GetMapping(value = "/getMedicineTypes", produces = MediaType.APPLICATION_JSON_VALUE)
+	public HashSet<MedicineType> getMedicineTypes() {
+		return medicineService.getMedicineTypes();
+	}
+	
+	@GetMapping(value = "/getMedicineForms", produces = MediaType.APPLICATION_JSON_VALUE)
+	public HashSet<MedicineForm> getMedicineForms() {
+		return medicineService.getMedicineForms();
+	}
+
+	@GetMapping(value = "/getMedicineInquiries", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public List<MedicineNeeded> getMedicineInquiries() {
+		return medicineNeededRepository.findAllMedicineNeeded();
+	}
+
 }

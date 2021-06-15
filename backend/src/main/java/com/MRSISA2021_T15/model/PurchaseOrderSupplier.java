@@ -1,6 +1,6 @@
 package com.MRSISA2021_T15.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,18 +24,17 @@ public class PurchaseOrderSupplier {
 	private Integer id;
 	
 	@Column
+	@NonNull
 	private Double price;
 	
 	@Column
-	private String orderName;
+	@NonNull
+	private LocalDate deliveryDate;
 	
 	@Column
-	private LocalDateTime deliveryTime;
-	
-	@Column
+	@NonNull
 	private OfferStatus offerStatus;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "purchase_order_id")
 	private PurchaseOrder purchaseOrder;
@@ -50,15 +51,7 @@ public class PurchaseOrderSupplier {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-	public String getOrderName() {
-		return orderName;
-	}
-
-	public void setOrderName(String orderName) {
-		this.orderName = orderName;
-	}
-	
+		
 	public Double getPrice() {
 		return price;
 	}
@@ -67,12 +60,12 @@ public class PurchaseOrderSupplier {
 		this.price = price;
 	}
 
-	public LocalDateTime getDeliveryTime() {
-		return deliveryTime;
+	public LocalDate getDeliveryDate() {
+		return deliveryDate;
 	}
 
-	public void setDeliveryTime(LocalDateTime deliveryTime) {
-		this.deliveryTime = deliveryTime;
+	public void setDeliveryDate(LocalDate deliveryDate) {
+		this.deliveryDate = deliveryDate;
 	}
 	
 	public OfferStatus getOfferStatus() {

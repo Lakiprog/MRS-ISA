@@ -1,43 +1,59 @@
-
 table {
-    width: 100%;
-  }
-  
-  .mat-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  td, th {
-    width: 25%;
-  }
-
-  .card{
-    max-width: 1000px;
-   
-    margin-left: 15%;
-    
-  }
-
-  .example-full-width{
-    background-color: white;
-  }
-
-  .inputic{
-    background-color: white;
-  }
-
-.sectionN{
-  position: relative;
   width: 100%;
-  height: 100vh;
-  background: url(backForSearch2.jpg);
-  background-size: cover;
-  background-attachment: fixed;
 }
 
-
-.card{
-  background: url(backForSearch3.jpg);
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
 }
 
+td,
+th {
+  width: 25%;
+}
+
+.card {
+  max-width: 1000px;
+
+  margin-left: 15%;
+}
+
+.example-full-width {
+  background-color: white;
+}
+.card {
+  max-width: 1000px;
+  margin-top: 10px;
+  margin-left: 15%;
+  background-color: #deede6;
+}
+
+.card1 {
+  max-width: 1000px;
+  margin-top: -25px;
+  margin-left: 15%;
+  background-color: #deede6;
+}
+
+.inputic {
+  background-color: white;
+}
+
+.table-card {
+  width: 300px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #deede6;
+}
+
+.inputic {
+  background-color: white;
+}
+
+.imageFront {
+  height: 500px;
+}
+
+mat-card-title {
+  margin-left: 400px;
+}

@@ -1,22 +1,13 @@
 package com.MRSISA2021_T15.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.lang.NonNull;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "medicine")
@@ -28,29 +19,71 @@ public class Medicine {
 	private Integer id;
 	
 	@Column
-	private String medicineCode, name, medicineType, form, composition, manufacturer, additionalComments;
+	@NonNull
+	private String medicineCode, name, composition, manufacturer;
 	
 	@Column
-	private boolean prescription;
+	private String additionalComments;
+	
+	@Column
+	@NonNull
+	private MedicineType medicineType;
+	
+	@Column
+	@NonNull
+	private MedicineForm form;
+	
+	@Column
+	@NonNull
+	private Boolean prescription;
+	
+	@Column
+	private Integer averageRating;
+	
+	@Column
+	@NonNull
+	private Integer points;
+
+	@Column
+	private Integer numOfRating;
+	
+	
+	public Integer getNumOfRating() {
+		return numOfRating;
+	}
+
+	public void setNumOfRating(Integer numOfRating) {
+		this.numOfRating = numOfRating;
+	}
 
 	@Transient
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SubstituteMedicine> substituteMedicine = new HashSet<SubstituteMedicine>();
 	
 	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Allergy> allergies = new HashSet<Allergy>();
 	
 	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	private Set<MedicinePharmacy> medicinePharmacy;
 	
 	@Transient
 	@JsonIgnore
-	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<MedicineSupply> medicineSupply;
+	
+	@Transient
+	@JsonIgnore
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<MedicineQuantity> medicineQuantity;
+	
+	@Transient
+	@JsonIgnore
+	@OneToMany(mappedBy = "medicine", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<MedicineNeeded> medicineNeeded;
 	
 	@Transient
 	private ArrayList<Integer> substituteMedicineIds = new ArrayList<Integer>();
@@ -80,11 +113,11 @@ public class Medicine {
 		this.name = name;
 	}
 
-	public String getMedicineType() {
+	public MedicineType getMedicineType() {
 		return medicineType;
 	}
 
-	public void setMedicineType(String medicineType) {
+	public void setMedicineType(MedicineType medicineType) {
 		this.medicineType = medicineType;
 	}
 
@@ -104,11 +137,11 @@ public class Medicine {
 		this.medicineCode = medicineCode;
 	}
 
-	public String getForm() {
+	public MedicineForm getForm() {
 		return form;
 	}
 
-	public void setForm(String form) {
+	public void setForm(MedicineForm form) {
 		this.form = form;
 	}
 
@@ -136,11 +169,11 @@ public class Medicine {
 		this.additionalComments = addtionalComments;
 	}
 
-	public boolean isPrescription() {
+	public Boolean getPrescription() {
 		return prescription;
 	}
 
-	public void setPrescription(boolean prescription) {
+	public void setPrescription(Boolean prescription) {
 		this.prescription = prescription;
 	}
 
@@ -166,5 +199,21 @@ public class Medicine {
 
 	public void setMedicineSupply(Set<MedicineSupply> medicineSupply) {
 		this.medicineSupply = medicineSupply;
+	}
+
+	public Integer getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(Integer averageRating) {
+		this.averageRating = averageRating;
+	}
+
+	public Integer getPoints() {
+		return points;
+	}
+
+	public void setPoints(Integer points) {
+		this.points = points;
 	}
 }

@@ -42,10 +42,28 @@ public class CalendarController {
 		return events;
 	}
 	
-	@GetMapping(value = "/calendarDermatologist/id={dermatologistId}pharmacy={pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/calendarPharmacistToday", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public Collection<Event> calendarPharmacistToday(){
+		Pharmacist p = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Appointment> appointments = service.findAllPharmacistToday(p.getId());
+		ArrayList<Event> events = new ArrayList<Event>();
+		for (Appointment appointment : appointments) {
+			Event event = new Event();
+			event.setId(appointment.getId());
+			event.setTitle("Appointment with" + " " + appointment.getPatient().getSurname() + " " +  appointment.getPatient().getName());
+			event.setStart(appointment.getStart());
+			event.setEnd(appointment.getEnd());
+			events.add(event);
+		}
+		return events;
+	}
+	
+	@GetMapping(value = "/calendarDermatologist/pharmacy={pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
-	public Collection<Event> calendarDermatologist(@PathVariable("dermatologistId") Integer dermatologistId, @PathVariable("pharmacyId") Integer pharmacyId){
-		List<Appointment> appointments = service.findAllDermatologist(dermatologistId);
+	public Collection<Event> calendarDermatologist(@PathVariable("pharmacyId") Integer pharmacyId){
+		Dermatologist d = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Appointment> appointments = service.findAllDermatologist(d.getId());
 		ArrayList<Event> events = new ArrayList<Event>();
 		for (Appointment appointment : appointments) {
 			if(appointment.getPharmacy().getId() == pharmacyId) {
@@ -76,6 +94,27 @@ public class CalendarController {
 				}else {
 					event.setTitle("Appointment with " + appointment.getPatient().getSurname() + " " +  appointment.getPatient().getName() + " in " + appointment.getPharmacy().getName());
 				}
+				event.setStart(appointment.getStart());
+				event.setEnd(appointment.getEnd());
+				events.add(event);
+		}
+		return events;
+	}
+	
+	@GetMapping(value = "/calendarDermatologistToday", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public Collection<Event> calendarDermatologistToday(){
+		Dermatologist d = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Appointment> appointments = service.findAllDermatologistToday(d.getId());
+		ArrayList<Event> events = new ArrayList<Event>();
+		for (Appointment appointment : appointments) {
+				Event event = new Event();
+				if(appointment.getPatient() == null) {
+					continue;
+				}else {
+					event.setTitle("Appointment with " + appointment.getPatient().getSurname() + " " +  appointment.getPatient().getName() + " in " + appointment.getPharmacy().getName());
+				}
+				event.setId(appointment.getId());
 				event.setStart(appointment.getStart());
 				event.setEnd(appointment.getEnd());
 				events.add(event);

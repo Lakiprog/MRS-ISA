@@ -6,6 +6,18 @@ import { Medicine } from '../models/medicine';
 import { Dermatologist } from '../models/dermatologist';
 import { PharmacyAdmin } from '../models/pharmacy-admin';
 import { catchError } from 'rxjs/operators';
+import { MedicinePharmacy } from '../models/medicine-pharmacy';
+import { Employment } from '../models/employment';
+import { Pharmacy } from '../user-complaint/user-complaint.component';
+import { PurchaseOrder } from '../models/purchase-order';
+import { PurchaseOrderMedicine } from '../models/purchase-order-medicine';
+import { Appointment } from '../models/appointment';
+import { AppointmentDermatologist } from '../models/appointmentDermatologist';
+import { MedicineNeeded } from '../models/medicineNeeded';
+import { Absence } from '../models/absence';
+import { Action } from '../models/action';
+import { Promotion } from '../models/promotion';
+import { PurchaseOrderSupplier } from '../models/purchase-order-supplier';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +28,8 @@ export class PharmacyAdminService {
   private dermatologistUrl!: string;
 
   constructor(private httpClient: HttpClient) {
-    this.pharmacistsUrl = 'http://localhost:8080/pharmacist/all';
+    this.pharmacistsUrl =
+      'http://localhost:8080/pharmacist/getUnemployedPharmacists';
     this.medicineUrl = 'http://localhost:8080/medicine/all';
     this.dermatologistUrl = 'http://localhost:8080/dermatologist/all';
   }
@@ -27,13 +40,19 @@ export class PharmacyAdminService {
     );
   }
 
-  public deletePharmacist(pharmacist: Pharmacist) {
-    return this.httpClient.delete<Pharmacist>(
-      'http://localhost:8080/pharmacist/' + pharmacist.id + '/delete'
+  public deletePharmacist(
+    pharmacist: Pharmacist,
+    pharmacy: Pharmacy
+  ): Observable<Pharmacist> {
+    return this.httpClient.request<Pharmacist>(
+      'delete',
+      'http://localhost:8080/employment/deletePharmacistFromPharmacy/' +
+        pharmacy.id,
+      { body: pharmacist }
     );
   }
 
-  public getAllPharmacists(): Observable<Pharmacist[]> {
+  public getUnemployedPharmacists(): Observable<Pharmacist[]> {
     return this.httpClient.get<Pharmacist[]>(this.pharmacistsUrl);
   }
 
@@ -55,9 +74,15 @@ export class PharmacyAdminService {
       'http://localhost:8080/pharmacist/' + string + '/findByString'
     );
   }
-  public deleteMedicine(medicine: Medicine) {
-    return this.httpClient.delete<Medicine>(
-      'http://localhost:8080/medicine/' + medicine.id + '/delete'
+  public deleteMedicine(
+    medicine: Medicine,
+    pharmacy: Pharmacy
+  ): Observable<Medicine> {
+    return this.httpClient.request<Medicine>(
+      'delete',
+      'http://localhost:8080/medicinePharmacy/deleteMedicineFromPharmacy/' +
+        pharmacy.id,
+      { body: medicine }
     );
   }
 
@@ -65,6 +90,32 @@ export class PharmacyAdminService {
     return this.httpClient.get<Medicine[]>(this.medicineUrl);
   }
 
+  public getMedicineFromPharmacy(pharmacy: Pharmacy): Observable<Medicine[]> {
+    return this.httpClient.get<Medicine[]>(
+      'http://localhost:8080/medicine/' +
+        pharmacy.id +
+        '/getMedicineFromPharmacy'
+    );
+  }
+
+  public getDermatologistsFromPharmacy(
+    pharmacy: Pharmacy
+  ): Observable<Dermatologist[]> {
+    return this.httpClient.get<Dermatologist[]>(
+      'http://localhost:8080/dermatologist/' +
+        pharmacy.id +
+        '/getDermatologistsFromPharmacy'
+    );
+  }
+  public getPharmacistsFromPharmacy(
+    pharmacy: Pharmacy
+  ): Observable<Pharmacist[]> {
+    return this.httpClient.get<Pharmacist[]>(
+      'http://localhost:8080/pharmacist/' +
+        pharmacy.id +
+        '/getPharmacistsFromPharmacy'
+    );
+  }
   public createMedicine(medicine: Medicine) {
     return this.httpClient.post<Medicine>(
       'http://localhost:8080/medicine/addMedicine',
@@ -93,12 +144,17 @@ export class PharmacyAdminService {
     );
   }
 
-  public deleteDermatologist(dermatologist: Dermatologist) {
-    return this.httpClient.delete<Dermatologist>(
-      'http://localhost:8080/dermatologist/' + dermatologist.id + '/delete'
+  public deleteDermatologist(
+    dermatologist: Dermatologist,
+    pharmacy: Pharmacy
+  ): Observable<Dermatologist> {
+    return this.httpClient.request<Dermatologist>(
+      'delete',
+      'http://localhost:8080/employment/deleteDermatologistFromPharmacy/' +
+        pharmacy.id,
+      { body: dermatologist }
     );
   }
-
   public getAllDermatologists(): Observable<Dermatologist[]> {
     return this.httpClient.get<Dermatologist[]>(this.dermatologistUrl);
   }
@@ -107,6 +163,41 @@ export class PharmacyAdminService {
     return this.httpClient.post<Dermatologist>(
       'http://localhost:8080/dermatologist/add',
       dermatologist
+    );
+  }
+
+  public addMedicineToPharmacy(medicinePharmacy: MedicinePharmacy) {
+    return this.httpClient.post<MedicinePharmacy>(
+      'http://localhost:8080/pharmacyAdmin/addMedicineToPharmacy',
+      medicinePharmacy
+    );
+  }
+
+  public getMedicinePharmacyFromPharmacy(pharmacy: Pharmacy) {
+    return this.httpClient.get<MedicinePharmacy[]>(
+      'http://localhost:8080/medicinePharmacy/getMedicineFromPharmacy/' +
+        pharmacy.id
+    );
+  }
+
+  public editMedicinePharmacyPrice(medicinePharmacy: MedicinePharmacy) {
+    return this.httpClient.put<PurchaseOrderSupplier>(
+      'http://localhost:8080/medicinePharmacy/editMedicinePharmacyPrice/',
+      medicinePharmacy
+    );
+  }
+
+  public addPharmacistToPharmacy(employment: Employment) {
+    return this.httpClient.post<Employment>(
+      'http://localhost:8080/pharmacyAdmin/addPharmacistToPharmacy',
+      employment
+    );
+  }
+
+  public addDermatologistToPharmacy(employment: Employment) {
+    return this.httpClient.post<Employment>(
+      'http://localhost:8080/pharmacyAdmin/addDermatologistToPharmacy',
+      employment
     );
   }
 
@@ -135,6 +226,13 @@ export class PharmacyAdminService {
       'http://localhost:8080/pharmacyAdmin/getPharmacyAdminData'
     );
   }
+
+  public getPharmacyData() {
+    return this.httpClient.get<any>(
+      'http://localhost:8080/pharmacyAdmin/getPharmacyData'
+    );
+  }
+
   public updatePharmacyAdminData(supplier: any) {
     return this.httpClient
       .put<any>(
@@ -143,6 +241,127 @@ export class PharmacyAdminService {
       )
       .pipe(catchError(this.errorHander));
   }
+
+  public updatePharmacyData(supplier: any) {
+    return this.httpClient
+      .put<any>(
+        'http://localhost:8080/pharmacyAdmin/updatePharmacyData',
+        supplier
+      )
+      .pipe(catchError(this.errorHander));
+  }
+
+  public createPurchaseOrder(purchaseOrder: PurchaseOrder) {
+    return this.httpClient.post<PurchaseOrder>(
+      'http://localhost:8080/pharmacyAdmin/createPurchaseOrder',
+      purchaseOrder
+    );
+  }
+
+  public getActivePurchaseOrders(
+    pharmacy: Pharmacy
+  ): Observable<PurchaseOrder[]> {
+    return this.httpClient.get<PurchaseOrder[]>(
+      'http://localhost:8080/purchaseOrder/activePurchaseOrders/' + pharmacy.id
+    );
+  }
+
+  public getPendingPurchaseOrderSupplier(
+    pharmacy: Pharmacy
+  ): Observable<PurchaseOrderSupplier[]> {
+    return this.httpClient.get<PurchaseOrderSupplier[]>(
+      'http://localhost:8080/purchaseOrder/getPendingPurchaseOrderSupplier/' +
+        pharmacy.id
+    );
+  }
+
+  public getAllPurchaseOrderSupplier(
+    pharmacy: Pharmacy
+  ): Observable<PurchaseOrderSupplier[]> {
+    return this.httpClient.get<PurchaseOrderSupplier[]>(
+      'http://localhost:8080/purchaseOrder/getAllPurchaseOrderSupplier/' +
+        pharmacy.id
+    );
+  }
+
+  public getPurchaseOrder(purchaseOrderId: Number) {
+    return this.httpClient.get<PurchaseOrderMedicine[]>(
+      'http://localhost:8080/purchaseOrder/' +
+        purchaseOrderId +
+        '/getPurchaseOrder'
+    );
+  }
+
+  public createPredefinedDermatologistAppointment(appointment: Appointment) {
+    return this.httpClient.post<AppointmentDermatologist>(
+      'http://localhost:8080/appointment_creation/defineDermatologistAppointment',
+      appointment
+    );
+  }
+
+  public getMedicineInquiries(): Observable<MedicineNeeded[]> {
+    return this.httpClient.get<MedicineNeeded[]>(
+      'http://localhost:8080/medicine/getMedicineInquiries'
+    );
+  }
+
+  public getAbsenceRequests(pharmacyId: String): Observable<Absence[]> {
+    return this.httpClient.get<Absence[]>(
+      'http://localhost:8080/absence/getAbsenceRequests/' + pharmacyId
+    );
+  }
+
+  public approveAbsenceRequest(absence: Absence) {
+    return this.httpClient.put<Absence>(
+      'http://localhost:8080/absence/approveAbsenceRequest',
+      absence
+    );
+  }
+
+  public declineAbsenceRequest(absence: Absence) {
+    return this.httpClient.request<Absence>(
+      'delete',
+      'http://localhost:8080/absence/declineAbsenceRequest/',
+      { body: absence }
+    );
+  }
+
+  public createAction(action: Action) {
+    return this.httpClient.post<Action>(
+      'http://localhost:8080/action/createAction',
+      action
+    );
+  }
+
+  public createPromotion(promotion: Promotion) {
+    return this.httpClient.post<Promotion>(
+      'http://localhost:8080/promotion/createPromotion',
+      promotion
+    );
+  }
+
+  public acceptPurchaseOrderSupplier(
+    purchaseOrderSupplier: PurchaseOrderSupplier,
+    pharmacyAdmin: PharmacyAdmin
+  ) {
+    return this.httpClient.put<PurchaseOrderSupplier>(
+      'http://localhost:8080/purchaseOrder/acceptPurchaseOrderSupplier/' +
+        pharmacyAdmin.id,
+      purchaseOrderSupplier
+    );
+  }
+
+  public rejectPurchaseOrderSupplier(
+    purchaseOrderSupplier: PurchaseOrderSupplier,
+    pharmacyAdmin: PharmacyAdmin
+  ) {
+    return this.httpClient.put<PurchaseOrderSupplier>(
+      'http://localhost:8080/purchaseOrder/rejectPurchaseOrderSupplier/' +
+        pharmacyAdmin.id,
+      purchaseOrderSupplier
+    );
+  }
+
   errorHander(error: HttpErrorResponse) {
     return throwError(error);
   }

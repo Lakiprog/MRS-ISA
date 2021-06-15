@@ -9,6 +9,7 @@ import { PasswordValidator } from 'src/app/change-patient-data/passwordValidator
 import { AuthService } from 'src/app/login/auth.service';
 import { PharmacyAdmin } from 'src/app/models/pharmacy-admin';
 import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-pharmacy-admin',
@@ -16,6 +17,8 @@ import { PharmacyAdminService } from 'src/app/services/pharmacy-admin.service';
   styleUrls: ['./pharmacy-admin.component.css'],
 })
 export class PharmacyAdminComponent implements OnInit {
+  firstLogin = this.authService.getTokenData()?.firstLogin;
+
   updateForm!: FormGroup;
   updatePasswordForm!: FormGroup;
   pharmacyAdmin!: PharmacyAdmin;
@@ -27,7 +30,8 @@ export class PharmacyAdminComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private _snackBar: MatSnackBar,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private location: Location
   ) {}
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
@@ -122,6 +126,11 @@ export class PharmacyAdminComponent implements OnInit {
     this.updateForm.get('country')?.setValue(data.country);
     this.updateForm.get('phoneNumber')?.setValue(data.phoneNumber);
   }
+
+  back(): void {
+    this.location.back();
+  }
+
   logout() {
     this.authService.logout();
   }

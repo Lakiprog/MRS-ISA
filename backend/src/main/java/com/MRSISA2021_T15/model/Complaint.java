@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
@@ -26,11 +28,20 @@ public class Complaint {
 	private Integer id;
 	
 	@Column
+	@NonNull
 	private String text;
+	
+	@Column
+	private String response;
 
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
+	@NonNull
 	private Patient patient;
+	
+	@ManyToOne
+	@JoinColumn(name = "system_admin_id")
+	private SystemAdmin systemAdmin;
 	
 	
 	public Integer getId() {
@@ -57,6 +68,19 @@ public class Complaint {
 		this.patient = patient;
 	}
 
-	
-	
+	public String getResponse() {
+		return response;
+	}
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
+	public SystemAdmin getSystemAdmin() {
+		return systemAdmin;
+	}
+
+	public void setSystemAdmin(SystemAdmin systemAdmin) {
+		this.systemAdmin = systemAdmin;
+	}
 }

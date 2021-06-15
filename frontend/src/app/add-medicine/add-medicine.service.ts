@@ -19,6 +19,14 @@ export class AddMedicineService {
     return this._http.get<any>("http://localhost:8080/medicine/getMedicineList")
   }
 
+  getMedicineForms() {
+    return this._http.get<any>("http://localhost:8080/medicine/getMedicineForms");
+  }
+
+  getMedicineTypes() {
+    return this._http.get<any>("http://localhost:8080/medicine/getMedicineTypes");
+  }
+
   errorHander(error: HttpErrorResponse) {
     return throwError(error);
   }

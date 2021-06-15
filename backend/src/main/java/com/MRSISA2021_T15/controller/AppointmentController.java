@@ -1,24 +1,24 @@
 package com.MRSISA2021_T15.controller;
 
+import com.MRSISA2021_T15.dto.AppointmentEnd;
+import com.MRSISA2021_T15.dto.AppointmentEndDermatologist;
+import com.MRSISA2021_T15.model.*;
+import com.MRSISA2021_T15.repository.AppointmentRepository;
+import com.MRSISA2021_T15.repository.EmploymentDermatologistRepository;
+import com.MRSISA2021_T15.service.AppointmentService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
-import com.MRSISA2021_T15.model.AppointmentDermatologist;
-import com.MRSISA2021_T15.model.AppointmentPharmacist;
-import com.MRSISA2021_T15.model.Patient;
-import com.MRSISA2021_T15.service.AppointmentService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/appointment_creation")
@@ -26,6 +26,10 @@ public class AppointmentController {
 
 	@Autowired
 	private AppointmentService service;
+	@Autowired
+	private AppointmentRepository appointmentRepository;
+	@Autowired
+	private EmploymentDermatologistRepository employmentDermatologistRepository;
 	
 	@PostMapping(path="/pharmacist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
@@ -59,4 +63,108 @@ public class AppointmentController {
 		}
 		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@GetMapping(path="/getPharmacist/id={id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public @ResponseBody Optional<Appointment> getAppointmentId(@PathVariable("id") Integer id) {
+		return service.findAllAppointmentsId(id);
+	}
+	
+	@GetMapping(path="/getDermatologist/id={id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public @ResponseBody Optional<Appointment> getAppointmentDermatologistId(@PathVariable("id") Integer id) {
+		return service.findAllAppointmentsId(id);
+	}
+	
+	@PutMapping(path="/setDonePharmacist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public void makeDone(@RequestBody AppointmentPharmacist appointment) {
+		service.makeTrue(appointment);
+	}
+	
+	@PutMapping(path="/setDoneDermatologist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public void makeDoneDermatologist(@RequestBody AppointmentDermatologist appointment) {
+		service.makeTrue(appointment);
+	}
+	
+	@PostMapping(path="/endAppointmentPharmacist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_PHARMACIST')")
+	public @ResponseBody ResponseEntity<String> endAppointmentPharmacist(@RequestBody AppointmentEnd appointment) {
+		service.makeTrue(appointment.getAppointment());
+		String message = service.endAppointment(appointment.getAppointment(), appointment.getMeds(), appointment.getComments());
+		Gson gson = new GsonBuilder().create();
+		if (message == "") {
+			return new ResponseEntity<String>(gson.toJson("Appointment succesfully ended, information is saved."), HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping(path="/endAppointmentDermatologist",  consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public @ResponseBody ResponseEntity<String> endAppointmentDermatologist(@RequestBody AppointmentEndDermatologist appointment) {
+		service.makeTrue(appointment.getAppointment());
+		String message = service.endAppointment(appointment.getAppointment(), appointment.getMeds(), appointment.getComments());
+		Gson gson = new GsonBuilder().create();
+		if (message == "") {
+			return new ResponseEntity<String>(gson.toJson("Appointment succesfully ended, information is saved."), HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping(path="/employmentsDermatologist", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_DERMATOLOGIST')")
+	public @ResponseBody List<EmploymentDermatologist> getEmploymentsDermatologistId() {
+		return service.employmentsDermatologist();
+	}
+
+	@PostMapping(path="/defineDermatologistAppointment")
+	@PreAuthorize("hasRole('ROLE_PHARMACY_ADMIN')")
+	public ResponseEntity<String> defineDermatologistAppointment(@RequestBody AppointmentDermatologist ad) {
+		List<Appointment> allAppointments = appointmentRepository.findAllDermatologistId(ad.getDermatologist().getId());
+		List<EmploymentDermatologist> employmentDermatologists = employmentDermatologistRepository.findAllByDermatologist(ad.getDermatologist());
+
+		boolean isValid = true;
+
+		//da li se pregled nalazi u radnom vremenu dermatologa
+		for(EmploymentDermatologist ed : employmentDermatologists){
+			if(ad.getStart().getHour()<ed.getStart()){
+				isValid = false;
+			}
+			else if(ad.getEnd().getHour()>ed.getEnd()){
+				isValid = false;
+			}
+		}
+
+		//da li se poklapa sa drugim pregledima
+		for (Appointment a : allAppointments){
+			if(ad.getEnd().isAfter(a.getStart()) && ad.getStart().isBefore(a.getEnd()))
+				isValid = false;
+			else if (ad.getStart().isBefore(a.getEnd()) && ad.getEnd().isAfter(a.getStart()))
+				isValid = false;
+		}
+
+		if(isValid)
+			appointmentRepository.save(ad);
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping(path="/getPredefinedDermatologistAppointments/{pharmacyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<AppointmentDermatologist> getPredefinedDermatologistAppointments(@PathVariable Integer pharmacyId) {
+		List<Appointment> appointmentList = appointmentRepository.findAll();
+		List<Appointment> appointmentPharmacyList = new ArrayList<>();
+		List returnList = new ArrayList<AppointmentDermatologist>();
+		for ( Appointment a : appointmentList) {
+			if (a.getPharmacy().getId() == pharmacyId) {
+				appointmentPharmacyList.add(a);
+			}
+		}
+		for (Appointment ap : appointmentPharmacyList){
+			if (ap.getPatient() == null && ap.getStart().isAfter(LocalDateTime.now()))
+				returnList.add(ap);
+		}
+		return returnList;
+	}
+
+
 }

@@ -14,6 +14,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.lang.NonNull;
+
 import com.MRSISA2021_T15.model.User;
 
 @Entity
@@ -25,6 +27,7 @@ public class ConfirmationToken {
     private Integer tokenId;
 
     @Column(name="confirmation_token")
+    @NonNull
     private String confirmationToken;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -32,6 +35,7 @@ public class ConfirmationToken {
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
+    @NonNull
     private User user;
     
     public ConfirmationToken() {}

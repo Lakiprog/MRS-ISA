@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<body class = "appointment-creation-background">
+<div>
     <mat-toolbar color = "primary">
         <mat-toolbar-row>
-            <span>New Appointment</span>
-            <span style = "flex: 1 1 auto;"></span>
+            <a mat-button (click) = "back()">Back</a>
         </mat-toolbar-row>
     </mat-toolbar>
     <mat-card class = "card">
+        <mat-card-title>Schedule new Appointment</mat-card-title>
         <form [formGroup] = "appointmentForm" class = "appointment-form">
             <mat-form-field class = "field-width">
                 <mat-label>Starting time</mat-label>
@@ -21,4 +21,4 @@
         </form>
         <button (click) = "makeAppointment()" [disabled] = "appointmentForm.invalid" mat-raised-button color="primary">Create Appointment</button>
     </mat-card>
-</body>
+</div>

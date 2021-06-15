@@ -1,8 +1,4 @@
-
 package com.MRSISA2021_T15.controller;
-
-
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +30,6 @@ import com.MRSISA2021_T15.service.ComplaintService;
 import com.MRSISA2021_T15.service.PatientService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 
 
 @RestController
@@ -279,11 +273,6 @@ public class ComplaintController {
 		
 	}
 	
-	
-	
-	
-	
-	
 	@PostMapping(value = "/addComplaintToPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<String> addComplaintToPharmacy(@RequestBody ComplaintPharmacy complaint){
@@ -315,22 +304,29 @@ public class ComplaintController {
 		
 	}
 	
+	@GetMapping(value = "/getComplaintsToRespond", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
+	public List<Complaint> getComplaintsToRespond() {
+		return service.getComplaintsToRespond();
+	}
 	
+	@GetMapping(value = "/getResponses", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
+	public List<Complaint> getResponses() {
+		return service.getResponses();
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@PutMapping(value = "/sendResponse", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
+	public ResponseEntity<String> sendResponse(@RequestBody Complaint response) {
+		String message = service.sendResponse(response);
+		Gson gson = new GsonBuilder().create();
+		if (message.equals("")) {
+			return new ResponseEntity<String>(gson.toJson("Response has been sent successully."), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson(message), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 	
 }
