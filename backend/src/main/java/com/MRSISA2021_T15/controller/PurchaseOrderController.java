@@ -2,6 +2,8 @@ package com.MRSISA2021_T15.controller;
 
 import com.MRSISA2021_T15.model.*;
 import com.MRSISA2021_T15.repository.*;
+import com.MRSISA2021_T15.service.EmailSenderService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,7 @@ public class PurchaseOrderController {
     @Autowired
     public PharmacyRepository pharmacyRepository;
     @Autowired
-    JavaMailSender emails;
+    EmailSenderService emailSenderIvan3;
     @Autowired
     Environment environment;
 
@@ -123,7 +125,7 @@ public class PurchaseOrderController {
             mailMessage.setFrom(environment.getProperty("spring.mail.username"));
             mailMessage.setText("Purchase order with name: " + pos.getPurchaseOrder().getPurchaseOrderName()
                     + " is accepted.");
-            emails.send(mailMessage);
+            emailSenderIvan3.sendEmail(mailMessage);
             purchaseOrderSupplierRepository.save(pos);
         }
         return ResponseEntity.ok().build();
@@ -148,7 +150,7 @@ public class PurchaseOrderController {
             mailMessage.setFrom(environment.getProperty("spring.mail.username"));
             mailMessage.setText("Purchase order with name: " + pos.getPurchaseOrder().getPurchaseOrderName()
                     + " is rejected.");
-            emails.send(mailMessage);
+            emailSenderIvan3.sendEmail(mailMessage);
             purchaseOrderSupplierRepository.save(pos);
         }
         return ResponseEntity.ok().build();

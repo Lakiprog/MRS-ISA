@@ -5,6 +5,8 @@ import com.MRSISA2021_T15.model.Action;
 import com.MRSISA2021_T15.model.PatientSubPharmacy;
 import com.MRSISA2021_T15.repository.ActionRepository;
 import com.MRSISA2021_T15.repository.PatientSubPharmacyRepository;
+import com.MRSISA2021_T15.service.EmailSenderService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class ActionController {
     @Autowired
     private PatientSubPharmacyRepository patientSubPharmacyRepository;
     @Autowired
-    JavaMailSender emails;
+    EmailSenderService emailSenderIvan;
     @Autowired
     Environment environment;
 
@@ -47,7 +49,7 @@ public class ActionController {
                     + ", we at " + a.getPharmacy().getName()
                     + " have a new action to announce!\nThe details are:\n" + a.getDescription()
                     + ".\nAction lasts from "+ a.getStartingDate()+ " to "+ a.getEndingDate());
-            emails.send(mailMessage);
+            emailSenderIvan.sendEmail(mailMessage);
         }
 
         return ResponseEntity.ok().build();

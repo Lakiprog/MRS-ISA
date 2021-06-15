@@ -4,6 +4,8 @@ import com.MRSISA2021_T15.model.PatientSubPharmacy;
 import com.MRSISA2021_T15.model.Promotion;
 import com.MRSISA2021_T15.repository.PatientSubPharmacyRepository;
 import com.MRSISA2021_T15.repository.PromotionRepository;
+import com.MRSISA2021_T15.service.EmailSenderService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class PromotionController {
     @Autowired
     private PatientSubPharmacyRepository patientSubPharmacyRepository;
     @Autowired
-    JavaMailSender emails;
+    EmailSenderService emailSenderIvan2;
     @Autowired
     Environment environment;
 
@@ -44,7 +46,7 @@ public class PromotionController {
                     + ", we at " + p.getPharmacy().getName()
                     + " have a new promotion to announce!\nThe details are:\n" + p.getDescription()
                     + ".\nPromotion lasts from "+ p.getStartingDate()+ " to "+ p.getEndingDate());
-            emails.send(mailMessage);
+            emailSenderIvan2.sendEmail(mailMessage);
         }
         return ResponseEntity.ok().build();
     }

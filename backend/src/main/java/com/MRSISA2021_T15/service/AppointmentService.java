@@ -522,7 +522,7 @@ public class AppointmentService {
 	
 	
 	public void newPharmaciesApp(AppointmentPharmacist appoinment) {
-		appoinment.setPrice(1000);
+		appoinment.setPrice(appoinment.getPharmacy().getAppointmentPrice());
 		appointmentRepository.save(appoinment);
 		sendEmailAppointment(appoinment);
 		

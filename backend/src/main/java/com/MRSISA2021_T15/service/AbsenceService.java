@@ -42,6 +42,8 @@ public class AbsenceService {
 	@Autowired
 	JavaMailSender emails;
 	@Autowired
+	EmailSenderService ivanAsync;
+	@Autowired
 	Environment environment;
 
 	@Transactional(isolation = Isolation.READ_COMMITTED)
@@ -169,7 +171,7 @@ public class AbsenceService {
 		mailMessage.setText("Absence request from " + u.getName() + " " + u.getSurname()
 				+ " is declined."
 				+ ". The reason is:\n" + absence.getDescription());
-		emails.send(mailMessage);
+		ivanAsync.sendEmail(mailMessage);
 
 	}
 
